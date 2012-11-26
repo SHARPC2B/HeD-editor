@@ -1,0 +1,778 @@
+@prefix : <http://asu.edu/sharpc2b/ocl#> .
+@prefix ocl: <http://asu.edu/sharpc2b/ocl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prr: <http://asu.edu/sharpc2b/prr#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://asu.edu/sharpc2b/ocl> .
+
+<http://asu.edu/sharpc2b/ocl> rdf:type owl:Ontology ;
+                              
+                              owl:imports <http://asu.edu/sharpc2b/lmm> ,
+                                          <http://asu.edu/sharpc2b/ops> .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/ocl#appliedElement
+
+:appliedElement rdf:type owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:range :CallExpr ;
+                
+                rdfs:domain :OCLExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#argument
+
+:argument rdf:type owl:AsymmetricProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:range :OCLExpression ;
+          
+          rdfs:domain <http://asu.edu/sharpc2b/ops#OperationCallExpr> ;
+          
+          owl:equivalentProperty <http://asu.edu/sharpc2b/ops#hasArgument> .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#assignmentTarget
+
+:assignmentTarget rdf:type owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:domain :AssignPayloadExpr ;
+                  
+                  rdfs:range :OCLReturnValueExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#elementType
+
+:elementType rdf:type owl:ObjectProperty ;
+             
+             rdfs:domain :CollectionType ;
+             
+             rdfs:range :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#iterator
+
+:iterator rdf:type owl:ObjectProperty ;
+          
+          rdfs:domain :LoopExpr ;
+          
+          rdfs:range :OCLVariable .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#loopBody
+
+:loopBody rdf:type owl:ObjectProperty ;
+          
+          rdfs:domain :LoopExpr ;
+          
+          rdfs:range :OCLExpression ;
+          
+          rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#referredProperty
+
+:referredProperty rdf:type owl:AsymmetricProperty ,
+                           owl:FunctionalProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:domain :PropertyCallExpr ;
+                  
+                  rdfs:range <http://asu.edu/sharpc2b/ops#PropertyCode> .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#referredVar
+
+:referredVar rdf:type owl:AsymmetricProperty ,
+                      owl:FunctionalProperty ,
+                      owl:IrreflexiveProperty ,
+                      owl:ObjectProperty ;
+             
+             rdfs:range :OCLVariable ;
+             
+             rdfs:domain :VariableExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#sourceExpr
+
+:sourceExpr rdf:type owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:domain :CallExpr ;
+            
+            rdfs:range :OCLExpression ;
+            
+            owl:inverseOf :appliedElement ;
+            
+            rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  http://asu.edu/sharpc2b/ops#hasArgument
+
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/ocl#aggregatingIterator
+
+:aggregatingIterator rdf:type owl:DatatypeProperty ;
+                     
+                     rdfs:domain :IteratorExpr ;
+                     
+                     rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#iteratorName
+
+:iteratorName rdf:type owl:DatatypeProperty ;
+              
+              rdfs:domain :IteratorExpr ;
+              
+              rdfs:range xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#literalValue
+
+:literalValue rdf:type owl:DatatypeProperty ;
+              
+              rdfs:domain :LiteralExpr ;
+              
+              rdfs:range xsd:string .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/ocl#AnyType
+
+:AnyType rdf:type owl:Class ;
+         
+         rdfs:subClassOf :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#AssertPayloadExpr
+
+:AssertPayloadExpr rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :UpdateStateExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#AssignPayloadExpr
+
+:AssignPayloadExpr rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :ImperativeExpr ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty <http://asu.edu/sharpc2b/ops#hasArgument> ;
+                                     owl:cardinality "1"^^xsd:nonNegativeInteger
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#BagType
+
+:BagType rdf:type owl:Class ;
+         
+         owl:equivalentClass <http://asu.edu/sharpc2b/ops#Bag> ;
+         
+         rdfs:subClassOf :CollectionType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#BooleanLiteralExpr
+
+:BooleanLiteralExpr rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf :PrimitiveLiteralExpr ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                      owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Boolean>
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#BooleanType
+
+:BooleanType rdf:type owl:Class ;
+             
+             owl:equivalentClass <http://asu.edu/sharpc2b/ops#Boolean> ;
+             
+             rdfs:subClassOf :PrimitiveType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#CallExpr
+
+:CallExpr rdf:type owl:Class ;
+          
+          rdfs:subClassOf :OCLReturnValueExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#ClassType
+
+:ClassType rdf:type owl:Class ;
+           
+           rdfs:subClassOf :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#CollectionType
+
+:CollectionType rdf:type owl:Class ;
+                
+                rdfs:subClassOf :DataType ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :elementType ;
+                                  owl:onClass :ExprType ;
+                                  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#DataType
+
+:DataType rdf:type owl:Class ;
+          
+          rdfs:subClassOf :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#DateLiteralExpr
+
+:DateLiteralExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :PrimitiveLiteralExpr ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                   owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Date>
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#EnumLiteralExpr
+
+:EnumLiteralExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :LiteralExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#ExprType
+
+:ExprType rdf:type owl:Class ;
+          
+          rdfs:subClassOf owl:Thing .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#FeatureCallExpr
+
+:FeatureCallExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :CallExpr ;
+                 
+                 owl:disjointWith :LoopExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#ImperativeExpr
+
+:ImperativeExpr rdf:type owl:Class ;
+                
+                rdfs:subClassOf :OCLActionExpression ;
+                
+                owl:disjointWith :UpdateStateExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#IntLiteralExpr
+
+:IntLiteralExpr rdf:type owl:Class ;
+                
+                rdfs:subClassOf :NumericLiteralExpr ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                  owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Integer>
+                                ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#IntegerType
+
+:IntegerType rdf:type owl:Class ;
+             
+             owl:equivalentClass <http://asu.edu/sharpc2b/ops#Integer> ;
+             
+             rdfs:subClassOf :RealType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#InvokePayloadExpr
+
+:InvokePayloadExpr rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :ImperativeExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#IteratorExpr
+
+:IteratorExpr rdf:type owl:Class ;
+              
+              rdfs:subClassOf :LoopExpr ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :iterator ;
+                                owl:onClass :OCLVariable ;
+                                owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                              ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#LiteralExpr
+
+:LiteralExpr rdf:type owl:Class ;
+             
+             rdfs:subClassOf :OCLReturnValueExpression ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :literalValue ;
+                               owl:cardinality "1"^^xsd:nonNegativeInteger
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty <http://asu.edu/sharpc2b/ops#hasArgument> ;
+                               owl:maxCardinality "0"^^xsd:nonNegativeInteger
+                             ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#LoopExpr
+
+:LoopExpr rdf:type owl:Class ;
+          
+          rdfs:subClassOf :CallExpr ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :loopBody ;
+                            owl:onClass :LoopExpr ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                          ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#NavigationCallExpr
+
+:NavigationCallExpr rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf :FeatureCallExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#NumberType
+
+:NumberType rdf:type owl:Class ;
+            
+            owl:equivalentClass <http://asu.edu/sharpc2b/ops#Number> ;
+            
+            rdfs:subClassOf :PrimitiveType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#NumericLiteralExpr
+
+:NumericLiteralExpr rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf :PrimitiveLiteralExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLActionExpression
+
+:OCLActionExpression rdf:type owl:Class ;
+                     
+                     rdfs:subClassOf :OCLExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLExpression
+
+:OCLExpression rdf:type owl:Class ;
+               
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                 owl:someValuesFrom [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( :ExprType
+                                                                           <http://asu.edu/sharpc2b/ops#TypeConcept>
+                                                                         )
+                                                    ]
+                               ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLLogicalExpression
+
+:OCLLogicalExpression rdf:type owl:Class ;
+                      
+                      owl:equivalentClass [ rdf:type owl:Class ;
+                                            owl:intersectionOf ( :OCLExpression
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                                                   owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Boolean>
+                                                                 ]
+                                                               )
+                                          ] ;
+                      
+                      rdfs:subClassOf :OCLExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLReturnValueExpression
+
+:OCLReturnValueExpression rdf:type owl:Class ;
+                          
+                          rdfs:subClassOf :OCLExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLVariable
+
+:OCLVariable rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#OrderedSetType
+
+:OrderedSetType rdf:type owl:Class ;
+                
+                owl:equivalentClass <http://asu.edu/sharpc2b/ops#OrderedSet> ;
+                
+                rdfs:subClassOf :CollectionType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#PrimitiveLiteralExpr
+
+:PrimitiveLiteralExpr rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf :LiteralExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#PrimitiveType
+
+:PrimitiveType rdf:type owl:Class ;
+               
+               rdfs:subClassOf :DataType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#PropertyCallExpr
+
+:PropertyCallExpr rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf :NavigationCallExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#RealLiteralExpr
+
+:RealLiteralExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :NumericLiteralExpr ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                   owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Real>
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#RealType
+
+:RealType rdf:type owl:Class ;
+          
+          owl:equivalentClass <http://asu.edu/sharpc2b/ops#Real> ;
+          
+          rdfs:subClassOf :NumberType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#RetractPayloadExpr
+
+:RetractPayloadExpr rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf :UpdateStateExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#SequenceType
+
+:SequenceType rdf:type owl:Class ;
+              
+              owl:equivalentClass <http://asu.edu/sharpc2b/ops#List> ;
+              
+              rdfs:subClassOf :CollectionType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#SetType
+
+:SetType rdf:type owl:Class ;
+         
+         owl:equivalentClass <http://asu.edu/sharpc2b/ops#Set> ;
+         
+         rdfs:subClassOf :CollectionType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#StringLiteralExpr
+
+:StringLiteralExpr rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :PrimitiveLiteralExpr ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty <http://asu.edu/sharpc2b/ops#returns> ;
+                                     owl:someValuesFrom <http://asu.edu/sharpc2b/ops#String>
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#StringType
+
+:StringType rdf:type owl:Class ;
+            
+            owl:equivalentClass <http://asu.edu/sharpc2b/ops#String> ;
+            
+            rdfs:subClassOf :PrimitiveType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#TypeType
+
+:TypeType rdf:type owl:Class ;
+          
+          owl:equivalentClass <http://asu.edu/sharpc2b/ops#ClassType> ;
+          
+          rdfs:subClassOf :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#UpdatePayloadExpr
+
+:UpdatePayloadExpr rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf :UpdateStateExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#UpdateStateExpr
+
+:UpdateStateExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :OCLActionExpression ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://asu.edu/sharpc2b/ops#hasArgument> ;
+                                   owl:allValuesFrom :AssignPayloadExpr
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#VariableExpr
+
+:VariableExpr rdf:type owl:Class ;
+              
+              rdfs:subClassOf :OCLReturnValueExpression .
+
+
+
+###  http://asu.edu/sharpc2b/ocl#VoidType
+
+:VoidType rdf:type owl:Class ;
+          
+          owl:equivalentClass <http://asu.edu/sharpc2b/ops#Void> ;
+          
+          rdfs:subClassOf :ExprType .
+
+
+
+###  http://asu.edu/sharpc2b/ops#Bag
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Boolean
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#ClassType
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Integer
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#List
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Number
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#OperationCallExpr
+
+<http://asu.edu/sharpc2b/ops#OperationCallExpr> rdfs:subClassOf :FeatureCallExpr .
+
+
+
+###  http://asu.edu/sharpc2b/ops#OrderedSet
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Real
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Set
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#String
+
+
+
+
+###  http://asu.edu/sharpc2b/ops#Void
+
+
+
+
+###  http://asu.edu/sharpc2b/prr#Assert
+
+prr:Assert rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#BindingAction
+
+prr:BindingAction rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Expression
+
+prr:Expression rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#InferenceAction
+
+prr:InferenceAction rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#InvokeAction
+
+prr:InvokeAction rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Modify
+
+prr:Modify rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Retract
+
+prr:Retract rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :CallExpr
+                :LiteralExpr
+                :VariableExpr
+              )
+] .
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ExprType
+                :OCLExpression
+                :OCLVariable
+              )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net
+

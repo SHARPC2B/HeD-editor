@@ -1,0 +1,53 @@
+context HeDExample
+
+ruleset ExampleRuleset(in $patient : Patient)
+
+
+variable:
+	$vmr : Set = $patient.getVMR();
+
+
+rule corticoSteroidInhalerExample
+ruleVariable:
+	$persistentAsthmaDiagnosisCPT : Set = $vmr->select( p : Problem | 
+		p.problemCode.code == "1038F" and p.problemCode.codeSystem == "2.16.840.1.113883.6.12" 
+	)
+
+	$asthmaDiagnosisICD9 : Set = $vmr->select( p : Problem | 
+		p.problemCode.codeSystem == "2.16.840.1.113883.6.12" and (
+		p.problemCode.code == "493.00" or p.problemCode.code == "493.01" .....
+	) )
+
+	$prescribedInhaledCorticosteroidsOrEquivalent : $vmr->select( s : SubstanceAdministrationEvent |
+		s.substanceAdministrationGeneralPurpose.code ....
+		and s.administrationTimeInterval.low > ( today() - 12 )
+		and s.administrationTimeInterval.low < today()
+	)
+
+	$intermittentAsthmaDiagnosisCPT : Set = $vmr->select( p : Problem | 
+		p.problemCode.code == "1039F" and p.problemCode.codeSystem == "2.16.840.1.113883.6.12" 
+	)
+
+	$medicationNotPrescribedForPatientOrOtherReason : Set = $vmr->select( o : ObservationResult | 
+		o.observationFocus.codeSystem == "2.16.840.1.113883.6.12" and
+		( o.observationFocus.code == "4015F-2F" or o.observationFocus.code == "4015F-8P" )
+	)
+
+	$patientAge : int = $patient.demographics.age->any()
+
+condition:
+
+	$persistentAsthmaDiagnosisCPT.size() > 0
+	and
+	isNotEmpty( $asthmaDiagnosisICD9 )				// alternative built-in
+	and
+	$patientAge > 18 and $patientAge < 50
+	and
+	not exists $intermittentAsthmaDiagnosisCPT			// yet another alternative
+	and
+	isEmpty( $prescribedInhaledCorticosteroidsOrEquivalent )	// built-in
+	and
+	$medicationNotPrescribedForPatientOrOtherReason.size() == 0 	// again...
+
+action:
+	TBD

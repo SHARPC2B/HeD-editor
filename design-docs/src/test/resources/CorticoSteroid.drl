@@ -1,0 +1,47 @@
+package hedExample;
+
+global Patient $patient;
+
+
+
+rule corticoSteroidInhalerExample
+
+when
+
+	Patient( $patientAge : demographics.age > 18 && < 50 ) from $patient
+
+	$persistentAsthmaDiagnosisCPT : accumulate ( 
+		p : Problem(  
+			problemCode.code == "1038F", problemCode.codeSystem == "2.16.840.1.113883.6.12" 
+		) from $patient.getVMR(),
+		collectSet( p );
+		size > 0
+	)
+
+	//alternative...
+	exists
+		Problem(
+			problemCode.codeSystem == "2.16.840.1.113883.6.12" && (
+			problemCode.code == "493.00" || == "493.01" ..... ) 
+		) from $patient.getVMR()
+
+	not
+		SubstanceAdministrationEvent(
+			substanceAdministrationGeneralPurpose.code .... ,
+			administrationTimeInterval before[0,12d] now() 
+		) from $patient.getVMR()
+
+	not
+		Problem( 
+			problemCode.code == "1039F", problemCode.codeSystem == "2.16.840.1.113883.6.12" 
+		) from $patient.getVMR()
+
+	not	
+		ObservationResult(
+			observationFocus.codeSystem == "2.16.840.1.113883.6.12",
+		 	observationFocus.code == "4015F-2F" || == "4015F-8P" 
+		) from $patient.getVMR()
+	
+then
+	TBD
+end
