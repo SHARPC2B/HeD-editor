@@ -1,0 +1,225 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix lmm: <http://asu.edu/sharpc2b/lmm#> .
+@prefix : <http://asu.edu/sharpc2b/lmm#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://asu.edu/sharpc2b/lmm> .
+
+<http://asu.edu/sharpc2b/lmm> rdf:type owl:Ontology .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/lmm#denotes
+
+lmm:denotes rdf:type owl:AsymmetricProperty ,
+                     owl:FunctionalProperty ,
+                     owl:IrreflexiveProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:range lmm:Referent ;
+            
+            rdfs:domain lmm:Symbol .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#expresses
+
+lmm:expresses rdf:type owl:AsymmetricProperty ,
+                       owl:FunctionalProperty ,
+                       owl:IrreflexiveProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:range lmm:Meaning ;
+              
+              rdfs:domain lmm:Symbol .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#interprets
+
+lmm:interprets rdf:type owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:domain lmm:Meaning ;
+               
+               rdfs:range lmm:Referent .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#isDenotedBy
+
+lmm:isDenotedBy rdf:type owl:ObjectProperty ;
+                
+                rdfs:domain lmm:Referent ;
+                
+                rdfs:range lmm:Symbol ;
+                
+                owl:inverseOf lmm:denotes .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#isExpressedBy
+
+lmm:isExpressedBy rdf:type owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:domain lmm:Meaning ;
+                  
+                  rdfs:range lmm:Symbol ;
+                  
+                  owl:inverseOf lmm:expresses .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#isInterpretedBy
+
+lmm:isInterpretedBy rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:range lmm:Meaning ;
+                    
+                    rdfs:domain lmm:Referent ;
+                    
+                    owl:inverseOf lmm:interprets .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#refersTo
+
+lmm:refersTo rdf:type owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ,
+                      owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/lmm#code
+
+lmm:code rdf:type owl:DatatypeProperty ;
+         
+         rdfs:domain lmm:ConceptCode ;
+         
+         rdfs:range xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#codeLabel
+
+lmm:codeLabel rdf:type owl:DatatypeProperty ;
+              
+              rdfs:domain lmm:ConceptCode ;
+              
+              rdfs:range xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#codeSystem
+
+lmm:codeSystem rdf:type owl:DatatypeProperty ;
+               
+               rdfs:domain lmm:ConceptCode ;
+               
+               rdfs:range xsd:string .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/lmm#CodedConcept
+
+lmm:CodedConcept rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf lmm:Meaning .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#ConceptCode
+
+lmm:ConceptCode rdf:type owl:Class ;
+                
+                rdfs:subClassOf lmm:Symbol ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty lmm:codeSystem ;
+                                  owl:cardinality "1"^^xsd:nonNegativeInteger
+                                ] ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty lmm:code ;
+                                  owl:cardinality "1"^^xsd:nonNegativeInteger
+                                ] .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#IndividualIdentifier
+
+lmm:IndividualIdentifier rdf:type owl:Class ;
+                         
+                         rdfs:subClassOf lmm:Symbol .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#Meaning
+
+lmm:Meaning rdf:type owl:Class ;
+            
+            rdfs:subClassOf lmm:SemioticElement .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#Referent
+
+lmm:Referent rdf:type owl:Class ;
+             
+             rdfs:subClassOf lmm:SemioticElement .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#SemioticElement
+
+lmm:SemioticElement rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#Symbol
+
+lmm:Symbol rdf:type owl:Class ;
+           
+           rdfs:subClassOf lmm:SemioticElement .
+
+
+
+
+###  Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net
+

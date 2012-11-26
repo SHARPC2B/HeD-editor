@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledgeDocument xmlns="http://www.exampleURI.com/HeD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.exampleURI.com/HeD ../main/schema/knowledgedocument.xsd">
+
+	<metadata>
+		<identifiers>
+			<identifier root=""/>
+		</identifiers>
+		<schemaIdentifier root=""/>
+		<title value=""/>
+		<status value="InTest"/>
+		<artifactType value="Rule"/>
+		<applicability>
+			<coverage>
+				<focus value="ClinicalFocus"/>
+			</coverage>
+		</applicability>
+	</metadata>
+	
+	<externalData>
+		<def name="Patient">
+		   <expression xsi:type="Request" cardinality="Single" dataType="vmr:Patient"  isInitial="true"/>
+		</def>
+		<def name="persistentAsthmaDiagnosisCPT">
+			<expression xsi:type="Request" cardinality="Multiple" dataType="Problem" codeProperty="problemCode.code" dateProperty="diagnosticEventTime">
+				<description>Asthma diagnosis code entered during this or any prior encounter AND Persistent asthma code entered during this or any prior encounter</description>
+				<codes xsi:type="List">
+					<element xsi:type="CodeLiteral"  code="1038F" codeSystem="2.16.840.1.113883.6.12"  codeSystemName="CPT" displayName="Persistent asthma (mild, moderate or severe)."/>
+				</codes>
+				<!-- Note that for this rule, date range is not relevant -->
+			</expression>
+		</def>
+		<def name="asthmaDiagnosisICD9">
+			<expression xsi:type="Request" cardinality="Multiple" dataType="Problem" codeProperty="problemCode.code" dateProperty="diagnosticEventTime">
+				<description>Asthma diagnosis code entered during this or any prior encounter AND Persistent asthma code entered during this or any prior encounter</description>
+				<codes xsi:type="List">
+					<element xsi:type="CodeLiteral"  code="493.00" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Extrinsic asthma unspecified"/>
+					<element xsi:type="CodeLiteral"  code="493.01" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Extrinsic asthma with status asthmaticus"/>
+					<element xsi:type="CodeLiteral"  code="493.02" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Extrinsic asthma with (acute) exacerbation"/>
+					<element xsi:type="CodeLiteral"  code="493.10" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Intrinsic asthma unspecified"/>
+					<element xsi:type="CodeLiteral"  code="493.11" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Intrinsic asthma with status asthmaticus"/>
+					<element xsi:type="CodeLiteral"  code="493.12" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Intrinsic asthma with (acute) exacerbation"/>
+					<element xsi:type="CodeLiteral"  code="493.20" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Chronic obstructive asthma unspecified"/>
+					<element xsi:type="CodeLiteral"  code="493.21" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Chronic obstructive asthma with status asthmaticus"/>
+					<element xsi:type="CodeLiteral"  code="493.22" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Chronic obstructive asthma with (acute) exacerbation"/>
+					<element xsi:type="CodeLiteral"  code="493.81" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Other forms of asthma Exercise induced bronchospasm"/>
+					<element xsi:type="CodeLiteral"  code="493.82" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Other forms of asthma Cough variant asthma"/>
+					<element xsi:type="CodeLiteral"  code="493.90" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Asthma,unspecified type, unspecified"/>
+					<element xsi:type="CodeLiteral"  code="493.91" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Asthma, unspecified type, with status asthmaticus"/>
+					<element xsi:type="CodeLiteral"  code="493.92" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9 USA (CDC)" displayName="Asthma, unspecified type, with (acute) exacerbation"/>
+				</codes>
+				<!-- Note that for this rule, date range is not relevant -->
+			</expression>
+		</def>
+		<def name="prescribedInhaledCorticosteroidsOrEquivalent">
+			<expression xsi:type="Request" cardinality="Multiple" dataType="SubstanceAdministrationEvent" codeProperty="substanceAdministrationGeneralPurpose.code" dateProperty="administrationTimeInterval.low" useValueSets="true">
+				<description>Patient prescribed asthma medication in last year</description>
+				<codes xsi:type="ValueSet"  id="12345" authority="zynx.com/valuesets" version="1"/> <!--Made up for this example-->
+				<dateRange xsi:type="Interval">
+				<begin xsi:type="DateAdd">
+					<date xsi:type="Today"/>
+					<granularity xsi:type="Literal" valueType="DateGranularity" value="Month"/>
+					<numberOfPeriods xsi:type="Literal" valueType="xs:int" value="-12"/>
+				</begin>
+				<end xsi:type="Today"/>
+			</dateRange>
+			</expression>
+		</def>
+		<def name="PatientAge">
+		   <expression xsi:type="Property" path="demographics.age">
+				  <source xsi:type="ExpressionRef" name="Patient"/>
+		   </expression>
+		</def>
+		<def name="intermittentAsthmaDiagnosisCPT">
+			<expression xsi:type="Request" cardinality="Multiple" dataType="Problem" codeProperty="problemCode.code"  dateProperty="diagnosticEventTime">
+				<description>Patient has intermittent asthma</description>
+				<codes xsi:type="List">
+					<element xsi:type="CodeLiteral"  code="1039F" codeSystem="2.16.840.1.113883.6.12"  codeSystemName="CPT" displayName="Intermittent Asthma" />
+				</codes>
+				<!-- Note that for this rule, date range is not relevant -->
+			</expression>
+		</def>
+		<def name="medicationNotPrescribedForPatientOrOtherReason">
+			<expression xsi:type="Request" cardinality="Multiple" dataType="ObservationResult" codeProperty="observationFocus.code" dateProperty="observationEventTime">
+				<description>Patient reason or other reason for not prescribing medication has been documented</description>
+				<codes xsi:type="List">
+					<element xsi:type="CodeLiteral" code="4015F-2P" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT II" displayName="Documentation of patient reason(s) for not prescribing either the preferred long-term control medication or an acceptable alternative treatment (eg, patient declined, economic, social, religious, other patient reason)"/>
+					<element xsi:type="CodeLiteral"  code="4015F-8P" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT II" displayName="Persistent asthma, preferred long term control medication or acceptable alternative treatment not prescribed, reason not otherwise specified"/>
+				</codes>
+				<!-- Note that for this rule, date range is not relevant -->
+			</expression>
+		</def>
+	</externalData>
+
+
+	<behaviors>
+		<behavior>
+			<type>Trigger</type>
+			<!-- Fill in when Samson Tu provides model for triggers -->
+		</behavior>
+
+		<behavior>
+			<type>ApplicableScenario</type>
+			<expression xsi:type="And">
+				<operand xsi:type="IsNotEmpty">
+					<description>Persistent asthma code entered during this or any prior encounter</description>
+					<operand xsi:type="ExpressionRef" name="persistentAsthmaDiagnosisCPT"/>
+				</operand>
+				<operand xsi:type="IsNotEmpty">
+					<description>Asthma diagnosis code entered during this or any prior encounter</description>
+					<operand xsi:type="ExpressionRef" name="asthmaDiagnosisICD9"/>
+				</operand>
+				<operand xsi:type="LessOrEqual">
+					<description>Patient age greater than or equal to 18</description>
+					<operand xsi:type="Literal" valueType="Decimal" value="18"/>
+					<operand xsi:type="Property" path="value">
+						  <source xsi:type="ExpressionRef" name="PatientAge"/>
+					</operand>
+				</operand>
+				<operand xsi:type="GreaterOrEqual">
+					<description>Patient age less than or equal to 50</description>
+					<operand xsi:type="Literal" valueType="Decimal" value="50"/>
+					<operand xsi:type="Property" path="value">
+						  <source xsi:type="ExpressionRef" name="PatientAge"/>
+					</operand>
+				</operand>
+				<operand xsi:type="IsEmpty">
+					<description>Exclusion - Patient has intermittent asthma</description>
+					<operand xsi:type="ExpressionRef" name="intermittentAsthmaDiagnosisCPT"/>
+				</operand>
+				<operand xsi:type="IsEmpty">
+					<description>Exclusion - Patient has been prescribed inhaled corticosteroid or equivalent medication</description>
+					<operand xsi:type="ExpressionRef" name="prescribedInhaledCorticosteroidsOrEquivalent"/>
+				</operand>
+				<operand xsi:type="IsEmpty">
+					<description>Exclusion - Patient not prescribed med for Patient or Other Reasons</description>
+					<operand xsi:type="ExpressionRef" name="medicationNotPrescribedForPatientOrOtherReason"/>
+				</operand>
+			</expression>
+		</behavior>
+	</behaviors>
+	
+	
+	<actionGroups>
+		<compositeAction>
+			<title value=""/>
+			<subElements>
+				<simpleAction>
+					<title value="DoNothing"/>
+				</simpleAction>
+			</subElements>
+		</compositeAction>
+	</actionGroups>
+</knowledgeDocument>

@@ -1,0 +1,669 @@
+@prefix : <http://asu.edu/sharpc2b/prr#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prr: <http://asu.edu/sharpc2b/prr#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://asu.edu/sharpc2b/prr> .
+
+<http://asu.edu/sharpc2b/prr> rdf:type owl:Ontology ;
+                              
+                              owl:imports <http://asu.edu/sharpc2b/ocl> .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/ops#newTypeCode
+
+<http://asu.edu/sharpc2b/ops#newTypeCode> rdfs:range :DomainObjectTypeCode .
+
+
+
+###  http://asu.edu/sharpc2b/prr#binds
+
+:binds rdf:type owl:AsymmetricProperty ,
+                owl:IrreflexiveProperty ,
+                owl:ObjectProperty ;
+       
+       rdfs:domain :ExecutableRule ;
+       
+       rdfs:range :RuleVariable .
+
+
+
+###  http://asu.edu/sharpc2b/prr#bodyExpression
+
+:bodyExpression rdf:type owl:AsymmetricProperty ,
+                         owl:FunctionalProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:range <http://asu.edu/sharpc2b/ocl#OCLExpression> ;
+                
+                rdfs:domain :Expression .
+
+
+
+###  http://asu.edu/sharpc2b/prr#checks
+
+:checks rdf:type owl:AsymmetricProperty ,
+                 owl:IrreflexiveProperty ,
+                 owl:ObjectProperty ;
+        
+        rdfs:domain :ExecutableRule ;
+        
+        rdfs:range :RuleCondition .
+
+
+
+###  http://asu.edu/sharpc2b/prr#contains
+
+:contains rdf:type owl:AsymmetricProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:range :ExecutableRule ;
+          
+          rdfs:domain :ExecutableRuleSet .
+
+
+
+###  http://asu.edu/sharpc2b/prr#does
+
+:does rdf:type owl:AsymmetricProperty ,
+               owl:IrreflexiveProperty ,
+               owl:ObjectProperty ;
+      
+      rdfs:domain :ExecutableRule .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasActionRepresentation
+
+:hasActionRepresentation rdf:type owl:AsymmetricProperty ,
+                                  owl:FunctionalProperty ,
+                                  owl:IrreflexiveProperty ,
+                                  owl:ObjectProperty ;
+                         
+                         rdfs:domain :AtomicRuleAction ;
+                         
+                         rdfs:range :Expression .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasConditionRepresentation
+
+:hasConditionRepresentation rdf:type owl:AsymmetricProperty ,
+                                     owl:FunctionalProperty ,
+                                     owl:IrreflexiveProperty ,
+                                     owl:ObjectProperty ;
+                            
+                            rdfs:range :LogicalExpression ;
+                            
+                            rdfs:domain :RuleCondition .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasDeclaredType
+
+:hasDeclaredType rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:range <http://asu.edu/sharpc2b/ops#TypeConcept> ;
+                 
+                 rdfs:domain :TypedElement ;
+                 
+                 owl:propertyChainAxiom ( :hasDeclaredTypeCode
+                                          <http://asu.edu/sharpc2b/lmm#expresses>
+                                        ) .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasDeclaredTypeCode
+
+:hasDeclaredTypeCode rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:range <http://asu.edu/sharpc2b/ops#TypeCode> ;
+                     
+                     rdfs:domain :TypedElement .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasFilterRepresentation
+
+:hasFilterRepresentation rdf:type owl:AsymmetricProperty ,
+                                  owl:FunctionalProperty ,
+                                  owl:IrreflexiveProperty ,
+                                  owl:ObjectProperty ;
+                         
+                         rdfs:range :Expression ;
+                         
+                         rdfs:domain :RuleVariable .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasInitialValueExpressedAs
+
+:hasInitialValueExpressedAs rdf:type owl:AsymmetricProperty ,
+                                     owl:FunctionalProperty ,
+                                     owl:IrreflexiveProperty ,
+                                     owl:ObjectProperty ;
+                            
+                            rdfs:range :Expression ;
+                            
+                            rdfs:domain :Variable .
+
+
+
+###  http://asu.edu/sharpc2b/prr#hasParameter
+
+:hasParameter rdf:type owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:domain :ExecutableRuleSet ;
+              
+              rdfs:range :Parameter .
+
+
+
+###  http://asu.edu/sharpc2b/prr#scopes
+
+:scopes rdf:type owl:ObjectProperty ;
+        
+        rdfs:domain :ExecutableRuleSet ;
+        
+        rdfs:range :TypedElement .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/prr#name
+
+:name rdf:type owl:DatatypeProperty ;
+      
+      rdfs:domain :NamedElement ;
+      
+      rdfs:range xsd:string .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/ocl#OCLVariable
+
+<http://asu.edu/sharpc2b/ocl#OCLVariable> owl:equivalentClass :TypedElement .
+
+
+
+###  http://asu.edu/sharpc2b/ops#BasicTypeCode
+
+<http://asu.edu/sharpc2b/ops#BasicTypeCode> owl:disjointWith :DomainObjectTypeCode .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Assert
+
+:Assert rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasActionRepresentation ;
+                              owl:someValuesFrom :AssertExpr
+                            ] ;
+        
+        rdfs:subClassOf :InferenceAction ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasActionRepresentation ;
+                          owl:allValuesFrom :AssertExpr
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#AssertExpr
+
+:AssertExpr rdf:type owl:Class ;
+            
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty :bodyExpression ;
+                                  owl:someValuesFrom <http://asu.edu/sharpc2b/ocl#AssertPayloadExpr>
+                                ] ;
+            
+            rdfs:subClassOf :UpdateStateExpr ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :bodyExpression ;
+                              owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#AssertPayloadExpr>
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#AssignExpr
+
+:AssignExpr rdf:type owl:Class ;
+            
+            rdfs:subClassOf :ImperativeExpr ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :bodyExpression ;
+                              owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#AssignPayloadExpr>
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#AtomicRuleAction
+
+:AtomicRuleAction rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf :RuleAction .
+
+
+
+###  http://asu.edu/sharpc2b/prr#BindingAction
+
+:BindingAction rdf:type owl:Class ;
+               
+               rdfs:subClassOf :ImperativeAction .
+
+
+
+###  http://asu.edu/sharpc2b/prr#DomainObjectTypeCode
+
+:DomainObjectTypeCode rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf <http://asu.edu/sharpc2b/ops#TypeCode> ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#expresses> ;
+                                        owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Object>
+                                      ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ExecutableRule
+
+:ExecutableRule rdf:type owl:Class ;
+                
+                rdfs:subClassOf :NamedElement ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :binds ;
+                                  owl:someValuesFrom :RuleVariable
+                                ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ExecutableRuleSet
+
+:ExecutableRuleSet rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                         owl:onProperty :scopes ;
+                                         owl:someValuesFrom :Variable
+                                       ] ;
+                   
+                   rdfs:subClassOf :NamedElement .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Expression
+
+:Expression rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ExpressionInOCL
+
+:ExpressionInOCL rdf:type owl:Class ;
+                 
+                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                       owl:onProperty :bodyExpression ;
+                                       owl:onClass <http://asu.edu/sharpc2b/ocl#OCLExpression> ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ;
+                 
+                 rdfs:subClassOf :Expression .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ImperativeAction
+
+:ImperativeAction rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf :AtomicRuleAction ;
+                  
+                  owl:disjointWith :InferenceAction .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ImperativeExpr
+
+:ImperativeExpr rdf:type owl:Class ;
+                
+                rdfs:subClassOf :ExpressionInOCL .
+
+
+
+###  http://asu.edu/sharpc2b/prr#InferenceAction
+
+:InferenceAction rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :AtomicRuleAction .
+
+
+
+###  http://asu.edu/sharpc2b/prr#InvokeAction
+
+:InvokeAction rdf:type owl:Class ;
+              
+              rdfs:subClassOf :ImperativeAction .
+
+
+
+###  http://asu.edu/sharpc2b/prr#InvokeExpr
+
+:InvokeExpr rdf:type owl:Class ;
+            
+            rdfs:subClassOf :ImperativeExpr ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :bodyExpression ;
+                              owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#InvokePayloadExpr>
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#LogicalExpression
+
+:LogicalExpression rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Class ;
+                                         owl:intersectionOf ( :Expression
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty :bodyExpression ;
+                                                                owl:someValuesFrom <http://asu.edu/sharpc2b/ocl#OCLLogicalExpression>
+                                                              ]
+                                                            )
+                                       ] ;
+                   
+                   rdfs:subClassOf :Expression ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :bodyExpression ;
+                                     owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#OCLLogicalExpression>
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Modify
+
+:Modify rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasActionRepresentation ;
+                              owl:someValuesFrom :UpdateExpr
+                            ] ;
+        
+        rdfs:subClassOf :InferenceAction ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasActionRepresentation ;
+                          owl:allValuesFrom :UpdateExpr
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#NamedElement
+
+:NamedElement rdf:type owl:Class ;
+              
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :name ;
+                                owl:cardinality "1"^^xsd:nonNegativeInteger
+                              ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ObjectTypedElement
+
+:ObjectTypedElement rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:intersectionOf ( :TypedElement
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty :hasDeclaredType ;
+                                                                 owl:someValuesFrom <http://asu.edu/sharpc2b/ops#Object>
+                                                               ]
+                                                             )
+                                        ] ;
+                    
+                    rdfs:subClassOf :TypedElement .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Parameter
+
+:Parameter rdf:type owl:Class ;
+           
+           rdfs:subClassOf :TypedElement ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasDeclaredTypeCode ;
+                             owl:allValuesFrom :DomainObjectTypeCode
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ProductionRule
+
+:ProductionRule rdf:type owl:Class ;
+                
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:intersectionOf ( :ExecutableRule
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty :does ;
+                                                             owl:someValuesFrom :RuleAction
+                                                           ]
+                                                         )
+                                    ] ;
+                
+                rdfs:subClassOf :ExecutableRule .
+
+
+
+###  http://asu.edu/sharpc2b/prr#ProductionRuleSet
+
+:ProductionRuleSet rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Class ;
+                                         owl:intersectionOf ( :ExecutableRuleSet
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty :contains ;
+                                                                owl:someValuesFrom :ProductionRule
+                                                              ]
+                                                            )
+                                       ] ;
+                   
+                   rdfs:subClassOf :ExecutableRuleSet ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :contains ;
+                                     owl:allValuesFrom :ProductionRule
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Retract
+
+:Retract rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Restriction ;
+                               owl:onProperty :hasActionRepresentation ;
+                               owl:someValuesFrom :RetractExpr
+                             ] ;
+         
+         rdfs:subClassOf :InferenceAction ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasActionRepresentation ;
+                           owl:allValuesFrom :RetractExpr
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#RetractExpr
+
+:RetractExpr rdf:type owl:Class ;
+             
+             owl:equivalentClass [ rdf:type owl:Restriction ;
+                                   owl:onProperty :bodyExpression ;
+                                   owl:someValuesFrom <http://asu.edu/sharpc2b/ocl#RetractPayloadExpr>
+                                 ] ;
+             
+             rdfs:subClassOf :UpdateStateExpr ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :bodyExpression ;
+                               owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#RetractPayloadExpr>
+                             ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#RuleAction
+
+:RuleAction rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/prr#RuleCondition
+
+:RuleCondition rdf:type owl:Class ;
+               
+               owl:equivalentClass [ rdf:type owl:Restriction ;
+                                     owl:onProperty :hasConditionRepresentation ;
+                                     owl:onClass :LogicalExpression ;
+                                     owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                   ] ;
+               
+               rdfs:subClassOf owl:Thing ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :hasConditionRepresentation ;
+                                 owl:allValuesFrom :LogicalExpression
+                               ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#RuleVariable
+
+:RuleVariable rdf:type owl:Class ;
+              
+              owl:equivalentClass [ rdf:type owl:Restriction ;
+                                    owl:onProperty :hasFilterRepresentation ;
+                                    owl:onClass :Expression ;
+                                    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                  ] ;
+              
+              rdfs:subClassOf :TypedElement .
+
+
+
+###  http://asu.edu/sharpc2b/prr#TypedElement
+
+:TypedElement rdf:type owl:Class ;
+              
+              rdfs:subClassOf :NamedElement .
+
+
+
+###  http://asu.edu/sharpc2b/prr#UpdateExpr
+
+:UpdateExpr rdf:type owl:Class ;
+            
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty :bodyExpression ;
+                                  owl:someValuesFrom <http://asu.edu/sharpc2b/ocl#UpdatePayloadExpr>
+                                ] ;
+            
+            rdfs:subClassOf :UpdateStateExpr ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :bodyExpression ;
+                              owl:allValuesFrom <http://asu.edu/sharpc2b/ocl#UpdatePayloadExpr>
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/prr#UpdateStateExpr
+
+:UpdateStateExpr rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf :ExpressionInOCL .
+
+
+
+###  http://asu.edu/sharpc2b/prr#Variable
+
+:Variable rdf:type owl:Class ;
+          
+          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasInitialValueExpressedAs ;
+                                owl:onClass :Expression ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                              ] ;
+          
+          rdfs:subClassOf :TypedElement .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Parameter
+                :RuleVariable
+                :Variable
+              )
+] .
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ExecutableRule
+                :ExecutableRuleSet
+                :Expression
+                :RuleAction
+                :RuleCondition
+                :TypedElement
+              )
+] .
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Assert
+                :Modify
+                :Retract
+              )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net
+
