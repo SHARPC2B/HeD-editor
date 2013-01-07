@@ -102,14 +102,6 @@ lmm:isInterpretedBy rdf:type owl:ObjectProperty ;
 
 
 
-###  http://asu.edu/sharpc2b/lmm#refersTo
-
-lmm:refersTo rdf:type owl:AsymmetricProperty ,
-                      owl:IrreflexiveProperty ,
-                      owl:ObjectProperty .
-
-
-
 
 
 #################################################################
@@ -172,11 +164,11 @@ lmm:ConceptCode rdf:type owl:Class ;
                 
                 rdfs:subClassOf lmm:Symbol ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty lmm:codeSystem ;
+                                  owl:onProperty lmm:code ;
                                   owl:cardinality "1"^^xsd:nonNegativeInteger
                                 ] ,
                                 [ rdf:type owl:Restriction ;
-                                  owl:onProperty lmm:code ;
+                                  owl:onProperty lmm:codeSystem ;
                                   owl:cardinality "1"^^xsd:nonNegativeInteger
                                 ] .
 
