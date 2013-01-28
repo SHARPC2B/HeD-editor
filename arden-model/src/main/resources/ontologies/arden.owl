@@ -1,0 +1,2212 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/ontologies/2012/2/19/Ontology1332183132495.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.semanticweb.org/ontologies/2012/2/19/Ontology1332183132495.owl">
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#Action"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AgregationOperator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#All"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Any"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ArdenAttribute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Data_Definition"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Object"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Object_Instance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Object_Variable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Simple_Variable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Simple_Variable_Instance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Arden_Variable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Author"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Average"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Avg"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BOOLEANVALUE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bicarbonate_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Categories_and_Subcategories"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chemistry_Lab_Object"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chloride_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Citations"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Concat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Conclude"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Count"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Data"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Date"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Duration_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EQ"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Earliest"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Evoke"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Exist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExistingObject"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExistingObject_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Explanation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#First"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GT"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Glucose_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HgbA1C_High"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HgbA1C_High_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HgbA1C_Var"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HgbA1C_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#If_Clause"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexEarliest"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexLatest"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexMax"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexMaximum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexMin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndexMinimum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Institution"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsA"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsAfter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsBefore"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsBoolean"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsDuration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsGreaterThan"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsGreaterThanOrEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsLessThan"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsLessThanOrEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsList"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotAfter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotBefore"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotBoolean"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotDuration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotGreaterThan"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotGreaterThanOrEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotLessThan"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotLessThanOrEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotList"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotNull"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotNumber"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotPresent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotString"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotTime"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotTimeOfDay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotWithinPast"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNotWithinSameDayAs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNull"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsNumber"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsPresent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsString"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsTime"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsTimeOfDay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsWithinPast"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IsWithinSameDayAs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Keywords"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Knowledge"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LOINC_Code"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LT"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Last"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Latest"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Library"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Links"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Logic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MLMName"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Maintenance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Max"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Maximum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Measurement_Name"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Measurement_Units"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Median"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Min"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Minimum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#No"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Not"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Null_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Numeric_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OTYPE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurAfter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurBefore"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurEqual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurNotAfter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurNotBefore"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurNotWithinPast"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurNotWithinSameDayAs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurWithinPast"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OccurWithinSameDayAs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Operator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Parameter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Potassium_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Purpose"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RuleTemplate"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Rule_Data"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Rule_Template_Component"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Simple_Comparison"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sodium_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Source"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Specialist"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Stddev"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#String_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TYPE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Temporal_Comparison"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Then_Clause"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Time_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Title"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Transformation_Operator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Type"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Types"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Unit"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#UserInput"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#User_Defined"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#User_Defined_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#VALUE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Validation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Variance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Version"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_Bicarbonate_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_Chloride_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_Glucose_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_HgbA1C"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_HgbA1C_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_Potassium_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#_Sodium_o"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#are"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#boolean"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#duration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#false"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#hour"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#is"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#minute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#month"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#null"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#number"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#second"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#string"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#time"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#true"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#was"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#were"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#year"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasAttribute"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasCategory"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasObjectDefinition"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasObjectInstance"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSource"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSubCategory"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesAgregationOperator"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesBinaryComparisonOperator"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesComponent"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesOperator"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesUnit"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesValue"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesVariable"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesVariableDataType"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesVariableName"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#ArdenCategory"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#ArdenDescription"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#ArdenML"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#Arden_Text"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#Example"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#Action"/>
+        <Class IRI="#Categories_and_Subcategories"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#AgregationOperator"/>
+        <Class IRI="#Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#All"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Any"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ArdenAttribute"/>
+        <Class IRI="#Arden_Data_Definition"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ArdenAttribute"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Data_Definition"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Data_Definition"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasCategory"/>
+            <Class IRI="#Knowledge"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Data_Definition"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasSubCategory"/>
+            <Class IRI="#Data"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object"/>
+        <Class IRI="#Arden_Data_Definition"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#ArdenAttribute"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object"/>
+        <ObjectMaxCardinality cardinality="20">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#ArdenAttribute"/>
+        </ObjectMaxCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object_Instance"/>
+        <Class IRI="#Arden_Data_Definition"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object_Instance"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectDefinition"/>
+            <Class IRI="#Arden_Object"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object_Variable"/>
+        <Class IRI="#Arden_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object_Variable"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#Arden_Object_Instance"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Object_Variable"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Simple_Variable"/>
+        <Class IRI="#Arden_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Simple_Variable"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Simple_Variable"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableName"/>
+            <Class IRI="#Arden_Simple_Variable_Instance"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Simple_Variable_Instance"/>
+        <Class IRI="#Arden_Data_Definition"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Arden_Variable"/>
+        <Class IRI="#Rule_Data"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Author"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Average"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Avg"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BOOLEANVALUE"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BOOLEANVALUE"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#boolean"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bicarbonate_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bicarbonate_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_Bicarbonate_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BinaryComparisonOperator"/>
+        <Class IRI="#Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Categories_and_Subcategories"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object"/>
+        <Class IRI="#Arden_Object"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#LOINC_Code"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#Measurement_Name"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#Measurement_Units"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasAttribute"/>
+            <Class IRI="#Value"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+        <Class IRI="#Arden_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectDefinition"/>
+            <Class IRI="#Chemistry_Lab_Object"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chloride_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chloride_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_Chloride_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Citations"/>
+        <Class IRI="#Library"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Concat"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Conclude"/>
+        <Class IRI="#Then_Clause"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Conclude"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesValue"/>
+            <Class IRI="#BOOLEANVALUE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Count"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Data"/>
+        <Class IRI="#Knowledge"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Date"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Duration_Value"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Duration_Value"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesUnit"/>
+            <Class IRI="#Unit"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EQ"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Earliest"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Evoke"/>
+        <Class IRI="#Knowledge"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Exist"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExistingObject"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExistingObject"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#ExistingObject_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExistingObject_o"/>
+        <Class IRI="#Arden_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Explanation"/>
+        <Class IRI="#Library"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#First"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GE"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GT"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Glucose_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Glucose_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_Glucose_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <Class IRI="#Simple_Comparison"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesAgregationOperator"/>
+            <Class IRI="#Latest"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesBinaryComparisonOperator"/>
+            <Class IRI="#GT"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesValue"/>
+            <Class IRI="#Numeric_Value"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariable"/>
+            <Class IRI="#HgbA1C_Var"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#number"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_High_o"/>
+        <Class IRI="#Simple_Comparison"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_Var"/>
+        <Class IRI="#Arden_Simple_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_Var"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#number"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_Var"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableName"/>
+            <Class IRI="#_HgbA1C"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HgbA1C_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_HgbA1C_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#If_Clause"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexEarliest"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexLatest"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexMax"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexMaximum"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexMin"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndexMinimum"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Institution"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsA"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsAfter"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsBefore"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsBoolean"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsDuration"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsGreaterThan"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsGreaterThanOrEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsLessThan"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsLessThanOrEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsList"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotAfter"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotBefore"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotBoolean"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotDuration"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotGreaterThan"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotGreaterThanOrEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotLessThan"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotLessThanOrEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotList"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotNull"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotNumber"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotPresent"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotString"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotTime"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotTimeOfDay"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotWithinPast"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNotWithinSameDayAs"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNull"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsNumber"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsPresent"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsString"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsTime"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsTimeOfDay"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsWithinPast"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IsWithinSameDayAs"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Keywords"/>
+        <Class IRI="#Library"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Knowledge"/>
+        <Class IRI="#Categories_and_Subcategories"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LE"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LOINC_Code"/>
+        <Class IRI="#ArdenAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LOINC_Code"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#string"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LT"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Last"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Latest"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Library"/>
+        <Class IRI="#Categories_and_Subcategories"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Links"/>
+        <Class IRI="#Library"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Logic"/>
+        <Class IRI="#Knowledge"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MLMName"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Maintenance"/>
+        <Class IRI="#Categories_and_Subcategories"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Max"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Maximum"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Measurement_Name"/>
+        <Class IRI="#ArdenAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Measurement_Name"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#string"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Measurement_Units"/>
+        <Class IRI="#ArdenAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Measurement_Units"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#string"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Median"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Min"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Minimum"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#NE"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#No"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Not"/>
+        <Class IRI="#Transformation_Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Null_Value"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Numeric_Value"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Numeric_Value"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#number"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OTYPE"/>
+        <Class IRI="#Types"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurAfter"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurBefore"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurEqual"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurNotAfter"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurNotBefore"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurNotWithinPast"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurNotWithinSameDayAs"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurWithinPast"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OccurWithinSameDayAs"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Operator"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Parameter"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Parameter"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasSource"/>
+            <Class IRI="#UserInput"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Potassium_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Potassium_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_Potassium_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Purpose"/>
+        <Class IRI="#Library"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RuleTemplate"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RuleTemplate"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#usesComponent"/>
+            <Class IRI="#If_Clause"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RuleTemplate"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#usesComponent"/>
+            <Class IRI="#Then_Clause"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Data"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Data"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasCategory"/>
+            <Class IRI="#Knowledge"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Data"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasSubCategory"/>
+            <Class IRI="#Logic"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Template_Component"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Template_Component"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasCategory"/>
+            <Class IRI="#Knowledge"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rule_Template_Component"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasSubCategory"/>
+            <Class IRI="#Logic"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <Class IRI="#If_Clause"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesAgregationOperator"/>
+            <Class IRI="#AgregationOperator"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesBinaryComparisonOperator"/>
+            <Class IRI="#BinaryComparisonOperator"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesValue"/>
+            <Class IRI="#VALUE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariable"/>
+            <Class IRI="#Arden_Variable"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simple_Comparison"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sodium_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sodium_o"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasObjectInstance"/>
+            <Class IRI="#_Sodium_o"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Specialist"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Stddev"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#String_Value"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#String_Value"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#string"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sum"/>
+        <Class IRI="#AgregationOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TYPE"/>
+        <Class IRI="#Types"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Temporal_Comparison"/>
+        <Class IRI="#If_Clause"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Then_Clause"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Time_Value"/>
+        <Class IRI="#VALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Title"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Transformation_Operator"/>
+        <Class IRI="#Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Type"/>
+        <Class IRI="#Knowledge"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Types"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Unit"/>
+        <Class IRI="#Rule_Template_Component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#UserInput"/>
+        <Class IRI="#Source"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#User_Defined"/>
+        <Class IRI="#Arden_Simple_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#User_Defined_o"/>
+        <Class IRI="#Arden_Object_Variable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VALUE"/>
+        <Class IRI="#Parameter"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VALUE"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#OTYPE"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Validation"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Value"/>
+        <Class IRI="#ArdenAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Value"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesVariableDataType"/>
+            <Class IRI="#number"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Variance"/>
+        <Class IRI="#BinaryComparisonOperator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Version"/>
+        <Class IRI="#Maintenance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_Bicarbonate_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_Chloride_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_Glucose_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_HgbA1C"/>
+        <Class IRI="#Arden_Simple_Variable_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_HgbA1C_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_Potassium_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#_Sodium_o"/>
+        <Class IRI="#Chemistry_Lab_Object_Instance"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#are"/>
+        <Class IRI="#TYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#boolean"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#duration"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#false"/>
+        <Class IRI="#BOOLEANVALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#hour"/>
+        <Class IRI="#Unit"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#is"/>
+        <Class IRI="#TYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#minute"/>
+        <Class IRI="#Unit"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#month"/>
+        <Class IRI="#Unit"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#null"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#number"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#second"/>
+        <Class IRI="#Unit"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#string"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#time"/>
+        <Class IRI="#OTYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#true"/>
+        <Class IRI="#BOOLEANVALUE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#was"/>
+        <Class IRI="#TYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#were"/>
+        <Class IRI="#TYPE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#year"/>
+        <Class IRI="#Unit"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#Action"/>
+        <Class IRI="#Knowledge"/>
+        <Class IRI="#Library"/>
+        <Class IRI="#Maintenance"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#All"/>
+        <Class IRI="#Any"/>
+        <Class IRI="#Average"/>
+        <Class IRI="#Avg"/>
+        <Class IRI="#Concat"/>
+        <Class IRI="#Count"/>
+        <Class IRI="#Earliest"/>
+        <Class IRI="#Exist"/>
+        <Class IRI="#First"/>
+        <Class IRI="#IndexEarliest"/>
+        <Class IRI="#IndexLatest"/>
+        <Class IRI="#IndexMax"/>
+        <Class IRI="#IndexMaximum"/>
+        <Class IRI="#IndexMin"/>
+        <Class IRI="#IndexMinimum"/>
+        <Class IRI="#IsList"/>
+        <Class IRI="#IsNotList"/>
+        <Class IRI="#Last"/>
+        <Class IRI="#Latest"/>
+        <Class IRI="#Max"/>
+        <Class IRI="#Maximum"/>
+        <Class IRI="#Median"/>
+        <Class IRI="#Min"/>
+        <Class IRI="#Minimum"/>
+        <Class IRI="#No"/>
+        <Class IRI="#Stddev"/>
+        <Class IRI="#Sum"/>
+        <Class IRI="#Variance"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Arden"/>
+        <Class IRI="#Author"/>
+        <Class IRI="#Date"/>
+        <Class IRI="#Institution"/>
+        <Class IRI="#MLMName"/>
+        <Class IRI="#Specialist"/>
+        <Class IRI="#Title"/>
+        <Class IRI="#Validation"/>
+        <Class IRI="#Version"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Citations"/>
+        <Class IRI="#Explanation"/>
+        <Class IRI="#Keywords"/>
+        <Class IRI="#Links"/>
+        <Class IRI="#Purpose"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Data"/>
+        <Class IRI="#Evoke"/>
+        <Class IRI="#Logic"/>
+        <Class IRI="#Type"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#EQ"/>
+        <Class IRI="#GE"/>
+        <Class IRI="#GT"/>
+        <Class IRI="#IsA"/>
+        <Class IRI="#IsAfter"/>
+        <Class IRI="#IsBefore"/>
+        <Class IRI="#IsGreaterThan"/>
+        <Class IRI="#IsGreaterThanOrEqual"/>
+        <Class IRI="#IsLessThan"/>
+        <Class IRI="#IsLessThanOrEqual"/>
+        <Class IRI="#IsNotAfter"/>
+        <Class IRI="#IsNotBefore"/>
+        <Class IRI="#IsNotEqual"/>
+        <Class IRI="#IsNotGreaterThan"/>
+        <Class IRI="#IsNotGreaterThanOrEqual"/>
+        <Class IRI="#IsNotLessThan"/>
+        <Class IRI="#IsNotLessThanOrEqual"/>
+        <Class IRI="#IsNotWithinPast"/>
+        <Class IRI="#IsNotWithinSameDayAs"/>
+        <Class IRI="#IsWithinPast"/>
+        <Class IRI="#IsWithinSameDayAs"/>
+        <Class IRI="#LE"/>
+        <Class IRI="#LT"/>
+        <Class IRI="#NE"/>
+        <Class IRI="#OccurAfter"/>
+        <Class IRI="#OccurBefore"/>
+        <Class IRI="#OccurEqual"/>
+        <Class IRI="#OccurNotAfter"/>
+        <Class IRI="#OccurNotBefore"/>
+        <Class IRI="#OccurNotWithinPast"/>
+        <Class IRI="#OccurNotWithinSameDayAs"/>
+        <Class IRI="#OccurWithinPast"/>
+        <Class IRI="#OccurWithinSameDayAs"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#IsBoolean"/>
+        <Class IRI="#IsDuration"/>
+        <Class IRI="#IsNotBoolean"/>
+        <Class IRI="#IsNotDuration"/>
+        <Class IRI="#IsNotNull"/>
+        <Class IRI="#IsNotNumber"/>
+        <Class IRI="#IsNotPresent"/>
+        <Class IRI="#IsNotString"/>
+        <Class IRI="#IsNotTime"/>
+        <Class IRI="#IsNotTimeOfDay"/>
+        <Class IRI="#IsNull"/>
+        <Class IRI="#IsNumber"/>
+        <Class IRI="#IsPresent"/>
+        <Class IRI="#IsString"/>
+        <Class IRI="#IsTime"/>
+        <Class IRI="#IsTimeOfDay"/>
+        <Class IRI="#Not"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#are"/>
+        <Class IRI="#is"/>
+        <Class IRI="#was"/>
+        <Class IRI="#were"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#boolean"/>
+        <Class IRI="#duration"/>
+        <Class IRI="#null"/>
+        <Class IRI="#number"/>
+        <Class IRI="#string"/>
+        <Class IRI="#time"/>
+    </DisjointClasses>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesAgregationOperator"/>
+        <ObjectProperty IRI="#usesOperator"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesBinaryComparisonOperator"/>
+        <ObjectProperty IRI="#usesOperator"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesComponent"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesOperator"/>
+        <ObjectProperty IRI="#usesComponent"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesVariableDataType"/>
+        <ObjectProperty IRI="#usesComponent"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#usesVariableName"/>
+        <ObjectProperty IRI="#usesVariable"/>
+    </SubObjectPropertyOf>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#ArdenAttribute</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Attribute var=&quot;VARIABLE_NAME&quot; otype=&quot;[OTYPE]&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Arden_Data_Definition</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">For Variable/Object definitions in the Data Slot.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Arden_Object</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Object&gt;
+  &lt;ObjectIdentifier var=&quot;OBJECT_NAME&quot;/&gt;
+  &lt;Defined&gt;
+    [ArdenAttribute]
+  &lt;/Defined&gt;
+&lt;/Object&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#Example"/>
+        <IRI>#Arden_Object</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Object&gt;
+  &lt;ObjectIdentifier var=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Defined&gt;
+        &lt;Attribute var=&quot;Measurement_Name&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;LOINC_Code&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;Measurement_Units&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;Value&quot; otype=&quot;number&quot;/&gt;
+     &lt;/Defined&gt;
+&lt;/Object&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Arden_Object_Instance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;OBJECT_INSTANCE_NAME&quot; otype=&quot;OBJECT_NAME&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;USER_PROVIDED_MAPPING&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+    &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#Example"/>
+        <IRI>#Arden_Object_Instance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Problem_List&quot; otype=&quot;Problem_List_Problem&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;select problem, recorded_by from Problem_List_Table&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Arden_Object_Variable</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Identifier var=&quot;OBJECT_INSTANCE_NAME&quot; otype=&quot;OBJECT_NAME&quot;&gt;
+    &lt;Identifier var=&quot;VARIABLE_NAME&quot; otype=&quot;[OTYPE]&quot;/&gt;
+&lt;/Identifier&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#Example"/>
+        <IRI>#Arden_Object_Variable</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;Chem_Lab_Object&quot;&gt;
+    &lt;Identifier var=&quot;Value&quot; otype=&quot;number&quot;/&gt;
+&lt;/Identifier&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Arden_Simple_Variable</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Identifier var=&quot;VARIABLE_NAME&quot; otype=&quot;[OTYPE]&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenCategory"/>
+        <IRI>#Arden_Simple_Variable_Instance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Data</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Arden_Simple_Variable_Instance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Read&gt;
+    &lt;Identifier var=&quot;VARIABLE_NAME&quot; otype=&quot;[OTYPE]&quot;/&gt;
+    &lt;Assigned&gt;
+         &lt;[AgregationOperator]&gt;
+              &lt;Mapping&gt;
+                   &lt;Contents&gt;USER_PROVIDED_MAPPING&lt;/Contents&gt;
+              &lt;/Mapping&gt;
+         &lt;/Latest&gt;
+    &lt;/Assigned&gt;
+&lt;/Read&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#Example"/>
+        <IRI>#Arden_Simple_Variable_Instance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Read&gt;
+    &lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;number&quot;/&gt;
+    &lt;Assigned&gt;
+         &lt;Latest&gt;
+              &lt;Mapping&gt;
+                   &lt;Contents&gt; hgba1c from labpanel&lt;/Contents&gt;
+              &lt;/Mapping&gt;
+         &lt;/Latest&gt;
+    &lt;/Assigned&gt;
+&lt;/Read&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Arden_Variable</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Objects and Variables to be used within the Logic Slot.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Chemistry_Lab_Object</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Object&gt;
+  &lt;ObjectIdentifier var=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Defined&gt;
+        &lt;Attribute var=&quot;Measurement_Name&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;LOINC_Code&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;Measurement_Units&quot; otype=&quot;string&quot;/&gt;
+        &lt;Attribute var=&quot;Value&quot; otype=&quot;number&quot;/&gt;
+     &lt;/Defined&gt;
+&lt;/Object&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Conclude</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Conclude&gt;
+    [BOOLEANVALUE]
+&lt;/Conclude&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Duration_Value</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;duration&quot; unit=&quot;Unit&quot;&gt;DURATION&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#HgbA1C_High</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Gt&gt;
+    &lt;Latest&gt;
+       HgbA1C
+     &lt;/Latest&gt;
+     [Numeric_Value]
+&lt;/Gt&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#HgbA1C_High_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Gt&gt;
+    &lt;Latest&gt;
+       HgbA1C.Value
+     &lt;/Latest&gt;
+     [Numeric_Value]
+&lt;/Gt&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#HgbA1C_Var</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;number&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#HgbA1C_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;Chem_Lab_Object&quot;&gt;
+    &lt;Identifier var=&quot;Value&quot; otype=&quot;number&quot;/&gt;
+&lt;/Identifier&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#Arden_Text"/>
+        <IRI>#HgbA1C_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">HgbA1C.Value</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#LOINC_Code</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Attribute var=&quot;LOINC_Code&quot; otype=&quot;string&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Measurement_Name</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Attribute var=&quot;Measurement_Name&quot; otype=&quot;string&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Measurement_Units</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Attribute var=&quot;Measurement_Units&quot; otype=&quot;string&quot;/&gt;
+</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Numeric_Value</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;number&quot;&gt;NUMBER&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#OTYPE</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Variable Data Type</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenCategory"/>
+        <IRI>#RuleTemplate</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Logic</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenDescription"/>
+        <IRI>#RuleTemplate</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">If/Then Rule Wizard</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#RuleTemplate</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;If&gt;
+  &lt;Condition&gt;
+     [If_Clause]
+  &lt;/Condition&gt;
+  &lt;Then&gt;
+     [Then_Clause]
+  &lt;/Then&gt;
+&lt;/If&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenCategory"/>
+        <IRI>#Rule_Template_Component</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Logic</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Simple_Comparison</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;[BinaryComparisonOperator]&gt;
+    &lt;[AgregationOperator]&gt;
+       [Arden_Variable]
+     &lt;/[AgregationOperator]&gt;
+     [VALUE]
+&lt;/[BinaryComparisonOperator]&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#String_Value</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;string&quot;&gt;STRING&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#TYPE</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Is-Operator Type</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Time_Value</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;time&quot;&gt;TIME&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#User_Defined</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">User Defined Variable Name for variables defined by user.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#VALUE</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;[OTYPE]&quot;&gt;VALUE&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#Value</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Attribute var=&quot;Value&quot; otype=&quot;number&quot;/&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_Bicarbonate_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Bicarbonate&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_Chloride_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Chloride&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_Glucose_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Glucose&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_HgbA1C</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Read&gt;
+    &lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;number&quot;/&gt;
+    &lt;Assigned&gt;
+         &lt;Latest&gt;
+              &lt;Mapping&gt;
+                   &lt;Contents&gt; hgba1c from labpanel&lt;/Contents&gt;
+              &lt;/Mapping&gt;
+         &lt;/Latest&gt;
+    &lt;/Assigned&gt;
+&lt;/Read&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_HgbA1C_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;HgbA1C&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_Potassium_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Potassium&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#_Sodium_o</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;ReadAs&gt;
+    &lt;Identifier var=&quot;Sodium&quot; otype=&quot;Chem_Lab_Object&quot;/&gt;
+     &lt;Assigned&gt;
+         &lt;Mapping&gt;
+             &lt;Contents&gt;User_Defined_Mapping&lt;/Contents&gt;
+         &lt;/Mapping&gt;
+     &lt;/Assigned&gt;
+&lt;/ReadAs&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#false</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;boolean&quot;&gt;false&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#ArdenML"/>
+        <IRI>#true</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">&lt;Value otype=&quot;boolean&quot;&gt;true&lt;/Value&gt;</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+
