@@ -12,7 +12,236 @@
   <artifactId>editor-models</artifactId>
   <version>${editor.version}</version>
 
+  <properties>
+    <chance.version>5.5.0-SNAPSHOT</chance.version>
+  </properties>
+
+
   <name>SHARPC-2B :: Smart Editor Core Models</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-shapes-generator-plugin</artifactId>
+      <version>5.5.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.jvnet.hyperjaxb3</groupId>
+      <artifactId>hyperjaxb3</artifactId>
+      <type>pom</type>
+      <version>0.5.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hyperjaxb3</groupId>
+      <artifactId>maven-hyperjaxb3-plugin</artifactId>
+      <version>0.5.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Empire can be found here: https://github.com/mhgrove/Empire -->
+    <dependency>
+      <groupId>com.clarkparsia</groupId>
+      <artifactId>Empire-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hibernate</groupId>
+          <artifactId>ejb3-persistence</artifactId>
+        </exclusion>
+      </exclusions>
+      <version>0.7.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.clarkparsia</groupId>
+      <artifactId>cp-common-openrdf</artifactId>
+      <version>0.8.1</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.clarkparsia</groupId>
+      <artifactId>Empire-sesame2</artifactId>
+      <version>0.7.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openrdf.sesame</groupId>
+      <artifactId>sesame-rio-turtle</artifactId>
+      <version>2.6.9</version>
+    </dependency>
+
+
+
+
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
+
+
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>3.5.6-Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.5.6-Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <version>3.2.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.5.6-Final</version>
+    </dependency>
+
+
+
+
+  </dependencies>
+
+
+
+
+
+  <build>
+
+    <resources>
+      <resource>
+        <directory>${pom.basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${pom.basedir}/src/test/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${pom.basedir}/target/generated-sources/META-INF</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${pom.basedir}/target/generated-sources/xjc/META-INF</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>include-generated-sources</id>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${pom.basedir}/target/generated-sources/xjc</source>
+                <source>${pom.basedir}/target/generated-sources/META-INF</source>
+                <source>${pom.basedir}/target/generated-sources/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-shapes-generator-plugin</artifactId>
+        <version>${chance.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>cast</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <outputDirectory>${pom.basedir}</outputDirectory>
+
+          <ontology>${pom.basedir}/src/main/resources/ontologies/example1.owl</ontology>
+          <ontologyImports>
+            <import>${pom.basedir}/src/main/resources/ontologies/lmm.owl</import>
+            <import>${pom.basedir}/src/main/resources/ontologies/ops.owl</import>
+            <import>${pom.basedir}/src/main/resources/ontologies/ocl.owl</import>
+            <import>${pom.basedir}/src/main/resources/ontologies/prr.owl</import>
+          </ontologyImports>
+
+          <modelName>sharp</modelName>
+          <generateInterfaces>true</generateInterfaces>
+          <generateInterfaceJar>false</generateInterfaceJar>
+          <generateTraitDRL>true</generateTraitDRL>
+          <generateDefaultImplClasses>true</generateDefaultImplClasses>
+          <inheritanceMode>OPTIMIZED</inheritanceMode>
+          <generateSpecXSDs>false</generateSpecXSDs>
+          <generateIndividuals>true</generateIndividuals>
+          <compilationOptionsPackage>minimal</compilationOptionsPackage>
+        </configuration>
+      </plugin>
+
+
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>install</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+
+  </build>
+
 
 </project>
 

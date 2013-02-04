@@ -18,7 +18,41 @@
     <module>editor-core</module>
     <module>design-docs</module>
     <module>arden-model</module>
+
   </modules>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>DataNucleus_2</id>
+      <url>http://www.datanucleus.org/downloads/maven2/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>EmpireRDF</id>
+      <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>EmpireRDF-snapshot</id>
+      <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <repositories>
+    <repository>
+      <id>Jenabean</id>
+      <url>http://jenabean.googlecode.com/svn/repo</url>
+    </repository>
+
+    <repository>
+      <id>EmpireRDF</id>
+      <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
+    </repository>
+
+    <repository>
+      <id>EmpireRDF-snapshot</id>
+      <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
+    </repository>
+  </repositories>
+
 
   <dependencyManagement>
     <dependencies>
