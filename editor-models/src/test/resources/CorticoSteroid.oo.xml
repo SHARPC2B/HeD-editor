@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:ProductionRuleSetImpl xmlns:ns2="http://asu.edu/sharpc2b/lmm"
+                           xmlns="http://asu.edu/sharpc2b/example1"
+                           xmlns:ns4="http://asu.edu/sharpc2b/ops"
+                           xmlns:ns3="http://asu.edu/sharpc2b/prr"
+                           xmlns:ns5="http://asu.edu/sharpc2b/ocl">
+    <dyReference>false</dyReference>
+    <dyEntryId>ruleSet1</dyEntryId>
+    <ns3:name>exampleRuleSet</ns3:name>
+    <ns3:hasParameter xsi:type="PatientParamType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <dyEntryType>PatientParamType</dyEntryType>
+        <dyReference>false</dyReference>
+        <dyEntryId>patientParam</dyEntryId>
+        <ns3:name>patient</ns3:name>
+        <ns5:hasDeclaredTypeCode xsi:type="ns4:DomainObjectTypeCode">
+            <dyEntryType>DomainObjectTypeCode</dyEntryType>
+            <dyReference>false</dyReference>
+            <dyEntryId>vmrPatientClassCode</dyEntryId>
+            <ns2:codeSystem>vmr</ns2:codeSystem>
+            <ns2:code>Patient</ns2:code>
+        </ns5:hasDeclaredTypeCode>
+    </ns3:hasParameter>
+    <ns3:scopes xsi:type="ns3:Variable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <dyEntryType>Variable</dyEntryType>
+        <dyReference>false</dyReference>
+        <dyEntryId>vmrVar</dyEntryId>
+        <ns3:name>vmr</ns3:name>
+        <ns5:hasDeclaredTypeCode xsi:type="ns4:SetTypeCode">
+            <dyEntryType>SetTypeCode</dyEntryType>
+            <dyReference>false</dyReference>
+            <dyEntryId>setCode</dyEntryId>
+        </ns5:hasDeclaredTypeCode>
+        <ns3:hasInitialValueExpressedAs xsi:type="ns3:ExpressionInOCL">
+            <dyEntryType>ExpressionInOCL</dyEntryType>
+            <dyReference>false</dyReference>
+            <dyEntryId>vmrVarInitExpression</dyEntryId>
+            <ns3:bodyExpression xsi:type="ns5:PropertyCallExpr">
+                <dyEntryType>PropertyCallExpr</dyEntryType>
+                <dyReference>false</dyReference>
+                <dyEntryId>patient_getVMR</dyEntryId>
+                <ns5:sourceExpr xsi:type="ns5:VariableExpr">
+                    <dyEntryType>VariableExpr</dyEntryType>
+                    <dyReference>false</dyReference>
+                    <dyEntryId>patientVarRef</dyEntryId>
+                    <ns5:appliedElement xsi:type="ns5:PropertyCallExpr">
+                        <dyEntryType>PropertyCallExpr</dyEntryType>
+                        <dyReference>true</dyReference>
+                        <dyEntryId>patient_getVMR</dyEntryId>
+                    </ns5:appliedElement>
+                    <ns5:referredVar xsi:type="PatientParamType">
+                        <dyEntryType>PatientParamType</dyEntryType>
+                        <dyReference>true</dyReference>
+                        <dyEntryId>patientParam</dyEntryId>
+                    </ns5:referredVar>
+                </ns5:sourceExpr>
+                <ns5:referredProperty>
+                    <dyEntryType>PropertyCode</dyEntryType>
+                    <dyReference>false</dyReference>
+                    <dyEntryId>vmr_propertyCode</dyEntryId>
+                    <ns2:codeSystem>vmr</ns2:codeSystem>
+                    <ns2:code>VMR</ns2:code>
+                </ns5:referredProperty>
+            </ns3:bodyExpression>
+        </ns3:hasInitialValueExpressedAs>
+    </ns3:scopes>
+    <ns3:contains xsi:type="ns3:ProductionRule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <dyEntryType>ProductionRule</dyEntryType>
+        <dyReference>false</dyReference>
+        <dyEntryId>rule1</dyEntryId>
+        <ns3:name>corticoSteroidInhalerExample</ns3:name>
+        <ns3:checks>
+            <dyEntryType>RuleCondition</dyEntryType>
+            <dyReference>false</dyReference>
+            <dyEntryId>rule1Condition</dyEntryId>
+            <ns3:hasConditionRepresentation>
+                <dyEntryType>LogicalExpression</dyEntryType>
+                <dyReference>false</dyReference>
+                <dyEntryId>rule1ConditionExpr</dyEntryId>
+                <ns3:bodyExpression xsi:type="ns4:IsEmptyOperation">
+                    <dyEntryType>IsEmptyOperation</dyEntryType>
+                    <dyReference>false</dyReference>
+                    <dyEntryId>noProblemExistExpression</dyEntryId>
+                    <ns4:hasArgument xsi:type="ns5:VariableExpr">
+                        <dyEntryType>VariableExpr</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>PADVarRef</dyEntryId>
+                        <ns5:referredVar xsi:type="ns3:RuleVariable">
+                            <dyEntryType>RuleVariable</dyEntryType>
+                            <dyReference>false</dyReference>
+                            <dyEntryId>persistentAsthmaDiagnosisCPT</dyEntryId>
+                            <ns3:name>persistentAsthmaDiagnosisCPT</ns3:name>
+                            <ns5:hasDeclaredTypeCode xsi:type="ns4:SetTypeCode">
+                                <dyEntryType>SetTypeCode</dyEntryType>
+                                <dyReference>true</dyReference>
+                                <dyEntryId>setCode</dyEntryId>
+                            </ns5:hasDeclaredTypeCode>
+                            <ns3:hasFilterRepresentation xsi:type="ns3:ExpressionInOCL">
+                                <dyEntryType>ExpressionInOCL</dyEntryType>
+                                <dyReference>false</dyReference>
+                                <dyEntryId>PADExpression</dyEntryId>
+                                <ns3:bodyExpression xsi:type="ns5:IteratorExpr">
+                                    <dyEntryType>IteratorExpr</dyEntryType>
+                                    <dyReference>false</dyReference>
+                                    <dyEntryId>PAD_FilterIterator</dyEntryId>
+                                    <ns5:sourceExpr xsi:type="ns5:VariableExpr">
+                                        <dyEntryType>VariableExpr</dyEntryType>
+                                        <dyReference>false</dyReference>
+                                        <dyEntryId>vmrVarRef</dyEntryId>
+                                        <ns5:appliedElement xsi:type="ns5:IteratorExpr">
+                                            <dyEntryType>IteratorExpr</dyEntryType>
+                                            <dyReference>true</dyReference>
+                                            <dyEntryId>PAD_FilterIterator</dyEntryId>
+                                        </ns5:appliedElement>
+                                        <ns5:referredVar xsi:type="ns3:Variable">
+                                            <dyEntryType>Variable</dyEntryType>
+                                            <dyReference>true</dyReference>
+                                            <dyEntryId>vmrVar</dyEntryId>
+                                        </ns5:referredVar>
+                                    </ns5:sourceExpr>
+                                    <ns5:iterator xsi:type="ns3:Variable">
+                                        <dyEntryType>Variable</dyEntryType>
+                                        <dyReference>false</dyReference>
+                                        <dyEntryId>iteratingProblemVar</dyEntryId>
+                                        <ns3:name>prob</ns3:name>
+                                        <ns5:hasDeclaredTypeCode>
+                                            <dyEntryType>TypeCode</dyEntryType>
+                                            <dyReference>false</dyReference>
+                                            <dyEntryId>vmrProblemClassCode</dyEntryId>
+                                            <ns2:codeSystem>vmr</ns2:codeSystem>
+                                            <ns2:code>Problem</ns2:code>
+                                        </ns5:hasDeclaredTypeCode>
+                                    </ns5:iterator>
+                                    <ns5:loopBody xsi:type="ns4:AndOperation">
+                                        <dyEntryType>AndOperation</dyEntryType>
+                                        <dyReference>false</dyReference>
+                                        <dyEntryId>PADfilterAndExpr</dyEntryId>
+                                        <ns4:hasArgument xsi:type="ns4:EqualsOperation">
+                                            <dyEntryType>EqualsOperation</dyEntryType>
+                                            <dyReference>false</dyReference>
+                                            <dyEntryId>codeEqualsABC</dyEntryId>
+                                            <ns5:sourceExpr xsi:type="ns5:PropertyCallExpr">
+                                                <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                <dyReference>false</dyReference>
+                                                <dyEntryId>problemCode_getCode</dyEntryId>
+                                                <ns5:appliedElement xsi:type="ns4:EqualsOperation">
+                                                    <dyEntryType>EqualsOperation</dyEntryType>
+                                                    <dyReference>true</dyReference>
+                                                    <dyEntryId>codeEqualsABC</dyEntryId>
+                                                </ns5:appliedElement>
+                                                <ns5:sourceExpr xsi:type="ns5:PropertyCallExpr">
+                                                    <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                    <dyReference>false</dyReference>
+                                                    <dyEntryId>problem_getProblemCode</dyEntryId>
+                                                    <ns5:appliedElement xsi:type="ns5:PropertyCallExpr">
+                                                        <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                        <dyReference>false</dyReference>
+                                                        <dyEntryId>problemCode_getCodeSystem</dyEntryId>
+                                                        <ns5:appliedElement xsi:type="ns4:EqualsOperation">
+                                                            <dyEntryType>EqualsOperation</dyEntryType>
+                                                            <dyReference>false</dyReference>
+                                                            <dyEntryId>codeSystemEqualsXYZ</dyEntryId>
+                                                            <ns5:sourceExpr xsi:type="ns5:PropertyCallExpr">
+                                                                <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                                <dyReference>true</dyReference>
+                                                                <dyEntryId>problemCode_getCodeSystem</dyEntryId>
+                                                            </ns5:sourceExpr>
+                                                            <ns4:hasArgument xsi:type="ns5:StringLiteralExpr">
+                                                                <dyEntryType>StringLiteralExpr</dyEntryType>
+                                                                <dyReference>false</dyReference>
+                                                                <dyEntryId>CTCodeSystemLiteral</dyEntryId>
+                                                                <ns5:literalValue>1.2.3.4.5.6.7.8</ns5:literalValue>
+                                                            </ns4:hasArgument>
+                                                            <ns4:opCode xsi:type="ns4:EqualsCode">
+                                                                <dyEntryType>EqualsCode</dyEntryType>
+                                                                <dyReference>false</dyReference>
+                                                                <dyEntryId>equalsCode</dyEntryId>
+                                                            </ns4:opCode>
+                                                            <ns4:argument xsi:type="ns5:StringLiteralExpr">
+                                                                <dyEntryType>StringLiteralExpr</dyEntryType>
+                                                                <dyReference>true</dyReference>
+                                                                <dyEntryId>CTCodeSystemLiteral</dyEntryId>
+                                                            </ns4:argument>
+                                                        </ns5:appliedElement>
+                                                        <ns5:sourceExpr xsi:type="ns5:PropertyCallExpr">
+                                                            <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                            <dyReference>true</dyReference>
+                                                            <dyEntryId>problem_getProblemCode</dyEntryId>
+                                                        </ns5:sourceExpr>
+                                                        <ns5:referredProperty>
+                                                            <dyEntryType>PropertyCode</dyEntryType>
+                                                            <dyReference>false</dyReference>
+                                                            <dyEntryId>codeSystem_propertyCode</dyEntryId>
+                                                            <ns2:codeSystem>iso</ns2:codeSystem>
+                                                            <ns2:code>codeSystem</ns2:code>
+                                                        </ns5:referredProperty>
+                                                    </ns5:appliedElement>
+                                                    <ns5:appliedElement xsi:type="ns5:PropertyCallExpr">
+                                                        <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                        <dyReference>true</dyReference>
+                                                        <dyEntryId>problemCode_getCode</dyEntryId>
+                                                    </ns5:appliedElement>
+                                                    <ns5:sourceExpr xsi:type="ns5:VariableExpr">
+                                                        <dyEntryType>VariableExpr</dyEntryType>
+                                                        <dyReference>false</dyReference>
+                                                        <dyEntryId>problemVarRef</dyEntryId>
+                                                        <ns5:appliedElement xsi:type="ns5:PropertyCallExpr">
+                                                            <dyEntryType>PropertyCallExpr</dyEntryType>
+                                                            <dyReference>true</dyReference>
+                                                            <dyEntryId>problem_getProblemCode</dyEntryId>
+                                                        </ns5:appliedElement>
+                                                        <ns5:referredVar xsi:type="ns3:Variable">
+                                                            <dyEntryType>Variable</dyEntryType>
+                                                            <dyReference>true</dyReference>
+                                                            <dyEntryId>iteratingProblemVar</dyEntryId>
+                                                        </ns5:referredVar>
+                                                    </ns5:sourceExpr>
+                                                    <ns5:referredProperty>
+                                                        <dyEntryType>PropertyCode</dyEntryType>
+                                                        <dyReference>false</dyReference>
+                                                        <dyEntryId>problemCode_propertyCode</dyEntryId>
+                                                        <ns2:codeSystem>vmr</ns2:codeSystem>
+                                                        <ns2:code>propertyCode</ns2:code>
+                                                    </ns5:referredProperty>
+                                                </ns5:sourceExpr>
+                                                <ns5:referredProperty>
+                                                    <dyEntryType>PropertyCode</dyEntryType>
+                                                    <dyReference>false</dyReference>
+                                                    <dyEntryId>code_propertyCode</dyEntryId>
+                                                    <ns2:codeSystem>iso</ns2:codeSystem>
+                                                    <ns2:code>code</ns2:code>
+                                                </ns5:referredProperty>
+                                            </ns5:sourceExpr>
+                                            <ns4:hasArgument xsi:type="ns5:StringLiteralExpr">
+                                                <dyEntryType>StringLiteralExpr</dyEntryType>
+                                                <dyReference>false</dyReference>
+                                                <dyEntryId>PADCodeLiteral</dyEntryId>
+                                                <ns5:literalValue>12345.6</ns5:literalValue>
+                                            </ns4:hasArgument>
+                                            <ns4:opCode xsi:type="ns4:EqualsCode">
+                                                <dyEntryType>EqualsCode</dyEntryType>
+                                                <dyReference>true</dyReference>
+                                                <dyEntryId>equalsCode</dyEntryId>
+                                            </ns4:opCode>
+                                            <ns4:argument xsi:type="ns5:StringLiteralExpr">
+                                                <dyEntryType>StringLiteralExpr</dyEntryType>
+                                                <dyReference>true</dyReference>
+                                                <dyEntryId>PADCodeLiteral</dyEntryId>
+                                            </ns4:argument>
+                                        </ns4:hasArgument>
+                                        <ns4:hasArgument xsi:type="ns4:EqualsOperation">
+                                            <dyEntryType>EqualsOperation</dyEntryType>
+                                            <dyReference>true</dyReference>
+                                            <dyEntryId>codeSystemEqualsXYZ</dyEntryId>
+                                        </ns4:hasArgument>
+                                        <ns4:opCode xsi:type="ns4:AndCode">
+                                            <dyEntryType>AndCode</dyEntryType>
+                                            <dyReference>false</dyReference>
+                                            <dyEntryId>andCode</dyEntryId>
+                                        </ns4:opCode>
+                                        <ns4:argument xsi:type="ns4:EqualsOperation">
+                                            <dyEntryType>EqualsOperation</dyEntryType>
+                                            <dyReference>true</dyReference>
+                                            <dyEntryId>codeEqualsABC</dyEntryId>
+                                        </ns4:argument>
+                                        <ns4:argument xsi:type="ns4:EqualsOperation">
+                                            <dyEntryType>EqualsOperation</dyEntryType>
+                                            <dyReference>true</dyReference>
+                                            <dyEntryId>codeSystemEqualsXYZ</dyEntryId>
+                                        </ns4:argument>
+                                    </ns5:loopBody>
+                                    <ns5:iteratorName>select</ns5:iteratorName>
+                                    <ns5:aggregatingIterator>true</ns5:aggregatingIterator>
+                                </ns3:bodyExpression>
+                            </ns3:hasFilterRepresentation>
+                        </ns5:referredVar>
+                    </ns4:hasArgument>
+                    <ns4:opCode xsi:type="ns4:CollectionIsEmptyCode">
+                        <dyEntryType>CollectionIsEmptyCode</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>collectionIsEmptyCode</dyEntryId>
+                    </ns4:opCode>
+                    <ns4:argument xsi:type="ns5:VariableExpr">
+                        <dyEntryType>VariableExpr</dyEntryType>
+                        <dyReference>true</dyReference>
+                        <dyEntryId>PADVarRef</dyEntryId>
+                    </ns4:argument>
+                </ns3:bodyExpression>
+            </ns3:hasConditionRepresentation>
+        </ns3:checks>
+        <ns3:does xsi:type="ns3:Assert">
+            <dyEntryType>Assert</dyEntryType>
+            <dyReference>false</dyReference>
+            <dyEntryId>ruleAction1</dyEntryId>
+            <ns3:hasActionRepresentation xsi:type="ns3:AssertExpr">
+                <dyEntryType>AssertExpr</dyEntryType>
+                <dyReference>false</dyReference>
+                <dyEntryId>ruleActionExpr1</dyEntryId>
+                <ns3:bodyExpression xsi:type="NewProposalExpressionType">
+                    <dyEntryType>NewProposalExpressionType</dyEntryType>
+                    <dyReference>false</dyReference>
+                    <dyEntryId>newProposalExpression</dyEntryId>
+                    <ns5:appliedElement xsi:type="ns5:PropertyCallExpr">
+                        <dyEntryType>PropertyCallExpr</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>proposedProcedure_getDate</dyEntryId>
+                        <ns5:sourceExpr xsi:type="NewProposalExpressionType">
+                            <dyEntryType>NewProposalExpressionType</dyEntryType>
+                            <dyReference>true</dyReference>
+                            <dyEntryId>newProposalExpression</dyEntryId>
+                        </ns5:sourceExpr>
+                        <ns5:referredProperty>
+                            <dyEntryType>PropertyCode</dyEntryType>
+                            <dyReference>false</dyReference>
+                            <dyEntryId>proposedDate_propertyCode</dyEntryId>
+                            <ns2:codeSystem>vmr</ns2:codeSystem>
+                            <ns2:code>proposedDate</ns2:code>
+                        </ns5:referredProperty>
+                    </ns5:appliedElement>
+                    <ns4:hasArgument xsi:type="ns5:AssignPayloadExpr">
+                        <dyEntryType>AssignPayloadExpr</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>proposedProcedure_Date_assignment</dyEntryId>
+                        <ns4:hasArgument xsi:type="ns5:DateLiteralExpr">
+                            <dyEntryType>DateLiteralExpr</dyEntryType>
+                            <dyReference>false</dyReference>
+                            <dyEntryId>someDateLiteral</dyEntryId>
+                            <ns5:literalValue>01/01/2111</ns5:literalValue>
+                        </ns4:hasArgument>
+                        <ns4:argument xsi:type="ns5:DateLiteralExpr">
+                            <dyEntryType>DateLiteralExpr</dyEntryType>
+                            <dyReference>true</dyReference>
+                            <dyEntryId>someDateLiteral</dyEntryId>
+                        </ns4:argument>
+                        <ns5:assignmentTarget xsi:type="ns5:PropertyCallExpr">
+                            <dyEntryType>PropertyCallExpr</dyEntryType>
+                            <dyReference>true</dyReference>
+                            <dyEntryId>proposedProcedure_getDate</dyEntryId>
+                        </ns5:assignmentTarget>
+                    </ns4:hasArgument>
+                    <ns4:opCode xsi:type="ns4:NewCode">
+                        <dyEntryType>NewCode</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>newCode</dyEntryId>
+                    </ns4:opCode>
+                    <ns4:argument xsi:type="ns5:AssignPayloadExpr">
+                        <dyEntryType>AssignPayloadExpr</dyEntryType>
+                        <dyReference>true</dyReference>
+                        <dyEntryId>proposedProcedure_Date_assignment</dyEntryId>
+                    </ns4:argument>
+                    <ns4:newTypeCode>
+                        <dyEntryType>DomainObjectTypeCode</dyEntryType>
+                        <dyReference>false</dyReference>
+                        <dyEntryId>vmrProcedureProposalClassCode</dyEntryId>
+                        <ns2:codeSystem>vmr</ns2:codeSystem>
+                        <ns2:code>ProcedureProposal</ns2:code>
+                    </ns4:newTypeCode>
+                </ns3:bodyExpression>
+            </ns3:hasActionRepresentation>
+        </ns3:does>
+        <ns3:binds>
+            <dyEntryType>RuleVariable</dyEntryType>
+            <dyReference>true</dyReference>
+            <dyEntryId>persistentAsthmaDiagnosisCPT</dyEntryId>
+        </ns3:binds>
+    </ns3:contains>
+</ns3:ProductionRuleSetImpl>

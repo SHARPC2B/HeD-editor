@@ -21,6 +21,12 @@
       <version>${editor.version}</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>com.clarkparsia</groupId>
+      <artifactId>Empire-core</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-core</artifactId>

@@ -43,6 +43,18 @@
     </repository>
 
     <repository>
+      <!-- Pellet here -->
+      <id>berkeleybop</id>
+      <name>Berkeleybop</name>
+      <url>http://code.berkeleybop.org/maven/repository</url>
+    </repository>
+
+    <repository>
+      <id>mayo</id>
+      <url>http://informatics.mayo.edu/maven/content/groups/public</url>
+    </repository>
+
+    <repository>
       <id>EmpireRDF</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
     </repository>
@@ -51,6 +63,7 @@
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
     </repository>
+
   </repositories>
 
 
@@ -75,7 +88,11 @@
         <version>3.4</version>
       </dependency>
 
-
+      <dependency>
+        <groupId>com.clarkparsia</groupId>
+        <artifactId>Empire-core</artifactId>
+        <version>0.7.3</version>
+      </dependency>
 
       <dependency>
         <groupId>org.semanticweb</groupId>

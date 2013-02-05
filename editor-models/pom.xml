@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-shapes-generator-plugin</artifactId>
-      <version>5.5.0-SNAPSHOT</version>
+      <version>${chance.version}</version>
     </dependency>
 
     <dependency>
@@ -67,7 +67,6 @@
           <artifactId>ejb3-persistence</artifactId>
         </exclusion>
       </exclusions>
-      <version>0.7.3</version>
     </dependency>
     <dependency>
       <groupId>com.clarkparsia</groupId>
@@ -156,7 +155,7 @@
         </includes>
       </resource>
       <resource>
-        <directory>${pom.basedir}/target/generated-sources/xjc/META-INF</directory>
+        <directory>${pom.basedir}/target/generated-sources/xjc</directory>
         <includes>
           <include>**/*.*</include>
         </includes>
