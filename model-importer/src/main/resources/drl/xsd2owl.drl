@@ -254,22 +254,8 @@ then
         ) ) );
 end
 
-/* BUGGED LHS!!!!!!!!!!!!
-*/
-rule "Named Simple Types Enum"
-when
-    SimpleType( $name : name != null, union == null,
-                $facets : restriction.facets )
-    $set : Set() from accumulate(
-                $fax : Object(  ) from $facets,
-                init( Set set = new HashSet(); ),
-                action( $set.add( $fax );
-                         ),
-                result( $set ) )
-then
-end
 
-/*
+
 rule "Named Simple Types Enum"
 when
     $s : SimpleType( $name : name != null, $rest : restriction, $base : restriction.base, union == null,
@@ -289,7 +275,7 @@ then
 //                factory.getOWLDataOneOf( $set )
 //        ) ) );
 end
-  */
+
 
 
 

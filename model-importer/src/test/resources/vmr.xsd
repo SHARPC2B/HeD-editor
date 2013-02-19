@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified" targetNamespace="http://www.exampleURI.com/HeD"
            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.exampleURI.com/HeD">
-  <xs:include schemaLocation="/home/davide/Projects/xsd/src/test/resources/datatypes.xsd" />
+  <xs:include schemaLocation="datatypes.xsd" />
   <xs:annotation>
     <xs:documentation>This schema specifies information about a patient
       relevant for CDS. It has been enhanced in several ways compared to

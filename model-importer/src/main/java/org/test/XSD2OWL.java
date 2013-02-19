@@ -51,6 +51,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,9 +67,20 @@ public class XSD2OWL {
     private OWLOntologyManager manager;
     private OWLDataFactory factory;
 
-    private static File metaSchema = new File( "/home/davide/Projects/xsd/src/main/resources/xsd/xmlschema.xsd" );
+    private static File metaSchema;
 
-    private static List<InferredAxiomGenerator<? extends OWLAxiom>> fullAxiomGenerators = Collections.unmodifiableList(
+    private static List<InferredAxiomGenerator<? extends OWLAxiom>> fullAxiomGenerators;
+
+    {
+        try {
+            metaSchema = new File( new ClassPathResource( "xsd/xmlschema.xsd" ).getURL().toURI() );
+        } catch (URISyntaxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        fullAxiomGenerators = Collections.unmodifiableList(
             new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>(
                     Arrays.asList(
                             new InferredClassAssertionAxiomGenerator(),
@@ -82,7 +95,7 @@ public class XSD2OWL {
                             new InferredSubDataPropertyAxiomGenerator(),
                             new InferredSubObjectPropertyAxiomGenerator()
                     )));
-
+    }
 
 
     public XSD2OWL() {
@@ -95,7 +108,7 @@ public class XSD2OWL {
 
     private KnowledgeBase initKBase() {
         KnowledgeBuilder kBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kBuilder.add( new ClassPathResource("drl/xsd2owl_bug.drl"), ResourceType.DRL );
+        kBuilder.add( new ClassPathResource( "drl/xsd2owl.drl" ), ResourceType.DRL );
         if ( kBuilder.hasErrors() ) {
             throw new RuntimeDroolsException( kBuilder.getErrors().toString() );
         }
@@ -113,7 +126,8 @@ public class XSD2OWL {
             Unmarshaller loader = context.createUnmarshaller();
             loader.setSchema( metax );
 
-            Schema schema = (Schema) loader.unmarshal( new File( schemaLocation ) );
+            ClassPathResource cpr = new ClassPathResource( schemaLocation );
+            Schema schema = (Schema) loader.unmarshal( new File( cpr.getURL().toURI() ) );
             System.out.println( "Parsed schema...." );
             return schema;
         } catch ( Exception e ) {

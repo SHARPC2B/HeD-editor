@@ -15,6 +15,7 @@
  */
 
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
+import org.drools.io.impl.ClassPathResource;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -35,34 +36,29 @@ public class TestXSD {
         try {
             XSD2OWL converter = new XSD2OWL();
 
-            Schema x = converter.parse( "/home/davide/Projects/xsd/src/test/resources/vmr.xsd" );
+            Schema x = converter.parse( "vmr.xsd" );
 
             OWLOntology onto = converter.transform( x, true, true );
 
-            File folder = new File( "/home/davide/Projects/xsd/target/generated-sources/owl/" );
-            FileOutputStream fos = new FileOutputStream( folder.getPath() + "/output.owl");
-            if ( ! folder.exists() ) {
-                folder.mkdirs();
-            }
-            OWLManager.createOWLOntologyManager().saveOntology(
-                    onto,
-                    new ManchesterOWLSyntaxOntologyFormat(),
-                    fos);
+//            File folder = new File( "/home/davide/Projects/xsd/target/generated-sources/owl/" );
+//            FileOutputStream fos = new FileOutputStream( folder.getPath() + "/output.owl");
+//            if ( ! folder.exists() ) {
+//                folder.mkdirs();
+//            }
 //            OWLManager.createOWLOntologyManager().saveOntology(
+//                    onto,
+//                    new ManchesterOWLSyntaxOntologyFormat(),
+//                    fos);
+////            OWLManager.createOWLOntologyManager().saveOntology(
 //                    onto,
 //                    new ManchesterOWLSyntaxOntologyFormat(),
 //                    System.out );
 
 
-        }
-
-        catch (OWLOntologyStorageException e) {
+        } catch ( Exception e ) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
 
