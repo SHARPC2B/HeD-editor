@@ -36,6 +36,7 @@ public class Jaxplorer {
 
     protected void deepInsert( Object o, StatefulKnowledgeSession kSession ) {
         if ( o instanceof JAXBElement ) {
+            kSession.insert( o );
             deepInsert( ((JAXBElement) o).getValue(), kSession );
         }
         XmlType xmlType = o.getClass().getAnnotation( XmlType.class );
@@ -94,10 +95,10 @@ public class Jaxplorer {
             x = x.getSuperclass();
         }
 
-        System.out.println( "Class " + o.getClass() );
-        for ( String s : fieldNames ) {
-            System.out.println( "\t >> " + s );
-        }
+//        System.out.println( "Class " + o.getClass() );
+//        for ( String s : fieldNames ) {
+//            System.out.println( "\t >> " + s );
+//        }
 
         declaredCache.put( o.getClass(), fieldNames );
         return fieldNames;

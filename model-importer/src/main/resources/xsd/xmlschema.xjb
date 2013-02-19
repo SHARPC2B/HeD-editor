@@ -28,6 +28,7 @@
     <!--xjc:simple/-->
   </globalBindings>
   <schemaBindings>
+    <!-- TODO reset to _2001 as soon as rules are complete -->
     <package name="org.w3.x2001.xmlschema" />
   </schemaBindings>
 

@@ -29,7 +29,7 @@ end
 declare Anon
     cld : OpenAttrs
     sup : OpenAttrs
-    kls : OWLClass
+    kls : OWLClassExpression
     and : boolean
     rst : boolean
 end
@@ -320,22 +320,17 @@ then
                 $att,
                 factory.getOWLDeclarationAxiom( prop )
             ) );
-    insertLogical(
-            new Link(
-                $att,
-                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataAllValuesFrom( prop, ran ) )
-            ) );
-    insertLogical(
-            new Link(
-                $att,
-                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataMaxCardinality( 1, prop, ran ) )
-            ) );
-    insertLogical(
-            new Link(
-                $att,
-                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataMinCardinality( "optional".equals( $opt ) ? 0 : 1, prop, ran ) )
-            ) );
 
+    Set set = new HashSet();
+    set.add( factory.getOWLDataAllValuesFrom( prop, ran ) );
+    set.add( factory.getOWLDataMaxCardinality( "prohibited".equals( $opt ) ? 0 : 1, prop, ran ) );
+    set.add( factory.getOWLDataMinCardinality( "optional".equals( $opt ) || "prohibited".equals( $opt ) ? 0 : 1, prop, ran ) );
+
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLSubClassOfAxiom( dom, factory.getOWLObjectIntersectionOf( set ) )
+            ) );
 
     insertLogical( new Dom( $prop, new QName( tns, $name ) ) );
     insertLogical( new Ran( $prop, $type ) );
@@ -445,8 +440,8 @@ rule "Element of Simple Type"
 when
     $e : Element( $name : name, $type : type != null )
     Anon( $e, $par ; )
-    unravel( $par, $comp ; )
     ( DataName( $type ; ) or eval( ( $type.getNamespaceURI() + "#" ).equals( Namespaces.XSD.toString() ) ) )
+    unravel( $par, $comp ; )
 then
     System.out.println( "********" + $name + " child of " + $comp.getName() );
     OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $name ) );
@@ -468,8 +463,8 @@ rule "Element of Object Type"
 when
     $e : Element( $name : name, $type : type != null )
     Anon( $e, $par ; )
-    unravel( $par, $comp ; )
     ObjectName( $type ; )
+    unravel( $par, $comp ; )
 then
     System.out.println( "@@@@@@@@@" + $name + " child of " + $comp.getName() );
     OWLObjectProperty prop = factory.getOWLObjectProperty( IRI.create( tns + "#", $name ) );
@@ -497,4 +492,64 @@ when
     $ct : LocalComplexType( this == $loc, name == null )
 then
     modify ( $ct ) { setName( $name + "_Range" ); }
+end
+
+
+
+
+
+
+rule "Build Data Element"
+when
+    $e : Element( $name : name, $type : type != null, $min : minOccurs, $max : maxOccurs )
+    $a : Anon( $e ; kls == null )
+    ( DataName( $type ; ) or eval( ( $type.getNamespaceURI() + "#" ).equals( Namespaces.XSD.toString() ) ) )
+then
+    OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $name ) );
+    OWLDataRange ran = mapXsdDatatype( $type, factory );
+
+    Set set = new HashSet();
+
+
+    OWLDataAllValuesFrom all = factory.getOWLDataAllValuesFrom( prop, ran );
+    set.add( all );
+
+    if ( $max != null && ! "unbounded".equals( $max ) ) {
+        OWLDataMaxCardinality max = factory.getOWLDataMaxCardinality(
+                        Integer.parseInt( $max ),
+                        prop,
+                        ran );
+        set.add( max );
+    }
+    if ( $min != null ) {
+        OWLDataMinCardinality min = factory.getOWLDataMinCardinality(
+                        $min.intValue(),
+                        prop,
+                        ran );
+        set.add( min );
+    }
+
+    modify ( $a ) { setKls( factory.getOWLObjectIntersectionOf( set ) ); }
+
+end
+
+rule "Build Group"
+when
+    $x : Anon( $group, $c ; kls == null )
+    accumulate( Anon( $e, $group, $kls ; $kls != null ),
+        $set : collectSet( $kls );
+        $set.size() > 0 )
+then
+    modify ( $x ) { setKls( factory.getOWLObjectIntersectionOf( $set ) ); }
+end
+
+
+
+rule "Build Complex Type"
+when
+    $c : ComplexType( $name : name != null )
+    $x : Anon( $group, $c ; $kls : kls != null )
+then
+    OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $name ) );
+    insert( new Link( $group, factory.getOWLSubClassOfAxiom( dom, $kls ) ) );
 end

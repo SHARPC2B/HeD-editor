@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright 2013 JBoss Inc
   ~
@@ -15,9 +16,20 @@
   ~ limitations under the License.
   -->
 
-<xs:schema elementFormDefault="qualified" targetNamespace="http://www.exampleURI.com/"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.exampleURI.com/">
-  <xs:complexType name="Test">
-  </xs:complexType>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://asu.edu/test"
+           xmlns="http://asu.edu/test" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:simpleType name="Decimal">
+    <xs:restriction base="xs:double" />
+  </xs:simpleType>
+
+  <xs:simpleType name="Enumerated">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="C"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>
 
