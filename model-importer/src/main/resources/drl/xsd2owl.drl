@@ -1,0 +1,514 @@
+package drl;
+
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.*;
+import uk.ac.manchester.cs.owl.owlapi.*;
+
+import org.w3.x2001.xmlschema.*;
+import javax.xml.namespace.QName;
+
+import javax.xml.bind.*;
+import java.util.Set;
+import java.util.HashSet;
+
+import org.test.*;
+import org.test.beans.*;
+
+global OWLOntology ontology;
+global OWLOntologyManager manager;
+global OWLDataFactory factory;
+global String tns;
+
+declare List @typesafe(false) end
+
+declare Link
+    src : OpenAttrs
+    tgt : OWLAxiom
+end
+
+declare Anon
+    cld : OpenAttrs
+    sup : OpenAttrs
+    kls : OWLClass
+    and : boolean
+    rst : boolean
+end
+
+function OWLDatatype mapXsdDatatype( QName qn, OWLDataFactory factory ) {
+    String px = qn.getNamespaceURI() + "#";
+        if ( px.equals( Namespaces.XSD.toString() ) ) {
+            if ( "ID".equals( qn.getLocalPart() ) ) {
+                return OWL2DatatypeImpl.getDatatype( OWL2Datatype.getDatatype( IRI.create( px, "anyURI" ) ) );
+            } else if ( "anyType".equals( qn.getLocalPart() ) ) {
+                return factory.getTopDatatype();
+            } else {
+                return OWL2DatatypeImpl.getDatatype( OWL2Datatype.getDatatype( IRI.create( px, qn.getLocalPart() ) ) );
+            }
+        } else {
+            return factory.getOWLDatatype( IRI.create( px, qn.getLocalPart() ) );
+        }
+}
+
+query "axioms" ( Set $set )
+    accumulate( Link( $s, $t ; ),
+                $set : collectSet( $t ) )
+end
+
+
+
+
+rule "Visit Complex Types with Group Content"
+when
+    $c : ComplexType( $model : group != null )
+then
+    insertLogical( new Anon( $model, $c, null, true, false ) );
+end
+rule "Visit Complex Types with All Content"
+when
+    $c : ComplexType( $model : all != null )
+then
+    insertLogical( new Anon( $model, $c, null, true, false ) );
+end
+rule "Visit Complex Types with Choice Content"
+when
+    $c : ComplexType( $model : choice != null )
+then
+    insertLogical( new Anon( $model, $c, null, false, false ) );
+end
+rule "Visit Complex Types with Sequence Content"
+when
+    $c : ComplexType( $model : sequence != null )
+then
+    insertLogical( new Anon( $model, $c, null, true, false ) );
+end
+
+rule "Visit Extension Types with Group Content"
+when
+    $c : ComplexType( $ext : complexContent!.extension != null )
+    ExtensionType( this == $ext, $model : group != null )
+then
+    insertLogical( new Anon( $model, $c, null, false, false ) );
+end
+rule "Visit Extension Types with All Content"
+when
+    $c : ComplexType( $ext : complexContent!.extension != null )
+    ExtensionType( this == $ext,  $model : all != null )
+then
+    insertLogical( new Anon( $model, $c, null, false, false ) );
+end
+rule "Visit Extension Types with Choice Content"
+when
+    $c : ComplexType( $ext : complexContent!.extension != null )
+    ExtensionType( this == $ext,  $model : choice != null )
+then
+    insertLogical( new Anon( $model, $c, null, true, false ) );
+end
+rule "Visit Extension Types with Sequence Content"
+when
+    $c : ComplexType( $ext : complexContent!.extension != null )
+    ExtensionType( this == $ext,  $model : sequence != null )
+then
+    insertLogical( new Anon( $model, $c, null, false, false ) );
+end
+
+
+
+rule "Visit Group Particles"
+when
+    $g : Group( $parts : particle )
+    $x : JAXBElement( $o : value, $n : name ) from $parts
+then
+    insertLogical( new Anon( (OpenAttrs) $o, $g, null, "choice".equals( $n.getLocalPart() ), false ) );
+end
+
+
+
+
+
+
+
+
+
+
+
+
+declare ElemContext
+    att : org.w3.x2001.xmlschema.Element
+    ctx : OpenAttrs
+end
+
+declare AttrContext
+    att : Attribute
+    ctx : OpenAttrs
+end
+
+declare Dom
+    prop : String
+    klas : QName
+end
+
+declare Ran
+    prop : String
+    klas : QName
+end
+
+declare ODom
+    prop : String
+    klas : QName
+end
+
+declare ORan
+    prop : String
+    klas : QName
+end
+
+declare DataName
+    name : QName
+end
+
+declare ObjectName
+    name : QName
+end
+
+
+rule "Attribute Localization in ComplexType Extensions"
+when
+    ComplexType( $name : name, $ext: complexContent!.extension )
+    ExtensionType( this == $ext, $atts : attributeOrAttributeGroup )
+    ( $att : Attribute() from $atts
+      or
+      ( AttributeGroup( $inner : attributeOrAttributeGroup ) from $atts
+        and
+        $att : Attribute() from $inner
+      )
+    )
+then
+    insertLogical( new AttrContext( $att, $ext ) );
+end
+
+rule "Resolve Attribute Links"
+when
+    $ctx : AttrContext( $x, $att ; )
+    $src : Attribute( this == $att, $ref : ref != null)
+    $tgt : Attribute( id == $ref )
+then
+    modify ( $ctx ) { setCtx( $tgt ); }
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rule "Named Complex Types"
+when
+    $c : ComplexType( $name : name != null )
+then
+    insertLogical( new ObjectName( new QName( tns, $name ) ) );
+    insertLogical(
+        new Link(
+            $c,
+            factory.getOWLDeclarationAxiom( factory.getOWLClass( IRI.create( tns + "#", $name ) )
+        ) ) );
+end
+
+rule "Named Simple Types"
+when
+    $s : SimpleType( $name : name )
+then
+    insertLogical( new DataName( new QName( tns, $name ) ) );
+    insertLogical(
+        new Link(
+            $s,
+            factory.getOWLDeclarationAxiom( factory.getOWLDatatype( IRI.create( tns + "#", $name ) )
+        ) ) );
+end
+
+
+rule "Named Simple Types Range"
+when
+    $s : SimpleType( $name : name != null, union == null, restriction != null, restriction.base != null,
+//                     restriction.facets.isEmpty(),
+                     $baseURI : restriction.base.namespaceURI, $baseName : restriction.base.localPart )
+then
+    insertLogical(
+        new Link(
+            $s,
+            factory.getOWLDatatypeDefinitionAxiom(
+                factory.getOWLDatatype( IRI.create( tns+ "#", $name ) ),
+                mapXsdDatatype( new QName( $baseURI, $baseName ), factory )
+        ) ) );
+end
+
+/* BUGGED LHS!!!!!!!!!!!!
+*/
+rule "Named Simple Types Enum"
+when
+    SimpleType( $name : name != null, union == null,
+                $facets : restriction.facets )
+    $set : Set() from accumulate(
+                $fax : Object(  ) from $facets,
+                init( Set set = new HashSet(); ),
+                action( $set.add( $fax );
+                         ),
+                result( $set ) )
+then
+end
+
+/*
+rule "Named Simple Types Enum"
+when
+    $s : SimpleType( $name : name != null, $rest : restriction, $base : restriction.base, union == null,
+                $facets : restriction.facets, restriction.facets.size() > 0 )
+    accumulate( $jxb : JAXBElement( $tmp : value ) from $facets
+                and
+                $fax : Facet( $val : value ) from $tmp,
+                $set : collectSet( factory.getOWLLiteral( $val,
+                                                           OWL2Datatype.getDatatype( IRI.create( $base.getNamespaceURI() + "#", $base.getLocalPart() ) ) ) ) )
+then
+// TODO HERMIT DOES NOT LIKE THIS... reenable?
+//    insertLogical(
+//        new Link(
+//            $rest,
+//            factory.getOWLDatatypeDefinitionAxiom(
+//                factory.getOWLDatatype( IRI.create( tns, $name ) ),
+//                factory.getOWLDataOneOf( $set )
+//        ) ) );
+end
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+rule "Complex Type Inheritance by Extension"
+when
+    $c : ComplexType( $name : name, $cc : complexContent )
+    ComplexContent( $ext : extension != null, extension.base != null,
+                    $baseURI : extension.base.namespaceURI, $baseName : extension.base.localPart ) from $cc
+then
+    insertLogical(
+        new Link(
+            $ext,
+            factory.getOWLSubClassOfAxiom(
+                factory.getOWLClass( IRI.create( tns + "#", $name ) ),
+                factory.getOWLClass( IRI.create( $baseURI + "#", $baseName ) )
+        ) ) );
+end
+
+rule "Complex Type Extension Attribute"
+when
+    ComplexType( $name : name, $ext: complexContent!.extension )
+    ExtensionType( this == $ext, $atts : attributeOrAttributeGroup )
+    AttrContext( $att, $ext ; )
+    Attribute( this == $att, $prop : name, $type : type, $opt : use )
+then
+    OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $prop ) );
+    OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $name ) );
+    OWLDataRange ran = mapXsdDatatype( $type, factory );
+
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLDeclarationAxiom( prop )
+            ) );
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataAllValuesFrom( prop, ran ) )
+            ) );
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataMaxCardinality( 1, prop, ran ) )
+            ) );
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLSubClassOfAxiom( dom, factory.getOWLDataMinCardinality( "optional".equals( $opt ) ? 0 : 1, prop, ran ) )
+            ) );
+
+
+    insertLogical( new Dom( $prop, new QName( tns, $name ) ) );
+    insertLogical( new Ran( $prop, $type ) );
+end
+
+
+
+
+
+
+rule "Aggregate Data Domains"
+salience -100000
+when
+    accumulate( Dom( $pro ; ),
+        $pros : collectSet( $pro ) )
+    $propName : String() from $pros
+    accumulate( Dom( $propName, $domName ; ),
+        $doms : collectSet( factory.getOWLClass( IRI.create( $domName.getNamespaceURI() + "#", $domName.getLocalPart() ) ) ) )
+then
+    insertLogical(
+            new Link(
+                null,
+                factory.getOWLDataPropertyDomainAxiom(
+                                    factory.getOWLDataProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLObjectUnionOf( $doms )
+                                    )
+            ) );
+end
+
+rule "Aggregate Data Ranges"
+salience -100000
+when
+    accumulate( Ran( $pro ; ),
+        $pros : collectSet( $pro ) )
+    $propName : String() from $pros
+    accumulate( Ran( $propName, $ranName ; ),
+        $rans : collectSet(
+                    mapXsdDatatype( $ranName, factory )
+                ) )
+then
+    insertLogical(
+            new Link(
+                null,
+                factory.getOWLDataPropertyRangeAxiom(
+                                    factory.getOWLDataProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLDataUnionOf( $rans )
+                                    )
+            ) );
+end
+
+rule "Aggregate Obj Domains"
+salience -100000
+when
+    accumulate( ODom( $pro ; ),
+        $pros : collectSet( $pro ) )
+    $propName : String() from $pros
+    accumulate( ODom( $propName, $domName ; ),
+        $doms : collectSet( factory.getOWLClass( IRI.create( $domName.getNamespaceURI() + "#", $domName.getLocalPart() ) ) ) )
+then
+    insertLogical(
+            new Link(
+                null,
+                factory.getOWLObjectPropertyDomainAxiom(
+                                    factory.getOWLObjectProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLObjectUnionOf( $doms )
+                                    )
+            ) );
+end
+
+rule "Aggregate Obj Ranges"
+salience -100000
+when
+    accumulate( ORan( $pro ; ),
+        $pros : collectSet( $pro ) )
+    $propName : String() from $pros
+    accumulate( ORan( $propName, $ranName ; ),
+        $rans : collectSet( factory.getOWLClass( IRI.create( $ranName.getNamespaceURI() + "#", $ranName.getLocalPart() ) ) ) )
+then
+    insertLogical(
+            new Link(
+                null,
+                factory.getOWLObjectPropertyRangeAxiom(
+                                    factory.getOWLObjectProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLObjectUnionOf( $rans )
+                                    )
+            ) );
+end
+
+
+
+
+
+
+
+
+query unravel( OpenAttrs $g, ComplexType $c )
+    (
+        ( Anon( $g, $c ; ) and $c := ComplexType( name != null ) )
+        or
+        ( Anon( $g, $x ; ) and unravel( $x, $c ; ) )
+    )
+end
+
+
+
+rule "Element of Simple Type"
+when
+    $e : Element( $name : name, $type : type != null )
+    Anon( $e, $par ; )
+    unravel( $par, $comp ; )
+    ( DataName( $type ; ) or eval( ( $type.getNamespaceURI() + "#" ).equals( Namespaces.XSD.toString() ) ) )
+then
+    System.out.println( "********" + $name + " child of " + $comp.getName() );
+    OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $name ) );
+    OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $comp.getName() ) );
+    OWLDataRange ran = mapXsdDatatype( $type, factory );
+
+    insertLogical(
+            new Link(
+                $e,
+                factory.getOWLDeclarationAxiom( prop )
+            ) );
+
+    insertLogical( new Dom( $name, new QName( tns, $comp.getName() ) ) );
+    insertLogical( new Ran( $name, $type ) );
+
+end
+
+rule "Element of Object Type"
+when
+    $e : Element( $name : name, $type : type != null )
+    Anon( $e, $par ; )
+    unravel( $par, $comp ; )
+    ObjectName( $type ; )
+then
+    System.out.println( "@@@@@@@@@" + $name + " child of " + $comp.getName() );
+    OWLObjectProperty prop = factory.getOWLObjectProperty( IRI.create( tns + "#", $name ) );
+    OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $comp.getName() ) );
+    OWLClass ran = factory.getOWLClass( IRI.create( $type.getNamespaceURI() + "#", $type.getLocalPart() ) );
+
+    insertLogical(
+            new Link(
+                $e,
+                factory.getOWLDeclarationAxiom( prop )
+            ) );
+
+    insertLogical( new ODom( $name, new QName( tns, $comp.getName() ) ) );
+    insertLogical( new ORan( $name, $type ) );
+end
+
+
+
+
+
+rule "Anonymous Complex Types"
+salience 100
+when
+    $el : Element( $loc : complexType, $name : name, type == null )
+    $ct : LocalComplexType( this == $loc, name == null )
+then
+    modify ( $ct ) { setName( $name + "_Range" ); }
+end
