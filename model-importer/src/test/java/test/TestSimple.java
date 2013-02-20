@@ -40,6 +40,7 @@ public class TestSimple {
             XSD2OWL converter = new XSD2OWL();
 
             Schema x = converter.parse( "test/simple.xsd" );
+            String tns = x.getTargetNamespace() + "#";
 
             OWLOntology onto = converter.transform( x, true, true );
 
@@ -47,7 +48,7 @@ public class TestSimple {
             OWLDataFactory factory = manager.getOWLDataFactory();
 
             assertTrue( onto.containsAxiom( factory.getOWLDatatypeDefinitionAxiom(
-                    factory.getOWLDatatype( IRI.create( "http://asu.edu/test#Decimal" ) ),
+                    factory.getOWLDatatype( IRI.create( tns, "Decimal" ) ),
                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DOUBLE ) )
             ) );
 
@@ -66,6 +67,7 @@ public class TestSimple {
             XSD2OWL converter = new XSD2OWL();
 
             Schema x = converter.parse( "test/simple.xsd" );
+            String tns = x.getTargetNamespace() + "#";
 
             OWLOntology onto = converter.transform( x, true, true );
 
@@ -73,7 +75,7 @@ public class TestSimple {
             OWLDataFactory factory = manager.getOWLDataFactory();
 
             assertTrue( onto.containsAxiom( factory.getOWLDatatypeDefinitionAxiom(
-                    factory.getOWLDatatype( IRI.create( "http://asu.edu/test#Enumerated" ) ),
+                    factory.getOWLDatatype( IRI.create( tns, "Enumerated" ) ),
                     factory.getOWLDataOneOf( factory.getOWLLiteral( "A", OWL2Datatype.XSD_STRING ),
                                             factory.getOWLLiteral( "B", OWL2Datatype.XSD_STRING ),
                                             factory.getOWLLiteral( "C", OWL2Datatype.XSD_STRING )

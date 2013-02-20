@@ -590,3 +590,33 @@ then
     OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $name ) );
     insert( new Link( $group, factory.getOWLSubClassOfAxiom( dom, $kls ) ) );
 end
+
+
+rule "Attribute Group Ref Link in Extensions"
+salience 100
+when
+    $ref : AttributeGroupRef( $refName : ref!.localPart )
+    $ext : ExtensionType( $atts : attributeOrAttributeGroup contains $ref )
+    $tgt : AttributeGroup( name == $refName )
+then
+    int idx = $atts.indexOf( $ref );
+    modify ( $ext ) {
+        getAttributeOrAttributeGroup().set( idx, $tgt );
+    }
+end
+
+rule "Orphan attributes in Orphan groups"
+when
+    $agg : AttributeGroup( $refName : name == $refName, $orphans : attributeOrAttributeGroup )
+    not    AttributeGroupRef( ref!.localPart == $refName )
+    $att : Attribute( this memberOf $orphans, $prop : name != null, $type : type != null )
+then
+    OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $prop ) );
+    OWLDataRange ran = mapXsdDatatype( $type, factory );
+    insertLogical(
+            new Link(
+                $att,
+                factory.getOWLDeclarationAxiom( prop )
+            ) );
+    insertLogical( new Ran( $prop, $type ) );
+end

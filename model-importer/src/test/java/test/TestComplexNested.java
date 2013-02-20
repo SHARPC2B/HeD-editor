@@ -38,12 +38,14 @@ public class TestComplexNested {
     private static OWLOntology onto;
     private static OWLOntologyManager manager;
     private static OWLDataFactory factory;
+    private static String tns;
 
     @BeforeClass
     public static void parse() {
         XSD2OWL converter = new XSD2OWL();
 
         Schema x = converter.parse("test/complexNested.xsd");
+        tns = x.getTargetNamespace() + "#";
 
         onto = converter.transform( x, true, true );
 
@@ -57,7 +59,7 @@ public class TestComplexNested {
 
         try {
 
-            OWLClass k = factory.getOWLClass(IRI.create("http://asu.edu/test#", "TestBase"));
+            OWLClass k = factory.getOWLClass(IRI.create(tns, "TestBase"));
 
             assertEquals( 2, onto.getSubClassAxiomsForSubClass( k ).size() );
 
@@ -70,32 +72,32 @@ public class TestComplexNested {
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLObjectIntersectionOf(
                                             factory.getOWLDataAllValuesFrom(
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField1")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField1")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                             factory.getOWLDataMinCardinality(
                                                     0,
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField1")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField1")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                                     ),
                                     factory.getOWLObjectIntersectionOf(
                                             factory.getOWLDataAllValuesFrom(
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField2")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField2")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                             factory.getOWLDataMinCardinality(
                                                     0,
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField2")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField2")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                                     )
                             ),
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLObjectIntersectionOf(
                                             factory.getOWLDataAllValuesFrom(
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField3")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField3")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
 
                                             factory.getOWLDataMinCardinality(
                                                     0,
-                                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField3")),
+                                                    factory.getOWLDataProperty(IRI.create(tns, "baseField3")),
                                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                                     ))
                     )

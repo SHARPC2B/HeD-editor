@@ -46,17 +46,41 @@ import org.w3.x2001.xmlschema.Include;
 import org.w3.x2001.xmlschema.OpenAttrs;
 import org.w3.x2001.xmlschema.Redefine;
 import org.w3.x2001.xmlschema.Schema;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -216,12 +240,6 @@ public class XSD2OWL {
 
         System.out.println( "Done with schema.... " );
 
-//        for ( Object o : kSession.getObjects() ) {
-//            System.out.println( ">> " + o );
-//        }
-//        if ( 1 == 1 ) System.exit(-1);
-
-
     }
 
 
@@ -277,6 +295,48 @@ public class XSD2OWL {
     }
 
 
+
+
+    public static String compactXMLSchema(String resourceName) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, TransformerException, URISyntaxException {
+        ClassPathResource cpr = new ClassPathResource( resourceName );
+
+        XPathFactory xpathFactory = XPathFactory.newInstance();
+        XPath xPath = xpathFactory.newXPath();
+
+        DocumentBuilderFactory doxFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = doxFactory.newDocumentBuilder();
+        InputSource is = new InputSource( new FileInputStream( new File( cpr.getURL().toURI().getPath() ) ) );
+        Document dox = builder.parse( is );
+        dox.normalize();
+
+        XPathExpression xpathExp = xPath.compile( "//*[local-name()='annotation']" );
+        NodeList annotationNodes  = (NodeList) xpathExp.evaluate( dox, XPathConstants.NODESET );
+        // Remove each empty text node from document.
+        for (int i = 0; i < annotationNodes.getLength(); i++) {
+            Node annotationNode = annotationNodes.item(i);
+            annotationNode.getParentNode().removeChild(annotationNode);
+        }
+
+
+        XPathExpression xpathExp2 = xPath.compile( "//text()[normalize-space(.) = '']" );
+        NodeList emptyTextNodes = (NodeList) xpathExp2.evaluate(dox, XPathConstants.NODESET );
+        for (int i = 0; i < emptyTextNodes.getLength(); i++) {
+            Node emptyTextNode = emptyTextNodes.item(i);
+            emptyTextNode.getParentNode().removeChild( emptyTextNode );
+        }
+
+        TransformerFactory tFactory = TransformerFactory.newInstance();
+        Transformer transformer = tFactory.newTransformer();
+            transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        DOMSource domSrc = new DOMSource( dox );
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        StreamResult result = new StreamResult( baos );
+        transformer.transform( domSrc, result );
+
+        return new String( baos.toByteArray() );
+    }
 
 
 }

@@ -40,6 +40,7 @@ public class TestComplexElements {
     private static OWLOntology onto;
     private static OWLOntologyManager manager;
     private static OWLDataFactory factory;
+    private static String tns;
 
     @BeforeClass
     public static void parse() {
@@ -47,6 +48,7 @@ public class TestComplexElements {
         XSD2OWL converter = new XSD2OWL();
 
         Schema x = converter.parse("test/complexElements.xsd");
+        tns = x.getTargetNamespace() + "#";
 
         onto = converter.transform( x, true, true );
 
@@ -59,7 +61,7 @@ public class TestComplexElements {
     public void testObjectProperties() {
 
         try {
-            String px = "http://asu.edu/test#";
+            String px = tns;
             OWLClass k = factory.getOWLClass( IRI.create( px, "Source" ) );
             OWLClass x = factory.getOWLClass( IRI.create( px, "Target" ) );
 
@@ -145,7 +147,7 @@ public class TestComplexElements {
     public void testAnonRanges() {
 
         try {
-            String px = "http://asu.edu/test#";
+            String px = tns;
             OWLClass k = factory.getOWLClass( IRI.create( px, "Left" ) );
             OWLClass l = factory.getOWLClass( IRI.create( px, "Link" ) );
             OWLClass x = factory.getOWLClass( IRI.create( px, "Target" ) );

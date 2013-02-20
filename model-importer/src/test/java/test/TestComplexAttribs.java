@@ -38,12 +38,14 @@ public class TestComplexAttribs {
     private static OWLOntology onto;
     private static OWLOntologyManager manager;
     private static OWLDataFactory factory;
+    private static String tns;
 
     @BeforeClass
     public static void parse() {
         XSD2OWL converter = new XSD2OWL();
 
-        Schema x = converter.parse("test/complexAttribs.xsd");
+        Schema x = converter.parse( "test/complexAttribs.xsd" );
+        tns = x.getTargetNamespace() + "#";
 
         onto = converter.transform( x, true, true );
 
@@ -56,7 +58,7 @@ public class TestComplexAttribs {
 
         try {
 
-            OWLClass x = factory.getOWLClass(IRI.create("http://asu.edu/test#", "TestComplex"));
+            OWLClass x = factory.getOWLClass(IRI.create(tns, "TestComplex"));
 
             assertEquals( 5, onto.getSubClassAxiomsForSubClass( x ).size() );
 
@@ -64,15 +66,15 @@ public class TestComplexAttribs {
                     x,
                     factory.getOWLObjectIntersectionOf(
                             factory.getOWLDataAllValuesFrom(
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "field"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "field"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMinCardinality(
                                     0,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "field"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "field"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMaxCardinality(
                                     1,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "field"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "field"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) )
                 )
             ) );
@@ -80,15 +82,15 @@ public class TestComplexAttribs {
                     x,
                     factory.getOWLObjectIntersectionOf(
                             factory.getOWLDataAllValuesFrom(
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "defField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "defField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMinCardinality(
                                     0,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "defField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "defField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMaxCardinality(
                                     1,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "defField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "defField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) )
                 )
             ) );
@@ -96,15 +98,15 @@ public class TestComplexAttribs {
                     x,
                     factory.getOWLObjectIntersectionOf(
                             factory.getOWLDataAllValuesFrom(
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "otherField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "otherField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMinCardinality(
                                     1,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "otherField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "otherField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMaxCardinality(
                                     1,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "otherField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "otherField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) )
                 )
             ) );
@@ -112,15 +114,15 @@ public class TestComplexAttribs {
                     x,
                     factory.getOWLObjectIntersectionOf(
                             factory.getOWLDataAllValuesFrom(
-                                    factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "noField")),
+                                    factory.getOWLDataProperty(IRI.create(tns, "noField")),
                                     OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                             factory.getOWLDataMinCardinality(
                                     0,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "noField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "noField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ),
                             factory.getOWLDataMaxCardinality(
                                     0,
-                                    factory.getOWLDataProperty( IRI.create( "http://asu.edu/test#", "noField"  ) ),
+                                    factory.getOWLDataProperty( IRI.create( tns, "noField"  ) ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) )
                 )
             ) );
@@ -139,46 +141,46 @@ public class TestComplexAttribs {
         try {
 
             assertTrue( onto.containsAxiom( factory.getOWLSubClassOfAxiom(
-                    factory.getOWLClass( IRI.create( "http://asu.edu/test#", "TestChild" ) ),
-                    factory.getOWLClass( IRI.create( "http://asu.edu/test#", "TestComplex" ) ) ) ) );
+                    factory.getOWLClass( IRI.create( tns, "TestChild" ) ),
+                    factory.getOWLClass( IRI.create( tns, "TestComplex" ) ) ) ) );
 
             assertTrue(onto.containsAxiom(factory.getOWLSubClassOfAxiom(
-                    factory.getOWLClass(IRI.create("http://asu.edu/test#", "TestChild")),
+                    factory.getOWLClass(IRI.create(tns, "TestChild")),
 
                     factory.getOWLObjectIntersectionOf(
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLDataAllValuesFrom(
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField1")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField1")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMinCardinality(
                                             0,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField1")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField1")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMaxCardinality(
                                             1,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField1")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField1")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))),
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLDataAllValuesFrom(
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField2")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField2")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMinCardinality(
                                             0,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField2")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField2")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                             ),
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLDataAllValuesFrom(
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField3")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField3")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
 
                                     factory.getOWLDataMinCardinality(
                                             2,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField3")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField3")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMaxCardinality(
                                             3,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "baseField3")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "baseField3")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                             )
                     ))
@@ -198,11 +200,11 @@ public class TestComplexAttribs {
 
         try {
 
-            OWLClass x = factory.getOWLClass( IRI.create( "http://asu.edu/test#", "TestAnotherChild" ) );
+            OWLClass x = factory.getOWLClass( IRI.create( tns, "TestAnotherChild" ) );
 
             assertTrue( onto.containsAxiom( factory.getOWLSubClassOfAxiom(
                     x,
-                    factory.getOWLClass( IRI.create( "http://asu.edu/test#", "TestBase" ) ) ) ) );
+                    factory.getOWLClass( IRI.create( tns, "TestBase" ) ) ) ) );
 
             assertTrue(onto.containsAxiom(factory.getOWLSubClassOfAxiom(
                     x,
@@ -210,20 +212,20 @@ public class TestComplexAttribs {
                     factory.getOWLObjectUnionOf(
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLDataAllValuesFrom(
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "optionField1")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "optionField1")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMinCardinality(
                                             0,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "optionField1")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "optionField1")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                             ),
                             factory.getOWLObjectIntersectionOf(
                                     factory.getOWLDataAllValuesFrom(
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "optionField2")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "optionField2")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING)),
                                     factory.getOWLDataMinCardinality(
                                             0,
-                                            factory.getOWLDataProperty(IRI.create("http://asu.edu/test#", "optionField2")),
+                                            factory.getOWLDataProperty(IRI.create(tns, "optionField2")),
                                             OWL2DatatypeImpl.getDatatype(OWL2Datatype.XSD_STRING))
                             )
                     ))
