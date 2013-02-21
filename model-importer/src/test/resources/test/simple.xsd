@@ -31,5 +31,47 @@
     </xs:restriction>
   </xs:simpleType>
 
+
+  <xs:complexType name="TS">
+
+    <xs:sequence>
+      <xs:element name="value1">
+        <xs:simpleType>
+          <xs:union memberTypes="xs:string xs:int"/>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="value11">
+        <xs:simpleType>
+          <xs:union memberTypes="xs:decimal">
+            <xs:simpleType>
+              <xs:restriction base="xs:anyURI" />
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+
+    <xs:attribute name="value2" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[1-2][0-9]"/>
+          <xs:length value="2"/>
+          <xs:maxLength value="6"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+
+    <xs:attribute name="value3" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:double">
+          <xs:maxExclusive value="13.0"/>
+          <xs:minInclusive value="11.0"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+
+
+  </xs:complexType>
+
 </xs:schema>
 

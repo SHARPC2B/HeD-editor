@@ -20,16 +20,16 @@
            xmlns="http://asu.edu/test" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 
-  <xs:complexType name="Source">
+  <xs:complexType name="Source" mixed="true">
       <xs:sequence>
-        <xs:element name="field" type="Target" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="field" type="Tgt.Test" minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="Target">
+  <xs:complexType name="Tgt.Test" mixed="true">
       <xs:sequence>
         <xs:element name="desc" type="xs:string" />
-        <xs:element name="field" type="Target" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="field" type="Tgt.Test" minOccurs="0" maxOccurs="unbounded"/>
       </xs:sequence>
   </xs:complexType>
 
@@ -39,7 +39,7 @@
       <xs:element name="link" minOccurs="0" maxOccurs="unbounded">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="pointer" type="Target" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="pointer" type="Tgt.Test" minOccurs="1" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

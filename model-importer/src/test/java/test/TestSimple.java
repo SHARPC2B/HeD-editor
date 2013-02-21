@@ -24,7 +24,10 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.test.XSD2OWL;
+import org.w3.x2001.xmlschema.Facet;
+import org.w3.x2001.xmlschema.Pattern;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
 
@@ -53,7 +56,8 @@ public class TestSimple {
             ) );
 
         } catch ( Exception e ) {
-            fail( e.getMessage() );
+            e.printStackTrace();
+            fail(e.getMessage());
         }
 
     }
@@ -77,13 +81,115 @@ public class TestSimple {
             assertTrue( onto.containsAxiom( factory.getOWLDatatypeDefinitionAxiom(
                     factory.getOWLDatatype( IRI.create( tns, "Enumerated" ) ),
                     factory.getOWLDataOneOf( factory.getOWLLiteral( "A", OWL2Datatype.XSD_STRING ),
-                                            factory.getOWLLiteral( "B", OWL2Datatype.XSD_STRING ),
-                                            factory.getOWLLiteral( "C", OWL2Datatype.XSD_STRING )
+                            factory.getOWLLiteral( "B", OWL2Datatype.XSD_STRING ),
+                            factory.getOWLLiteral( "C", OWL2Datatype.XSD_STRING )
                     ) )
             ) );
 
         } catch ( Exception e ) {
             fail( e.getMessage() );
         }
+    }
+
+
+    @Test
+    public void testSimpleTypeWithRestriction() {
+
+        try {
+            XSD2OWL converter = new XSD2OWL();
+
+            Schema x = converter.parse( "test/simple.xsd" );
+            String tns = x.getTargetNamespace() + "#";
+
+            OWLOntology onto = converter.transform( x, true, true );
+
+            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            OWLDataFactory factory = manager.getOWLDataFactory();
+
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value2Type" ) ),
+                            factory.getOWLDatatypeRestriction(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ),
+                                    OWLFacet.LENGTH,
+                                    factory.getOWLLiteral( "2", OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT ) ) )
+                    )
+            ));
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value2Type" ) ),
+                            factory.getOWLDatatypeRestriction(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ),
+                                    OWLFacet.MAX_LENGTH,
+                                    factory.getOWLLiteral( "6", OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT ) ) )
+                    )
+            ));
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value2Type" ) ),
+                            factory.getOWLDatatypeRestriction(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ),
+                                    OWLFacet.PATTERN,
+                                    factory.getOWLLiteral( "[1-2][0-9]" ) )
+                    )
+            ));
+
+
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value3Type" ) ),
+                            factory.getOWLDatatypeRestriction(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DOUBLE ),
+                                    OWLFacet.MIN_INCLUSIVE,
+                                    factory.getOWLLiteral( "11.0", OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DOUBLE ) ) )
+                    )
+            ));
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value3Type" ) ),
+                            factory.getOWLDatatypeRestriction(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DOUBLE ),
+                                    OWLFacet.MAX_EXCLUSIVE,
+                                    factory.getOWLLiteral( "13.0", OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DOUBLE ) ) )
+                    )
+            ));
+
+
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value1Type" ) ),
+                            factory.getOWLDataUnionOf(
+                                OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT ),
+                                OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING )
+                            )
+                    ) )
+            );
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value11Type_Local_0_Type" ) ),
+                            OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_ANY_URI )
+
+                    ) )
+            );
+            assertTrue( onto.containsAxiom(
+                    factory.getOWLDatatypeDefinitionAxiom(
+                            factory.getOWLDatatype( IRI.create( tns, "value11Type" ) ),
+                            factory.getOWLDataUnionOf(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DECIMAL ),
+                                    factory.getOWLDatatype( IRI.create( tns, "value11Type_Local_0_Type" ) )
+                            )
+                    ) )
+            );
+
+
+
+
+
+
+
+        } catch ( Exception e ) {
+            fail( e.getMessage() );
+        }
+
     }
 }

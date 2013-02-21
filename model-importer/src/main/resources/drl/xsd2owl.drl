@@ -37,7 +37,7 @@ end
 function OWLDatatype mapXsdDatatype( QName qn, OWLDataFactory factory ) {
     String px = qn.getNamespaceURI() + "#";
         if ( px.equals( Namespaces.XSD.toString() ) ) {
-            if ( "ID".equals( qn.getLocalPart() ) ) {
+            if ( "IDREF".equals( qn.getLocalPart() ) || "ID".equals( qn.getLocalPart() ) ) {
                 return OWL2DatatypeImpl.getDatatype( OWL2Datatype.getDatatype( IRI.create( px, "anyURI" ) ) );
             } else if ( "anyType".equals( qn.getLocalPart() ) ) {
                 return factory.getTopDatatype();
@@ -47,6 +47,32 @@ function OWLDatatype mapXsdDatatype( QName qn, OWLDataFactory factory ) {
         } else {
             return factory.getOWLDatatype( IRI.create( px, qn.getLocalPart() ) );
         }
+}
+
+function OWLFacet mapFacet( Facet f, String n ) {
+//    System.out.println( "<" + n + ">" + f.getClass() );
+    if ( f instanceof Pattern ) return OWLFacet.PATTERN;
+    if ( "length".equals( n ) ) return OWLFacet.LENGTH;
+    if ( "fractionDigits".equals( n ) ) return OWLFacet.FRACTION_DIGITS;
+    if ( "minInclusive".equals( n ) ) return OWLFacet.MIN_INCLUSIVE;
+    if ( "maxInclusive".equals( n ) ) return OWLFacet.MAX_INCLUSIVE;
+    if ( "minExclusive".equals( n ) ) return OWLFacet.MIN_EXCLUSIVE;
+    if ( "maxExclusive".equals( n ) ) return OWLFacet.MAX_EXCLUSIVE;
+    if ( "maxLength".equals( n ) ) return OWLFacet.MAX_LENGTH;
+    if ( "minLength".equals( n ) ) return OWLFacet.MIN_LENGTH;
+    if ( f instanceof TotalDigits ) return OWLFacet.TOTAL_DIGITS;
+    return null;
+}
+
+function OWLDatatype mapFacetType( OWLFacet f, QName base ) {
+    if ( f == OWLFacet.PATTERN ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING );
+    if ( f == OWLFacet.TOTAL_DIGITS ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT );
+    if ( f == OWLFacet.LENGTH ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT );
+    if ( f == OWLFacet.MIN_LENGTH ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT );
+    if ( f == OWLFacet.MAX_LENGTH ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT );
+    if ( f == OWLFacet.FRACTION_DIGITS ) return OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_INT );
+
+    return OWL2DatatypeImpl.getDatatype( OWL2Datatype.getDatatype( IRI.create( base.getNamespaceURI() + "#", base.getLocalPart() ) ) );
 }
 
 query "axioms" ( Set $set )
@@ -171,15 +197,29 @@ declare ObjectName
 end
 
 
+rule "Attribute Localization in ComplexType"
+when
+    $cxt : ComplexType( $name : name, $atts : attributeOrAttributeGroup )
+    ( $att : Attribute( this memberOf $atts )
+      or
+      ( AttributeGroup( this memberOf $atts, $inner : attributeOrAttributeGroup )
+        and
+        $att : Attribute( this memberOf $inner )
+      )
+    )
+then
+    insertLogical( new AttrContext( $att, $cxt ) );
+end
+
 rule "Attribute Localization in ComplexType Extensions"
 when
     ComplexType( $name : name, $ext: complexContent!.extension )
     ExtensionType( this == $ext, $atts : attributeOrAttributeGroup )
-    ( $att : Attribute() from $atts
+    ( $att : Attribute( this memberOf $atts )
       or
-      ( AttributeGroup( $inner : attributeOrAttributeGroup ) from $atts
+      ( AttributeGroup( this memberOf $atts, $inner : attributeOrAttributeGroup )
         and
-        $att : Attribute() from $inner
+        $att : Attribute( this memberOf $inner )
       )
     )
 then
@@ -228,7 +268,7 @@ end
 
 rule "Named Simple Types"
 when
-    $s : SimpleType( $name : name )
+    $s : SimpleType( $name : name != null )
 then
     insertLogical( new DataName( new QName( tns, $name ) ) );
     insertLogical(
@@ -238,21 +278,91 @@ then
         ) ) );
 end
 
+rule "Anon Simple Types in Element"
+salience 10
+when
+    Element( $name : name != null, $s : simpleType )
+    SimpleType( this == $s, name == null )
+then
+    modify ( $s ) { setName( $name + "Type" ); }
+end
+
+rule "Anon Simple Types in Attribute"
+salience 10
+when
+    Attribute( $name : name != null, $s : simpleType )
+    SimpleType( this == $s, name == null )
+then
+    modify ( $s ) { setName( $name + "Type" ); }
+end
+
+rule "Anon Simple Types in Union"
+salience 10
+when
+    SimpleType( $name : name != null, $u : union )
+    Union( this == $u, $s : simpleType )
+    $t : SimpleType( this memberOf $s, name == null )
+then
+    modify ( $t ) { setName( $name + "_Local_" + $s.indexOf( $t ) + "_Type" ); }
+end
+
 
 rule "Named Simple Types Range"
 when
     $s : SimpleType( $name : name != null, union == null, restriction != null, restriction.base != null,
-//                     restriction.facets.isEmpty(),
+                     restriction.facets.isEmpty(),
                      $baseURI : restriction.base.namespaceURI, $baseName : restriction.base.localPart )
 then
     insertLogical(
         new Link(
             $s,
             factory.getOWLDatatypeDefinitionAxiom(
-                factory.getOWLDatatype( IRI.create( tns+ "#", $name ) ),
+                factory.getOWLDatatype( IRI.create( tns + "#", $name ) ),
                 mapXsdDatatype( new QName( $baseURI, $baseName ), factory )
         ) ) );
 end
+
+rule "Named Simple Types Simple Facet"
+when
+    $s : SimpleType( $name : name != null, $fax : restriction!.facets,
+                     $base : restriction.base )
+    $f : Facet( $value : value, this memberOf $fax )
+then
+    OWLFacet fax = mapFacet( $f, "" );
+    insertLogical(
+        new Link(
+            $f,
+            factory.getOWLDatatypeDefinitionAxiom(
+                factory.getOWLDatatype( IRI.create( tns + "#", $name ) ),
+                factory.getOWLDatatypeRestriction(
+                    mapXsdDatatype( $base, factory ),
+                    fax,
+                    factory.getOWLLiteral( $value, mapFacetType( fax, $base )  ) )
+        ) ) );
+end
+
+rule "Named Simple Types Complex Facet"
+when
+    $s : SimpleType( $name : name != null, $fax : restriction!.facets,
+                     $base : restriction.base != null )
+    $x : JAXBElement( $v : value, this memberOf $fax, $n : name.localPart != "enumeration" )
+    $f : Facet( $value : value, this == $v )
+then
+    OWLFacet fax = mapFacet( $f, $n );
+    if ( fax != null ) {
+    insertLogical(
+        new Link(
+            $f,
+            factory.getOWLDatatypeDefinitionAxiom(
+                factory.getOWLDatatype( IRI.create( tns + "#", $name ) ),
+                factory.getOWLDatatypeRestriction(
+                    mapXsdDatatype( $base, factory ),
+                    fax,
+                    factory.getOWLLiteral( $value, mapFacetType( fax, $base ) ) )
+        ) ) );
+    }
+end
+
 
 
 
@@ -260,7 +370,7 @@ rule "Named Simple Types Enum"
 when
     $s : SimpleType( $name : name != null, $rest : restriction, $base : restriction.base, union == null,
                 $facets : restriction.facets, restriction.facets.size() > 0 )
-    accumulate( $jxb : JAXBElement( $tmp : value ) from $facets
+    accumulate( $jxb : JAXBElement( $tmp : value, name.localPart == "enumeration" ) from $facets
                 and
                 $fax : Facet( $val : value ) from $tmp,
                 $set : collectSet( factory.getOWLLiteral( $val,
@@ -277,7 +387,29 @@ then
 end
 
 
-
+rule "Named Simple Types Union"
+when
+    $s : SimpleType( $name : name != null, $union : union != null )
+    accumulate( $n : QName() from $union.memberTypes,
+                $members : collectSet(
+                    factory.getOWLDatatype( IRI.create( $n.getNamespaceURI() + "#", $n.getLocalPart() ) )
+                ) )
+    accumulate( $x : SimpleType( $y : name != null, this memberOf $union.simpleType ),
+                $more : collectSet(
+                    factory.getOWLDatatype( IRI.create( tns + "#", $y ) )
+                ) )
+then
+    Set set = new HashSet();
+        set.addAll( $members );
+        set.addAll( $more );
+    insertLogical(
+        new Link(
+            $union,
+            factory.getOWLDatatypeDefinitionAxiom(
+                factory.getOWLDatatype( IRI.create( tns + "#" , $name ) ),
+                factory.getOWLDataUnionOf( set )
+            ) ) );
+end
 
 
 
@@ -306,10 +438,9 @@ end
 
 rule "Complex Type Extension Attribute"
 when
-    ComplexType( $name : name, $ext: complexContent!.extension )
-    ExtensionType( this == $ext, $atts : attributeOrAttributeGroup )
-    AttrContext( $att, $ext ; )
-    Attribute( this == $att, $prop : name, $type : type, $opt : use )
+    $cxt : ComplexType( $name : name )
+    AttrContext( $att : att, ctx == $cxt || == $cxt.complexContent!.extension )
+    Attribute( this == $att, $prop : name, $type : type != null, $opt : use )
 then
     OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", $prop ) );
     OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $name ) );
@@ -591,6 +722,18 @@ then
     insert( new Link( $group, factory.getOWLSubClassOfAxiom( dom, $kls ) ) );
 end
 
+rule "Attribute Group Ref Link in ComplexTypes"
+salience 100
+when
+    $ref : AttributeGroupRef( $refName : ref!.localPart )
+    $com : ComplexType( $atts : attributeOrAttributeGroup contains $ref )
+    $tgt : AttributeGroup( name == $refName )
+then
+    int idx = $atts.indexOf( $ref );
+    modify ( $com ) {
+        getAttributeOrAttributeGroup().set( idx, $tgt );
+    }
+end
 
 rule "Attribute Group Ref Link in Extensions"
 salience 100
@@ -619,4 +762,20 @@ then
                 factory.getOWLDeclarationAxiom( prop )
             ) );
     insertLogical( new Ran( $prop, $type ) );
+end
+
+
+
+rule "Mixed"
+when
+    $cxt : ComplexType( $type : name != null, mixed == true )
+then
+    OWLDataProperty prop = factory.getOWLDataProperty( IRI.create( tns + "#", "__mixed" ) );
+    insertLogical(
+                new Link(
+                    $cxt,
+                    factory.getOWLDeclarationAxiom( prop )
+                ) );
+    insertLogical( new Dom( "__mixed", new QName( tns, $type ) ) );
+    insertLogical( new Ran( "__mixed", new QName( "http://www.w3.org/2001/XMLSchema", "string" ) ) );  // slightly redundant, but I don't want to use a full exists rule for this
 end

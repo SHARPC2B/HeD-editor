@@ -63,7 +63,7 @@ public class TestComplexElements {
         try {
             String px = tns;
             OWLClass k = factory.getOWLClass( IRI.create( px, "Source" ) );
-            OWLClass x = factory.getOWLClass( IRI.create( px, "Target" ) );
+            OWLClass x = factory.getOWLClass( IRI.create( px, "Tgt.Test" ) );
 
             assertEquals( 2, onto.getSubClassAxiomsForSubClass( k ).size() );
             assertEquals( 2, onto.getSubClassAxiomsForSubClass( x ).size() );
@@ -72,19 +72,22 @@ public class TestComplexElements {
 
             OWLObjectProperty p1 = factory.getOWLObjectProperty( IRI.create( px, "field" ) );
             OWLDataProperty p2 = factory.getOWLDataProperty( IRI.create( px, "desc" ) );
+            OWLDataProperty p3 = factory.getOWLDataProperty( IRI.create( px, "__mixed" ) );
 
             assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( x ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( k ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( p1 ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( p2 ) ) );
-
+            assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( p3 ) ) );
 
             Object y = onto.getObjectPropertyDomainAxioms( p1 );
                        
             assertTrue( onto.containsAxiom( factory.getOWLObjectPropertyDomainAxiom( p1, factory.getOWLObjectUnionOf( k, x ) ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( p2, x ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( p3, factory.getOWLObjectUnionOf( k, x ) ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLObjectPropertyRangeAxiom( p1, x ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyRangeAxiom( p2, OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyRangeAxiom( p3, OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING ) ) ) );
 
             assertTrue( onto.containsAxiom( factory.getOWLSubClassOfAxiom(
                     x,
@@ -150,7 +153,7 @@ public class TestComplexElements {
             String px = tns;
             OWLClass k = factory.getOWLClass( IRI.create( px, "Left" ) );
             OWLClass l = factory.getOWLClass( IRI.create( px, "Link" ) );
-            OWLClass x = factory.getOWLClass( IRI.create( px, "Target" ) );
+            OWLClass x = factory.getOWLClass( IRI.create( px, "Tgt.Test" ) );
 
 
             OWLObjectProperty p1 = factory.getOWLObjectProperty( IRI.create( px, "link" ) );

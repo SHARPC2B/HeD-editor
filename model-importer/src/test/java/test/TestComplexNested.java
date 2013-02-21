@@ -61,7 +61,7 @@ public class TestComplexNested {
 
             OWLClass k = factory.getOWLClass(IRI.create(tns, "TestBase"));
 
-            assertEquals( 2, onto.getSubClassAxiomsForSubClass( k ).size() );
+            assertEquals( 3, onto.getSubClassAxiomsForSubClass( k ).size() );
 
             assertTrue( onto.containsAxiom( factory.getOWLSubClassOfAxiom( k, factory.getOWLThing() ) ) );
 

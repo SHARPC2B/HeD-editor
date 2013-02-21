@@ -62,4 +62,9 @@
     </xs:attribute>
   </xs:attributeGroup>
 
+
+  <xs:complexType name="XYZ.ABC">
+    <xs:attributeGroup ref="ATTR_RTO_LOW" />
+  </xs:complexType>
+
 </xs:schema>

@@ -56,6 +56,7 @@ public class TestAttrGroup {
             OWLDataFactory factory = manager.getOWLDataFactory();
 
             OWLClass ivl = factory.getOWLClass( IRI.create( tns, "IVL_RTO" ) );
+            OWLClass xyz = factory.getOWLClass( IRI.create( tns, "XYZ.ABC" ) );
             OWLDatatype dec = factory.getOWLDatatype( IRI.create( tns, "Decimal" ) );
             OWLDatatype cd = factory.getOWLDatatype( IRI.create( tns, "Code" ) );
             OWLDatatype bool = OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_BOOLEAN );
@@ -90,8 +91,8 @@ public class TestAttrGroup {
             assertEquals( 6, onto.getAxiomCount( AxiomType.DATA_PROPERTY_DOMAIN ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( lowIsInclusive, ivl ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( highIsInclusive, ivl ) ) );
-            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( lowNumerator, ivl  ) ) );
-            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( lowDenominator, ivl ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( lowNumerator, factory.getOWLObjectUnionOf( ivl, xyz ) ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( lowDenominator, factory.getOWLObjectUnionOf( ivl, xyz ) ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( highNumerator, ivl  ) ) );
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( highDenominator, ivl ) ) );            
             
@@ -108,6 +109,7 @@ public class TestAttrGroup {
             assertTrue( onto.containsAxiom( factory.getOWLDataPropertyRangeAxiom( highDenominator, dec ) ) );
 
             assertEquals( 6 + 1, onto.getSubClassAxiomsForSubClass( ivl ).size() );
+            assertEquals( 2 + 1, onto.getSubClassAxiomsForSubClass( xyz ).size() );
 
         } catch ( Exception e ) {
             fail( e.getMessage() );
