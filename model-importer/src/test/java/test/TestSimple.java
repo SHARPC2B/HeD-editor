@@ -20,6 +20,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -31,6 +32,7 @@ import org.w3.x2001.xmlschema.Pattern;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
@@ -64,7 +66,7 @@ public class TestSimple {
 
 
     @Test
-    @Ignore( "Hermit may have an issue with enumerated datatypes in more complex schemas..., generation has been temporarily disabled" )
+    @Ignore
     public void testSimpleEnum() {
 
         try {
@@ -105,6 +107,8 @@ public class TestSimple {
 
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
             OWLDataFactory factory = manager.getOWLDataFactory();
+
+            OWLClass ts = factory.getOWLClass( IRI.create( tns, "TS" ) );
 
             assertTrue( onto.containsAxiom(
                     factory.getOWLDatatypeDefinitionAxiom(
@@ -166,24 +170,18 @@ public class TestSimple {
             );
             assertTrue( onto.containsAxiom(
                     factory.getOWLDatatypeDefinitionAxiom(
-                            factory.getOWLDatatype( IRI.create( tns, "value11Type_Local_0_Type" ) ),
-                            OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_ANY_URI )
-
-                    ) )
-            );
-            assertTrue( onto.containsAxiom(
-                    factory.getOWLDatatypeDefinitionAxiom(
                             factory.getOWLDatatype( IRI.create( tns, "value11Type" ) ),
                             factory.getOWLDataUnionOf(
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_ANY_URI ),
                                     OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DECIMAL ),
-                                    factory.getOWLDatatype( IRI.create( tns, "value11Type_Local_0_Type" ) )
+                                    OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_DATE_TIME )
                             )
                     ) )
             );
 
 
 
-
+            assertEquals( 4, onto.getSubClassAxiomsForSubClass( ts ).size() );
 
 
 

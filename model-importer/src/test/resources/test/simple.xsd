@@ -46,6 +46,9 @@
             <xs:simpleType>
               <xs:restriction base="xs:anyURI" />
             </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:date" />
+            </xs:simpleType>
           </xs:union>
         </xs:simpleType>
       </xs:element>
