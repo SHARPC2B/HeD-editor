@@ -25,7 +25,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-import org.test.XSD2OWL;
+import org.test.Xsd2Owl;
+import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
 
@@ -42,7 +43,7 @@ public class TestComplexNested {
 
     @BeforeClass
     public static void parse() {
-        XSD2OWL converter = new XSD2OWL();
+        Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
         Schema x = converter.parse("test/complexNested.xsd");
         tns = x.getTargetNamespace() + "#";

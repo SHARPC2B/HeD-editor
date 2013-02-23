@@ -16,7 +16,6 @@
 
 package test;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -28,11 +27,10 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-import org.test.XSD2OWL;
+import org.test.Xsd2Owl;
+import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
-
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -45,7 +43,7 @@ public class TestAttrGroup {
 
         try {
 
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
             Schema x = converter.parse( "test/attrGroup.xsd" );
             String tns = x.getTargetNamespace() + "#";

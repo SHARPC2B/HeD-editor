@@ -14,39 +14,33 @@
  * limitations under the License.
  */
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxOntologyFormat;
-import org.drools.io.impl.ClassPathResource;
-import org.junit.Ignore;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.test.Jaxplorer;
-import org.test.XSD2OWL;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.test.Xsd2Owl;
+import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class TestXSD {
 
     @Test
-    @Ignore
     public void testVMRSchema() {
 
         try {
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-            Schema x = converter.parse( "vmr.xsd" );
+            Schema x = converter.parse( "test/datatypes-iso21090-clean.xsd" );
 
             OWLOntology onto = converter.transform( x, true, false );
+
+            converter.stream( onto,
+                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/datatypes.turtle.owl" ) ,
+                    new TurtleOntologyFormat()
+            );
 
         } catch ( Exception e ) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -60,7 +54,7 @@ public class TestXSD {
     public void testCleanup() {
 
         try {
-            String clean = XSD2OWL.compactXMLSchema("vmr.xsd");
+            String clean = Xsd2OwlImpl.getInstance().compactXMLSchema( "vmr.xsd" );
             System.out.println( clean );
         } catch ( Exception e ) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

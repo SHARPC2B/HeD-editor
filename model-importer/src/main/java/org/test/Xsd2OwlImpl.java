@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
@@ -54,7 +55,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -74,23 +74,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.StringReader;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class XSD2OWL {
+public class Xsd2OwlImpl implements Xsd2Owl {
+
+    private static Xsd2OwlImpl instance;
+
+    public static Xsd2Owl getInstance() {
+        if ( instance == null ) {
+            instance = new Xsd2OwlImpl();
+        }
+        return instance;
+    }
 
     private KnowledgeBase kBase;
-
-    private OWLOntologyManager manager;
-    private OWLDataFactory factory;
-
     private static File metaSchema;
 
     private static List<InferredAxiomGenerator<? extends OWLAxiom>> fullAxiomGenerators;
@@ -105,27 +109,25 @@ public class XSD2OWL {
         }
 
         fullAxiomGenerators = Collections.unmodifiableList(
-            new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>(
-                    Arrays.asList(
-                            new InferredClassAssertionAxiomGenerator(),
-                            new InferredDataPropertyCharacteristicAxiomGenerator(),
-                            new InferredEquivalentClassAxiomGenerator(),
-                            new InferredEquivalentDataPropertiesAxiomGenerator(),
-                            new InferredEquivalentObjectPropertyAxiomGenerator(),
-                            new InferredInverseObjectPropertiesAxiomGenerator(),
-                            new InferredObjectPropertyCharacteristicAxiomGenerator(),
-                            new InferredPropertyAssertionGenerator(),
-                            new InferredSubClassAxiomGenerator(),
-                            new InferredSubDataPropertyAxiomGenerator(),
-                            new InferredSubObjectPropertyAxiomGenerator()
-                    )));
+                new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>(
+                        Arrays.asList(
+                                new InferredClassAssertionAxiomGenerator(),
+                                new InferredDataPropertyCharacteristicAxiomGenerator(),
+                                new InferredEquivalentClassAxiomGenerator(),
+                                new InferredEquivalentDataPropertiesAxiomGenerator(),
+                                new InferredEquivalentObjectPropertyAxiomGenerator(),
+                                new InferredInverseObjectPropertiesAxiomGenerator(),
+                                new InferredObjectPropertyCharacteristicAxiomGenerator(),
+                                new InferredPropertyAssertionGenerator(),
+                                new InferredSubClassAxiomGenerator(),
+                                new InferredSubDataPropertyAxiomGenerator(),
+                                new InferredSubObjectPropertyAxiomGenerator()
+                        )));
     }
 
 
-    public XSD2OWL() {
+    protected Xsd2OwlImpl() {
         System.out.println( "Creating converter...." );
-        manager = OWLManager.createOWLOntologyManager();
-        factory = manager.getOWLDataFactory();
         kBase = initKBase();
         System.out.println( "Created converter...." );
     }
@@ -160,39 +162,48 @@ public class XSD2OWL {
         }
     }
 
-    public OWLOntology transform(Schema schema, boolean verbose, boolean checkConsistency) {
+    public OWLOntology transform( Schema schema, boolean verbose, boolean checkConsistency ) {
         System.out.println( "Transforming...." );
-        OWLOntology ontology = null;
-        try {
-            ontology = manager.createOntology( new OWLOntologyID(
-                    IRI.create( schema.getTargetNamespace() ),
-                    IRI.create( schema.getTargetNamespace() + "/" +
-                            ( schema.getVersion() != null ? schema.getVersion() : "1.0" ) ) ) );
-        } catch ( OWLOntologyCreationException e ) {
-            e.printStackTrace();
-            return null;
-        }
-
         StatefulKnowledgeSession kSession = kBase.newStatefulKnowledgeSession();
-        kSession.setGlobal( "ontology", ontology );
-        kSession.setGlobal( "manager", manager );
-        kSession.setGlobal( "factory", factory );
+        OWLOntology ontology = null;
 
-        visit( schema, kSession );
-
-        if ( verbose ) {
+        try {
+            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            OWLDataFactory factory = manager.getOWLDataFactory();
             try {
-                manager.saveOntology(
-                        ontology,
-                        new ManchesterOWLSyntaxOntologyFormat(),
-                        System.out);
-            } catch ( OWLOntologyStorageException e ) {
+                ontology = manager.createOntology( new OWLOntologyID(
+                        IRI.create( schema.getTargetNamespace() ),
+                        IRI.create( schema.getTargetNamespace() + "/" +
+                                ( schema.getVersion() != null ? schema.getVersion() : "1.0" ) ) ) );
+            } catch ( OWLOntologyCreationException e ) {
                 e.printStackTrace();
+                return null;
             }
-        }
 
-        if ( checkConsistency ) {
-            launchReasoner( ontology, fullAxiomGenerators );
+
+            kSession.setGlobal( "ontology", ontology );
+            kSession.setGlobal( "manager", manager );
+            kSession.setGlobal( "factory", factory );
+
+            visit( schema, kSession, manager );
+
+            if ( verbose ) {
+                try {
+                    manager.saveOntology(
+                            ontology,
+                            new ManchesterOWLSyntaxOntologyFormat(),
+                            System.out);
+                } catch ( OWLOntologyStorageException e ) {
+                    e.printStackTrace();
+                }
+            }
+
+            if ( checkConsistency ) {
+                launchReasoner( ontology, fullAxiomGenerators );
+            }
+        } finally {
+
+            kSession.dispose();
         }
 
         System.out.println( "DONE!" );
@@ -205,17 +216,17 @@ public class XSD2OWL {
                 targetNamespace : targetNamespace + "#";
     }
 
-    private void visit( Schema schema, StatefulKnowledgeSession kSession ) {
+    private void visit( Schema schema, StatefulKnowledgeSession kSession, OWLOntologyManager manager ) {
         for ( OpenAttrs ext : schema.getIncludeOrImportOrRedefine() ) {
             if ( ext instanceof Include ) {
                 Include include = (Include) ext;
                 //TODO: make it work with downloadable files
                 Schema sub = parse( include.getSchemaLocation() );
-                visit( sub, kSession );
+                visit( sub, kSession, manager );
             } else if ( ext instanceof Import ) {
                 Import imp = (Import) ext;
                 Schema sub = parse( imp.getSchemaLocation() );
-                visit( sub, kSession );
+                visit( sub, kSession, manager );
             } else if ( ext instanceof Redefine ) {
                 Redefine redefine = (Redefine) ext;
                 throw new UnsupportedOperationException( "Implement redefines" );
@@ -243,8 +254,14 @@ public class XSD2OWL {
     }
 
 
-
-
+    public boolean stream( OWLOntology onto, OutputStream stream, OWLOntologyFormat format ) {
+        try {
+            onto.getOWLOntologyManager().saveOntology( onto, format, stream );
+            return true;
+        } catch (OWLOntologyStorageException e) {
+            return false;
+        }
+    }
 
     private void launchReasoner( OWLOntology ontoDescr,
                                  List<InferredAxiomGenerator<? extends OWLAxiom>> axiomGenerators ) {
@@ -297,7 +314,7 @@ public class XSD2OWL {
 
 
 
-    public static String compactXMLSchema(String resourceName) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, TransformerException, URISyntaxException {
+    public String compactXMLSchema( String resourceName ) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, TransformerException, URISyntaxException {
         ClassPathResource cpr = new ClassPathResource( resourceName );
 
         XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -327,8 +344,8 @@ public class XSD2OWL {
 
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer();
-            transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         DOMSource domSrc = new DOMSource( dox );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -30,9 +30,8 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
-import org.test.XSD2OWL;
-import org.w3.x2001.xmlschema.Facet;
-import org.w3.x2001.xmlschema.Pattern;
+import org.test.Xsd2Owl;
+import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
 
@@ -46,7 +45,7 @@ public class TestSimple {
     public void testSimpleType() {
 
         try {
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
             Schema x = converter.parse( "test/simple.xsd" );
             String tns = x.getTargetNamespace() + "#";
@@ -74,7 +73,7 @@ public class TestSimple {
     public void testSimpleEnum() {
 
         try {
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
             Schema x = converter.parse( "test/simple.xsd" );
             String tns = x.getTargetNamespace() + "#";
@@ -102,7 +101,7 @@ public class TestSimple {
     public void testSimpleTypeWithRestriction() {
 
         try {
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
             Schema x = converter.parse( "test/simple.xsd" );
             String tns = x.getTargetNamespace() + "#";
@@ -202,7 +201,7 @@ public class TestSimple {
     public void testSimpleList() {
 
         try {
-            XSD2OWL converter = new XSD2OWL();
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
             Schema x = converter.parse( "test/simpleList.xsd" );
             String tns = x.getTargetNamespace() + "#";
