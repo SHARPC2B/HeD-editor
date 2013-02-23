@@ -428,6 +428,7 @@ when
     $s : SimpleType( $name : name != null, $fax : restriction!.facets,
                      $base : restriction.base )
     $f : Facet( $value : value, this memberOf $fax )
+    not WhiteSpace( this == $f )
 then
     OWLFacet fax = mapFacet( $f, "" );
     insertLogical( new DataAnon( null, $s, factory.getOWLDatatypeRestriction(
@@ -463,8 +464,7 @@ when
     accumulate( $jxb : JAXBElement( this memberOf $facets, $tmp : value, name.localPart == "enumeration" )
                 and
                 $fax : Facet( this == $tmp, $val : value ),
-                $set : collectSet( factory.getOWLLiteral( $val,
-                                                           OWL2Datatype.getDatatype( IRI.create( $base.getNamespaceURI() + "#", $base.getLocalPart() ) ) ) );
+                $set : collectSet( factory.getOWLLiteral( $val, mapXsdDatatype( $base, factory ) ) );
                 $set.size() > 0
               )
 then
@@ -847,6 +847,26 @@ then
     insertLogical( new Ran( new QName( tns, $prop ), $type ) );
 end
 
+
+rule "Link Element Refs"
+salience 100000
+when
+    $src : Element( $ref : ref != null, name == null )
+    $tgt : Element( name == $ref.localPart )
+then
+    // I can't replace $src with $tgt, since it contains local info such as min/maxOccurs
+    modify ( $src ) {
+        setSimpleType( $tgt.getSimpleType() ),
+        setComplexType( $tgt.getComplexType() ),
+        setType( $tgt.getType() ),
+        setSubstitutionGroup( $tgt.getSubstitutionGroup() ),
+        setDefault( $tgt.getDefault() ),
+        setFixed( $tgt.getFixed() ),
+        setNillable( $tgt.isNillable() ),
+        setForm( $tgt.getForm() ),
+        setName( $tgt.getName() );
+    }
+end
 
 
 rule "Mixed"

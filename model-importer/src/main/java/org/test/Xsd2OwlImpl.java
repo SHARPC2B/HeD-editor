@@ -146,7 +146,7 @@ public class Xsd2OwlImpl implements Xsd2Owl {
 
     public Schema parse( String schemaLocation ) {
         try {
-            System.out.println( "Parsing schema...." );
+            System.out.println( "Parsing schema.... " + schemaLocation );
             JAXBContext context = JAXBContext.newInstance( Schema.class.getPackage().getName() );
             javax.xml.validation.Schema metax = SchemaFactory.newInstance( Namespaces.XSD.toString().replace( "#", "" ) ).newSchema(metaSchema);
             Unmarshaller loader = context.createUnmarshaller();
@@ -155,6 +155,11 @@ public class Xsd2OwlImpl implements Xsd2Owl {
             ClassPathResource cpr = new ClassPathResource( schemaLocation );
             Schema schema = (Schema) loader.unmarshal( new File( cpr.getURL().toURI() ) );
             System.out.println( "Parsed schema...." );
+
+            if ( schema.getTargetNamespace() == null ) {
+                schema.setTargetNamespace( "" );
+            }
+
             return schema;
         } catch ( Exception e ) {
             e.printStackTrace();
