@@ -32,6 +32,7 @@ declare Anon
     kls : OWLClassExpression
     and : boolean
     rst : boolean
+    siz : int
 end
 
 declare DataAnon
@@ -58,7 +59,6 @@ function OWLDatatype mapXsdDatatype( QName qn, OWLDataFactory factory ) {
 }
 
 function OWLFacet mapFacet( Facet f, String n ) {
-//    System.out.println( "<" + n + ">" + f.getClass() );
     if ( f instanceof Pattern ) return OWLFacet.PATTERN;
     if ( "length".equals( n ) ) return OWLFacet.LENGTH;
     if ( "fractionDigits".equals( n ) ) return OWLFacet.FRACTION_DIGITS;
@@ -93,66 +93,66 @@ end
 
 rule "Visit Complex Types with Group Content"
 when
-    $c : ComplexType( $model : group != null )
+    $c : ComplexType( $model : group, $siz : group!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 rule "Visit Complex Types with All Content"
 when
-    $c : ComplexType( $model : all != null )
+    $c : ComplexType( $model : all, $siz : all!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 rule "Visit Complex Types with Choice Content"
 when
-    $c : ComplexType( $model : choice != null )
+    $c : ComplexType( $model : choice, $siz : choice!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, false, false ) );
+    insertLogical( new Anon( $model, $c, null, false, false, $siz ) );
 end
 rule "Visit Complex Types with Sequence Content"
 when
-    $c : ComplexType( $model : sequence != null )
+    $c : ComplexType( $model : sequence, $siz : sequence!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 
 rule "Visit Extension Types with Group Content"
 when
     $c : ComplexType( $ext : complexContent!.extension != null )
-    ExtensionType( this == $ext, $model : group != null )
+    ExtensionType( this == $ext, $model : group, $siz : group!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 rule "Visit Extension Types with All Content"
 when
     $c : ComplexType( $ext : complexContent!.extension != null )
-    ExtensionType( this == $ext,  $model : all != null )
+    ExtensionType( this == $ext,  $model : all, $siz : all!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 rule "Visit Extension Types with Choice Content"
 when
     $c : ComplexType( $ext : complexContent!.extension != null )
-    ExtensionType( this == $ext,  $model : choice != null )
+    ExtensionType( this == $ext,  $model : choice, $siz : choice!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, false, false ) );
+    insertLogical( new Anon( $model, $c, null, false, false, $siz ) );
 end
 rule "Visit Extension Types with Sequence Content"
 when
     $c : ComplexType( $ext : complexContent!.extension != null )
-    ExtensionType( this == $ext,  $model : sequence != null )
+    ExtensionType( this == $ext,  $model : sequence, $siz : sequence!.particle.size() )
 then
-    insertLogical( new Anon( $model, $c, null, true, false ) );
+    insertLogical( new Anon( $model, $c, null, true, false, $siz ) );
 end
 
 
 
 rule "Visit Group Particles"
 when
-    $g : Group( $parts : particle )
+    $g : Group( $parts : particle, $siz : particle.size() )
     $x : JAXBElement( $o : value, $n : name ) from $parts
 then
-    insertLogical( new Anon( (OpenAttrs) $o, $g, null, ! "choice".equals( $n.getLocalPart() ), false ) );
+    insertLogical( new Anon( (OpenAttrs) $o, $g, null, ! "choice".equals( $n.getLocalPart() ), false, $siz ) );
 end
 
 
@@ -177,22 +177,22 @@ declare AttrContext
 end
 
 declare Dom
-    prop : String
+    prop : QName
     klas : QName
 end
 
 declare Ran
-    prop : String
+    prop : QName
     klas : QName
 end
 
 declare ODom
-    prop : String
+    prop : QName
     klas : QName
 end
 
 declare ORan
-    prop : String
+    prop : QName
     klas : QName
 end
 
@@ -263,6 +263,7 @@ end
 
 
 rule "Named Complex Types"
+salience 10
 when
     $c : ComplexType( $name : name != null )
 then
@@ -274,9 +275,56 @@ then
         ) ) );
 end
 
-rule "Named Simple Types"
+
+rule "List"
 when
-    $s : SimpleType( $name : name != null )
+    exists SimpleType( $name : name != null, list != null )
+then
+    OWLClass list = factory.getOWLClass( IRI.create( Namespaces.XSD.toString(), "List" ) );
+    OWLDataProperty item = factory.getOWLDataProperty( IRI.create( Namespaces.XSD.toString(), "item" ) );
+
+    // TODO : we may want to adopt a standard List concept
+    insertLogical( new Link( null, factory.getOWLDeclarationAxiom( list ) ) );
+    insertLogical( new Link( null, factory.getOWLDeclarationAxiom( item ) ) );
+    insertLogical( new Link( null, factory.getOWLDataPropertyDomainAxiom( item, list ) ) );
+
+end
+
+rule "Named List Types"
+salience 10
+when
+    $s : SimpleType( $name : name != null, list != null, $type : list.itemType != null )
+then
+    insertLogical( new ObjectName( new QName( tns, $name ) ) );
+    insertLogical(
+        new Link(
+            $s,
+            factory.getOWLDeclarationAxiom( factory.getOWLClass( IRI.create( tns + "#", $name ) )
+        ) ) );
+    insertLogical(
+        new Link(
+            $s,
+            factory.getOWLSubClassOfAxiom( factory.getOWLClass( IRI.create( tns + "#", $name ) ),
+                                        factory.getOWLClass( IRI.create( Namespaces.XSD.toString(), "List" ) )
+        ) ) );
+    insertLogical(
+        new Link(
+            $s,
+            factory.getOWLSubClassOfAxiom(
+                                        factory.getOWLClass( IRI.create( tns + "#", $name ) ),
+                                        factory.getOWLDataAllValuesFrom( factory.getOWLDataProperty( IRI.create( Namespaces.XSD.toString(), "item" ) ),
+                                                                         factory.getOWLDatatype( IRI.create( $type.getNamespaceURI() + "#", $type.getLocalPart() ) ) )
+        ) ) );
+
+    insertLogical( new Ran( new QName( "http://www.w3.org/2001/XMLSchema", "item" ), $type ) );
+end
+
+
+
+rule "Named Simple Types"
+salience 10
+when
+    $s : SimpleType( $name : name != null, list == null )
 then
     insertLogical( new DataName( new QName( tns, $name ) ) );
     insertLogical(
@@ -290,9 +338,8 @@ rule "Anon Simple Types in Element"
 salience 10
 when
     $ele : Element( $name : name != null, $s : simpleType, type == null )
-    $sim : SimpleType( this == $s, name == null )
+    $sim : SimpleType( this == $s, name == null, list == null )
 then
-    insertLogical( new DataName( new QName( tns, $name + "Type" ) ) );
     modify ( $s ) { setName( $name + "Type" ); }
     modify ( $ele ) { setType( new QName( tns, $name + "Type" ) ); }
 end
@@ -303,19 +350,30 @@ when
     $att : Attribute( $name : name != null, $s : simpleType, type == null )
     $sim : SimpleType( this == $s, name == null )
 then
-    insertLogical( new DataName( new QName( tns, $name + "Type" ) ) );
     modify ( $s ) { setName( $name + "Type" ); }
     modify ( $att ) { setType( new QName( tns, $name + "Type" ) ); }
 end
+
+rule "Anon Simple Types in List Element"
+salience 10
+when
+    $sup : SimpleType( $name : name, list != null, $inn : list.simpleType != null )
+    $sim : SimpleType( this == $inn, name == null )
+then
+    modify ( $inn ) { setName( $name + "Type" ); }
+    modify ( $sup ) { getList().setItemType( new QName( tns, $name + "Type" ) ); }
+end
+
+
+
 
 
 
 rule "Named Simple Types Range"
 when
     $s : SimpleType( $name : name != null )
-    $a : DataAnon( null, $s, $kls ; )
+    $a : DataAnon( $sub, $s, $kls ; $kls != null )
 then
-    System.out.println(" Named simple type range " + $name );
     insertLogical(
         new Link(
             $s,
@@ -329,7 +387,7 @@ end
 rule "Simple Type Redefinition"
 when
     $s : SimpleType( $name : name, union == null, restriction != null, restriction.base != null,
-                     restriction.facets.isEmpty(),
+                     restriction == null || restriction.facets.isEmpty(),
                      $baseURI : restriction.base.namespaceURI, $baseName : restriction.base.localPart )
 then
     insertLogical(
@@ -375,7 +433,7 @@ end
 rule "Named Simple Types Enum"
 when
     $s : SimpleType( $name : name != null, $rest : restriction, $base : restriction.base, union == null,
-                $facets : restriction.facets, restriction.facets.size() > 0 )
+                restriction != null, $facets : restriction.facets, restriction.facets.size() > 0 )
     accumulate( $jxb : JAXBElement( this memberOf $facets, $tmp : value, name.localPart == "enumeration" )
                 and
                 $fax : Facet( this == $tmp, $val : value ),
@@ -406,13 +464,8 @@ then
     Set set = new HashSet();
         set.addAll( $members );
         set.addAll( $more );
-    insertLogical(
-        new Link(
-            $union,
-            factory.getOWLDatatypeDefinitionAxiom(
-                factory.getOWLDatatype( IRI.create( tns + "#" , $name ) ),
-                set.size() > 1 ? factory.getOWLDataUnionOf( set ) : (OWLDataRange) set.iterator().next()
-            ) ) );
+    OWLDataRange kls = set.size() > 1 ? factory.getOWLDataUnionOf( set ) : (OWLDataRange) set.iterator().next();
+    insertLogical( new DataAnon( null, $s, kls ) );
 end
 
 
@@ -467,8 +520,8 @@ then
                 factory.getOWLSubClassOfAxiom( dom, factory.getOWLObjectIntersectionOf( set ) )
             ) );
 
-    insertLogical( new Dom( $prop, new QName( tns, $name ) ) );
-    insertLogical( new Ran( $prop, $type ) );
+    insertLogical( new Dom( new QName( tns, $prop ), new QName( tns, $name ) ) );
+    insertLogical( new Ran( new QName( tns, $prop ), $type ) );
 end
 
 
@@ -481,7 +534,7 @@ salience -100000
 when
     accumulate( Dom( $pro ; ),
         $pros : collectSet( $pro ) )
-    $propName : String() from $pros
+    $propName : QName() from $pros
     accumulate( Dom( $propName, $domName ; ),
         $doms : collectSet( factory.getOWLClass( IRI.create( $domName.getNamespaceURI() + "#", $domName.getLocalPart() ) ) );
         $doms.size() > 0 )
@@ -490,7 +543,7 @@ then
             new Link(
                 null,
                 factory.getOWLDataPropertyDomainAxiom(
-                                    factory.getOWLDataProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLDataProperty( IRI.create( $propName.getNamespaceURI() + "#", $propName.getLocalPart() ) ),
                                     $doms.size() == 1 ? (OWLClassExpression) $doms.iterator().next() : factory.getOWLObjectUnionOf( $doms )
                                     )
             ) );
@@ -501,7 +554,7 @@ salience -100000
 when
     accumulate( Ran( $pro ; ),
         $pros : collectSet( $pro ) )
-    $propName : String() from $pros
+    $propName : QName() from $pros
     accumulate( Ran( $propName, $ranName ; ),
         $rans : collectSet( mapXsdDatatype( $ranName, factory ) );
         $rans.size() > 0 )
@@ -510,7 +563,7 @@ then
             new Link(
                 null,
                 factory.getOWLDataPropertyRangeAxiom(
-                                    factory.getOWLDataProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLDataProperty( IRI.create( $propName.getNamespaceURI() + "#", $propName.getLocalPart() ) ),
                                     $rans.size() == 1 ? (OWLDataRange) $rans.iterator().next() : factory.getOWLDataUnionOf( $rans )
                                     )
             ) );
@@ -521,7 +574,7 @@ salience -100000
 when
     accumulate( ODom( $pro ; ),
         $pros : collectSet( $pro ) )
-    $propName : String() from $pros
+    $propName : QName() from $pros
     accumulate( ODom( $propName, $domName ; ),
         $doms : collectSet( factory.getOWLClass( IRI.create( $domName.getNamespaceURI() + "#", $domName.getLocalPart() ) ) );
         $doms.size() > 0 )
@@ -530,7 +583,7 @@ then
             new Link(
                 null,
                 factory.getOWLObjectPropertyDomainAxiom(
-                                    factory.getOWLObjectProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLObjectProperty( IRI.create( $propName.getNamespaceURI() + "#", $propName.getLocalPart() ) ),
                                     $doms.size() == 1 ? (OWLClassExpression) $doms.iterator().next() : factory.getOWLObjectUnionOf( $doms )
                                     )
             ) );
@@ -541,7 +594,7 @@ salience -100000
 when
     accumulate( ORan( $pro ; ),
         $pros : collectSet( $pro ) )
-    $propName : String() from $pros
+    $propName : QName() from $pros
     accumulate( ORan( $propName, $ranName ; ),
         $rans : collectSet( factory.getOWLClass( IRI.create( $ranName.getNamespaceURI() + "#", $ranName.getLocalPart() ) ) );
         $rans.size() > 0 )
@@ -550,7 +603,7 @@ then
             new Link(
                 null,
                 factory.getOWLObjectPropertyRangeAxiom(
-                                    factory.getOWLObjectProperty( IRI.create( tns + "#", $propName ) ),
+                                    factory.getOWLObjectProperty( IRI.create( $propName.getNamespaceURI() + "#", $propName.getLocalPart() ) ),
                                     $rans.size() == 1 ? (OWLClassExpression) $rans.iterator().next() : factory.getOWLObjectUnionOf( $rans )
                                     )
             ) );
@@ -590,8 +643,8 @@ then
                 factory.getOWLDeclarationAxiom( prop )
             ) );
 
-    insertLogical( new Dom( $name, new QName( tns, $comp.getName() ) ) );
-    insertLogical( new Ran( $name, $type ) );
+    insertLogical( new Dom( new QName( tns, $name ), new QName( tns, $comp.getName() ) ) );
+    insertLogical( new Ran( new QName( tns, $name ), $type ) );
 
 end
 
@@ -599,8 +652,8 @@ rule "Element of Object Type"
 when
     $e : Element( $name : name, $type : type != null )
     Anon( $e, $par ; )
-    ObjectName( $type ; )
     unravel( $par, $comp ; )
+    ObjectName( $type ; )
 then
     OWLObjectProperty prop = factory.getOWLObjectProperty( IRI.create( tns + "#", $name ) );
     OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $comp.getName() ) );
@@ -612,8 +665,8 @@ then
                 factory.getOWLDeclarationAxiom( prop )
             ) );
 
-    insertLogical( new ODom( $name, new QName( tns, $comp.getName() ) ) );
-    insertLogical( new ORan( $name, $type ) );
+    insertLogical( new ODom( new QName( tns, $name ), new QName( tns, $comp.getName() ) ) );
+    insertLogical( new ORan( new QName( tns, $name ), $type ) );
 end
 
 
@@ -711,7 +764,6 @@ when
         $set : collectSet( $kls );
         $set.size() > 0 )
 then
-    System.out.println( "Found a group " + $and );
     modify ( $x ) { setKls( $and ? factory.getOWLObjectIntersectionOf( $set ) : factory.getOWLObjectUnionOf( $set ) ); }
 end
 
@@ -723,7 +775,7 @@ when
     $x : Anon( $group, $c ; $kls : kls != null )
 then
     OWLClass dom = factory.getOWLClass( IRI.create( tns + "#", $name ) );
-    insert( new Link( $group, factory.getOWLSubClassOfAxiom( dom, $kls ) ) );
+    insertLogical( new Link( $group, factory.getOWLSubClassOfAxiom( dom, $kls ) ) );
 end
 
 rule "Attribute Group Ref Link in ComplexTypes"
@@ -765,7 +817,7 @@ then
                 $att,
                 factory.getOWLDeclarationAxiom( prop )
             ) );
-    insertLogical( new Ran( $prop, $type ) );
+    insertLogical( new Ran( new QName( tns, $prop ), $type ) );
 end
 
 
@@ -780,6 +832,29 @@ then
                     $cxt,
                     factory.getOWLDeclarationAxiom( prop )
                 ) );
-    insertLogical( new Dom( "__mixed", new QName( tns, $type ) ) );
-    insertLogical( new Ran( "__mixed", new QName( "http://www.w3.org/2001/XMLSchema", "string" ) ) );  // slightly redundant, but I don't want to use a full exists rule for this
+    insertLogical( new Dom( new QName( tns, "__mixed" ), new QName( tns, $type ) ) );
+    insertLogical( new Ran( new QName( tns, "__mixed" ), new QName( "http://www.w3.org/2001/XMLSchema", "string" ) ) );  // slightly redundant, but I don't want to use a full exists rule for this
+end
+
+
+
+
+
+rule "Log"
+when
+    $d : DataAnon()
+then
+    System.out.println( $d );
+end
+rule "Logh"
+when
+    $d : Anon()
+then
+    System.out.println( $d );
+end
+rule "Loghs"
+when
+    $d : DataName()
+then
+    System.out.println( $d );
 end
