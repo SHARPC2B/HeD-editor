@@ -39,13 +39,15 @@ import static junit.framework.Assert.fail;
 
 public class TestElementRefs {
 
-    private static OWLOntology onto;
-    private static OWLOntologyManager manager;
-    private static OWLDataFactory factory;
-    private static String tns;
 
-    @BeforeClass
-    public static void parse() {
+    @Test
+    public void testElementRefs() {
+
+        OWLOntology onto;
+        OWLOntologyManager manager;
+        OWLDataFactory factory;
+        String tns;
+
 
         Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
@@ -56,11 +58,7 @@ public class TestElementRefs {
 
         manager = OWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();
-    }
 
-
-    @Test
-    public void testElementRefs() {
 
         try {
             String px = tns;
@@ -134,5 +132,83 @@ public class TestElementRefs {
         }
 
     }
+
+
+
+    @Test
+    public void testGroupRefs() {
+
+        OWLOntology onto;
+        OWLOntologyManager manager;
+        OWLDataFactory factory;
+        String tns;
+
+
+        Xsd2Owl converter = Xsd2OwlImpl.getInstance();
+
+        Schema x = converter.parse( "test/groupRefs.xsd" );
+        tns = x.getTargetNamespace() + "#";
+
+        onto = converter.transform( x, true, true );
+
+        manager = OWLManager.createOWLOntologyManager();
+        factory = manager.getOWLDataFactory();
+
+
+        try {
+            String px = tns;
+            OWLClass k = factory.getOWLClass( IRI.create( px, "Test" ) );
+            OWLDatatype string = OWL2DatatypeImpl.getDatatype( OWL2Datatype.XSD_STRING );
+
+            OWLObjectProperty p1 = factory.getOWLObjectProperty( IRI.create( px, "field" ) );
+            OWLDataProperty p2 = factory.getOWLDataProperty( IRI.create( px, "desc" ) );
+
+            assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( k ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( p1 ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDeclarationAxiom( p2 ) ) );
+
+
+            assertTrue( onto.containsAxiom( factory.getOWLObjectPropertyDomainAxiom( p1, k ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLObjectPropertyRangeAxiom( p1, k ) ) );
+
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyDomainAxiom( p2, k ) ) );
+            assertTrue( onto.containsAxiom( factory.getOWLDataPropertyRangeAxiom( p2, string ) ) );
+
+            assertTrue( onto.containsAxiom( factory.getOWLSubClassOfAxiom(
+                    k,
+                    factory.getOWLObjectIntersectionOf(
+                            factory.getOWLObjectIntersectionOf(
+                                    factory.getOWLObjectIntersectionOf(
+                                            factory.getOWLObjectAllValuesFrom(
+                                                    p1,
+                                                    k ),
+                                            factory.getOWLObjectMinCardinality(
+                                                    0,
+                                                    p1,
+                                                    k )
+                                    ),
+                                    factory.getOWLObjectIntersectionOf(
+                                            factory.getOWLDataAllValuesFrom(
+                                                    p2,
+                                                    string ),
+                                            factory.getOWLDataMinCardinality(
+                                                    1,
+                                                    p2,
+                                                    string ),
+                                            factory.getOWLDataMaxCardinality(
+                                                    1,
+                                                    p2,
+                                                    string )
+                                    )
+                            )
+                    )
+            )));
+
+        } catch ( Exception e ) {
+            fail( e.getMessage() );
+        }
+
+    }
+
 
 }
