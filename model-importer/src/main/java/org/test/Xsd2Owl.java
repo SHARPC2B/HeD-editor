@@ -28,12 +28,15 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public interface Xsd2Owl {
 
-    Schema parse( String resourceName );
+    URL getSchemaURL( String resource );
 
-    OWLOntology transform( Schema schema, boolean verbose, boolean checkConsistency );
+    Schema parse( URL resourceName );
+
+    OWLOntology transform(Schema schema, URL schemaLocation, boolean verbose, boolean checkConsistency);
 
     String compactXMLSchema( String resourceName ) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, TransformerException, URISyntaxException;
 

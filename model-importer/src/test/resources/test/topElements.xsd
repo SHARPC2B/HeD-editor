@@ -19,25 +19,29 @@
 <xs:schema elementFormDefault="qualified" targetNamespace="http://asu.edu/test/elementRefs"
            xmlns="http://asu.edu/test/elementRefs" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:include schemaLocation="topElements.xsd"/>
 
-  <xs:complexType name="Left">
-    <xs:sequence>
-      <xs:element name="link" minOccurs="0" maxOccurs="unbounded">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element ref="StrElement" minOccurs="2" maxOccurs="4" />
-            <xs:element ref="SimpleElement" minOccurs="2" maxOccurs="4" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element ref="MainElement" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="TestElement" minOccurs="1" maxOccurs="1" />
-      <xs:element ref="StrElement" minOccurs="1" maxOccurs="1" />
-    </xs:sequence>
+  <xs:complexType name="TestType">
+    <xs:attribute name="att" type="xs:int" />
   </xs:complexType>
 
+  <xs:element name="StrElement" type="xs:string" />
 
+  <xs:element name="MainElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="value" type="xs:string" />
+      </xs:sequence>
+      <xs:attribute name="desc" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TestElement" type="TestType" />
+
+  <xs:element name="SimpleElement" >
+    <xs:simpleType>
+      <xs:restriction base="xs:float" />
+    </xs:simpleType>
+  </xs:element>
 
 </xs:schema>
 

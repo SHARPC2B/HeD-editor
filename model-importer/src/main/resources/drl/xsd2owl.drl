@@ -223,11 +223,11 @@ declare ORan
 end
 
 declare DataName
-    name : QName
+    name : QName    @key
 end
 
 declare ObjectName
-    name : QName
+    name : QName    @key
 end
 
 
@@ -852,19 +852,19 @@ rule "Link Element Refs"
 salience 100000
 when
     $src : Element( $ref : ref != null, name == null )
-    $tgt : Element( name == $ref.localPart )
+    $tgt : Element( $x : name == $ref.localPart, $type : type != null )
 then
     // I can't replace $src with $tgt, since it contains local info such as min/maxOccurs
     modify ( $src ) {
         setSimpleType( $tgt.getSimpleType() ),
         setComplexType( $tgt.getComplexType() ),
-        setType( $tgt.getType() ),
+        setType( $ref ), // PUNNING!
         setSubstitutionGroup( $tgt.getSubstitutionGroup() ),
         setDefault( $tgt.getDefault() ),
         setFixed( $tgt.getFixed() ),
         setNillable( $tgt.isNillable() ),
         setForm( $tgt.getForm() ),
-        setName( $tgt.getName() );
+        setName( $x ); // PUNNING!
     }
 end
 
@@ -898,9 +898,43 @@ then
 end
 
 
+rule "Top Element Of Complex Type"
+when
+    $top : TopLevelElement( $n : name != null, $type : type != null )
+    ObjectName( $type ; )
+then
+    insertLogical( new ObjectName( new QName( tns, $n ) ) );
+    IRI iri = IRI.create( tns + "#", $n );
+    IRI typeIri = IRI.create( $type.getNamespaceURI() + "#", $type.getLocalPart() );
+    OWLClass klass = factory.getOWLClass( iri );
 
+    insertLogical( new Link( $top, factory.getOWLDeclarationAxiom( klass ) ) );
+    if ( ! iri.equals( typeIri ) ) {
+        insertLogical( new Link( $top, factory.getOWLSubClassOfAxiom(
+                                klass,
+                                factory.getOWLClass( typeIri ) )
+                ) );
+    }
+end
 
+rule "Top Element Of Data Type"
+when
+    $top : TopLevelElement( $n : name != null, $type : type != null )
+    ( DataName( $type ; ) or eval( ( $type.getNamespaceURI() + "#" ).equals( Namespaces.XSD.toString() ) ) )
+then
+    insertLogical( new DataName( new QName( tns, $n ) ) );
 
+    IRI iri = IRI.create( tns + "#", $n );
+    IRI typeIri = IRI.create( $type.getNamespaceURI() + "#", $type.getLocalPart() );
+
+    OWLDatatype klass = factory.getOWLDatatype( iri );
+    OWLDatatype data = factory.getOWLDatatype( typeIri );
+
+    insertLogical( new Link( $top, factory.getOWLDeclarationAxiom( klass ) ) );
+    insertLogical( new Link( $top, factory.getOWLDatatypeDefinitionAxiom( klass, data ) ) );
+end
+
+//
 //rule "Log"
 //when
 //    $d : DataAnon()

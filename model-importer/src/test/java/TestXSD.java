@@ -16,14 +16,13 @@
 
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.test.Xsd2Owl;
 import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
 
 import java.io.FileOutputStream;
+import java.net.URL;
 
 public class TestXSD {
 
@@ -33,12 +32,58 @@ public class TestXSD {
         try {
             Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-            Schema x = converter.parse( "test/datatypes-iso21090-clean.xsd" );
+            URL url = converter.getSchemaURL( "vmr-clean.xsd" );
+            Schema x = converter.parse( url );
 
-            OWLOntology onto = converter.transform( x, true, false );
+            OWLOntology onto = converter.transform( x, url, true, false );
+
+            converter.stream( onto,
+                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/vmr.turtle.owl" ) ,
+                    new TurtleOntologyFormat()
+            );
+
+        } catch ( Exception e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+
+    @Test
+    public void testDatatypeSchema() {
+
+        try {
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
+
+            URL url = converter.getSchemaURL( "datatypes-clean.xsd" );
+            Schema x = converter.parse( url );
+
+            OWLOntology onto = converter.transform( x, url, true, false );
 
             converter.stream( onto,
                     new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/datatypes.turtle.owl" ) ,
+                    new TurtleOntologyFormat()
+            );
+
+        } catch ( Exception e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+
+
+    @Test
+    public void testArdenSchema() {
+
+        try {
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
+
+            URL url = converter.getSchemaURL( "ArdenKnowledgeExpression.xsd" );
+            Schema x = converter.parse( url );
+
+            OWLOntology onto = converter.transform( x, url, true, false );
+
+            converter.stream( onto,
+                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/arden.turtle.owl" ) ,
                     new TurtleOntologyFormat()
             );
 

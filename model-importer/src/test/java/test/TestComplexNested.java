@@ -30,6 +30,8 @@ import org.test.Xsd2OwlImpl;
 import org.w3.x2001.xmlschema.Schema;
 import uk.ac.manchester.cs.owl.owlapi.OWL2DatatypeImpl;
 
+import java.net.URL;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
@@ -45,10 +47,11 @@ public class TestComplexNested {
     public static void parse() {
         Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-        Schema x = converter.parse("test/complexNested.xsd");
+        URL url = converter.getSchemaURL( "test/complexNested.xsd" );
+        Schema x = converter.parse( url );
         tns = x.getTargetNamespace() + "#";
 
-        onto = converter.transform( x, true, true );
+        onto = converter.transform( x, url, true, true );
 
         manager = OWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();

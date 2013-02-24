@@ -75,7 +75,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -144,7 +146,17 @@ public class Xsd2OwlImpl implements Xsd2Owl {
         return kBase;
     }
 
-    public Schema parse( String schemaLocation ) {
+    public URL getSchemaURL( String schemaLocation ) {
+        ClassPathResource cpr = new ClassPathResource( schemaLocation );
+        try {
+            return cpr.getURL();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Schema parse( URL schemaLocation ) {
         try {
             System.out.println( "Parsing schema.... " + schemaLocation );
             JAXBContext context = JAXBContext.newInstance( Schema.class.getPackage().getName() );
@@ -152,8 +164,7 @@ public class Xsd2OwlImpl implements Xsd2Owl {
             Unmarshaller loader = context.createUnmarshaller();
             loader.setSchema( metax );
 
-            ClassPathResource cpr = new ClassPathResource( schemaLocation );
-            Schema schema = (Schema) loader.unmarshal( new File( cpr.getURL().toURI() ) );
+            Schema schema = (Schema) loader.unmarshal( new File( schemaLocation.toURI() ) );
             System.out.println( "Parsed schema...." );
 
             if ( schema.getTargetNamespace() == null ) {
@@ -167,7 +178,7 @@ public class Xsd2OwlImpl implements Xsd2Owl {
         }
     }
 
-    public OWLOntology transform( Schema schema, boolean verbose, boolean checkConsistency ) {
+    public OWLOntology transform( Schema schema, URL schemaURL, boolean verbose, boolean checkConsistency ) {
         System.out.println( "Transforming...." );
         StatefulKnowledgeSession kSession = kBase.newStatefulKnowledgeSession();
         OWLOntology ontology = null;
@@ -175,22 +186,17 @@ public class Xsd2OwlImpl implements Xsd2Owl {
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
             OWLDataFactory factory = manager.getOWLDataFactory();
-            try {
-                ontology = manager.createOntology( new OWLOntologyID(
-                        IRI.create( schema.getTargetNamespace() ),
-                        IRI.create( schema.getTargetNamespace() + "/" +
-                                ( schema.getVersion() != null ? schema.getVersion() : "1.0" ) ) ) );
-            } catch ( OWLOntologyCreationException e ) {
-                e.printStackTrace();
-                return null;
-            }
+            ontology = manager.createOntology( new OWLOntologyID(
+                    IRI.create( schema.getTargetNamespace() ),
+                    IRI.create( schema.getTargetNamespace() + "/" +
+                            ( schema.getVersion() != null ? schema.getVersion() : "1.0" ) ) ) );
 
 
             kSession.setGlobal( "ontology", ontology );
             kSession.setGlobal( "manager", manager );
             kSession.setGlobal( "factory", factory );
 
-            visit( schema, kSession, manager );
+            visit( schema, schemaURL, kSession, manager );
 
             if ( verbose ) {
                 try {
@@ -206,8 +212,15 @@ public class Xsd2OwlImpl implements Xsd2Owl {
             if ( checkConsistency ) {
                 launchReasoner( ontology, fullAxiomGenerators );
             }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            try {
+                return OWLManager.createOWLOntologyManager().createOntology();
+            } catch (OWLOntologyCreationException e1) {
+                e1.printStackTrace();
+                return null;
+            }
         } finally {
-
             kSession.dispose();
         }
 
@@ -221,17 +234,18 @@ public class Xsd2OwlImpl implements Xsd2Owl {
                 targetNamespace : targetNamespace + "#";
     }
 
-    private void visit( Schema schema, StatefulKnowledgeSession kSession, OWLOntologyManager manager ) {
+    private void visit( Schema schema, URL schemaLocation, StatefulKnowledgeSession kSession, OWLOntologyManager manager ) throws MalformedURLException {
         for ( OpenAttrs ext : schema.getIncludeOrImportOrRedefine() ) {
             if ( ext instanceof Include ) {
                 Include include = (Include) ext;
-                //TODO: make it work with downloadable files
-                Schema sub = parse( include.getSchemaLocation() );
-                visit( sub, kSession, manager );
+                URL url = new URL( schemaLocation, include.getSchemaLocation() );
+                Schema sub = parse( url );
+                visit( sub, url, kSession, manager );
             } else if ( ext instanceof Import ) {
                 Import imp = (Import) ext;
-                Schema sub = parse( imp.getSchemaLocation() );
-                visit( sub, kSession, manager );
+                URL url = new URL( schemaLocation, imp.getSchemaLocation() );
+                Schema sub = parse( url );
+                visit( sub, url, kSession, manager );
             } else if ( ext instanceof Redefine ) {
                 Redefine redefine = (Redefine) ext;
                 throw new UnsupportedOperationException( "Implement redefines" );
