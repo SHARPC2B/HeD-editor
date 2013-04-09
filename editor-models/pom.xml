@@ -12,10 +12,6 @@
   <artifactId>editor-models</artifactId>
   <version>${editor.version}</version>
 
-  <properties>
-    <chance.version>5.5.0-SNAPSHOT</chance.version>
-  </properties>
-
 
   <name>SHARPC-2B :: Smart Editor Core Models</name>
 
