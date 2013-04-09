@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Maintenance">
+		<xs:annotation>
+			<xs:documentation>Maintenance Category -- metadata about the whole MLM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title" type="xs:string"/>
+				<xs:choice>
+				  <xs:element name="MLMName">
+					  <xs:simpleType>
+						  <xs:restriction base="xs:NMTOKEN">
+							  <xs:minLength value="1"/>
+							  <xs:maxLength value="80"/>
+							  <xs:pattern value="[a-z,A-Z]{1}[a-z,A-Z,0-9,.,\-,_]*"/>
+						  </xs:restriction>
+					  </xs:simpleType>
+				  </xs:element>
+				  <xs:element name="FileName">
+					  <xs:simpleType>
+						  <xs:restriction base="xs:NMTOKEN">
+							  <xs:minLength value="1"/>
+							  <xs:maxLength value="80"/>
+							  <xs:pattern value="[a-z,A-Z]{1}[a-z,A-Z,0-9,.,\-,_]*"/>
+						  </xs:restriction>
+					  </xs:simpleType>
+				  </xs:element>
+				</xs:choice>
+				<xs:element name="Arden">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Version 2"/>
+							<xs:enumeration value="Version 2.1"/>
+							<xs:enumeration value="Version 2.5"/>
+							<xs:enumeration value="Version 2.6"/>
+							<xs:enumeration value="Version 2.7"/>
+							<xs:enumeration value="Version 2.8"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Version">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="80"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Institution" type="InstitutionType"/>
+				<xs:element name="Author">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Person" type="PersonType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Specialist" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Person" type="PersonType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Date" type="xs:date"/>
+				<xs:element name="Validation">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="testing"/>
+							<xs:enumeration value="research"/>
+							<xs:enumeration value="production"/>
+							<xs:enumeration value="expired"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="InstitutionType">
+		<xs:annotation>
+			<xs:documentation>insitutuion definition associated with institution slot and person association</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name_of_Institution" type="xs:string"/>
+			<xs:element name="Contact" type="ContactType" minOccurs="0"/>
+			<xs:element name="Institution_Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="Institution_Constitution" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonType">
+		<xs:annotation>
+			<xs:documentation>defines a person in the role of an MLM author or specialist</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Person_ID" type="xs:ID" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="FirstName" type="xs:string"/>
+					<xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+					<xs:element name="SurName" type="xs:string"/>
+				</xs:sequence>
+				<xs:element name="Name" type="xs:string"/>
+			</xs:choice>
+			<xs:element name="Surfix" type="xs:string" minOccurs="0"/>
+			<xs:element name="Generational" type="xs:string" minOccurs="0"/>
+			<xs:element name="Degree" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Contact" type="ContactType" minOccurs="0"/>
+			<xs:element name="Profession" type="xs:string" minOccurs="0"/>
+			<xs:element name="Relevant_Expertise" type="xs:string" minOccurs="0"/>
+			<xs:element name="Classification_Relevant_Expertise" minOccurs="0" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Content Area Expert"/>
+						<xs:enumeration value="Patient/Carers Representative"/>
+						<xs:enumeration value="Guideline Methodologist"/>
+						<xs:enumeration value="Systematic Reviewer"/>
+						<xs:enumeration value="Meta Analyst"/>
+						<xs:enumeration value="Heath Economist"/>
+						<xs:enumeration value="Information Scientist"/>
+						<xs:enumeration value="Adminstrative Support"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Potential_Conflicts_of_Interest" type="xs:string" minOccurs="0"/>
+			<xs:element name="Insitution_Affiliation" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Institution" type="InstitutionType"/>
+						<xs:element name="Institutional_Role" type="xs:string" minOccurs="0"/>
+						<xs:element name="Representitive_Role" type="xs:boolean" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactType">
+		<xs:annotation>
+			<xs:documentation>contact information for an entity</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Address" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Telephone" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Fax" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="E-mail" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Web_Site" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

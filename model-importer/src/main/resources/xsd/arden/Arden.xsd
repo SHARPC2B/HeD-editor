@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xs:include schemaLocation="ArdenMaintenance.xsd"/>
+	
+	<xs:include schemaLocation="ArdenLibrary.xsd"/>
+	<xs:include schemaLocation="ArdenKnowledge.xsd"/>
+	<xs:include schemaLocation="ArdenResources.xsd"/>
+	<!--  -->
+	<xs:element name="ArdenMLs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ArdenML" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ArdenML">
+		<xs:annotation>
+			<xs:documentation>Arden Syntax Version 2.8 for Medical Logic Module</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+			
+				<xs:element ref="Maintenance"/>
+				
+				<xs:element ref="Library"/>
+				<xs:element ref="Knowledge"/>
+				<xs:element ref="Resources" minOccurs="0"/>
+				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

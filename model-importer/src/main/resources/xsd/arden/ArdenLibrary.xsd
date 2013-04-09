@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Library">
+		<xs:annotation>
+			<xs:documentation>Library Category -- metadata about the medical knowledge in the MLM</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Purpose" type="xs:string"/>
+				<xs:element name="Explanation" type="xs:string"/>
+				<xs:element name="Keywords" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Citations" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Citation" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CitationLevel" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="support"/>
+													<xs:enumeration value="refute"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="CitationText" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Links" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Link" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LinkType" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:whiteSpace value="replace"/>
+													<xs:enumeration value="URL_Link"/>
+													<xs:enumeration value="MeSH_Link"/>
+													<xs:enumeration value="EXE_Link"/>
+													<xs:enumeration value="Other_Link"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="LinkName" type="xs:string" minOccurs="0"/>
+										<xs:element name="LinkText" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

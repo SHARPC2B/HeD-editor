@@ -15,11 +15,11 @@
  */
 
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
+import org.drools.shapes.xsd.Xsd2Owl;
+import org.drools.shapes.xsd.Xsd2OwlImpl;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.test.Xsd2Owl;
-import org.test.Xsd2OwlImpl;
-import org.w3.x2001.xmlschema.Schema;
+import org.w3._2001.xmlschema.Schema;
 
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -32,13 +32,13 @@ public class TestXSD {
         try {
             Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-            URL url = converter.getSchemaURL( "vmr-clean.xsd" );
+            URL url = converter.getSchemaURL( "xsd/vmr/vmr-clean.xsd" );
             Schema x = converter.parse( url );
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
             converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/vmr.turtle.owl" ) ,
+                    new FileOutputStream( "/home/davide/Desktop/vmr.turtle.owl" ) ,
                     new TurtleOntologyFormat()
             );
 
@@ -54,13 +54,13 @@ public class TestXSD {
         try {
             Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-            URL url = converter.getSchemaURL( "datatypes-clean.xsd" );
+            URL url = converter.getSchemaURL( "xsd/vmr/datatypes-clean.xsd" );
             Schema x = converter.parse( url );
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
             converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/datatypes.turtle.owl" ) ,
+                    new FileOutputStream( "/home/davide/Desktop/datatypes.turtle.owl" ) ,
                     new TurtleOntologyFormat()
             );
 
@@ -77,13 +77,36 @@ public class TestXSD {
         try {
             Xsd2Owl converter = Xsd2OwlImpl.getInstance();
 
-            URL url = converter.getSchemaURL( "ArdenKnowledgeExpression.xsd" );
+            URL url = converter.getSchemaURL( "xsd/arden/Arden.xsd" );
             Schema x = converter.parse( url );
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
             converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Projects/Git/sharp-editor/model-importer/src/test/resources/arden.turtle.owl" ) ,
+                    new FileOutputStream( "/home/davide/Desktop/arden.turtle.owl" ) ,
+                    new TurtleOntologyFormat()
+            );
+
+        } catch ( Exception e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+
+
+    @Test
+    public void testHeDSchema() {
+
+        try {
+            Xsd2Owl converter = Xsd2OwlImpl.getInstance();
+
+            URL url = converter.getSchemaURL( "xsd/HeD/knowledgedocument.xsd" );
+            Schema x = converter.parse( url );
+
+            OWLOntology onto = converter.transform( x, url, true, false );
+
+            converter.stream( onto,
+                    new FileOutputStream( "/home/davide/Desktop/hed.turtle.owl" ) ,
                     new TurtleOntologyFormat()
             );
 
