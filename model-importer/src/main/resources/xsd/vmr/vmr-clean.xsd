@@ -1,0 +1,1404 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.exampleURI.com/HeD"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.exampleURI.com/HeD">
+
+  <xs:include schemaLocation="datatypes-clean.xsd"/>
+
+  <!--== Extended VMR Datatypes == -->
+
+  <xs:complexType name="BodySite">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bodySiteCode" type="CD">
+      </xs:element>
+      <xs:element minOccurs="0" name="laterality" type="CD">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DoseRestriction">
+    <xs:sequence>
+      <xs:element name="maxDoseForInterval" type="PQ">
+      </xs:element>
+      <xs:element name="timeInterval" type="PQ">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!--== Entities == -->
+  <xs:complexType abstract="true" name="EntityBase">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="templateId" type="II">
+      </xs:element>
+      <xs:element name="id" type="II">
+      </xs:element>
+      <xs:element minOccurs="0" name="entityType" type="CD">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AdministrableSubstanceSimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element name="substanceCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="strength" type="RTO">
+          </xs:element>
+          <xs:element minOccurs="0" name="form" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="substanceBrandCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="substanceGenericCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="manufacturer" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="lotNo" type="ST">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AdministrableSubstance">
+    <xs:complexContent>
+      <xs:extension base="AdministrableSubstanceSimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="false" name="EntitySimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="ST">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="false" name="Entity">
+    <xs:complexContent>
+      <xs:extension base="EntitySimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="EvaluatedPerson">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element name="demographics">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" name="birthTime" type="TS">
+                </xs:element>
+                <xs:element minOccurs="0" name="age" type="PQ">
+                </xs:element>
+                <xs:element minOccurs="0" name="gender" type="CD">
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="race" type="CD">
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity" type="CD">
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="name" type="EN">
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="address" type="AD">
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="telecom" type="TEL">
+                </xs:element>
+                <xs:element minOccurs="0" name="isDeceased" type="BL">
+                </xs:element>
+                <xs:element minOccurs="0" name="ageAtDeath" type="PQ">
+                </xs:element>
+                <xs:element minOccurs="0" name="preferredLanguage" type="CD">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+          <xs:element name="clinicalStatements">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" name="adverseEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="adverseEvent" type="AdverseEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="deniedAdverseEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="deniedAdverseEvent" type="DeniedAdverseEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="encounterEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="encounterEvent" type="EncounterEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="missedAppointments">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="missedAppointment" type="MissedAppointment"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="scheduledAppointments">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="scheduledAppointment" type="ScheduledAppointment"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="appointmentRequests">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="appointmentRequest" type="AppointmentRequest"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="appointmentProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="appointmentProposal" type="AppointmentProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="goals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="goal" type="Goal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="goalProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="goalProposal" type="GoalProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="observationResults">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="observationResult" type="ObservationResult"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="unconductedObservations">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="unconductedObservation" type="UnconductedObservation"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="observationOrders">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="observationOrder" type="ObservationOrder"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="observationProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="observationProposal" type="ObservationProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="problems">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="problem" type="Problem"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="deniedProblems">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="deniedProblem" type="DeniedProblem"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="procedureEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="procedureEvent" type="ProcedureEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="undeliveredProcedures">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="undeliveredProcedure" type="UndeliveredProcedure"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="scheduledProcedures">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="scheduledProcedure" type="ScheduledProcedure"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="procedureOrders">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="procedureOrder" type="ProcedureOrder"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="procedureProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="procedureProposal" type="ProcedureProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="substanceAdministrationEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="substanceAdministrationEvent" type="SubstanceAdministrationEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="undeliveredSubstanceAdministrations">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="undeliveredSubstanceAdministration" type="UndeliveredSubstanceAdministration"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="substanceAdministrationOrders">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="substanceAdministrationOrder" type="SubstanceAdministrationOrder"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="substanceAdministrationProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="substanceAdministrationProposal" type="SubstanceAdministrationProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="substanceDispensationEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="substanceDispensationEvent" type="SubstanceDispensationEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="supplyEvents">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="supplyEvent" type="SupplyEvent"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="undeliveredSupplies">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="undeliveredSupply" type="UndeliveredSupply"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="supplyOrders">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="supplyOrder" type="SupplyOrder"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="supplyProposals">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="supplyProposal" type="SupplyProposal"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="clinicalStatementRelationships">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="clinicalStatementRelationship" type="ClinicalStatementRelationship"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="clinicalStatementEntityInRoleRelationships">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="clinicalStatementEntityInRoleRelationship" type="EntityRelationship"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="entityRelationships">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="entityRelationship" type="EntityRelationship"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="entityLists">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" name="administrableSubstances">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="administrableSubstance" type="AdministrableSubstance"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="entities">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="entity" type="Entity"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="facilities">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="facility" type="Facility"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="organizations">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="organization" type="Organization"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="persons">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="person" type="Person"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="specimens">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element maxOccurs="unbounded" name="specimen" type="Specimen"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FacilitySimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="name" type="EN">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="address" type="AD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="telecom" type="TEL">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Facility">
+    <xs:complexContent>
+      <xs:extension base="FacilitySimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OrganizationSimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="name" type="EN">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="address" type="AD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="telecom" type="TEL">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Organization">
+    <xs:complexContent>
+      <xs:extension base="OrganizationSimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PersonSimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="name" type="EN">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="address" type="AD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="telecom" type="TEL">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Person">
+    <xs:complexContent>
+      <xs:extension base="PersonSimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SpecimenSimple">
+    <xs:complexContent>
+      <xs:extension base="EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="ST">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Specimen">
+    <xs:complexContent>
+      <xs:extension base="SpecimenSimple">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <!--== Relationships == -->
+  <xs:complexType name="RelatedClinicalStatement">
+    <xs:sequence>
+      <xs:element name="targetRelationshipToSource" type="CD">
+      </xs:element>
+      <xs:choice>
+        <xs:element name="adverseEvent" type="AdverseEvent"/>
+        <xs:element name="deniedAdverseEvent" type="DeniedAdverseEvent"/>
+        <xs:element name="encounterEvent" type="EncounterEvent"/>
+        <xs:element name="missedAppointment" type="MissedAppointment"/>
+        <xs:element name="scheduledAppointment" type="ScheduledAppointment"/>
+        <xs:element name="appointmentRequest" type="AppointmentRequest"/>
+        <xs:element name="appointmentProposal" type="AppointmentProposal"/>
+        <xs:element name="goal" type="Goal"/>
+        <xs:element name="goalProposal" type="GoalProposal"/>
+        <xs:element name="observationResult" type="ObservationResult"/>
+        <xs:element name="unconductedObservation" type="UnconductedObservation"/>
+        <xs:element name="observationOrder" type="ObservationOrder"/>
+        <xs:element name="observationProposal" type="ObservationProposal"/>
+        <xs:element name="problem" type="Problem"/>
+        <xs:element name="deniedProblem" type="DeniedProblem"/>
+        <xs:element name="procedureEvent" type="ProcedureEvent"/>
+        <xs:element name="undeliveredProcedure" type="UndeliveredProcedure"/>
+        <xs:element name="scheduledProcedure" type="ScheduledProcedure"/>
+        <xs:element name="procedureOrder" type="ProcedureOrder"/>
+        <xs:element name="procedureProposal" type="ProcedureProposal"/>
+        <xs:element name="substanceAdministrationEvent" type="SubstanceAdministrationEvent"/>
+        <xs:element name="undeliveredSubstanceAdministration" type="UndeliveredSubstanceAdministration"/>
+        <xs:element name="substanceAdministrationOrder" type="SubstanceAdministrationOrder"/>
+        <xs:element name="substanceAdministrationProposal" type="SubstanceAdministrationProposal"/>
+        <xs:element name="substanceDispensationEvent" type="SubstanceDispensationEvent"/>
+        <xs:element name="supplyEvent" type="SupplyEvent"/>
+        <xs:element name="undeliveredSupply" type="UndeliveredSupply"/>
+        <xs:element name="supplyOrder" type="SupplyOrder"/>
+        <xs:element name="supplyProposal" type="SupplyProposal"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RelatedEntity">
+    <xs:sequence>
+      <xs:element name="targetRole" type="CD">
+      </xs:element>
+      <xs:element minOccurs="0" name="relationshipTimeInterval" type="IVL_TS">
+      </xs:element>
+      <xs:choice>
+        <xs:element name="administrableSubstance">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="AdministrableSubstance"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="entity">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="Entity"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="facility">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="Facility"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="organization">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="Organization"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="person">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="Person"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="specimen">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="Specimen"/>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ClinicalStatementRelationship">
+    <xs:sequence>
+      <xs:element name="sourceId" type="II">
+      </xs:element>
+      <xs:element name="targetId" type="II">
+      </xs:element>
+      <xs:element name="targetRelationshipToSource" type="CD">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EntityRelationship">
+    <xs:sequence>
+      <xs:element name="sourceId" type="II">
+      </xs:element>
+      <xs:element name="targetEntityId" type="II">
+      </xs:element>
+      <xs:element name="targetRole" type="CD">
+      </xs:element>
+      <xs:element minOccurs="0" name="relationshipTimeInterval" type="IVL_TS">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--== The Whole Thing == -->
+  <xs:complexType name="VMR">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="templateId" type="II">
+      </xs:element>
+      <xs:element name="patient" type="EvaluatedPerson"/>
+      <xs:element minOccurs="0" name="otherEvaluatedPersons">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="evaluatedPerson" type="EvaluatedPerson"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="evaluatedPersonRelationships">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="evaluatedPersonRelationship" type="EntityRelationship"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="vmr" type="VMR">
+  </xs:element>
+
+
+  <!--== Base Clinical Statements == -->
+  <xs:complexType abstract="true" name="ClinicalStatement">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="templateId" type="II">
+      </xs:element>
+      <xs:element name="id" type="II">
+      </xs:element>
+      <xs:element minOccurs="0" name="dataSourceType" type="CD">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!--== Adverse Event Clinical Statements == -->
+  <xs:complexType abstract="true" name="AdverseEventBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="adverseEventCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="adverseEventAgent" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="adverseEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="affectedBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="AdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="AdverseEventBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="severity" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="adverseEventStatus" type="CD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="DeniedAdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="AdverseEventBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <!--== Encounter Clinical Statements == -->
+  <xs:complexType abstract="true" name="EncounterBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="encounterType" type="CD">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="AppointmentProposal">
+    <xs:complexContent>
+      <xs:extension base="EncounterBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="proposedAppointmentTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="AppointmentRequest">
+    <xs:complexContent>
+      <xs:extension base="EncounterBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="requestedAppointmentTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="requestIssuanceTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="EncounterEvent">
+    <xs:complexContent>
+      <xs:extension base="EncounterBase">
+        <xs:sequence>
+          <xs:element name="encounterEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="MissedAppointment">
+    <xs:complexContent>
+      <xs:extension base="EncounterBase">
+        <xs:sequence>
+          <xs:element name="appointmentTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="ScheduledAppointment">
+    <xs:complexContent>
+      <xs:extension base="EncounterBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="appointmentTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <!--== Goal Clinical Statements == -->
+  <xs:complexType abstract="true" name="GoalBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="goalFocus" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="goalPursuitEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="goalAchievementTargetTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetBodySite" type="BodySite">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetGoalValue">
+            <xs:complexType>
+              <xs:choice minOccurs="0">
+                <xs:element name="boolean" type="BL"/>
+                <xs:element name="concept" type="CD"/>
+                <xs:element name="decimal" type="REAL"/>
+                <xs:element name="decimalRange" type="IVL_REAL"/>
+                <xs:element name="integer" type="INT"/>
+                <xs:element name="integerRange" type="IVL_INT"/>
+                <xs:element name="physicalQuantity" type="PQ"/>
+                <xs:element name="physicalQuantityRange" type="IVL_PQ"/>
+                <xs:element name="ratio" type="RTO"/>
+                <xs:element name="ratioRange" type="IVL_RTO"/>
+                <xs:element name="simpleConcept" type="CS"/>
+                <xs:element name="text" type="ST"/>
+                <xs:element name="time" type="TS"/>
+                <xs:element name="timeRange" type="IVL_TS"/>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="Goal">
+    <xs:complexContent>
+      <xs:extension base="GoalBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="goalObserverEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="goalStatus" type="CD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="GoalProposal">
+    <xs:complexContent>
+      <xs:extension base="GoalBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <!--== Observation Clinical Statements == -->
+  <xs:complexType abstract="true" name="ObservationBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="observationFocus" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="observationMethod" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ObservationOrder">
+    <xs:complexContent>
+      <xs:extension base="ObservationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="orderEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="observationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ObservationProposal">
+    <xs:complexContent>
+      <xs:extension base="ObservationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="proposedObservationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ObservationResult">
+    <xs:complexContent>
+      <xs:extension base="ObservationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="observationEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="observationValue">
+            <xs:complexType>
+              <xs:choice minOccurs="0">
+                <xs:element name="address" type="AD"/>
+                <xs:element name="boolean" type="BL"/>
+                <xs:element name="concept" type="CD"/>
+                <xs:element name="decimal" type="REAL"/>
+                <xs:element name="decimalRange" type="IVL_REAL"/>
+                <xs:element name="identifier" type="II"/>
+                <xs:element name="integer" type="INT"/>
+                <xs:element name="integerRange" type="IVL_INT"/>
+                <xs:element name="name" type="EN"/>
+                <xs:element name="physicalQuantity" type="PQ"/>
+                <xs:element name="physicalQuantityRange" type="IVL_PQ"/>
+                <xs:element name="ratio" type="RTO"/>
+                <xs:element name="ratioRange" type="IVL_RTO"/>
+                <xs:element name="simpleConcept" type="CS"/>
+                <xs:element name="telecom" type="TEL"/>
+                <xs:element name="text" type="ST"/>
+                <xs:element name="time" type="TS"/>
+                <xs:element name="timeRange" type="IVL_TS"/>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="interpretation" type="CD">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="UnconductedObservation">
+    <xs:complexContent>
+      <xs:extension base="ObservationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="reason" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="subjectEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <!--== Problem Clinical Statements == -->
+  <xs:complexType abstract="true" name="ProblemBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="problemCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="problemEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="diagnosticEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="affectedBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="DeniedProblem">
+    <xs:complexContent>
+      <xs:extension base="ProblemBase">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="Problem">
+    <xs:complexContent>
+      <xs:extension base="ProblemBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="importance" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="severity" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="problemStatus" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="ageAtOnset" type="PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="wasCauseOfDeath" type="BL">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <!--== Procedure Clinical Statements == -->
+  <xs:complexType abstract="true" name="ProcedureBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="procedureCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="procedureMethod" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="approachBodySite" type="BodySite">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ProcedureEvent">
+    <xs:complexContent>
+      <xs:extension base="ProcedureBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="procedureTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="ProcedureOrder">
+    <xs:complexContent>
+      <xs:extension base="ProcedureBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="orderEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="procedureTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="ProcedureProposal">
+    <xs:complexContent>
+      <xs:extension base="ProcedureBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="proposedProcedureTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="ScheduledProcedure">
+    <xs:complexContent>
+      <xs:extension base="ProcedureBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="procedureTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="UndeliveredProcedure">
+    <xs:complexContent>
+      <xs:extension base="ProcedureBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="reason" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="subjectEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <!--== Substance Administration Clinical Statements == -->
+  <xs:complexType abstract="true" name="SubstanceAdministrationBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="substanceAdministrationGeneralPurpose" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="doseType" type="CD">
+          </xs:element>
+          <xs:element name="substance" type="AdministrableSubstance">
+          </xs:element>
+          <xs:element minOccurs="0" name="doseQuantity" type="IVL_PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="deliveryRoute" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="deliveryRate" type="IVL_PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="dosingPeriod" type="IVL_PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="dosingPeriodIntervalIsImportant" type="BL">
+          </xs:element>
+          <xs:element minOccurs="0" name="deliveryMethod" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="approachBodySite" type="BodySite">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="SubstanceAdministrationEvent">
+    <xs:complexContent>
+      <xs:extension base="SubstanceAdministrationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="doseNumber" type="INT">
+          </xs:element>
+          <xs:element minOccurs="0" name="administrationTimeInterval" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="informationAttestationType" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="isValid" type="BL">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="SubstanceAdministrationOrder">
+    <xs:complexContent>
+      <xs:extension base="SubstanceAdministrationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="doseRestriction" type="DoseRestriction">
+          </xs:element>
+          <xs:element minOccurs="0" name="administrationTimeInterval" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="dosingSig" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="numberFillsAllowed" type="INT">
+          </xs:element>
+          <xs:element minOccurs="0" name="orderEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="SubstanceAdministrationProposal">
+    <xs:complexContent>
+      <xs:extension base="SubstanceAdministrationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="doseRestriction" type="DoseRestriction">
+          </xs:element>
+          <xs:element minOccurs="0" name="proposedAdministrationTimeInterval" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="validAdministrationTimeInterval" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="numberFillsAllowed" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="SubstanceDispensationEvent">
+    <xs:complexContent>
+      <xs:extension base="SubstanceAdministrationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="daysSupply" type="INT">
+          </xs:element>
+          <xs:element minOccurs="0" name="dispensationQuantity" type="PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="doseRestriction" type="DoseRestriction">
+          </xs:element>
+          <xs:element minOccurs="0" name="dispensationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="fillNumber" type="INT">
+          </xs:element>
+          <xs:element minOccurs="0" name="fillsRemaining" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="UndeliveredSubstanceAdministration">
+    <xs:complexContent>
+      <xs:extension base="SubstanceAdministrationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="reason" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="subjectEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <!--== Supply Clinical Statements == -->
+  <xs:complexType abstract="true" name="SupplyBase">
+    <xs:complexContent>
+      <xs:extension base="ClinicalStatement">
+        <xs:sequence>
+          <xs:element name="supplyCode" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="quantity" type="PQ">
+          </xs:element>
+          <xs:element minOccurs="0" name="targetBodySite" type="BodySite">
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="SupplyEvent">
+    <xs:complexContent>
+      <xs:extension base="SupplyBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="supplyTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+  <xs:complexType name="SupplyOrder">
+    <xs:complexContent>
+      <xs:extension base="SupplyBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="supplyTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="orderEventTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="SupplyProposal">
+    <xs:complexContent>
+      <xs:extension base="SupplyBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="criticality" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="proposedSupplyTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="repeatNumber" type="INT">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:complexType name="UndeliveredSupply">
+    <xs:complexContent>
+      <xs:extension base="SupplyBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="reason" type="CD">
+          </xs:element>
+          <xs:element minOccurs="0" name="subjectEffectiveTime" type="IVL_TS">
+          </xs:element>
+          <xs:element minOccurs="0" name="documentationTime" type="IVL_TS">
+          </xs:element>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedEntity" type="RelatedEntity"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedClinicalStatement" type="RelatedClinicalStatement"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+</xs:schema>

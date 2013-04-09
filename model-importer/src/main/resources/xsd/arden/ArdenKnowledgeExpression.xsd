@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2013 JBoss Inc
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="Value">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="otype">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="number"/>
+                                <xs:enumeration value="string"/>
+                                <xs:enumeration value="duration"/>
+                                <xs:enumeration value="time"/>
+                                <xs:enumeration value="boolean"/>
+                                <xs:enumeration value="null"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="unit" type="xs:string" use="optional"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="List">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ExprGroup" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- 9.2 List operators -->
+    <xs:element name="Set" type="UnaryMultipleType"/>
+    <xs:element name="Merge" type="BinaryType"/>
+    <xs:element name="Sort" type="SortUnaryType"/>
+    <xs:element name="SortUsing" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="AddTo" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="AddToAt" type="TernaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="RemoveFrom" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.3 Where operators -->
+    <xs:element name="Where" type="BinaryType"/>
+    <!-- 9.4 Logical operators -->
+    <xs:element name="Or" type="BinaryMultipleType"/>
+    <xs:element name="And" type="BinaryMultipleType"/>
+    <xs:element name="Not" type="UnaryType"/>
+    <!-- 9.5 Simple comparison operators -->
+    <xs:element name="EQ" type="BinaryType"/>
+    <xs:element name="LT" type="BinaryType"/>
+    <xs:element name="LE" type="BinaryType"/>
+    <xs:element name="GT" type="BinaryType"/>
+    <xs:element name="GE" type="BinaryType"/>
+    <!-- 9.6 Is comparison operators -->
+    <xs:element name="IsEQ" type="IsBinaryType"/>
+    <xs:element name="IsLT" type="IsBinaryType"/>
+    <xs:element name="IsGT" type="IsBinaryType"/>
+    <xs:element name="IsLE" type="IsBinaryType"/>
+    <xs:element name="IsGE" type="IsBinaryType"/>
+    <xs:element name="IsWithinTo" type="IsTernaryType"/>
+    <xs:element name="IsWithinPreceding" type="IsTernaryType"/>
+    <xs:element name="IsWithinFollowing" type="IsTernaryType"/>
+    <xs:element name="IsWithinSurrounding" type="IsTernaryType"/>
+    <xs:element name="IsWithinPast" type="IsBinaryType"/>
+    <xs:element name="IsWithinSameDayAs" type="IsBinaryType"/>
+    <xs:element name="IsBefore" type="IsBinaryType"/>
+    <xs:element name="IsAfter" type="IsBinaryType"/>
+    <xs:element name="IsIn" type="IsBinaryType"/>
+    <xs:element name="IsPresent" type="IsUnaryType"/>
+    <xs:element name="IsNull" type="IsUnaryType"/>
+    <xs:element name="IsBoolean" type="IsUnaryType"/>
+    <xs:element name="IsNumber" type="IsUnaryType"/>
+    <xs:element name="IsString" type="IsUnaryType"/>
+    <xs:element name="IsTime" type="IsUnaryType"/>
+    <xs:element name="IsTimeOfDay" type="IsUnaryType"/>
+    <xs:element name="IsDuration" type="IsUnaryType"/>
+    <xs:element name="IsList" type="IsUnaryType"/>
+    <xs:element name="In" type="BinaryType"/>
+    <xs:element name="IsObject" type="IsUnaryBinaryType"/>
+    <!-- 9.7 Occur comparison operators -->
+    <xs:element name="OccurEQ" type="OccurBinaryType"/>
+    <xs:element name="OccurWithinTo" type="OccurTernaryType"/>
+    <xs:element name="OccurWithinProcedding" type="OccurTernaryType"/>
+    <xs:element name="OccurWithinFollowing" type="OccurTernaryType"/>
+    <xs:element name="OccurWithinSurrounding" type="OccurTernaryType"/>
+    <xs:element name="OccurWithinPast" type="OccurBinaryType"/>
+    <xs:element name="OccurWithinSameDayAs" type="OccurBinaryType"/>
+    <xs:element name="OccurBefore" type="OccurBinaryType"/>
+    <xs:element name="OccurAfter" type="OccurBinaryType"/>
+    <xs:element name="OccurAt" type="OccurBinaryType"/>
+    <!-- 9.8 String operators -->
+    <xs:element name="Concat" type="BinaryMultipleType"/>
+    <xs:element name="FormattedWith" type="BinaryType"/>
+    <xs:element name="String" type="UnaryType"/>
+    <xs:element name="MatchesPattern" type="BinaryType"/>
+    <xs:element name="Length" type="UnaryType"/>
+    <xs:element name="Uppercase" type="UnaryType"/>
+    <xs:element name="Lowercase" type="UnaryType"/>
+    <xs:element name="Trim" type="UnaryType"/>
+    <xs:element name="LeftTrim" type="UnaryType"/>
+    <xs:element name="RightTrim" type="UnaryType"/>
+    <xs:element name="FindString" type="BinaryType"/>
+    <xs:element name="FindStringStartingAt" type="TernaryType"/>
+    <xs:element name="SubstringCharactersFrom" type="BinaryType"/>
+    <xs:element name="SubstringCharactersStartingAtFrom" type="TernaryType"/>
+    <xs:element name="Localized" type="UnaryType"/>
+    <xs:element name="LocalizedBy" type="BinaryType"/>
+    <xs:element name="AsString" type="UnaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.9 Arithmetic operators -->
+    <xs:element name="Add" type="BinaryMultipleType"/>
+    <xs:element name="Plus" type="UnaryType"/>
+    <xs:element name="Subtract" type="BinaryMultipleType"/>
+    <xs:element name="Minus" type="UnaryType"/>
+    <xs:element name="Multiply" type="BinaryMultipleType"/>
+    <xs:element name="Divide" type="BinaryMultipleType"/>
+    <xs:element name="Power" type="BinaryType"/>
+    <!-- 9.10 Temporal -->
+    <xs:element name="After" type="BinaryType"/>
+    <xs:element name="Before" type="BinaryType"/>
+    <xs:element name="Ago" type="UnaryType"/>
+    <xs:element name="From" type="BinaryType"/>
+    <xs:element name="TimeOfDay" type="UnaryType"/>
+    <xs:element name="DayOfWeek" type="UnaryType"/>
+    <xs:element name="ExtractYear" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ExtractMonth" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ExtractDay" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ExtractHour" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ExtractMinute" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ExtractSecond" type="UnaryType"/>
+    <!-- Moved operators category in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceYearWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceMonthWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceDayWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceHourWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceMinuteWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="ReplaceSecondWith" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.11 Duration operators -->
+    <xs:element name="Year" type="UnaryType"/>
+    <xs:element name="Month" type="UnaryType"/>
+    <xs:element name="Week" type="UnaryType"/>
+    <xs:element name="Day" type="UnaryType"/>
+    <xs:element name="Hour" type="UnaryType"/>
+    <xs:element name="Minute" type="UnaryType"/>
+    <xs:element name="Second" type="UnaryType"/>
+    <!-- 9.12 Aggregation operators -->
+    <xs:element name="Count" type="UnaryType"/>
+    <xs:element name="Exist" type="UnaryType"/>
+    <xs:element name="Average" type="UnaryType"/>
+    <xs:element name="Median" type="UnaryType"/>
+    <xs:element name="Sum" type="UnaryType"/>
+    <xs:element name="Stddev" type="UnaryType"/>
+    <xs:element name="Variance" type="UnaryType"/>
+    <xs:element name="Minimum" type="UnaryType"/>
+    <xs:element name="Maximum" type="UnaryType"/>
+    <xs:element name="Last" type="UnaryType"/>
+    <xs:element name="First" type="UnaryType"/>
+    <xs:element name="Any" type="UnaryType"/>
+    <xs:element name="All" type="UnaryType"/>
+    <xs:element name="No" type="UnaryType"/>
+    <xs:element name="Latest" type="UnaryType"/>
+    <xs:element name="Earliest" type="UnaryType"/>
+    <xs:element name="Element" type="BinaryType"/>
+    <xs:element name="ExtractCharacters" type="UnaryType"/>
+    <xs:element name="SeqTo" type="BinaryType"/>
+    <xs:element name="Reverse" type="UnaryType"/>
+    <xs:element name="IndexLatest" type="UnaryType"/>
+    <xs:element name="IndexEarliest" type="UnaryType"/>
+    <xs:element name="IndexMinimum" type="UnaryType"/>
+    <xs:element name="IndexMaximum" type="UnaryType"/>
+    <!-- 9.13 Query aggregation operators -->
+    <xs:element name="NearestFrom" type="BinaryType"/>
+    <xs:element name="IndexNearestFrom" type="BinaryType"/>
+    <xs:element name="Slope" type="UnaryType"/>
+    <xs:element name="IndexOfFrom" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="AtLeastFrom" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="AtMostFrom" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.14 Transformation operators -->
+    <xs:element name="MinimumFrom" type="BinaryType"/>
+    <xs:element name="MaximumFrom" type="BinaryType"/>
+    <xs:element name="FirstFrom" type="BinaryType"/>
+    <xs:element name="LastFrom" type="BinaryType"/>
+    <xs:element name="Increase" type="UnaryType"/>
+    <xs:element name="Decrease" type="UnaryType"/>
+    <xs:element name="PcntIncrease" type="UnaryType"/>
+    <xs:element name="PcntDecrease" type="UnaryType"/>
+    <xs:element name="EarliestFrom" type="BinaryType"/>
+    <xs:element name="LatestFrom" type="BinaryType"/>
+    <xs:element name="IndexMinimumFrom" type="BinaryType"/>
+    <xs:element name="IndexMaximumFrom" type="BinaryType"/>
+    <xs:element name="SublistElementFrom" type="BinaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <xs:element name="SublistElementStartingAtFrom" type="TernaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.15 Query transformation operators -->
+    <xs:element name="Interval" type="UnaryType"/>
+    <!-- 9.16 Numeric function operators -->
+    <xs:element name="Arccos" type="UnaryType"/>
+    <xs:element name="Arcsin" type="UnaryType"/>
+    <xs:element name="Arctan" type="UnaryType"/>
+    <xs:element name="Cosine" type="UnaryType"/>
+    <xs:element name="Sine" type="UnaryType"/>
+    <xs:element name="Tangent" type="UnaryType"/>
+    <xs:element name="Exp" type="UnaryType"/>
+    <xs:element name="Log" type="UnaryType"/>
+    <xs:element name="Log10" type="UnaryType"/>
+    <xs:element name="Int" type="UnaryType"/>
+    <xs:element name="Floor" type="UnaryType"/>
+    <xs:element name="Ceiling" type="UnaryType"/>
+    <xs:element name="Truncate" type="UnaryType"/>
+    <xs:element name="Round" type="UnaryType"/>
+    <xs:element name="Abs" type="UnaryType"/>
+    <xs:element name="Sqrt" type="UnaryType"/>
+    <xs:element name="AsNumber" type="UnaryType"/>
+    <!-- 9.17 Time function operators -->
+    <xs:element name="Time" type="UnaryType"/>
+    <xs:element name="Attime" type="BinaryType"/>
+    <xs:element name="AsTime" type="UnaryType"/>
+    <!-- Added in Arden Syntax version 2.8 -->
+    <!-- 9.18 Object operators -->
+    <xs:element name="Clone" type="UnaryType"/>
+    <xs:element name="ExtractAttributeNames" type="UnaryType"/>
+    <xs:element name="AttributeFrom" type="BinaryType"/>
+    <xs:complexType name="ExprType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UnaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="BinaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="2" maxOccurs="2"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="TernaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="3" maxOccurs="3"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="UnaryMultipleType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="BinaryMultipleType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="2" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="SortUnaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="order" type="SortClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="SortBinaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="2" maxOccurs="2"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="order" type="SortClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="IsUnaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="IsClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="IsBinaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="2" maxOccurs="2"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="IsClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="IsTernaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="3" maxOccurs="3"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="IsClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="IsUnaryBinaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="1" maxOccurs="2"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="IsClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="OccurBinaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="2" maxOccurs="2"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="OccurClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="OccurTernaryType">
+        <xs:sequence>
+            <xs:group ref="ExprGroup" minOccurs="3" maxOccurs="3"/>
+        </xs:sequence>
+        <xs:attribute name="otype" type="xs:string" use="optional"/>
+        <xs:attribute name="type" type="OccurClassType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="DotOperatorSupportIdentifierType">
+        <xs:sequence>
+            <xs:element name="Index" type="ExprType" minOccurs="0"/>
+            <xs:element name="Identifier" type="DotOperatorSupportIdentifierType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="IdentifierAttrGroup"/>
+    </xs:complexType>
+    <xs:simpleType name="SortClassType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="data"/>
+            <xs:enumeration value="time"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IsClassType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="is"/>
+            <xs:enumeration value="are"/>
+            <xs:enumeration value="was"/>
+            <xs:enumeration value="were"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="OccurClassType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="occur"/>
+            <xs:enumeration value="occurs"/>
+            <xs:enumeration value="occurred"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IdentifierVarType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="80"/>
+            <xs:pattern value="[a-z,A-Z]{1}([a-z,A-Z,0-9,_])*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:group name="ExprGroup">
+        <xs:choice>
+            <xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+            <xs:element ref="Value"/>
+            <xs:element ref="List"/>
+            <!-- 9.2 List operators -->
+            <xs:element ref="Set"/>
+            <xs:element ref="Merge"/>
+            <xs:element ref="Sort"/>
+            <xs:element ref="SortUsing"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="AddTo"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="AddToAt"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="RemoveFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.3 Where operators -->
+            <xs:element ref="Where"/>
+            <!-- 9.4 Logical operators -->
+            <xs:element ref="Or"/>
+            <xs:element ref="And"/>
+            <xs:element ref="Not"/>
+            <!-- 9.5 Simple comparison  operators -->
+            <xs:element ref="EQ"/>
+            <xs:element ref="LT"/>
+            <xs:element ref="LE"/>
+            <xs:element ref="GT"/>
+            <xs:element ref="GE"/>
+            <!-- 9.6 Is comparison operators -->
+            <xs:element ref="IsEQ"/>
+            <xs:element ref="IsLT"/>
+            <xs:element ref="IsGT"/>
+            <xs:element ref="IsLE"/>
+            <xs:element ref="IsGE"/>
+            <xs:element ref="IsWithinTo"/>
+            <xs:element ref="IsWithinPreceding"/>
+            <xs:element ref="IsWithinFollowing"/>
+            <xs:element ref="IsWithinSurrounding"/>
+            <xs:element ref="IsWithinPast"/>
+            <xs:element ref="IsWithinSameDayAs"/>
+            <xs:element ref="IsBefore"/>
+            <xs:element ref="IsAfter"/>
+            <xs:element ref="IsIn"/>
+            <xs:element ref="IsPresent"/>
+            <xs:element ref="IsNull"/>
+            <xs:element ref="IsBoolean"/>
+            <xs:element ref="IsNumber"/>
+            <xs:element ref="IsString"/>
+            <xs:element ref="IsTime"/>
+            <xs:element ref="IsTimeOfDay"/>
+            <xs:element ref="IsDuration"/>
+            <xs:element ref="IsList"/>
+            <xs:element ref="In"/>
+            <xs:element ref="IsObject"/>
+            <!-- 9.7 Occur comparison operators -->
+            <xs:element ref="OccurEQ"/>
+            <xs:element ref="OccurWithinTo"/>
+            <xs:element ref="OccurWithinProcedding"/>
+            <xs:element ref="OccurWithinFollowing"/>
+            <xs:element ref="OccurWithinSurrounding"/>
+            <xs:element ref="OccurWithinPast"/>
+            <xs:element ref="OccurWithinSameDayAs"/>
+            <xs:element ref="OccurBefore"/>
+            <xs:element ref="OccurAfter"/>
+            <xs:element ref="OccurAt"/>
+            <!-- 9.8 String operators -->
+            <xs:element ref="Concat"/>
+            <xs:element ref="FormattedWith"/>
+            <xs:element ref="String"/>
+            <xs:element ref="MatchesPattern"/>
+            <xs:element ref="Length"/>
+            <xs:element ref="Uppercase"/>
+            <xs:element ref="Lowercase"/>
+            <xs:element ref="Trim"/>
+            <xs:element ref="LeftTrim"/>
+            <xs:element ref="RightTrim"/>
+            <xs:element ref="FindString"/>
+            <xs:element ref="FindStringStartingAt"/>
+            <xs:element ref="SubstringCharactersFrom"/>
+            <xs:element ref="SubstringCharactersStartingAtFrom"/>
+            <xs:element ref="Localized"/>
+            <xs:element ref="LocalizedBy"/>
+            <xs:element ref="AsString"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.9 Arithmetic operators -->
+            <xs:element ref="Add"/>
+            <xs:element ref="Plus"/>
+            <xs:element ref="Subtract"/>
+            <xs:element ref="Minus"/>
+            <xs:element ref="Multiply"/>
+            <xs:element ref="Divide"/>
+            <xs:element ref="Power"/>
+            <!-- 9.10 Temporal operators -->
+            <xs:element ref="After"/>
+            <xs:element ref="Before"/>
+            <xs:element ref="Ago"/>
+            <xs:element ref="From"/>
+            <xs:element ref="TimeOfDay"/>
+            <xs:element ref="DayOfWeek"/>
+            <xs:element ref="ExtractYear"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ExtractMonth"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ExtractDay"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ExtractHour"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ExtractMinute"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ExtractSecond"/>
+            <!-- Moved operators category in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceYearWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceMonthWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceDayWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceHourWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceMinuteWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="ReplaceSecondWith"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.11 Duration operators -->
+            <xs:element ref="Year"/>
+            <xs:element ref="Month"/>
+            <xs:element ref="Week"/>
+            <xs:element ref="Day"/>
+            <xs:element ref="Hour"/>
+            <xs:element ref="Minute"/>
+            <xs:element ref="Second"/>
+            <!-- 9.12 Aggregation operators -->
+            <xs:element ref="Count"/>
+            <xs:element ref="Exist"/>
+            <xs:element ref="Average"/>
+            <xs:element ref="Median"/>
+            <xs:element ref="Sum"/>
+            <xs:element ref="Stddev"/>
+            <xs:element ref="Variance"/>
+            <xs:element ref="Minimum"/>
+            <xs:element ref="Maximum"/>
+            <xs:element ref="Last"/>
+            <xs:element ref="First"/>
+            <xs:element ref="Any"/>
+            <xs:element ref="All"/>
+            <xs:element ref="No"/>
+            <xs:element ref="Latest"/>
+            <xs:element ref="Earliest"/>
+            <xs:element ref="Element"/>
+            <xs:element ref="ExtractCharacters"/>
+            <xs:element ref="SeqTo"/>
+            <xs:element ref="Reverse"/>
+            <xs:element ref="IndexLatest"/>
+            <xs:element ref="IndexEarliest"/>
+            <xs:element ref="IndexMinimum"/>
+            <xs:element ref="IndexMaximum"/>
+            <!-- 9.13 Query aggregation operators -->
+            <xs:element ref="NearestFrom"/>
+            <xs:element ref="IndexNearestFrom"/>
+            <xs:element ref="Slope"/>
+            <xs:element ref="IndexOfFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="AtLeastFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="AtMostFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.14 Transformation  operators -->
+            <xs:element ref="MinimumFrom"/>
+            <xs:element ref="MaximumFrom"/>
+            <xs:element ref="FirstFrom"/>
+            <xs:element ref="LastFrom"/>
+            <xs:element ref="Increase"/>
+            <xs:element ref="Decrease"/>
+            <xs:element ref="PcntIncrease"/>
+            <xs:element ref="PcntDecrease"/>
+            <xs:element ref="EarliestFrom"/>
+            <xs:element ref="LatestFrom"/>
+            <xs:element ref="IndexMinimumFrom"/>
+            <xs:element ref="IndexMaximumFrom"/>
+            <xs:element ref="SublistElementFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <xs:element ref="SublistElementStartingAtFrom"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.15 Query transformation operators -->
+            <xs:element ref="Interval"/>
+            <!-- 9.16 Numeric function operators -->
+            <xs:element ref="Arccos"/>
+            <xs:element ref="Arcsin"/>
+            <xs:element ref="Arctan"/>
+            <xs:element ref="Cosine"/>
+            <xs:element ref="Sine"/>
+            <xs:element ref="Tangent"/>
+            <xs:element ref="Exp"/>
+            <xs:element ref="Log"/>
+            <xs:element ref="Log10"/>
+            <xs:element ref="Int"/>
+            <xs:element ref="Floor"/>
+            <xs:element ref="Ceiling"/>
+            <xs:element ref="Truncate"/>
+            <xs:element ref="Round"/>
+            <xs:element ref="Abs"/>
+            <xs:element ref="Sqrt"/>
+            <xs:element ref="AsNumber"/>
+            <!-- 9.17 Time function operators -->
+            <xs:element ref="Time"/>
+            <xs:element ref="Attime"/>
+            <xs:element ref="AsTime"/>
+            <!-- Added in Arden Syntax version 2.8 -->
+            <!-- 9.18 Object operators -->
+            <xs:element ref="Clone"/>
+            <xs:element ref="ExtractAttributeNames"/>
+            <xs:element ref="AttributeFrom"/>
+        </xs:choice>
+    </xs:group>
+    <xs:attributeGroup name="IdentifierAttrGroup">
+        <xs:attribute name="var" type="IdentifierVarType" use="required"/>
+        <xs:attribute name="reserved" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="otype" type="xs:NMTOKEN" use="optional"/>
+    </xs:attributeGroup>
+</xs:schema>

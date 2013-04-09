@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="ArdenKnowledgeExpression.xsd"/>
+	<xs:element name="Knowledge">
+		<xs:annotation>
+			<xs:documentation>Knowledge Category -- data mappings, evoking / triggering event definitions, clinical logic, actions to be taken based on clinical logic</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="data_driven"/>
+							<xs:enumeration value="data-driven"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Data" type="DataStatementType"/>
+				<xs:element name="Priority" default="50" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:minInclusive value="1"/>
+							<xs:maxInclusive value="99"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Evoke" type="EvokeStatementType" minOccurs="0"/>
+				<xs:element name="Logic" type="LogicStatementType"/>
+				<xs:element name="Action" type="ActionStatementType"/>
+				<xs:element name="Urgency" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="1"/>
+							<xs:maxInclusive value="99"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Assignment">
+		<xs:complexType>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+					<xs:element name="Assigned" type="ExprType"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element name="TimeOf">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Identifier" type="GeneralIdentifierType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Assigned" type="ExprType"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Object">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ObjectIdentifier" type="ObjectIdentifierType"/>
+				<xs:element name="Defined">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Attribute" type="ObjectAttributeType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Call">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+					<xs:element name="IdentifierList">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Identifier" type="GeneralIdentifierType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="Assigned">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Identifier" type="GeneralIdentifierType"/>
+							<xs:element name="With" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:group ref="ExprGroup" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="New">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+				<xs:element name="Assigned">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ObjectIdentifier" type="ObjectIdentifierType"/>
+							<xs:element name="WithExpr" type="ExprType" minOccurs="0"/>
+							<xs:element name="WithObject" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Assigment" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Identifier" type="GeneralIdentifierType"/>
+													<xs:element name="Assigned">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:group ref="ExprGroup"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Breakloop"> <!-- Added in Arden Syntax version 2.8 -->
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="xs:anyType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="DataStatementType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Read">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+							<xs:element name="IdentifierList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Identifier" type="GeneralIdentifierType" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="Assigned">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:choice>
+										<xs:element name="Mapping" type="MappingContentsType"/>
+										<xs:group ref="ReadAggregationGroup"/>
+										<xs:group ref="ReadTransformationGroup"/>
+									</xs:choice>
+									<xs:element name="ReadWhere" type="ReadWhereType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReadAs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="Assigned">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:choice>
+										<xs:element name="Mapping" type="MappingContentsType"/>
+										<xs:group ref="ReadAggregationGroup"/>
+										<xs:group ref="ReadTransformationGroup"/>
+									</xs:choice>
+									<xs:element name="ReadWhere" type="ReadWhereType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Event" type="MappingType"/>
+			<xs:element name="MLM" type="MLMType"/>
+			<xs:element name="Argument">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+						<xs:element name="IdentifierList">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Identifier" type="GeneralIdentifierType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Message" type="MappingType"/>
+			<xs:element name="MessageAs" type="MappingAsType"/>
+			<xs:element name="Destination" type="MappingType"/>
+			<xs:element name="DestinationAs" type="MappingAsType"/>
+			<xs:element ref="Assignment"/>
+			<xs:element name="If">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element name="Condition" type="ExprType"/>
+							<xs:element name="Then" type="DataStatementType"/>
+						</xs:sequence>
+						<xs:element name="Else" type="DataStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Call"/>
+			<xs:element name="While">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Condition" type="ExprType"/>
+						<xs:element name="Do" type="DataStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="For">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="In" type="ExprType"/>
+						<xs:element name="Do" type="DataStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Interface" type="MappingType"/>			
+			<xs:element ref="Object"/>
+			<xs:element ref="New"/>
+			<xs:element name="Include">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Switch"> <!-- Added in Arden Syntax version 2.8 -->
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+						<xs:element name="Case" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Condition" type="ExprType"/>
+									<xs:element name="Then" type="DataStatementType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Default" type="DataStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Breakloop"/> <!-- Added in Arden Syntax version 2.8 -->
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="EvokeStatementType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:group ref="EventGroup"/>
+			<xs:group ref="RelativeEvokeTimeGroup"/>
+			<xs:element ref="Call"/>
+			<xs:element ref="Value"/>
+			<xs:element name="PeriodicTrigger">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Every">
+							<xs:complexType>
+								<xs:choice>
+									<xs:element ref="Value"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="For">
+							<xs:complexType>
+								<xs:choice>
+									<xs:element ref="Value"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Starting">
+							<xs:annotation>
+								<xs:documentation>type of value is time, identifier is special ones for time(now, eventtime...)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice>
+									<xs:element name="TimeOf">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:group ref="ExceptEventGroup"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:sequence>
+										<xs:group ref="EvokeTimeGroup"/>
+										<xs:element name="After" minOccurs="0">
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="Time">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:group ref="ExceptEventGroup"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element ref="Value"/>
+													<xs:group ref="RelativeEvokeTimeGroup"/>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Until" type="ExprType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="LogicStatementType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="Assignment"/>
+			<xs:element ref="Object"/>
+			<xs:element name="If">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element name="Condition" type="ExprType"/>
+							<xs:element name="Then" type="LogicStatementType"/>
+						</xs:sequence>
+						<xs:element name="Else" type="LogicStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Conclude" type="ExprType"/>
+			<xs:element ref="Call"/>
+			<xs:element name="While">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Condition" type="ExprType"/>
+						<xs:element name="Do" type="LogicStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="For">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="In" type="ExprType"/>
+						<xs:element name="Do" type="LogicStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="New"/>
+			<xs:element name="Switch"> <!-- Added in Arden Syntax version 2.8 -->
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>				
+						<xs:element name="Case" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Condition" type="ExprType"/>
+									<xs:element name="Then" type="LogicStatementType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Default" type="LogicStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Breakloop"/> <!-- Added in Arden Syntax version 2.8 -->
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ActionStatementType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Write">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="ExprGroup"/>
+						<xs:element name="At" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Identifier" type="GeneralIdentifierType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Return" type="ExprType"/>
+			<xs:element name="If">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element name="Condition" type="ExprType"/>
+							<xs:element name="Then" type="ActionStatementType"/>
+						</xs:sequence>
+						<xs:element name="Else" type="ActionStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Call">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="With" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:group ref="ExprGroup" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Delay" type="ExprType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="While">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Condition" type="ExprType"/>
+						<xs:element name="Do" type="ActionStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="For">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="In" type="ExprType"/>
+						<xs:element name="Do" type="ActionStatementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Assignment"/>
+			<xs:element name="Switch"> <!-- Added in Arden Syntax version 2.8 -->
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="DotOperatorSupportIdentifierType"/>
+						<xs:element name="Case" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Condition" type="ExprType"/>
+									<xs:element name="Then" type="ActionStatementType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Default" type="ActionStatementType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Breakloop"/> <!-- Added in Arden Syntax version 2.8 -->
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MappingType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="GeneralIdentifierType"/>
+			<xs:element name="Assigned">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Mapping" type="MappingContentsType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappingAsType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="GeneralIdentifierType"/>
+			<xs:element name="Assigned">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+						<xs:element name="Mapping" type="MappingContentsType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ComplexMappingType">
+		<xs:sequence>
+			<xs:element name="Mapping" type="MappingContentsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExprMappingType">
+		<xs:sequence>
+			<xs:group ref="ExprGroup"/>
+			<xs:element name="Mapping" type="MappingContentsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MappingContentsType">
+		<xs:sequence>
+			<xs:element name="Contents" type="xs:string" minOccurs="0"/>
+			<xs:element name="XForms" type="XFormsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="XFormsType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="input" type="XFormsInputType"/>
+			<xs:element name="select1" type="XFormsSelect1Type"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="XFormsInputType">
+		<xs:sequence>
+			<xs:element name="label" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="XFormsSelect1Type">
+		<xs:sequence>
+			<xs:element name="label" type="xs:string"/>
+			<xs:element name="item" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="label" type="xs:string"/>
+						<xs:element name="value" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MLMType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="GeneralIdentifierType"/>
+			<xs:element name="Assigned">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Term" type="xs:string" minOccurs="0"/>
+						<xs:element name="FromInstitution" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="option" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="ReadWhereType">
+		<xs:choice>
+			<xs:group ref="OccurComparisonOperatorGroup"/>
+			<xs:element name="Not">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="OccurComparisonOperatorGroup"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>	
+	<xs:group name="OccurComparisonOperatorGroup">
+		<xs:choice>
+    			<xs:element ref="OccurEQ"/>
+			<xs:element ref="OccurWithinTo"/>
+			<xs:element ref="OccurWithinProcedding"/>
+			<xs:element ref="OccurWithinFollowing"/>
+			<xs:element ref="OccurWithinSurrounding"/>
+			<xs:element ref="OccurWithinPast"/>
+			<xs:element ref="OccurWithinSameDayAs"/>
+			<xs:element ref="OccurBefore"/>
+			<xs:element ref="OccurAfter"/>
+			<xs:element ref="OccurAt"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="ReadAggregationGroup">
+		<xs:choice>
+			<xs:element name="Average" type="ComplexMappingType"/>
+			<xs:element name="Count" type="ComplexMappingType"/>
+			<xs:element name="Exist" type="ComplexMappingType"/>
+			<xs:element name="Sum" type="ComplexMappingType"/>
+			<xs:element name="Median" type="ComplexMappingType"/>
+			<xs:element name="Minimum" type="ComplexMappingType"/>
+			<xs:element name="Maximum" type="ComplexMappingType"/>
+			<xs:element name="Last" type="ComplexMappingType"/>
+			<xs:element name="First" type="ComplexMappingType"/>
+			<xs:element name="Earliest" type="ComplexMappingType"/>
+			<xs:element name="Latest" type="ComplexMappingType"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="ReadTransformationGroup">
+		<xs:choice>
+			<xs:element name="MinimumFrom" type="ExprMappingType"/>
+			<xs:element name="MaximumFrom" type="ExprMappingType"/>
+			<xs:element name="LastFrom" type="ExprMappingType"/>
+			<xs:element name="FirstFrom" type="ExprMappingType"/>
+			<xs:element name="EarliestFrom" type="ExprMappingType"/>
+			<xs:element name="LatestFrom" type="ExprMappingType"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="EventGroup">
+		<xs:choice>
+			<xs:element name="Or">
+				<xs:complexType>
+					<xs:choice>
+						<xs:group ref="EventGroup" minOccurs="2" maxOccurs="2"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="ExceptEventGroup"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="ExceptEventGroup">
+		<xs:choice>
+			<xs:element name="Any">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="EventList">
+							<xs:complexType>
+								<xs:choice>
+									<xs:group ref="EventGroup" maxOccurs="unbounded"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Identifier" type="GeneralIdentifierType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EventList">
+				<xs:complexType>
+					<xs:choice>
+						<xs:group ref="EventGroup" maxOccurs="unbounded"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Identifier" type="GeneralIdentifierType"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="RelativeEvokeTimeGroup">
+		<xs:choice>
+			<xs:element name="TodayAt" type="TimeOfDayTime"/>
+			<xs:element name="TomorrowAt" type="TimeOfDayTime"/>
+			<xs:element name="MondayAt" type="TimeOfDayTime"/>
+			<xs:element name="TusedayAt" type="TimeOfDayTime"/>
+			<xs:element name="WednesdayAt" type="TimeOfDayTime"/>
+			<xs:element name="ThursdayAt" type="TimeOfDayTime"/>
+			<xs:element name="FridayAy" type="TimeOfDayTime"/>
+			<xs:element name="SaturdayAt" type="TimeOfDayTime"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="EvokeTimeGroup">
+		<xs:choice>
+			<xs:element name="Or">
+				<xs:complexType>
+					<xs:choice>
+						<xs:group ref="EvokeTimeGroup" minOccurs="2" maxOccurs="2"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Value"/>
+			<xs:group ref="ExceptEventGroup"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="GeneralIdentifierType">
+		<xs:sequence>
+			<xs:element name="Index" type="ExprType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="IdentifierAttrGroup"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectIdentifierType">
+		<xs:attribute name="var" type="IdentifierVarType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectAttributeType">
+		<xs:attribute name="var" type="IdentifierVarType" use="required"/>
+		<xs:attribute name="otype" type="xs:NMTOKEN" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="IdentifierItVarType">
+		<xs:restriction base="IdentifierVarType">
+			<xs:enumeration value="it"/>
+			<xs:enumeration value="they"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TimeOfDayTime">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}(.([z,Z],+[0-9]{2}:[0-9]{2},-[0-9]{2}:[0-9]{2}))?"/>
+		</xs:restriction>
+	</xs:simpleType>		
+</xs:schema>
