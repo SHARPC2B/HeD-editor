@@ -12,6 +12,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="groovy-all-2.0.6" level="application" />
     <orderEntry type="library" name="owlapi-distribution-3.4.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit-4.10" level="application" />
   </component>
 </module>
 
