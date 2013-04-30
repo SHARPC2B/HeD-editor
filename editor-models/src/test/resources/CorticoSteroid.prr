@@ -18,7 +18,7 @@ ruleVariable:
 		p.problemCode.code == "493.00" or p.problemCode.code == "493.01" .....
 	) )
 
-	$prescribedInhaledCorticosteroidsOrEquivalent : Set = $vmr->select( s : SubstanceAdministrationEvent |
+	$prescribedInhaledCorticosteroidsOrEquivalent : $vmr->select( s : SubstanceAdministrationEvent |
 		s.substanceAdministrationGeneralPurpose.code ....
 		and s.administrationTimeInterval.low > ( today() - 12 )
 		and s.administrationTimeInterval.low < today()
@@ -33,7 +33,7 @@ ruleVariable:
 		( o.observationFocus.code == "4015F-2F" or o.observationFocus.code == "4015F-8P" )
 	)
 
-	$patient : EvaluatedPerson = $vmr->any( x : EvaluatedPerson | x.age > 18 )
+	$patientAge : int = $patient.demographics.age->any()
 
 condition:
 
