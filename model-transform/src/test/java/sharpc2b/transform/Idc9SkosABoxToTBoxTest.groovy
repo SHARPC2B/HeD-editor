@@ -1,8 +1,16 @@
 package sharpc2b.transform
 
+import org.junit.After
+import org.junit.AfterClass
+import org.junit.BeforeClass
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.util.DefaultPrefixManager
+
 
 import java.util.regex.Pattern
 
@@ -12,7 +20,8 @@ import java.util.regex.Pattern
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.
  */
-public class MakeCodeClasses {
+@RunWith(JUnit4.class)
+public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
     static String ontologiesHttpFileRoot =
         "/Users/rk/asu/prj" +
@@ -44,7 +53,7 @@ public class MakeCodeClasses {
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String sharpCodesOntRelPath = sharpCodesOntsRelPath + "icd9-classes";
+    static String sharpCodesOntRelPath = sharpCodesOntsRelPath + "icd9-classes2";
     static String sharpCodesUriPath = "http:/" + sharpCodesOntRelPath;
     static String sharpCodesNamespace = sharpCodesUriPath + "#";
     static IRI sharpCodesIRI = new IRI( sharpCodesUriPath );
@@ -57,8 +66,8 @@ public class MakeCodeClasses {
     PrefixManager pm;
 
     OWLOntology skos;
-    OWLOntology onta;
-    OWLOntology ontt;
+    OWLOntology icd9pub;
+    OWLOntology icd9cl;
     Set<OWLOntology> onts;
 
     OWLClass topCodeClass;
@@ -67,8 +76,18 @@ public class MakeCodeClasses {
     OWLAnnotationProperty prefLabelProp;
     OWLDataProperty icd9Prop;
 
-    void setUp (OWLOntology onta) {
-        oom = onta.getOWLOntologyManager();
+    @BeforeClass
+    static void setUpOnce () {
+
+    }
+
+    @AfterClass
+    static void tearDownOnce () {
+
+    }
+
+    void setUp () {
+        oom = OWLManager.createOWLOntologyManager();
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
@@ -79,28 +98,32 @@ public class MakeCodeClasses {
         assert new File( skosDocIRI.toURI() ).exists();
         assert new File( pubCodesDocIRI.toURI() ).exists();
 
-//        skos = oom.loadOntologyFromOntologyDocument( skosDocIRI );
+        skos = oom.loadOntologyFromOntologyDocument( skosDocIRI );
+        icd9pub = oom.loadOntologyFromOntologyDocument( pubCodesDocIRI );
 
         onts = new HashSet<OWLOntology>();
-//        onts.add( skos );
-        onts.add( onta );
+        onts.add( skos );
+        onts.add( icd9pub );
 //        onts = [skos, onta];
     }
 
-    public static void main (String[] args) {
+    @After
+    void tearDown () {
 
-        new MakeCodeClasses().createClassesOntology();
     }
 
-    OWLOntology createClassesOntology (OWLOntology icd9Published) {
+    @Test
+    public void testIt () {
 
-//        OWLOntology ontt;
-        onta = icd9Published;
+        createClassesOntology();
+    }
 
-        setUp( onta );
+    OWLOntology createClassesOntology () {
+
+        setUp();
 
         initNamespaces();
-        ontt = createNewOntology();
+        createNewOntology();
         addImports();
         initObjects();
         addCommonAxioms();
@@ -109,7 +132,7 @@ public class MakeCodeClasses {
         setUpOntologyFormat();
         serialize();
 
-        return this.ontt;
+        return icd9cl;
     }
 
     def initNamespaces () {
@@ -120,33 +143,32 @@ public class MakeCodeClasses {
 //        icd9ClassesDocIRI = new IRI( ontRootPath + "/" + "icd9Classes" + ".ofn" );
 
         pm = new DefaultPrefixManager( sharpCodesNamespace );
-        pm.setPrefix( "a:", pubCodesNamespace );
-        pm.setPrefix( "t:", sharpCodesNamespace );
+        pm.setPrefix( "icd9:", pubCodesNamespace );
         pm.setPrefix( "skos:", skosNamespace );
     }
 
     def createNewOntology () {
 
-        return oom.createOntology( sharpCodesIRI );
+        icd9cl = oom.createOntology( sharpCodesIRI );
     }
 
     def addImports () {
         OWLImportsDeclaration importsAxiom;
         AddImport imp;
 
-        importsAxiom = odf.getOWLImportsDeclaration( onta.getOntologyID().getOntologyIRI() );
-        imp = new AddImport( ontt, importsAxiom );
+        importsAxiom = odf.getOWLImportsDeclaration( icd9pub.getOntologyID().getOntologyIRI() );
+        imp = new AddImport( icd9cl, importsAxiom );
         oom.applyChange( imp );
 
         importsAxiom = odf.getOWLImportsDeclaration( skos.getOntologyID().getOntologyIRI() );
-        imp = new AddImport( ontt, importsAxiom );
+        imp = new AddImport( icd9cl, importsAxiom );
         oom.applyChange( imp );
     }
 
     def initObjects () {
 
-        topCodeClass = odf.getOWLClass( "a:ICD9_Concept", pm );
-        refinesProp = odf.getOWLObjectProperty( "t:refines", pm );
+        topCodeClass = odf.getOWLClass( "icd9:ICD9_Concept", pm );
+        refinesProp = odf.getOWLObjectProperty( ":refines", pm );
         icd9Prop = odf.getOWLDataProperty( "skos:notation", pm );
         skosBroaderTransitive = odf.getOWLObjectProperty( "skos:broaderTransitive", pm );
         prefLabelProp = odf.getOWLAnnotationProperty( "skos:prefLabel", pm );
@@ -156,12 +178,12 @@ public class MakeCodeClasses {
 
         Set<OWLAxiom> axioms = new TreeSet();
         axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
-        oom.addAxioms( ontt, axioms );
+        oom.addAxioms( icd9cl, axioms );
     }
 
     def addAxiomsForCodes () {
 
-        Set<OWLIndividual> codeIndividuals = topCodeClass.getIndividuals( onta );
+        Set<OWLIndividual> codeIndividuals = topCodeClass.getIndividuals( icd9pub );
         assert codeIndividuals.size() > 0;
 
         for (OWLIndividual ind : codeIndividuals) {
@@ -171,7 +193,7 @@ public class MakeCodeClasses {
 
     def addAxiomsForCode (OWLNamedIndividual codeInd) {
 
-        Set<OWLAnnotationAssertionAxiom> annos = onta.getAnnotationAssertionAxioms( codeInd.getIRI() );
+        Set<OWLAnnotationAssertionAxiom> annos = icd9pub.getAnnotationAssertionAxioms( codeInd.getIRI() );
         Set<OWLAnnotationAssertionAxiom> labelAnnos = annos.findAll {
             it.getProperty().equals( prefLabelProp )
         };
@@ -195,12 +217,12 @@ public class MakeCodeClasses {
         OWLEquivalentClassesAxiom eqAxiom = odf.getOWLEquivalentClassesAxiom( codeClass,
                 codeConceptAndValue );
         assert eqAxiom;
-        oom.addAxiom( ontt, eqAxiom );
+        oom.addAxiom( icd9cl, eqAxiom );
     }
 
     def addDefinitionUsingCodeValue (OWLNamedIndividual codeInd, OWLClass codeClass) {
 
-        Set<OWLLiteral> codeValues = codeInd.getDataPropertyValues( icd9Prop, onta );
+        Set<OWLLiteral> codeValues = codeInd.getDataPropertyValues( icd9Prop, icd9pub );
 //        println codeValues.size();
         if (codeValues.isEmpty()) {
             println "no icd9 code: " + codeInd;
@@ -217,7 +239,7 @@ public class MakeCodeClasses {
                 topCodeClass );
         OWLSubClassOfAxiom eqAxiom = odf.getOWLSubClassOfAxiom( codeConceptAndValue, codeClass );
         assert eqAxiom;
-        oom.addAxiom( ontt, eqAxiom );
+        oom.addAxiom( icd9cl, eqAxiom );
     }
 
     String localName (String s) {
@@ -231,12 +253,12 @@ public class MakeCodeClasses {
 
         OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( ontt, oFormat );
+        oom.setOntologyFormat( icd9cl, oFormat );
     }
 
     def serialize () {
 
-        oom.saveOntology( ontt, sharpCodesDocIRI );
+        oom.saveOntology( icd9cl, sharpCodesDocIRI );
     }
 
 }
