@@ -1,6 +1,5 @@
 package sharpc2b.transform
 
-import org.codehaus.groovy.ast.expr.ClassExpression
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -98,7 +97,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        onta = oom.loadOntologyFromOntologyDocument( new File(
+//        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + aOntRelPath + ".ofn" ) );
         println "SKOS Doc IRI = <${skosDocIRI}>";
 
@@ -187,7 +186,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 
 //        Set<OWLAxiom> axioms = new TreeSet();
 //        axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
-//        oom.addAxioms( ontt, axioms );
+//        oom.addAxioms( tboxModel, axioms );
     }
 
     def addAxiomsForCodes () {
@@ -195,27 +194,27 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
         Set<OWLEquivalentClassesAxiom> eqAxioms = ontt.getAxioms( AxiomType.EQUIVALENT_CLASSES, false );
         assert eqAxioms.size() > 0;
 
-        for (OWLEquivalentClassesAxiom ax:eqAxioms) {
-            addAxiomsForEquivalentClassesAxiom( (OWLEquivalentClassesAxiom) ax  );
+        for (OWLEquivalentClassesAxiom ax : eqAxioms) {
+            addAxiomsForEquivalentClassesAxiom( (OWLEquivalentClassesAxiom) ax );
         }
     }
 
     def addAxiomsForEquivalentClassesAxiom (OWLEquivalentClassesAxiom ax) {
 
-        Set<OWLClassExpression> namedClasses = ax.getNamedClasses() ;
+        Set<OWLClassExpression> namedClasses = ax.getNamedClasses();
         Set<OWLClassExpression> defClasses = ax.getClassExpressionsMinus( namedClasses );
 
-        assertEquals( 1, namedClasses.size());
-        assertEquals( 1, defClasses.size());
+        assertEquals( 1, namedClasses.size() );
+        assertEquals( 1, defClasses.size() );
 
-        OWLClass conceptClass = namedClasses.iterator().next() ;
-        OWLAnonymousClassExpression tDef = defClasses.iterator().next() ;;
+        OWLClass conceptClass = namedClasses.iterator().next();
+        OWLAnonymousClassExpression tDef = defClasses.iterator().next(); ;
 
         Set<OWLClassExpression> codeClasses = topCodeClass.getSubClasses( ontt );
         assert codeClasses.size() > 0;
 
         for (OWLClassExpression cl : codeClasses) {
-            addAxiomsForCode( (OWLClass) cl  );
+            addAxiomsForCode( (OWLClass) cl );
         }
     }
 

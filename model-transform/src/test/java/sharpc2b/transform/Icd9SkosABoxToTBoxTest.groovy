@@ -19,6 +19,8 @@ import java.util.regex.Pattern
  * Date: 4/24/13
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.
+ *
+ * Groovy Test version of TransformIcd9ABoxToTBox.
  */
 @RunWith(JUnit4.class)
 public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
@@ -91,7 +93,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        onta = oom.loadOntologyFromOntologyDocument( new File(
+//        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + pubCodesOntRelPath + ".ofn" ) );
         println "SKOS Doc IRI = <${skosDocIRI}>";
 
@@ -104,7 +106,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
         onts = new HashSet<OWLOntology>();
         onts.add( skos );
         onts.add( icd9pub );
-//        onts = [skos, onta];
+//        onts = [skos, aboxModel];
     }
 
     @After

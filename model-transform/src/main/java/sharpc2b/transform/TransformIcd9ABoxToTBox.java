@@ -19,30 +19,70 @@ import java.util.regex.Pattern;
  */
 public class TransformIcd9ABoxToTBox
 {
+
+    private static IRI skosIRI = IRI.create( "http://www.w3.org/2004/02/skos/core" );
+
+    private static String skosNamespace = skosIRI.toString() + "#";
+
+    private OWLOntologyManager oom;
+
+    private OWLDataFactory odf;
+
+    private PrefixManager pm;
+
+    private OWLOntology skos;
+
+    private OWLOntology onta;
+
+    private OWLOntology ontt;
+
+    private Set<OWLOntology> onts;
+
+    private OWLClass topCodeClass;
+
+    private OWLObjectProperty refinesProp;
+
+    private OWLObjectProperty skosBroaderTransitive;
+
+    private OWLAnnotationProperty prefLabelProp;
+
+    private OWLDataProperty icd9Prop;
+
+    //==============================================================================
+
     public TransformIcd9ABoxToTBox ()
     {
-
         super();
     }
 
+    //==============================================================================
+
+    /**
+     * This main() is an example / test case of usage.
+     *
+     * @param args
+     * @throws OWLOntologyCreationException
+     * @throws OWLOntologyStorageException
+     */
     public static void main (String[] args)
+            throws OWLOntologyCreationException, OWLOntologyStorageException
     {
 
         String commonCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
         String aOntRelPath = commonCodesOntsRelPath + "icd9-pub";
-        String tOntRelPath = commonCodesOntsRelPath + "icd9-classes4";
+        String tOntRelPath = commonCodesOntsRelPath + "icd9-classes5";
 
 //        static String aUriPath = "http:/" + aOntRelPath;
 //        static String aNamespace = aUriPath + "#";
-//        static IRI aIRI = new IRI( aUriPath );
+//        static IRI aIRI = IRI.create( aUriPath );
         String ontologiesHttpFileRoot = "/Users/rk/asu/prj" +
                 "/sharp-editor/model-transform/src/test/resources/http";
         String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
-        IRI aDocIRI = new IRI( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
-        IRI tDocIRI = new IRI( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
+        IRI aDocIRI = IRI.create( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
+        IRI tDocIRI = IRI.create( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
 
         String tUriPath = "http:/" + tOntRelPath;
-        IRI tIRI = new IRI( tUriPath );
+        IRI tIRI = IRI.create( tUriPath );
         PrefixManager pm = new DefaultPrefixManager( tUriPath + "#" );
         ((DefaultPrefixManager) pm).setPrefix( "a:", "http:/" + aOntRelPath + "#" );
         ((DefaultPrefixManager) pm).setPrefix( "t:", "http:/" + tOntRelPath + "#" );
@@ -66,8 +106,11 @@ public class TransformIcd9ABoxToTBox
         om.saveOntology( ont2, tDocIRI );
     }
 
+    //==============================================================================
+
     public OWLOntology createTBoxOntology (OWLOntology publishedSkosIcd9ABoxOntology,
                                            IRI tboxOntologyIRI)
+            throws OWLOntologyCreationException
     {
 
         initTBoxOntology( publishedSkosIcd9ABoxOntology, tboxOntologyIRI );
@@ -86,6 +129,7 @@ public class TransformIcd9ABoxToTBox
 
     private void initTBoxOntology (OWLOntology onta,
                                    IRI tboxIRI)
+            throws OWLOntologyCreationException
     {
 
         this.onta = onta;
@@ -99,10 +143,11 @@ public class TransformIcd9ABoxToTBox
 //        onts.add( skos );
         ((HashSet<OWLOntology>) onts).add( ontt );
         ((HashSet<OWLOntology>) onts).add( onta );
-//        onts = [skos, onta];
+//        onts = [skos, aboxModel];
     }
 
     private OWLOntology createNewOntology (IRI tboxIRI)
+            throws OWLOntologyCreationException
     {
 
         return oom.createOntology( tboxIRI );
@@ -113,8 +158,8 @@ public class TransformIcd9ABoxToTBox
 
 //        icd9ClassesIriString = sharpUriRoot + "/" + "icd9Classes"
 //        icd9ClassesNamespace = icd9ClassesIriString + "#"
-//        icd9ClassesIRI = new IRI( icd9ClassesIriString );
-//        icd9ClassesDocIRI = new IRI( ontRootPath + "/" + "icd9Classes" + ".ofn" );
+//        icd9ClassesIRI = IRI.create( icd9ClassesIriString );
+//        icd9ClassesDocIRI = IRI.create( ontRootPath + "/" + "icd9Classes" + ".ofn" );
 
         String aboxNamespace = this.onta.getOntologyID().getOntologyIRI().toString() + "#";
         String tboxNamespace = this.ontt.getOntologyID().getOntologyIRI().toString() + "#";
@@ -175,20 +220,16 @@ public class TransformIcd9ABoxToTBox
     {
 
         Set<OWLAnnotationAssertionAxiom> annos = onta.getAnnotationAssertionAxioms( codeInd.getIRI() );
-        Set<OWLAnnotationAssertionAxiom> labelAnnos = DefaultGroovyMethods
-                .findAll( annos, new Closure<Boolean>( this, this )
-                {
-                    public Boolean doCall (Object it)
-                    {
-                        return ((OWLAnnotationAssertionAxiom) it).getProperty().equals( prefLabelProp );
-                    }
 
-                    public Boolean doCall ()
-                    {
-                        return doCall( null );
-                    }
+        Set<OWLAnnotationAssertionAxiom> labelAnnos = new HashSet<OWLAnnotationAssertionAxiom>();
+        for (OWLAnnotationAssertionAxiom ax : annos)
+        {
+            if (ax.getProperty().equals( prefLabelProp ))
+            {
+                labelAnnos.add( ax );
+            }
+        }
 
-                } );
         assert 1 == ((HashSet<OWLAnnotationAssertionAxiom>) labelAnnos).size();
         OWLAnnotationValue value = ((HashSet<OWLAnnotationAssertionAxiom>) labelAnnos).iterator().next()
                 .getValue();
@@ -211,7 +252,7 @@ public class TransformIcd9ABoxToTBox
                 .getOWLObjectIntersectionOf( hasCodeValue, topCodeClass );
         OWLEquivalentClassesAxiom eqAxiom = odf
                 .getOWLEquivalentClassesAxiom( codeClass, codeConceptAndValue );
-        assert eqAxiom;
+        assert eqAxiom != null;
         oom.addAxiom( ontt, eqAxiom );
     }
 
@@ -229,7 +270,7 @@ public class TransformIcd9ABoxToTBox
         }
 
         OWLLiteral litValue = codeValues.iterator().next();
-        assert litValue;
+        assert litValue != null;
 //        println "icd9 code = " + litValue;
 //        OWLLiteral litValue = odf.getOWLLiteral( codeValue );
         OWLDataHasValue hasCodeValue = odf.getOWLDataHasValue( icd9Prop, litValue );
@@ -237,7 +278,7 @@ public class TransformIcd9ABoxToTBox
 
         OWLObjectIntersectionOf codeConceptAndValue = odf.getOWLObjectIntersectionOf( some, topCodeClass );
         OWLSubClassOfAxiom eqAxiom = odf.getOWLSubClassOfAxiom( codeConceptAndValue, codeClass );
-        assert eqAxiom;
+        assert eqAxiom != null;
         oom.addAxiom( ontt, eqAxiom );
     }
 
@@ -260,46 +301,20 @@ public class TransformIcd9ABoxToTBox
         } );
     }
 
-    private void setUpOntologyFormat ()
-    {
+//    private void setUpOntologyFormat ()
+//    {
+//
+//        OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
+//        ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
+//        oom.setOntologyFormat( tboxModel, oFormat );
+//    }
+//
+//    private void serialize ()
+//    {
+//
+//        oom.saveOntology( tboxModel, shar );
+//        DefaultGroovyMethods
+//                .invokeMethod( oom, "saveOntology", new Object[]{tboxModel, getProperty( "sharpCodesDocIRI" )} );
+//    }
 
-        OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
-        ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
-        oom.setOntologyFormat( ontt, oFormat );
-    }
-
-    private void serialize ()
-    {
-
-        DefaultGroovyMethods
-                .invokeMethod( oom, "saveOntology", new Object[]{ontt, getProperty( "sharpCodesDocIRI" )} );
-    }
-
-    private static IRI skosIRI = new IRI( "http://www.w3.org/2004/02/skos/core" );
-
-    private static String skosNamespace = skosIRI.toString() + "#";
-
-    private OWLOntologyManager oom;
-
-    private OWLDataFactory odf;
-
-    private PrefixManager pm;
-
-    private OWLOntology skos;
-
-    private OWLOntology onta;
-
-    private OWLOntology ontt;
-
-    private Set<OWLOntology> onts;
-
-    private OWLClass topCodeClass;
-
-    private OWLObjectProperty refinesProp;
-
-    private OWLObjectProperty skosBroaderTransitive;
-
-    private OWLAnnotationProperty prefLabelProp;
-
-    private OWLDataProperty icd9Prop;
 }
