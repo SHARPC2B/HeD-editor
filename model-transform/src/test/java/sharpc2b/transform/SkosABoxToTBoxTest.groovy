@@ -9,21 +9,14 @@ import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import sharpc2b.transform.SkosABoxToTBox
 
-//import static org.junit.Assert.assertEquals
-//import static org.junit.Assume.*;
-
-//import org.junit.runners.Parameterized
-//import org.junit.runners.Parameterized.Parameters
-
-//import org.junit.Ignore;
-//import org.junit.experimental.theories.*
-//import static org.junit.Assume.assumeTrue as assume
-
 /**
  * User: rk
  * Date: 4/16/13
  *
- * An incomplete TestCase to test SkosABoxToTBox.
+ * A TestCase to test SkosABoxToTBox.
+ *
+ * At this point [2013.05.05] mainly serves as an example of how to run SkosABoxToTBox with OWL files in
+ * test/resources folder.
  */
 @RunWith(JUnit4.class)
 public class SkosABoxToTBoxTest extends GroovyTestCase {

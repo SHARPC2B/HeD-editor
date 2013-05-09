@@ -14,7 +14,8 @@ import org.semanticweb.owlapi.vocab.Namespaces
  * Date: 5/8/13
  * Time: 8:30 AM
  */
-class TBoxToABoxTest extends GroovyTestCase {
+class TBoxToABoxTest
+extends GroovyTestCase {
 
     static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
 //    static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
@@ -74,6 +75,10 @@ class TBoxToABoxTest extends GroovyTestCase {
         println "END Test"
     }
 
+    /**
+     * Shows how to use skos:Concept and skos:broaderTransitive as substitutes for owl:Class,
+     * rdfs:subClassOf and rdfs:subPropertyOf, instead of the default A-Box entities.
+     */
     void testSkosABox () {
         println "BEGIN Test"
 

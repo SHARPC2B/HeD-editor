@@ -11,7 +11,10 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
 /**
  * User: rk
  * Date: 5/7/13
- * Time: 7:24 AM
+ *
+ * The initial step-by-step development version of class TBoxToABox.  Take the domain model in
+ * inputOntFile, represented with OWL Classes and Properties, and convert to an Individual-based (A-Box)
+ * version.
  */
 
 @RunWith(JUnit4.class)
@@ -239,14 +242,14 @@ class TADomainModelTest extends GroovyTestCase {
         aDomain = odf.getOWLObjectProperty( "mma:a_domain", pm );
         aRange = odf.getOWLObjectProperty( "mma:a_range", pm );
 
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aClass ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aIndividual ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aProperty));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aSubClassOf ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aSubPropertyOf ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aType  ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aDomain ));
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom(aRange ));
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aClass ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aIndividual ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aProperty ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aSubClassOf ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aSubPropertyOf ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aType ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aDomain ) );
+        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aRange ) );
     }
 
     def initNamespaces () {
@@ -286,28 +289,27 @@ class TADomainModelTest extends GroovyTestCase {
 //        oom.applyChange( imp );
     }
 
-    def initObjects () {
-
-    }
-
     void saveOutputOntology () {
 
         OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( onta , oFormat );
+        oom.setOntologyFormat( onta, oFormat );
         IRI docIRI = IRI.create( outputOntFile );
 
         oom.saveOntology( onta, oFormat, docIRI );
     }
 
+    /**
+     * Only needed if want to save the meta model ontology to a file.
+     */
     void saveMetaModelOntology () {
 
         OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( mma , oFormat );
+        oom.setOntologyFormat( mma, oFormat );
         IRI docIRI = IRI.create( mmaFile );
 
-        oom.saveOntology( mma , oFormat, docIRI );
+        oom.saveOntology( mma, oFormat, docIRI );
     }
 
     @Test
@@ -318,10 +320,9 @@ class TADomainModelTest extends GroovyTestCase {
         initNamespaces();
         createNewOntology();
         initMetaModel();
-        println "before addImports()"
-        addImports();
-        println "after addImports()"
-        initObjects();
+
+        /* Don't really need to import the domain meta-model */
+//        addImports();
 
         doClasses();
 
@@ -335,7 +336,10 @@ class TADomainModelTest extends GroovyTestCase {
             doDataProperty( p );
         }
 
-        saveMetaModelOntology();
+        /*
+         * Uncomment the following line to saved the default domain meta model ontology to a file.
+         */
+//        saveMetaModelOntology();
         saveOutputOntology();
     }
 

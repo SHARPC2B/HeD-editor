@@ -10,21 +10,18 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
 
 import java.util.regex.Pattern
 
-//import static org.junit.Assert.assertEquals
-//import static org.junit.Assume.*;
-
-//import org.junit.runners.Parameterized
-//import org.junit.runners.Parameterized.Parameters
-
-//import org.junit.Ignore;
-//import org.junit.experimental.theories.*
-//import static org.junit.Assume.assumeTrue as assume
 
 /**
  * User: rk
  * Date: 4/30/13
  *
- * An empty Groovy TestCase to use as a Copy-n-Paste template to create a new Groovy TestCase.
+ * This was the first attempt to go in the T-Box to A-Box direction.  As input,
+ * decided to use the ontology that was the output of the A to T direction.  That had class definitions
+ * based on EquivalentClass definitions and a property named "refines" (or "refinesDisorder").
+ *
+ * Part way through this process, realized something was kind of wrong with this whole scenario,
+ * so stopped.  So this class could be scrapped.  However, the code for navigating through these class
+ * definitions seems like it will likely be required at some point.
  */
 @RunWith(JUnit4.class)
 public class Icd9TboxToAboxTest extends GroovyTestCase {
@@ -45,6 +42,15 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
     static String skosNamespace = skosUriPath + "#";
     static IRI skosIRI = new IRI( skosUriPath );
     static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
+
+    /*
+     * Original SKOS A-Box ICD9 Codes Ontology.  Imported by icd9-classes (T-Box).
+     */
+    static String icdOntRelPath = commonCodesOntsRelPath + "icd9-pub";
+    static String icdUriPath = "http:/" + icdOntRelPath;
+    static String icdNamespace = icdUriPath + "#";
+    static IRI icdIRI = new IRI( icdUriPath );
+    static IRI icdDocIRI = new IRI( ontologiesDocUriRoot + icdOntRelPath + ".ofn" );
 
     /*
      * A-Box ICD9 Codes Ontology
@@ -70,6 +76,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
     PrefixManager pm;
 
     OWLOntology skos;
+    OWLOntology icd;
     OWLOntology onta;
     OWLOntology ontt;
     Set<OWLOntology> onts;
@@ -100,11 +107,13 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 //        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + aOntRelPath + ".ofn" ) );
         println "SKOS Doc IRI = <${skosDocIRI}>";
+        println "T-Box classes Doc IRI = <${tDocIRI}>";
 
         assert new File( skosDocIRI.toURI() ).exists();
         assert new File( tDocIRI.toURI() ).exists();
 
         skos = oom.loadOntologyFromOntologyDocument( skosDocIRI );
+        icd  = oom.loadOntologyFromOntologyDocument( icdDocIRI );
         ontt = oom.loadOntologyFromOntologyDocument( tDocIRI );
 
         onts = new HashSet<OWLOntology>();
@@ -138,8 +147,8 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 //    @Ignore
     void testRunIt () {
 
-        onta = createABoxOntology();
-        assert ontt;
+//        onta = createABoxOntology();
+//        assert ontt;
     }
 
     def initNamespaces () {

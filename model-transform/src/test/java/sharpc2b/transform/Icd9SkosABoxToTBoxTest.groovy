@@ -20,7 +20,8 @@ import java.util.regex.Pattern
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.
  *
- * Groovy Test version of SkosABoxToTBox.
+ * Initial Groovy development version of SkosABoxToTBox.  These methods were eventually migrated over to
+ * SkosABoxToTBox and turned into a Java class.
  */
 @RunWith(JUnit4.class)
 public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
@@ -43,7 +44,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
 
     /*
-     * Published ICD9 Codes Ontology
+     * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)
      */
     static String pubCodesOntRelPath = sharpCodesOntsRelPath + "icd9-pub";
 //    static String sharpCodesOntRelPath = sharpCodesOntsRelPath +"icd9-Sharp" ;
@@ -53,7 +54,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static IRI pubCodesDocIRI = new IRI( ontologiesDocUriRoot + pubCodesOntRelPath + ".ofn" );
 
     /*
-     * Sharp Ontology of ICD9 Code OWL Classes
+     * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
      */
     static String sharpCodesOntRelPath = sharpCodesOntsRelPath + "icd9-classes2";
     static String sharpCodesUriPath = "http:/" + sharpCodesOntRelPath;
