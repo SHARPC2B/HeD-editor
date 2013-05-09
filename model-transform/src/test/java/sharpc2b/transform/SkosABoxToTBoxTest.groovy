@@ -7,7 +7,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import sharpc2b.transform.TransformIcd9ABoxToTBox
+import sharpc2b.transform.SkosABoxToTBox
 
 //import static org.junit.Assert.assertEquals
 //import static org.junit.Assume.*;
@@ -23,10 +23,10 @@ import sharpc2b.transform.TransformIcd9ABoxToTBox
  * User: rk
  * Date: 4/16/13
  *
- * An incomplete TestCase to test TransformIcd9ABoxToTBox.
+ * An incomplete TestCase to test SkosABoxToTBox.
  */
 @RunWith(JUnit4.class)
-public class TransformIcd9ABoxToTBoxTest extends GroovyTestCase {
+public class SkosABoxToTBoxTest extends GroovyTestCase {
 
     static String ontologiesHttpFileRoot =
         "/Users/rk/asu/prj" +
@@ -101,7 +101,7 @@ public class TransformIcd9ABoxToTBoxTest extends GroovyTestCase {
     @Test
 //    @Ignore
     void testRunIt () {
-        TransformIcd9ABoxToTBox tr = new TransformIcd9ABoxToTBox();
+        SkosABoxToTBox tr = new SkosABoxToTBox();
 
         OWLOntology tboxModel = tr.createTBoxOntology( aboxModel, sharpCodesIRI );
 

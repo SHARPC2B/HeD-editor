@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.
  */
-public class TransformIcd9ABoxToTBox
+public class SkosABoxToTBox
 {
 
     private static IRI skosIRI = IRI.create( "http://www.w3.org/2004/02/skos/core" );
@@ -52,7 +52,7 @@ public class TransformIcd9ABoxToTBox
 
     //==============================================================================
 
-    public TransformIcd9ABoxToTBox ()
+    public SkosABoxToTBox ()
     {
         super();
     }
@@ -96,7 +96,7 @@ public class TransformIcd9ABoxToTBox
 
         OWLOntology ont1 = om.loadOntologyFromOntologyDocument( aDocIRI );
 
-        TransformIcd9ABoxToTBox inst = new TransformIcd9ABoxToTBox();
+        SkosABoxToTBox inst = new SkosABoxToTBox();
 
         OWLOntology ont2 = inst.createTBoxOntology( ont1, tIRI );
 
