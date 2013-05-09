@@ -6,7 +6,9 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -59,10 +61,6 @@ public class TransformIcd9ABoxToTBox
 
     /**
      * This main() is an example / test case of usage.
-     *
-     * @param args
-     * @throws OWLOntologyCreationException
-     * @throws OWLOntologyStorageException
      */
     public static void main (String[] args)
             throws OWLOntologyCreationException, OWLOntologyStorageException
@@ -121,7 +119,7 @@ public class TransformIcd9ABoxToTBox
         addCommonAxioms();
         addAxiomsForCodes();
 
-//        setUpOntologyFormat();
+        setUpOntologyFormat();
 //        serialize();
 
         return this.ontt;
@@ -246,7 +244,6 @@ public class TransformIcd9ABoxToTBox
     private void addDefinitionUsingIndividual (OWLNamedIndividual codeInd,
                                                OWLClass codeClass)
     {
-
         OWLObjectHasValue hasCodeValue = odf.getOWLObjectHasValue( refinesProp, codeInd );
         OWLObjectIntersectionOf codeConceptAndValue = odf
                 .getOWLObjectIntersectionOf( hasCodeValue, topCodeClass );
@@ -301,20 +298,18 @@ public class TransformIcd9ABoxToTBox
         } );
     }
 
-//    private void setUpOntologyFormat ()
-//    {
-//
-//        OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
-//        ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
-//        oom.setOntologyFormat( tboxModel, oFormat );
-//    }
-//
-//    private void serialize ()
-//    {
-//
-//        oom.saveOntology( tboxModel, shar );
-//        DefaultGroovyMethods
-//                .invokeMethod( oom, "saveOntology", new Object[]{tboxModel, getProperty( "sharpCodesDocIRI" )} );
-//    }
+    private void setUpOntologyFormat ()
+    {
+
+        PrefixOWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
+        oFormat.copyPrefixesFrom( pm );
+        oom.setOntologyFormat( ontt, oFormat );
+    }
+
+    private void serialize (File outputFile)
+            throws OWLOntologyStorageException
+    {
+        oom.saveOntology( ontt, IRI.create( outputFile ) );
+    }
 
 }
