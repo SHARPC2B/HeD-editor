@@ -20,7 +20,7 @@ import java.util.regex.Pattern
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.
  *
- * Groovy Test version of TransformIcd9ABoxToTBox.
+ * Groovy Test version of SkosABoxToTBox.
  */
 @RunWith(JUnit4.class)
 public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
