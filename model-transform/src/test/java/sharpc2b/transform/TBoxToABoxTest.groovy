@@ -1,5 +1,6 @@
 package sharpc2b.transform
 
+import org.junit.Ignore
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI
@@ -24,7 +25,7 @@ extends GroovyTestCase {
     static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomain.ofn" );
 //    static IRI inputOntIRI = IRI.create( "http://"+ inputOntUriCorePath );
 
-//    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/rk/SharpOwlABoxDomainMetaModel" );
+//    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/SharpOwlABoxDomainMetaModel" );
 //    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainInsts" );
@@ -62,6 +63,62 @@ extends GroovyTestCase {
 
     }
 
+    @Ignore
+    void ignore_testMMMap () {
+
+        URL url;
+        url = System.getResource("/DomainMetaModelABoxEntities.properties");
+
+        Properties props
+        props = new Properties();
+
+        props.load( url.openStream() );
+
+        println  props.stringPropertyNames()
+
+        props.list( System.out );
+
+        assertEquals( 11, props.stringPropertyNames().size() );
+
+        println props;
+    }
+
+    @Ignore
+    void ignore_testResource () {
+        URL url;
+        url = System.getResource("/DomainMetaModelABoxEntities.properties");
+
+        Properties props
+        url = System.getResource("/onts/in/ClinicalDomain.ofn");
+        println url;
+
+//        x= TBoxToABox.class.getResource("onts/in/ClinicalDomain.ofn");
+//        println x;
+       url = TBoxToABox.class.getResource("/onts/in/ClinicalDomain.ofn");
+        println "url = ${url}";
+        println url.class;
+        File f = new File( url.toURI() );
+        println "file = "+ f.absolutePath;
+        URLConnection conn
+        conn= url.openConnection();
+
+        def typ = conn.getContentType();
+        println typ.getClass()
+        println typ
+
+
+        def content = conn.getContent();
+        println content.class;
+        println "length = "+ conn.getContentLength();
+        def contentString = conn.getContent(String.class);
+        println contentString?.class;
+
+        String text = url.openStream().text;
+        println text.length();
+
+//       println Thread.currentThread().getContextClassLoader().getResource("/onts/in/ClinicalDomain.ofn")
+    }
+
     void testDefaultABox () {
         println "BEGIN Test"
 
@@ -69,7 +126,7 @@ extends GroovyTestCase {
 
         inst.populateABox( tboxModel, aboxModel );
 
-        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
+        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts7.ofn" );
         oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
 
         println "END Test"

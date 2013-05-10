@@ -20,7 +20,10 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -34,8 +37,10 @@ public class TBoxToABox
     /**
      * Base namespace IRI for the Domain meta-Model entities.
      */
-    static IRI aboxDomainMetaModelIRI = IRI
-            .create( "http://" + "asu.edu/sharpc2b/rk/" + "SharpOwlABoxDomainMetaModel" );
+    final static IRI aboxDomainMetaModelIRI = IRI
+            .create( "http://asu.edu/sharpc2b" + "/" + "SharpOwlABoxDomainMetaModel" );
+
+    final static String resourceName = "/DomainMetaModelABoxEntities.properties";
 
     Map<String, IRI> mmDomainObject;
 
@@ -86,7 +91,15 @@ public class TBoxToABox
     {
         super();
 
-        initDomainModelABoxSubstitution();
+//        initDomainModelABoxSubstitution();
+        try
+        {
+            initDomainModelABoxSubstitutionsFromPropertiesFile();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     //==================================================================================
@@ -209,6 +222,26 @@ public class TBoxToABox
                                         getPrefixManager().getIRI( "mm:a_domain" ) );
         setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_RANGE.getIRI(),
                                         getPrefixManager().getIRI( "mm:a_range" ) );
+    }
+
+    private void initDomainModelABoxSubstitutionsFromPropertiesFile ()
+            throws IOException
+    {
+        this.mmDomainObject = new TreeMap<String, IRI>();
+
+//        final ClassLoader classLoader;
+//        classLoader = this.getClass().getClassLoader();
+        InputStream propertiesStream;
+        propertiesStream = System.class.getResourceAsStream( resourceName );
+
+        Properties properties = new Properties();
+        properties.load( propertiesStream );
+
+        for (String propName : properties.stringPropertyNames())
+        {
+            setDomainModelABoxSubstitution( IRI.create( propName ),
+                                            IRI.create( properties.getProperty( propName ) ) );
+        }
     }
 
     private IRI getDomainModelABoxSubstitution (IRI rdfOwlEntityIRI)
