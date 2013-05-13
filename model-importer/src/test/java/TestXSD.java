@@ -17,14 +17,34 @@
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.drools.shapes.xsd.Xsd2Owl;
 import org.drools.shapes.xsd.Xsd2OwlImpl;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.w3._2001.xmlschema.Schema;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 public class TestXSD {
+
+    private static String targetFolder =  null;
+
+    @BeforeClass
+    public static void init() {
+        Properties prop = new Properties();
+        try {
+            prop.load( TestXSD.class.getResourceAsStream( "test.properties" ) );
+            targetFolder = prop.getProperty( "targetFolder" );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     public void testVMRSchema() {
@@ -37,13 +57,10 @@ public class TestXSD {
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
-            converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Desktop/vmr.turtle.owl" ) ,
-                    new TurtleOntologyFormat()
-            );
+            stream( onto, converter, "vmr.turtle.owl" );
 
         } catch ( Exception e ) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
@@ -59,15 +76,25 @@ public class TestXSD {
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
-            converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Desktop/datatypes.turtle.owl" ) ,
-                    new TurtleOntologyFormat()
-            );
+            stream( onto, converter, "datatypes.turtle.owl" );
 
         } catch ( Exception e ) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
+    }
+
+
+    public void stream( OWLOntology onto, Xsd2Owl converter, String fileName ) throws FileNotFoundException {
+        if ( ! fileName.endsWith( File.separator ) ) {
+            fileName = fileName + File.separator;
+        }
+        if ( targetFolder != null && new File( targetFolder ).exists() ) {
+            converter.stream( onto,
+                    new FileOutputStream( targetFolder + fileName ),
+                    new TurtleOntologyFormat()
+            );
+        }
     }
 
 
@@ -82,10 +109,7 @@ public class TestXSD {
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
-            converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Desktop/arden.turtle.owl" ) ,
-                    new TurtleOntologyFormat()
-            );
+            stream( onto, converter, "arden.turtle.owl" );
 
         } catch ( Exception e ) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -105,13 +129,10 @@ public class TestXSD {
 
             OWLOntology onto = converter.transform( x, url, true, false );
 
-            converter.stream( onto,
-                    new FileOutputStream( "/home/davide/Desktop/hed.turtle.owl" ) ,
-                    new TurtleOntologyFormat()
-            );
+            stream( onto, converter, "hed.turtle.owl" );
 
         } catch ( Exception e ) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
@@ -125,7 +146,7 @@ public class TestXSD {
             String clean = Xsd2OwlImpl.getInstance().compactXMLSchema( "vmr.xsd" );
             System.out.println( clean );
         } catch ( Exception e ) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
 

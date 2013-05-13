@@ -30,6 +30,8 @@
   <artifactId>model-importer</artifactId>
   <version>0.1-SNAPSHOT</version>
 
+  <name>SHARPC-2B :: XSD to OWL2 Model Conversion</name>
+
   <dependencies>
 
     <dependency>
