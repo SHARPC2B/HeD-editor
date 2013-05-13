@@ -11,7 +11,7 @@
 
   <properties>
     <editor.version>0.1-SNAPSHOT</editor.version>
-    <drools.version>5.5.1-SNAPSHOT</drools.version>
+    <drools.version>5.6.0-SNAPSHOT</drools.version>
     <chance.version>0.5.6.Final</chance.version>
   </properties>
 
@@ -22,7 +22,7 @@
     <module>design-docs</module>
     <module>arden-model</module>
     <module>model-importer</module>
-    <module>active-repository</module>
+    <module>model-transform</module>
   </modules>
 
   <pluginRepositories>
@@ -68,7 +68,27 @@
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
     </repository>
 
+    <repository>
+      <id>aduna-repository</id>
+      <url>http://repo.aduna-software.org/maven2/releases</url>
+    </repository>
+
   </repositories>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 
 
   <dependencyManagement>
@@ -92,7 +112,6 @@
         <artifactId>jaxb-impl</artifactId>
         <version>2.2.5</version>
       </dependency>
-
 
       <dependency>
         <groupId>org.apache.jena</groupId>
@@ -228,6 +247,17 @@
         <groupId>aterm</groupId>
         <artifactId>aterm-java</artifactId>
         <version>1.6</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy</artifactId>
+        <version>1.8.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.5</version>
       </dependency>
 
       <dependency>

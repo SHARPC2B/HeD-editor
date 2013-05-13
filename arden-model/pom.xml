@@ -12,18 +12,13 @@
   <artifactId>arden-model</artifactId>
   <version>${editor.version}</version>
 
-  <properties>
-    <chance.version>5.5.0-SNAPSHOT</chance.version>
-  </properties>
-
-
   <name>Arden Syntax Semantic Model</name>
 
   <dependencies>
     <dependency>
       <groupId>org.drools</groupId>
       <artifactId>drools-shapes-generator-plugin</artifactId>
-      <version>5.5.0-SNAPSHOT</version>
+      <version>${chance.version}</version>
     </dependency>
 
     <dependency>
