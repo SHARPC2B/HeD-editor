@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	
+	<xs:include schemaLocation="../enum/dataeventtypecore.xsd"/>
+	<xs:simpleType name="DataEventTypeExt">
+		<xs:restriction base="DataEventTypeCore"/>
+	</xs:simpleType>
+</xs:schema>

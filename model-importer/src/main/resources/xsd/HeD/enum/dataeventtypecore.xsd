@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	<xs:simpleType name="DataEventTypeCore">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DataElementAdded" />
+			<xs:enumeration value="DataElementModified" />
+			<xs:enumeration value="DataElementRemoved" />
+			<xs:enumeration value="DataElementAccessed" />
+			<xs:enumeration value="DataElementAccessEnded" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

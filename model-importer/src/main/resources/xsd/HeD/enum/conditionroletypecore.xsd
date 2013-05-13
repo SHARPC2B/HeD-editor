@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+
+	<xs:simpleType name="ConditionRoleTypeCore">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ApplicableScenario">
+				<xs:annotation>
+					<xs:documentation>This role type specifies that a condition is used to determine whether or not a particular knowledge component should be executed. If the expression evaluates to true, then the component is executed.</xs:documentation>
+				</xs:annotation></xs:enumeration>
+		<!-- 	<xs:enumeration value="Inclusion"></xs:enumeration>
+			<xs:enumeration value="Exclusion"></xs:enumeration>
+			<xs:enumeration value="Precondition"></xs:enumeration>
+			<xs:enumeration value="Postcondition"></xs:enumeration> -->
+		</xs:restriction>
+	</xs:simpleType>
+
+
+</xs:schema>

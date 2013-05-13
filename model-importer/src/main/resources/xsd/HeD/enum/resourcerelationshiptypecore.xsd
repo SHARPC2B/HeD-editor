@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+
+	<xs:simpleType name="ResourceRelationshipTypeCore">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AdaptedFrom"/>
+			<xs:enumeration value="AssociatedResource"/>
+			<xs:enumeration value="DependsOn"/>
+			<xs:enumeration value="DerivedFrom"/>
+			<xs:enumeration value="SimilarTo"/>
+			<xs:enumeration value="VersionOf"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

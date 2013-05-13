@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	<xs:include schemaLocation="../ext/behaviortypeext.xsd"/>
+	<xs:include schemaLocation="behaviortypecore.xsd"/>
+
+	<xs:simpleType name="GroupSelectionBehaviorType">
+		<xs:annotation>
+			<xs:documentation>Defines selection behavior of a group:  specifies the number of selectable items in the group that may be selected by the end user when the items of the group are displayed.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="GroupSelectionBehaviorTypeCore GroupSelectionBehaviorTypeExt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="GroupOrganizationBehaviorType">
+		<xs:annotation>
+			<xs:documentation>Defines organization behavior of a group:  gives the reason why the items are grouped together.  </xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="GroupOrganizationBehaviorTypeCore GroupOrganizationBehaviorTypeExt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="RequiredBehaviorType">
+		<xs:annotation>
+			<xs:documentation>Defines requiredness behavior for selecting an action or an action group; i.e., whether the action or action group is required or optional.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="RequiredBehaviorTypeCore RequiredBehaviorTypeExt"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="PrecheckBehaviorType">
+		<xs:annotation>
+			<xs:documentation>Defines selection frequency behavior for an action or group; i.e., for most frequently selected items, the end-user system may provide convenience options in the UI (such as pre-selection) in order to (1) communicate to the end user what the most frequently selected item is, or should, be in a particular context, and (2) save the end user time.  </xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="PrecheckBehaviorTypeCore PrecheckBehaviorTypeExt"/>
+	</xs:simpleType>
+</xs:schema>

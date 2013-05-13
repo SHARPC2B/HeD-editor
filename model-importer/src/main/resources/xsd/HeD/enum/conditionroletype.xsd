@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+
+	<xs:include schemaLocation="../ext/conditionroletypeext.xsd" />
+	<xs:include schemaLocation="conditionroletypecore.xsd" />
+
+	<xs:simpleType name="ConditionRoleType">
+		<xs:annotation>
+			<xs:documentation>The roles that a condition plays in the execution
+				of a component. Currently, only one role type is defined. Additional
+				role types may be defined in the future (e.g., inclusion criteria,
+				exclusion criteria)</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="ConditionRoleTypeCore ConditionRoleTypeExt" />
+	</xs:simpleType>
+</xs:schema>

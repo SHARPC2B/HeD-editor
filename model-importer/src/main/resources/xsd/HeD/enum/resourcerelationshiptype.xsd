@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	<xs:include schemaLocation="../ext/resourcerelationshiptypeext.xsd"/>
+	<xs:include schemaLocation="resourcerelationshiptypecore.xsd"/>
+	<xs:simpleType name="ResourceRelationshipType">
+		<xs:annotation>
+			<xs:documentation>A specific status is associated with each version of an artifact. 
+
+See the Implementation Guide for a state-transition diagram showing the legal transitions from each state; each state is equivalent to particular status.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="ResourceRelationshipTypeCore ResourceRelationshipTypeExt"/>
+	</xs:simpleType>
+</xs:schema>

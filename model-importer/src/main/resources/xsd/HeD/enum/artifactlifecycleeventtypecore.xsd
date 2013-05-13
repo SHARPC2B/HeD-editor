@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	<xs:simpleType name="ArtifactLifeCycleEventTypeCore">
+		<xs:annotation>
+			<xs:documentation>A lifecycle event is applicable to a specific version of an artifact.  </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Created">
+				<xs:annotation>
+					<xs:documentation>The date/time when a particular version of an artifact is created may be recorded in the history of the artifact-version.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pre-published">
+				<xs:annotation>
+					<xs:documentation>An artifact may be made available to consumers in a pre-publication state for public commentary, etc., or may simply be made available for review internal to the publisher.  This event can be recorded in the artifact-version's history.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Published"/>
+			<xs:enumeration value="Reviewed">
+				<xs:annotation>
+					<xs:documentation>A specific version of artifact may be reviewed by parties internal or external to the publisher, and this can be recorded in the lifecycle of the artifact-version.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Withdrawn">
+				<xs:annotation>
+					<xs:documentation>A specific version of an artifact may be withdrawn by a publisher for various reasons.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Superseded">
+				<xs:annotation>
+					<xs:documentation>A specific version of an artifact may be superseded by another version of that same artifact, or by another artifact altogether.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

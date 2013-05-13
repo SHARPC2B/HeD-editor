@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
+	<xs:simpleType name="ContributorTypeCore">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Author" />
+			<xs:enumeration value="Editor" />
+			<xs:enumeration value="Endorser" />
+			<xs:enumeration value="Reviewer" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

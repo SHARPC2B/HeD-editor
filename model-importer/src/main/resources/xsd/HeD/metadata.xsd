@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
+	xmlns:dt="urn:hl7-org:v3/cdsdt" xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:v3/hed"
+	elementFormDefault="qualified">
+
+	<xs:import namespace="urn:hl7-org:v3/cdsdt" schemaLocation="datatypes.xsd" />
+	<xs:include schemaLocation="base.xsd" />
+	<xs:include schemaLocation="enum/artifactlifecycleeventtype.xsd" />
+	<xs:include schemaLocation="enum/artifactstatustype.xsd" />
+	<xs:include schemaLocation="enum/artifacttype.xsd" />
+	<xs:include schemaLocation="enum/contributortype.xsd" />
+	<xs:include schemaLocation="enum/coveragetype.xsd" />
+	<xs:complexType name="ArtifactLifeCycleEvent">
+		<xs:annotation>
+			<xs:documentation>An event in the life cycle of an artifact. Both the
+				type of event are specified, as well as the point in time in which
+				that event took place.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="eventType">
+				<xs:complexType>
+					<xs:attribute name="value" type="ArtifactLifeCycleEventType"
+						use="required" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="eventDateTime" type="dt:TS" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Contribution">
+		<xs:annotation>
+			<xs:documentation>A contribution is made by a specific contributor
+				(organization, person, etc.), and was made in a particular way, as
+				specified by the contributor's role. For example, a contributor may
+				have been an author, or may have been a reviewer.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contributor" type="Party" />
+			<xs:element name="role">
+				<xs:complexType>
+					<xs:attribute name="value" type="ContributorType" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="KnowledgeAttribute">
+		<xs:annotation>
+			<xs:documentation>Specifies various attributes of the patient
+				population for whom and/or environment of care in which the CDS
+				artifact is applicable.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="focus">
+				<xs:complexType>
+					<xs:attribute name="value" type="CoverageType" use="required" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="description" type="dt:ST" minOccurs="0" />
+			<xs:element name="value" type="dt:ANY" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Metadata">
+		<xs:annotation>
+			<xs:documentation>The container for all of the metadata associated
+				with a CDS knowledge artifact. Ideally, the metadata for artifacts
+				is provided independently by the publisher for determining which
+				artifact to retrieve.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+
+
+			<xs:element name="id" type="dt:II">
+                <xs:annotation>
+                	<xs:documentation>A unique identifier for the artifact. This must be unique even across versions of the artifact.</xs:documentation>
+                </xs:annotation>
+			</xs:element>
+
+			<xs:element name="setId" type="dt:II" />
+
+			<xs:element name="versionNumber" type="dt:INT" />
+
+		<xs:element name="artifactType">
+				<xs:annotation>
+					<xs:documentation>Currently three types of artifacts are in scope for Health eDecisions Use Case #1:  order sets, event-condition-action rules, and documentation templates.  Additional types will be added in future revisions of the standard.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="value" type="ArtifactType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="schemaId" type="dt:II">
+				<xs:annotation>
+					<xs:documentation>This is the identifier of the XML schema (and its version) which governs the structure of this CDS Knowledge Artifact.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="templateIds" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>These are the identifiers of templates which
+						further constrain the structure of this knowledge artifact.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="templateId" type="VersionedIdentifier"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="dataModels" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Set of data models referenced in the Expression
+						objects in this knowledge artifact.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="modelReference" type="NamedReference"
+							maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Named references for the data models that are
+									used in the artifact, e..g., the Virtual Medical Record. In
+									this case, the name could be "vmr" and the identifier root is
+									the identifier for the HL7 VMR object
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="title" type="dt:ST" />
+
+			<xs:element name="description" type="dt:ST" minOccurs="0" />
+
+			<xs:element name="documentation" type="InlineResource"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Documentation for this knowledge reference may
+						consist of a reference to an external resource; the documentation
+						may also be included in-line if desired.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="relatedResources" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A set of resources related to this artifact,
+						along with an indication of the type of relationship. An artifact
+						may be derived from or depend on other artifacts, along with other
+						types of relationships. See the Artifact Lifecycle diagram in the
+						Implementation Guide for more information.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relatedResource" type="ResourceRelationshipReference"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="supportingEvidence" type="SupportingEvidence"
+				minOccurs="0" />
+
+			<xs:element name="applicability" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Specifies the conditions under which this
+						artifact is applicable.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="subjectOf" type="KnowledgeAttribute"
+							 maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="categories" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Provides a list of coded categories to which this
+						artifact belongs.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="category" type="dt:CD" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="languageCode" type="dt:CD" minOccurs="0" />
+
+			<xs:element name="statusCode" >
+				<xs:complexType>
+					<xs:attribute name="value" type="ArtifactStatusType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="eventHistory" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the history of events which have occurred
+						for this particular version of the artifact.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="artifactLifeCycleEvent" type="ArtifactLifeCycleEvent"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="contributions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Includes a list of people and/or organizations
+						who have contributed to the development of this artifact.
+						Contributions are not necessarily tied to specific versions of the
+						artifact.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contribution" type="Contribution"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="publishers" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The set of people and/or organizations who
+						publish the artifact.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="publisher" type="Party" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="usageTerms" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the set of rights reserved by the person
+						or organization holding the rights to this artifact, along with
+						the set of permissions granted to consumers.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="rightsDeclaration" type="RightsDeclaration"
+							maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RightsDeclaration">
+		<xs:annotation>
+			<xs:documentation>This specifies the intellectual property rights
+				associated with this CDS knowledge artifact, including who the
+				rights holder is and what rights they assert. It also specifies what
+				permissions are granted for usage. The asserted rights and
+				persmissions are specified as a free-form text string.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="assertedRights" type="dt:ST" />
+			<xs:element name="rightsHolder" type="Party" />
+			<xs:element name="permissions" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="permissions" type="dt:ST" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="NamedReference">
+		<xs:annotation>
+			<xs:documentation>A reference to some object by its identifier.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>The object is assigned a name that can be used in
+						this artifact.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="value" type="xs:NCName" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="referencedObject" type="VersionedIdentifier">
+				<xs:annotation>
+					<xs:documentation>The identifier of the object that is being
+						referenced.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
