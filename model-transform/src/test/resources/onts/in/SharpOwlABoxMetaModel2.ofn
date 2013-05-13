@@ -1,0 +1,25 @@
+Prefix(a:=<http://asu.edu/sharpc2b/ClinicalDomainInsts#>)
+Prefix(t:=<http://asu.edu/sharpc2b/ClinicalDomain#>)
+Prefix(mm:=<asu.edu/sharpc2b/rk/SharpOwlABoxMetaModel#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<asu.edu/sharpc2b/SharpOwlABoxMetaModel>
+
+Declaration(Class(mm:a_Class))
+Declaration(Class(mm:a_Individual))
+Declaration(Class(mm:a_Property))
+Declaration(ObjectProperty(mm:a_domain))
+Declaration(ObjectProperty(mm:a_range))
+Declaration(ObjectProperty(mm:a_subClassOf))
+Declaration(ObjectProperty(mm:a_subPropertyOf))
+Declaration(ObjectProperty(mm:a_type))
+
+ObjectPropertyDomain( mm:a_domain mm:aClass )
+ObjectPropertyRange( mm:a_domain mm:aClass )
+ObjectPropertyDomain( mm:a_domain mm:aClass )
+)
