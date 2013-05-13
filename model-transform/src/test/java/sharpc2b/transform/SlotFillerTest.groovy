@@ -4,6 +4,7 @@ import com.clarkparsia.pellet.owlapiv3.PelletReasoner
 import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory
 import org.junit.*
 import org.semanticweb.owlapi.apibinding.OWLManager
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.util.DefaultPrefixManager
 
@@ -15,18 +16,30 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
 class SlotFillerTest extends GroovyTestCase {
 
     static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
-    static String ontIriBasePath = "asu.edu/sharpc2b/rk/SlotFill/01"
-    static IRI ontIri = IRI.create( "http://" + ontIriBasePath + "/BadAge" )
+//    static String ontIriBasePath = "asu.edu/sharpc2b/rk/SlotFill/01"
+    static String ontIriBasePath = "asu.edu/sharpc2b/rk"
+    static IRI ontIri = IRI.create( "http://" + ontIriBasePath + "/" + "JoeHasAspirin" )
     static String ontNamespace = ontIri.toString() + "#"
-    static IRI dmIri = IRI.create( "http://" + ontIriBasePath + "/DomainModel" )
+    static IRI dmIri = IRI.create( "http://" + ontIriBasePath + "/ClinicalDomain" )
     static String dmNamespace = dmIri.toString() + "#"
+
+    static File ontFile (String name) {
+        new File( testResourcesPath + "/onts/in/" + name + ".ofn" )
+    }
+
+    static IRI ontIRI (String name) {
+        IRI.create( "http://" + ontIriBasePath + "/" + name )
+    }
 
     OWLOntologyManager oom;
     OWLOntologyFormat oFormat;
     DefaultPrefixManager pm;
 
     OWLOntology ont;
-    OWLOntology dmOnt;
+    OWLOntology dma;
+    OWLOntology dmt;
+    OWLOntology mm;
+    Set<OWLOntology> onts
     OWLDataFactory odf;
 
     PelletReasoner pellet;
@@ -47,12 +60,11 @@ class SlotFillerTest extends GroovyTestCase {
         oom = OWLManager.createOWLOntologyManager();
         odf = oom.getOWLDataFactory()
         pm = new DefaultPrefixManager( ontNamespace )
-        pm.setPrefix( "dm:", dmNamespace )
+        pm.setPrefix( "dmt:", dmNamespace )
 
-        ont = oom.createOntology( ontIri )
-        dmOnt = oom.createOntology( dmIri )
+//        dma = oom.createOntology( dmIri )
+        onts = new HashSet<OWLOntology>();
 
-        pellet = PelletReasonerFactory.getInstance().createReasoner(  ont )
     }
 
     @After
@@ -64,7 +76,59 @@ class SlotFillerTest extends GroovyTestCase {
 //    @Ignore
     void testIt () {
 
+        ont = oom.createOntology( ontIri )
 
+//        dma = oom.loadOntologyFromOntologyDocument( ontFile( "ClinicalDomainA" ) )
+        dmt = oom.loadOntologyFromOntologyDocument( ontFile( "ClinicalDomainT" ) )
+//        mm = oom.loadOntologyFromOntologyDocument( ontFile( "ABoxMetaModel" ) )
+        onts.add( ont )
+        onts.add( dmt )
+//        assert dma
+        assert dmt
+        AddImport imp = new AddImport( ont, odf.getOWLImportsDeclaration( dmt.getOntologyID().getOntologyIRI() ) )
+        oom.applyChange( imp )
+//        oom.addAxiom( ont, odf.getOWLImportsDeclaration( dmt.getOntologyID().getOntologyIRI() ) )
+
+        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", pm )
+        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", pm )
+        OWLClass cPatient = odf.getOWLClass( "dmt:Patient", pm )
+        OWLClass cDrug = odf.getOWLClass( "dmt:Drug", pm )
+        OWLClass cDisorder = odf.getOWLClass( "dmt:Disorder", pm )
+        OWLObjectProperty hasDisorder = odf.getOWLObjectProperty( "dmt:hasDisorder", pm )
+
+//        println pm.getIRI( "dmt:Disorder" )
+
+        Set<OWLClassExpression> superOfDisorder
+        superOfDisorder = cDisorder.getSuperClasses( onts )
+        assert superOfDisorder.size() == 0
+        println "supers of Disorder = "+ superOfDisorder
+
+        oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cPatient, joe ) )
+        oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
+
+//        oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDisorder, aspirin ) )
+
+        oFormat = new OWLFunctionalSyntaxOntologyFormat()
+        oFormat.copyPrefixesFrom( pm )
+
+        oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirin" ) ) )
+
+        pellet = PelletReasonerFactory.getInstance().createReasoner( ont )
+//        pellet = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
+
+        println "isConsistent 1 = "+ pellet.isConsistent()
+        assert pellet.isConsistent()
+//        assert pellet.isSatisfiable()
+
+        oom.addAxiom( ont, odf.getOWLObjectPropertyAssertionAxiom( hasDisorder, joe, aspirin ) )
+//        assertFalse pellet.isConsistent()
+
+        PelletReasoner pellet2
+        pellet2 = PelletReasonerFactory.getInstance().createReasoner( ont )
+//        pellet2 = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
+
+        println "isConsistent 2 = "+ pellet2.isConsistent()
+        assertFalse pellet2.isConsistent()
     }
 
 }
