@@ -20,8 +20,11 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -233,6 +236,18 @@ public class TBoxToABox
 //        classLoader = this.getClass().getClassLoader();
         InputStream propertiesStream;
         propertiesStream = System.class.getResourceAsStream( resourceName );
+
+        try
+        {
+            URL url = System.class.getResource( resourceName );
+            File f = null;
+            f = new File( url.toURI() );
+            System.out.println( "Resource Root = "+f.getParentFile());
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        }
 
         Properties properties = new Properties();
         properties.load( propertiesStream );

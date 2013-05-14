@@ -1,8 +1,10 @@
 package sharpc2b.transform
 
-import com.clarkparsia.pellet.owlapiv3.PelletReasoner
-import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory
 import org.junit.*
+
+//import com.clarkparsia.pellet.owlapiv3.Reasoner
+//import org.mindswap.pellet.jena.PelletReasoner
+import org.semanticweb.HermiT.Reasoner
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
@@ -42,7 +44,8 @@ class SlotFillerTest extends GroovyTestCase {
     Set<OWLOntology> onts
     OWLDataFactory odf;
 
-    PelletReasoner pellet;
+//    PelletReasoner pellet;
+    Reasoner hermit;
 
     @BeforeClass
     static void setUpOnce () {
@@ -101,7 +104,7 @@ class SlotFillerTest extends GroovyTestCase {
         Set<OWLClassExpression> superOfDisorder
         superOfDisorder = cDisorder.getSuperClasses( onts )
         assert superOfDisorder.size() == 0
-        println "supers of Disorder = "+ superOfDisorder
+        println "supers of Disorder = " + superOfDisorder
 
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cPatient, joe ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
@@ -113,22 +116,26 @@ class SlotFillerTest extends GroovyTestCase {
 
         oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirin" ) ) )
 
-        pellet = PelletReasonerFactory.getInstance().createReasoner( ont )
+//        pellet = PelletReasonerFactory.getInstance().createReasoner( ont )
 //        pellet = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
 
-        println "isConsistent 1 = "+ pellet.isConsistent()
-        assert pellet.isConsistent()
+        hermit = new Reasoner( ont );
+
+        println "isConsistent 1 = " + hermit .isConsistent()
+//        assert pellet.isConsistent()
+        assert hermit.isConsistent()
 //        assert pellet.isSatisfiable()
 
         oom.addAxiom( ont, odf.getOWLObjectPropertyAssertionAxiom( hasDisorder, joe, aspirin ) )
 //        assertFalse pellet.isConsistent()
 
-        PelletReasoner pellet2
-        pellet2 = PelletReasonerFactory.getInstance().createReasoner( ont )
+//        PelletReasoner pellet2
+//        pellet2 = PelletReasonerFactory.getInstance().createReasoner( ont )
 //        pellet2 = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
+        Reasoner hermit2 = new Reasoner( ont );
 
-        println "isConsistent 2 = "+ pellet2.isConsistent()
-        assertFalse pellet2.isConsistent()
+        println "isConsistent 2 = " + hermit2.isConsistent()
+        assertFalse hermit2.isConsistent()
     }
 
 }

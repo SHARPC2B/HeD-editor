@@ -22,13 +22,13 @@ extends GroovyTestCase {
 //    static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
-    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomain.ofn" );
+    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
 //    static IRI inputOntIRI = IRI.create( "http://"+ inputOntUriCorePath );
 
 //    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/SharpOwlABoxDomainMetaModel" );
 //    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
 
-    static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainInsts" );
+    static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainA" );
     static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
 
     TBoxToABox inst;

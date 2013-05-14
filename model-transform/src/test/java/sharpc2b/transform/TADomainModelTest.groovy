@@ -24,7 +24,7 @@ class TADomainModelTest extends GroovyTestCase {
     static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
-    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomain.ofn" );
+    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
     static IRI inputOntIRI = IRI.create( "http://", inputOntUriCorePath );
 
     static IRI mmaIRI = IRI.create( "asu.edu/sharpc2b/rk/SharpOwlABoxMetaModel" );
