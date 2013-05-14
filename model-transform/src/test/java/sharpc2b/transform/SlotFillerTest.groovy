@@ -1,13 +1,26 @@
 package sharpc2b.transform
 
-import org.junit.*
+import org.junit.After
+import org.junit.AfterClass
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
+import org.semanticweb.HermiT.Reasoner
 
 //import com.clarkparsia.pellet.owlapiv3.Reasoner
 //import org.mindswap.pellet.jena.PelletReasoner
-import org.semanticweb.HermiT.Reasoner
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
-import org.semanticweb.owlapi.model.*
+import org.semanticweb.owlapi.model.AddImport
+import org.semanticweb.owlapi.model.IRI
+import org.semanticweb.owlapi.model.OWLClass
+import org.semanticweb.owlapi.model.OWLClassExpression
+import org.semanticweb.owlapi.model.OWLDataFactory
+import org.semanticweb.owlapi.model.OWLNamedIndividual
+import org.semanticweb.owlapi.model.OWLObjectProperty
+import org.semanticweb.owlapi.model.OWLOntology
+import org.semanticweb.owlapi.model.OWLOntologyFormat
+import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.util.DefaultPrefixManager
 
 /**
@@ -121,7 +134,7 @@ class SlotFillerTest extends GroovyTestCase {
 
         hermit = new Reasoner( ont );
 
-        println "isConsistent 1 = " + hermit .isConsistent()
+        println "isConsistent 1 = " + hermit.isConsistent()
 //        assert pellet.isConsistent()
         assert hermit.isConsistent()
 //        assert pellet.isSatisfiable()

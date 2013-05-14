@@ -82,15 +82,6 @@
           <groupId>pellet</groupId>
           <artifactId>pellet-owlapiv3</artifactId>
       </dependency>
-      <!--<dependency>-->
-          <!--<groupId>aterm</groupId>-->
-          <!--&lt;!&ndash;<groupId>com.github.ansell.aterms</groupId>&ndash;&gt;-->
-          <!--<artifactId>aterm-java</artifactId>-->
-      <!--</dependency>-->
-      <!--<dependency>-->
-          <!--<groupId>org.eclipse.ecf</groupId>-->
-          <!--<artifactId>sharedobject</artifactId>-->
-      <!--</dependency>-->
       <dependency>
           <groupId>org.semanticweb</groupId>
           <artifactId>HermiT</artifactId>
