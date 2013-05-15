@@ -1,0 +1,24 @@
+Prefix(:=<http://bmi.asu.edu/sharpc2b/skoslmm#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<http://bmi.asu.edu/sharpc2b/skoslmm>
+Import(<http://asu.edu/sharpc2b/prr>)
+Import(<http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl>)
+Import(<http://www.w3.org/2004/02/skos/core>)
+
+SubClassOf(<http://asu.edu/sharpc2b/prr#Expression> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
+SubClassOf(<http://asu.edu/sharpc2b/prr#RuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationObject>)
+Declaration(Class(:CodedConcept))
+SubClassOf(:CodedConcept <http://www.w3.org/2004/02/skos/core#Concept>)
+Declaration(Class(:ConceptCode))
+SubClassOf(:ConceptCode <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Expression>)
+SubClassOf(<http://www.w3.org/2004/02/skos/core#Concept> <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Meaning>)
+SubClassOf(<http://www.w3.org/2004/02/skos/core#ConceptScheme> <http://www.loa-cnr.it/ontologies/IOLite.owl#KOS>)
+SubObjectPropertyOf(<http://asu.edu/sharpc2b/prr#relatedRuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#associatedWith>)
+SubObjectPropertyOf(<http://www.w3.org/2004/02/skos/core#semanticRelation> <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#relatedMeaning>)
+)
