@@ -1,0 +1,27 @@
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<http://asu.edu/sharpc2b/skos-ext>
+Import(<http://www.w3.org/2004/02/skos/core>)
+
+Declaration(Class(<http://asu.edu/sharpc2b/skos-ext#CodedConcept>))
+SubClassOf(<http://asu.edu/sharpc2b/skos-ext#CodedConcept> <http://www.w3.org/2004/02/skos/core#Concept>)
+Declaration(ObjectProperty(<http://asu.edu/sharpc2b/skos-ext#hasPart>))
+SubObjectPropertyOf(<http://asu.edu/sharpc2b/skos-ext#hasPart> <http://www.w3.org/2004/02/skos/core#narrower>)
+InverseObjectProperties(<http://asu.edu/sharpc2b/skos-ext#hasPart> <http://asu.edu/sharpc2b/skos-ext#partOf>)
+Declaration(ObjectProperty(<http://asu.edu/sharpc2b/skos-ext#partOf>))
+SubObjectPropertyOf(<http://asu.edu/sharpc2b/skos-ext#partOf> <http://www.w3.org/2004/02/skos/core#broader>)
+InverseObjectProperties(<http://asu.edu/sharpc2b/skos-ext#hasPart> <http://asu.edu/sharpc2b/skos-ext#partOf>)
+Declaration(ObjectProperty(<http://asu.edu/sharpc2b/skos-ext#subConceptOf>))
+SubObjectPropertyOf(<http://asu.edu/sharpc2b/skos-ext#subConceptOf> <http://www.w3.org/2004/02/skos/core#broaderTransitive>)
+InverseObjectProperties(<http://asu.edu/sharpc2b/skos-ext#superConceptOf> <http://asu.edu/sharpc2b/skos-ext#subConceptOf>)
+TransitiveObjectProperty(<http://asu.edu/sharpc2b/skos-ext#subConceptOf>)
+Declaration(ObjectProperty(<http://asu.edu/sharpc2b/skos-ext#superConceptOf>))
+SubObjectPropertyOf(<http://asu.edu/sharpc2b/skos-ext#superConceptOf> <http://www.w3.org/2004/02/skos/core#narrowerTransitive>)
+InverseObjectProperties(<http://asu.edu/sharpc2b/skos-ext#superConceptOf> <http://asu.edu/sharpc2b/skos-ext#subConceptOf>)
+TransitiveObjectProperty(<http://asu.edu/sharpc2b/skos-ext#superConceptOf>)
+)
