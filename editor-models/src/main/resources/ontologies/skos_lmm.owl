@@ -7,16 +7,13 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 
 Ontology(<http://bmi.asu.edu/sharpc2b/skoslmm>
-Import(<http://asu.edu/sharpc2b/prr>)
+Import(<http://asu.edu/sharpc2b/prr-sharp>)
 Import(<http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl>)
 Import(<http://www.w3.org/2004/02/skos/core>)
 
+SubClassOf(<http://asu.edu/sharpc2b/ops#SharpExpression> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
 SubClassOf(<http://asu.edu/sharpc2b/prr#Expression> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
 SubClassOf(<http://asu.edu/sharpc2b/prr#RuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationObject>)
-Declaration(Class(:CodedConcept))
-SubClassOf(:CodedConcept <http://www.w3.org/2004/02/skos/core#Concept>)
-Declaration(Class(:ConceptCode))
-SubClassOf(:ConceptCode <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Expression>)
 SubClassOf(<http://www.w3.org/2004/02/skos/core#Concept> <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Meaning>)
 SubClassOf(<http://www.w3.org/2004/02/skos/core#ConceptScheme> <http://www.loa-cnr.it/ontologies/IOLite.owl#KOS>)
 SubObjectPropertyOf(<http://asu.edu/sharpc2b/prr#relatedRuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#associatedWith>)
