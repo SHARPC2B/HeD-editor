@@ -237,18 +237,6 @@ public class TBoxToABox
         InputStream propertiesStream;
         propertiesStream = System.class.getResourceAsStream( resourceName );
 
-        try
-        {
-            URL url = System.class.getResource( resourceName );
-            File f = null;
-            f = new File( url.toURI() );
-            System.out.println( "Resource Root = "+f.getParentFile());
-        }
-        catch (URISyntaxException e)
-        {
-            e.printStackTrace();
-        }
-
         Properties properties = new Properties();
         properties.load( propertiesStream );
 

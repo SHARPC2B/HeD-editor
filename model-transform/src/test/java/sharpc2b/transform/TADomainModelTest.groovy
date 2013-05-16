@@ -1,11 +1,33 @@
 package sharpc2b.transform
 
-import org.junit.*
+import org.junit.After
+import org.junit.AfterClass
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
-import org.semanticweb.owlapi.model.*
+import org.semanticweb.owlapi.model.AddImport
+import org.semanticweb.owlapi.model.IRI
+import org.semanticweb.owlapi.model.OWLAnnotationProperty
+import org.semanticweb.owlapi.model.OWLAxiom
+import org.semanticweb.owlapi.model.OWLClass
+import org.semanticweb.owlapi.model.OWLClassExpression
+import org.semanticweb.owlapi.model.OWLDataFactory
+import org.semanticweb.owlapi.model.OWLDataProperty
+import org.semanticweb.owlapi.model.OWLDataRange
+import org.semanticweb.owlapi.model.OWLImportsDeclaration
+import org.semanticweb.owlapi.model.OWLNamedIndividual
+import org.semanticweb.owlapi.model.OWLNamedObject
+import org.semanticweb.owlapi.model.OWLObjectProperty
+import org.semanticweb.owlapi.model.OWLOntology
+import org.semanticweb.owlapi.model.OWLOntologyFormat
+import org.semanticweb.owlapi.model.OWLOntologyManager
+import org.semanticweb.owlapi.model.OWLProperty
+import org.semanticweb.owlapi.model.OWLPropertyExpression
+import org.semanticweb.owlapi.model.PrefixManager
 import org.semanticweb.owlapi.util.DefaultPrefixManager
 
 /**
@@ -20,18 +42,21 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
 @RunWith(JUnit4.class)
 class TADomainModelTest extends GroovyTestCase {
 
-    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
+//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
     static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
-    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
+//    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
     static IRI inputOntIRI = IRI.create( "http://", inputOntUriCorePath );
 
     static IRI mmaIRI = IRI.create( "asu.edu/sharpc2b/rk/SharpOwlABoxMetaModel" );
-    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
+//    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
+    static File mmaFile = FileUtil.getFileInResourceDir( "onts/in/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainInsts" );
-    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts.ofn" );
+//    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts.ofn" );
+    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts.ofn" );
 
 
     OWLOntologyManager oom;
@@ -71,8 +96,6 @@ class TADomainModelTest extends GroovyTestCase {
 
     @Before
     void setUp () {
-
-        println "SETUP";
 
         oom = OWLManager.createOWLOntologyManager();
         odf = oom.getOWLDataFactory();
@@ -133,8 +156,8 @@ class TADomainModelTest extends GroovyTestCase {
 
         for (OWLClassExpression tSuper : owlClass.getSuperClasses( ontt )) {
 
-            println tSuper;
-            println tSuper.class;
+//            println tSuper;
+//            println tSuper.class;
             assert tSuper instanceof OWLClass;
             OWLClass oClass = (OWLClass) tSuper;
 //            OWLNamedIndividual iSuper = iClass( oClass );
@@ -154,8 +177,8 @@ class TADomainModelTest extends GroovyTestCase {
 
         for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontt )) {
 
-            println tSuper;
-            println tSuper.class;
+//            println tSuper;
+//            println tSuper.class;
             assert tSuper instanceof OWLProperty;
             OWLProperty oProperty = (OWLProperty) tSuper;
 //            OWLNamedIndividual iSuper = iProperty( oProperty );
@@ -195,8 +218,8 @@ class TADomainModelTest extends GroovyTestCase {
 
         for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontt )) {
 
-            println tSuper;
-            println tSuper.class;
+//            println tSuper;
+//            println tSuper.class;
             assert tSuper instanceof OWLProperty;
             OWLProperty oProperty = (OWLProperty) tSuper;
 //            OWLNamedIndividual iSuper = iProperty( oProperty );

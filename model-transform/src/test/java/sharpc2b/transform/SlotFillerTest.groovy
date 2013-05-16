@@ -30,7 +30,7 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
  */
 class SlotFillerTest extends GroovyTestCase {
 
-    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
+//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
 //    static String ontIriBasePath = "asu.edu/sharpc2b/rk/SlotFill/01"
     static String ontIriBasePath = "asu.edu/sharpc2b/rk"
     static IRI ontIri = IRI.create( "http://" + ontIriBasePath + "/" + "JoeHasAspirin" )
@@ -39,7 +39,8 @@ class SlotFillerTest extends GroovyTestCase {
     static String dmNamespace = dmIri.toString() + "#"
 
     static File ontFile (String name) {
-        new File( testResourcesPath + "/onts/in/" + name + ".ofn" )
+//        new File( testResourcesPath + "/onts/in/" + name + ".ofn" )
+        FileUtil.getFileInResourceDir( "onts/in/" + name + ".ofn" )
     }
 
     static IRI ontIRI (String name) {
@@ -117,7 +118,7 @@ class SlotFillerTest extends GroovyTestCase {
         Set<OWLClassExpression> superOfDisorder
         superOfDisorder = cDisorder.getSuperClasses( onts )
         assert superOfDisorder.size() == 0
-        println "supers of Disorder = " + superOfDisorder
+//        println "supers of Disorder = " + superOfDisorder
 
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cPatient, joe ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
@@ -134,7 +135,7 @@ class SlotFillerTest extends GroovyTestCase {
 
         hermit = new Reasoner( ont );
 
-        println "isConsistent 1 = " + hermit.isConsistent()
+//        println "isConsistent 1 = " + hermit.isConsistent()
 //        assert pellet.isConsistent()
         assert hermit.isConsistent()
 //        assert pellet.isSatisfiable()
@@ -147,7 +148,7 @@ class SlotFillerTest extends GroovyTestCase {
 //        pellet2 = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
         Reasoner hermit2 = new Reasoner( ont );
 
-        println "isConsistent 2 = " + hermit2.isConsistent()
+//        println "isConsistent 2 = " + hermit2.isConsistent()
         assertFalse hermit2.isConsistent()
     }
 

@@ -18,18 +18,20 @@ import org.semanticweb.owlapi.vocab.Namespaces
 class TBoxToABoxTest
 extends GroovyTestCase {
 
-    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
+//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
 //    static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
-    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
+//    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
 //    static IRI inputOntIRI = IRI.create( "http://"+ inputOntUriCorePath );
 
 //    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/SharpOwlABoxDomainMetaModel" );
 //    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainA" );
-    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
+//    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
+    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts6.ofn" );
 
     TBoxToABox inst;
 
@@ -67,14 +69,14 @@ extends GroovyTestCase {
     void ignore_testMMMap () {
 
         URL url;
-        url = System.getResource("/DomainMetaModelABoxEntities.properties");
+        url = System.getResource( "/DomainMetaModelABoxEntities.properties" );
 
         Properties props
         props = new Properties();
 
         props.load( url.openStream() );
 
-        println  props.stringPropertyNames()
+//        println props.stringPropertyNames()
 
         props.list( System.out );
 
@@ -86,21 +88,21 @@ extends GroovyTestCase {
     @Ignore
     void ignore_testResource () {
         URL url;
-        url = System.getResource("/DomainMetaModelABoxEntities.properties");
+        url = System.getResource( "/DomainMetaModelABoxEntities.properties" );
 
         Properties props
-        url = System.getResource("/onts/in/ClinicalDomain.ofn");
+        url = System.getResource( "/onts/in/ClinicalDomain.ofn" );
         println url;
 
 //        x= TBoxToABox.class.getResource("onts/in/ClinicalDomain.ofn");
 //        println x;
-       url = TBoxToABox.class.getResource("/onts/in/ClinicalDomain.ofn");
+        url = TBoxToABox.class.getResource( "/onts/in/ClinicalDomain.ofn" );
         println "url = ${url}";
         println url.class;
         File f = new File( url.toURI() );
-        println "file = "+ f.absolutePath;
+        println "file = " + f.absolutePath;
         URLConnection conn
-        conn= url.openConnection();
+        conn = url.openConnection();
 
         def typ = conn.getContentType();
         println typ.getClass()
@@ -109,8 +111,8 @@ extends GroovyTestCase {
 
         def content = conn.getContent();
         println content.class;
-        println "length = "+ conn.getContentLength();
-        def contentString = conn.getContent(String.class);
+        println "length = " + conn.getContentLength();
+        def contentString = conn.getContent( String.class );
         println contentString?.class;
 
         String text = url.openStream().text;
@@ -120,16 +122,17 @@ extends GroovyTestCase {
     }
 
     void testDefaultABox () {
-        println "BEGIN Test"
+//        println "BEGIN Test"
 
 //        useSkosABoxConcepts( inst, oFormat )
 
         inst.populateABox( tboxModel, aboxModel );
 
-        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts7.ofn" );
+//        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts7.ofn" );
+        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts7.ofn" );
         oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
 
-        println "END Test"
+//        println "END Test"
     }
 
     /**
@@ -137,16 +140,17 @@ extends GroovyTestCase {
      * rdfs:subClassOf and rdfs:subPropertyOf, instead of the default A-Box entities.
      */
     void testSkosABox () {
-        println "BEGIN Test"
+//        println "BEGIN Test"
 
         useSkosABoxConcepts( inst, oFormat )
 
         inst.populateABox( tboxModel, aboxModel );
 
-        File outputOntFile = new File( testResourcesPath + "/onts/out/SkosClinicalDomainInsts6.ofn" );
+//        File outputOntFile = new File( testResourcesPath + "/onts/out/SkosClinicalDomainInsts6.ofn" );
+        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/SkosClinicalDomainInsts6.ofn" );
         oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
 
-        println "END Test"
+//        println "END Test"
     }
 
     def useSkosABoxConcepts (TBoxToABox inst,
