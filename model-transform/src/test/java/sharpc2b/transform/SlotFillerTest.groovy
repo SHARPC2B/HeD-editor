@@ -6,9 +6,6 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.semanticweb.HermiT.Reasoner
-
-//import com.clarkparsia.pellet.owlapiv3.Reasoner
-//import org.mindswap.pellet.jena.PelletReasoner
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.AddImport
@@ -30,8 +27,6 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
  */
 class SlotFillerTest extends GroovyTestCase {
 
-//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
-//    static String ontIriBasePath = "asu.edu/sharpc2b/rk/SlotFill/01"
     static String ontIriBasePath = "asu.edu/sharpc2b/rk"
     static IRI ontIri = IRI.create( "http://" + ontIriBasePath + "/" + "JoeHasAspirin" )
     static String ontNamespace = ontIri.toString() + "#"
@@ -39,7 +34,6 @@ class SlotFillerTest extends GroovyTestCase {
     static String dmNamespace = dmIri.toString() + "#"
 
     static File ontFile (String name) {
-//        new File( testResourcesPath + "/onts/in/" + name + ".ofn" )
         FileUtil.getFileInResourceDir( "onts/in/" + name + ".ofn" )
     }
 
@@ -63,12 +57,10 @@ class SlotFillerTest extends GroovyTestCase {
 
     @BeforeClass
     static void setUpOnce () {
-
     }
 
     @AfterClass
     static void tearDownOnce () {
-
     }
 
     @Before
@@ -81,12 +73,15 @@ class SlotFillerTest extends GroovyTestCase {
 
 //        dma = oom.createOntology( dmIri )
         onts = new HashSet<OWLOntology>();
-
     }
 
     @After
     void tearDown () {
 
+        oom = null
+        odf = null
+        pm = null
+        onts = null
     }
 
     @Test
@@ -106,12 +101,14 @@ class SlotFillerTest extends GroovyTestCase {
         oom.applyChange( imp )
 //        oom.addAxiom( ont, odf.getOWLImportsDeclaration( dmt.getOntologyID().getOntologyIRI() ) )
 
-        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", pm )
-        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", pm )
         OWLClass cPatient = odf.getOWLClass( "dmt:Patient", pm )
         OWLClass cDrug = odf.getOWLClass( "dmt:Drug", pm )
         OWLClass cDisorder = odf.getOWLClass( "dmt:Disorder", pm )
         OWLObjectProperty hasDisorder = odf.getOWLObjectProperty( "dmt:hasDisorder", pm )
+
+        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", pm )
+        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", pm )
+        OWLNamedIndividual hangover = odf.getOWLNamedIndividual( ":Hangover", pm )
 
 //        println pm.getIRI( "dmt:Disorder" )
 
@@ -122,8 +119,7 @@ class SlotFillerTest extends GroovyTestCase {
 
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cPatient, joe ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
-
-//        oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDisorder, aspirin ) )
+        oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDisorder, hangover ) )
 
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
         oFormat.copyPrefixesFrom( pm )
@@ -135,21 +131,18 @@ class SlotFillerTest extends GroovyTestCase {
 
         hermit = new Reasoner( ont );
 
-//        println "isConsistent 1 = " + hermit.isConsistent()
-//        assert pellet.isConsistent()
-        assert hermit.isConsistent()
+        assert true == hermit.isConsistent()
 //        assert pellet.isSatisfiable()
 
+        oom.addAxiom( ont, odf.getOWLObjectPropertyAssertionAxiom( hasDisorder, joe, hangover ) )
+
+        hermit.flush()
+        assert true == hermit.isConsistent()
+
         oom.addAxiom( ont, odf.getOWLObjectPropertyAssertionAxiom( hasDisorder, joe, aspirin ) )
-//        assertFalse pellet.isConsistent()
 
-//        PelletReasoner pellet2
-//        pellet2 = PelletReasonerFactory.getInstance().createReasoner( ont )
-//        pellet2 = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
-        Reasoner hermit2 = new Reasoner( ont );
-
-//        println "isConsistent 2 = " + hermit2.isConsistent()
-        assertFalse hermit2.isConsistent()
+        hermit.flush()
+        assert false == hermit.isConsistent()
     }
 
 }
