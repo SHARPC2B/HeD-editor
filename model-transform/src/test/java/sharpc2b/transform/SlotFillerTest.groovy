@@ -124,7 +124,7 @@ class SlotFillerTest extends GroovyTestCase {
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
         oFormat.copyPrefixesFrom( pm )
 
-        oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirin" ) ) )
+        oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirinT" ) ) )
 
 //        pellet = PelletReasonerFactory.getInstance().createReasoner( ont )
 //        pellet = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )
