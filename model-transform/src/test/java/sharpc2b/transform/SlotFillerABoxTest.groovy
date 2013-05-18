@@ -169,7 +169,6 @@ extends GroovyTestCase {
          * Save it to a File (for eyeball debugging)
          */
         saveOntologyToFile( ont, "JoeHasAspirinA" )
-
     }
 
     public OWLNamedIndividual addAPropertyAssertion (OWLOntology ont,
