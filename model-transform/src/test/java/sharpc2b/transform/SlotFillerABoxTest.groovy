@@ -157,14 +157,14 @@ extends GroovyTestCase {
         assert true == reasoner.isConsistent()
 
 
-        OWLNamedIndividual joeHasAspirin = addAPropertyAssertion( ont, pm.getIRI( ":joeHasAspirin" ),
-                hasDisorder, joe, aspirin )
+//        OWLNamedIndividual joeHasAspirin = addAPropertyAssertion( ont, pm.getIRI( ":joeHasAspirin" ),
+//                hasDisorder, joe, aspirin )
 
-        assert joeHasAspirin
+//        assert joeHasAspirin
 
-        reasoner.flush()
-        assert false == reasoner.isConsistent()
-
+//        reasoner.flush()
+//        assert false == reasoner.isConsistent()
+//
         /*
          * Save it to a File (for eyeball debugging)
          */

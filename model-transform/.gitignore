@@ -19,3 +19,4 @@
 model-transform/src/test/resources/http/asu.edu/sharpc2b/codes/03/icd9-classes*.ofn
 
 model-transform/src/test/resources/onts/out/
+/target-BU/
