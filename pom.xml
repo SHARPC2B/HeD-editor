@@ -73,6 +73,11 @@
       <url>http://repo.aduna-software.org/maven2/releases</url>
     </repository>
 
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+
   </repositories>
 
 
@@ -244,9 +249,16 @@
         <version>2.3.0</version>
       </dependency>
       <dependency>
+        <groupId>pellet</groupId>
+        <artifactId>pellet-owlapiv3</artifactId>
+        <version>2.3.0</version>
+        </dependency>
+      <dependency>
         <groupId>aterm</groupId>
+        <!--<groupId>com.github.ansell.aterms</groupId>-->
         <artifactId>aterm-java</artifactId>
         <version>1.6</version>
+        <!--<version>1.8.2</version>-->
       </dependency>
 
       <dependency>

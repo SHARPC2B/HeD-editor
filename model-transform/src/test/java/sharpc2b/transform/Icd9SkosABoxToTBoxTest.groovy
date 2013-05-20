@@ -26,10 +26,10 @@ import java.util.regex.Pattern
 @RunWith(JUnit4.class)
 public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
-    static String ontologiesHttpFileRoot =
-        "/Users/rk/asu/prj" +
-                "/sharp-editor/model-transform/src/test/resources/http";
-    static String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
+//    static String ontologiesHttpFileRoot =
+//        "/Users/rk/asu/prj" +
+//                "/sharp-editor/model-transform/src/test/resources/http";
+//    static String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
 
     static String sharpCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
 
@@ -37,11 +37,12 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
      * SKOS
      */
     static String skosRelPath = "/www.w3.org/2004/02/skos/core";
-    static String skosRootPath = ontologiesHttpFileRoot + skosRelPath;
+//    static String skosRootPath = ontologiesHttpFileRoot + skosRelPath;
     static String skosUriPath = "http:/" + skosRelPath;
     static String skosNamespace = skosUriPath + "#";
-    static IRI skosIRI = new IRI( skosUriPath );
-    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
+//    static IRI skosIRI = new IRI( skosUriPath );
+//    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
+    static IRI skosDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
 
     /*
      * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)
@@ -51,7 +52,10 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static String pubCodesUriPath = "http:/" + pubCodesOntRelPath;
     static String pubCodesNamespace = pubCodesUriPath + "#";
     static IRI pubCodesIRI = new IRI( pubCodesUriPath );
-    static IRI pubCodesDocIRI = new IRI( ontologiesDocUriRoot + pubCodesOntRelPath + ".ofn" );
+//    static IRI pubCodesDocIRI = new IRI( ontologiesDocUriRoot + pubCodesOntRelPath + ".ofn" );
+    static IRI pubCodesDocIRI =  IRI.create( FileUtil.getFileInResourceDir( "http/" + pubCodesOntRelPath +
+            ".ofn"
+    ).toURI() );
 
     /*
      * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
@@ -60,7 +64,9 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static String sharpCodesUriPath = "http:/" + sharpCodesOntRelPath;
     static String sharpCodesNamespace = sharpCodesUriPath + "#";
     static IRI sharpCodesIRI = new IRI( sharpCodesUriPath );
-    static IRI sharpCodesDocIRI = new IRI( ontologiesDocUriRoot + sharpCodesOntRelPath + ".ofn" );
+//    static IRI sharpCodesDocIRI = new IRI( ontologiesDocUriRoot + sharpCodesOntRelPath + ".ofn" );
+    static IRI sharpCodesDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + sharpCodesOntRelPath + "" +
+            ".ofn" ).toURI() );
 
 
     OWLOntologyManager oom;
@@ -96,7 +102,8 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
 //        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + pubCodesOntRelPath + ".ofn" ) );
-        println "SKOS Doc IRI = <${skosDocIRI}>";
+//        println "SKOS Doc IRI = <${skosDocIRI}>";
+//        println "SKOS Doc IRI = <${pubCodesDocIRI}>";
 
         assert new File( skosDocIRI.toURI() ).exists();
         assert new File( pubCodesDocIRI.toURI() ).exists();
