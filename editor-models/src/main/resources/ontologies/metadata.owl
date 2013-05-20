@@ -7,8 +7,8 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 
 Ontology(<http://asu.edu/sharpc2b/metadata>
-Import(<http://asu.edu/sharpc2b/dc2dul>)
 Import(<http://bmi.asu.edu/sharpc2b/skoslmm>)
+Import(<http://asu.edu/sharpc2b/dc2dul>)
 
 Declaration(Class(meta:ClinicalCoverage))
 EquivalentClasses(meta:ClinicalCoverage DataSomeValuesFrom(meta:coverageType DataOneOf("ClinicalFocus" "ClinicalVenue" "PatientAgeGroup" "PatientGender" "TargetUser" "WorkflowSetting" "WorkflowTask")))
@@ -103,6 +103,10 @@ Declaration(ObjectProperty(meta:coveredConcept))
 SubObjectPropertyOf(meta:coveredConcept meta:relatedConcept)
 ObjectPropertyDomain(meta:coveredConcept meta:Coverage)
 ObjectPropertyRange(meta:coveredConcept <http://asu.edu/sharpc2b/skos-ext#ConceptCode>)
+Declaration(ObjectProperty(meta:designatedActor))
+SubObjectPropertyOf(meta:designatedActor <http://purl.org/dc/terms/relation>)
+ObjectPropertyDomain(meta:designatedActor <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationEntity>)
+ObjectPropertyRange(meta:designatedActor <http://purl.org/dc/terms/Agent>)
 Declaration(ObjectProperty(meta:documentation))
 SubObjectPropertyOf(meta:documentation <http://purl.org/dc/terms/references>)
 ObjectPropertyDomain(meta:documentation meta:KnowledgeArtifact)
