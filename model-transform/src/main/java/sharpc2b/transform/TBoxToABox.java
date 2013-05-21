@@ -20,11 +20,8 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -43,7 +40,13 @@ public class TBoxToABox
     final static IRI aboxDomainMetaModelIRI = IRI
             .create( "http://asu.edu/sharpc2b" + "/" + "SharpOwlABoxDomainMetaModel" );
 
+    /**
+     * Default file to load to obtain the A-Box IRIs to use as substitutes for OWL Class, Property,
+     * subClassOf, etc.
+     */
     final static String resourceName = "/DomainMetaModelABoxEntities.properties";
+
+    //==================================================================================
 
     Map<String, IRI> mmDomainObject;
 
@@ -68,36 +71,29 @@ public class TBoxToABox
      */
     private Set<OWLOntology> onts;
 
-    /*
-     *  A-Box Domain Meta-Model objects.
-     */
-
-//    private OWLClass mm_Class;
-//
-//    private OWLClass mm_Individual;
-//
-//    private OWLClass mm_Property;
-//
-//    private OWLObjectProperty mm_type;
-//
-//    private OWLObjectProperty mm_subClassOf;
-//
-//    private OWLObjectProperty mm_subPropertyOf;
-//
-//    private OWLObjectProperty mm_domain;
-//
-//    private OWLObjectProperty mm_range;
-
     //==================================================================================
 
     public TBoxToABox ()
     {
         super();
 
-//        initDomainModelABoxSubstitution();
         try
         {
-            initDomainModelABoxSubstitutionsFromPropertiesFile();
+            initDomainModelABoxSubstitutionsFromPropertiesFile( resourceName );
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public TBoxToABox (final String resourceName)
+    {
+        super();
+
+        try
+        {
+            initDomainModelABoxSubstitutionsFromPropertiesFile( resourceName );
         }
         catch (IOException e)
         {
@@ -188,46 +184,50 @@ public class TBoxToABox
         pm.setDefaultPrefix( this.aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
         pm.setPrefix( "a:", this.aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
         pm.setPrefix( "t:", this.tboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        pm.setPrefix( "mm:", aboxDomainMetaModelIRI.toString() + "#" );
-        pm.setPrefix( "skos:", Namespaces.SKOS.toString() );
     }
 
-    /**
-     * Initialize the configuration for what kind of A-Box entity is created for each kind of builtin RDF &
-     * OWL entity to be transformed.  This is initialized with default concept IRIs.  The defaults defined
-     * here can be replaced by calling the method setDomainModelABoxSubstitution() with a preferred
-     * replacement IRI for each RDF/OWL concept.
-     */
-    private void initDomainModelABoxSubstitution ()
-    {
-        mmDomainObject = new TreeMap<String, IRI>();
-
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_CLASS.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Class" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_DATATYPE.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Datatype" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_INDIVIDUAL.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Individual" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_NAMED_INDIVIDUAL.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Individual" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_OBJECT_PROPERTY.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Property" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_DATA_PROPERTY.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Property" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_ANNOTATION_PROPERTY.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_Property" ) );
-
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_SUBCLASS_OF.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_subClassOf" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_SUB_PROPERTY_OF.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_subPropertyOf" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_DOMAIN.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_domain" ) );
-        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_RANGE.getIRI(),
-                                        getPrefixManager().getIRI( "mm:a_range" ) );
-    }
+//    /**
+//     * Initialize the configuration for what kind of A-Box entity is created for each kind of builtin RDF &
+//     * OWL entity to be transformed.  This is initialized with default concept IRIs.  The defaults defined
+//     * here can be replaced by calling the method setDomainModelABoxSubstitution() with a preferred
+//     * replacement IRI for each RDF/OWL concept.
+//     */
+//    private void initDomainModelABoxSubstitution ()
+//    {
+//        mmDomainObject = new TreeMap<String, IRI>();
+//
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_CLASS.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Class" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_DATATYPE.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Datatype" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_INDIVIDUAL.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Individual" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_NAMED_INDIVIDUAL.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Individual" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_OBJECT_PROPERTY.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Property" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_DATA_PROPERTY.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Property" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.OWL_ANNOTATION_PROPERTY.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_Property" ) );
+//
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_SUBCLASS_OF.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_subClassOf" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_SUB_PROPERTY_OF.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_subPropertyOf" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_DOMAIN.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_domain" ) );
+//        setDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_RANGE.getIRI(),
+//                                        getPrefixManager().getIRI( "mm:a_range" ) );
+//    }
 
     private void initDomainModelABoxSubstitutionsFromPropertiesFile ()
+            throws IOException
+    {
+        initDomainModelABoxSubstitutionsFromPropertiesFile( resourceName );
+    }
+
+    public void initDomainModelABoxSubstitutionsFromPropertiesFile (final String resourceName)
             throws IOException
     {
         this.mmDomainObject = new TreeMap<String, IRI>();
@@ -242,6 +242,8 @@ public class TBoxToABox
 
         for (String propName : properties.stringPropertyNames())
         {
+//            System.out.println("|"+propName +"|");
+
             setDomainModelABoxSubstitution( IRI.create( propName ),
                                             IRI.create( properties.getProperty( propName ) ) );
         }
@@ -249,6 +251,9 @@ public class TBoxToABox
 
     private IRI getDomainModelABoxSubstitution (IRI rdfOwlEntityIRI)
     {
+//        if ( this.mmDomainObject == null){
+//            initDomainModelABoxSubstitutionsFromPropertiesFile(resourceName);
+//        }
         return mmDomainObject.get( rdfOwlEntityIRI.toString() );
     }
 
@@ -304,20 +309,6 @@ public class TBoxToABox
         IRI iri = getDomainModelABoxSubstitution( OWLRDFVocabulary.RDFS_RANGE.getIRI() );
         return odf.getOWLObjectProperty( iri );
     }
-
-//    private OWLClass mm_Individual;
-//
-//    private OWLClass mm_Property;
-//
-//    private OWLObjectProperty mm_type;
-//
-//    private OWLObjectProperty mm_subClassOf;
-//
-//    private OWLObjectProperty mm_subPropertyOf;
-//
-//    private OWLObjectProperty mm_domain;
-//
-//    private OWLObjectProperty mm_range;
 
     private void addImports ()
     {

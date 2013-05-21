@@ -273,7 +273,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
         Set<OWLLiteral> codeValues = codeInd.getDataPropertyValues( icd9Prop, onta );
 //        println codeValues.size();
         if (codeValues.isEmpty()) {
-            println "no icd9 code: " + codeInd;
+            println getClass().getSimpleName().toString() + ": no icd9 code: " + codeInd;
             return;
         }
         OWLLiteral litValue = codeValues.iterator().next();

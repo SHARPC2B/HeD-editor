@@ -19,6 +19,8 @@ class FileUtilTest extends GroovyTestCase {
 //        String path = "/onts/in/ClinicalDomainT.ofn";
 //        File f = FileUtil.getFileInResourceDir(path)
 
+        /* The Java default for getting resources appears to be case-insensitive */
+
         assertEquals true, FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" ).exists()
         assertEquals true, FileUtil.getFileInResourceDir( "/onts/in/ClinicalDomainT.ofn" ).exists()
         assertEquals false, FileUtil.getFileInResourceDir( "ClinicalDomainT.ofn" ).exists()
