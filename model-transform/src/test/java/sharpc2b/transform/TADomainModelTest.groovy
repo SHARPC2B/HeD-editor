@@ -47,16 +47,16 @@ class TADomainModelTest extends GroovyTestCase {
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
 //    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
-    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = FileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
     static IRI inputOntIRI = IRI.create( "http://", inputOntUriCorePath );
 
     static IRI mmaIRI = IRI.create( "asu.edu/sharpc2b/rk/SharpOwlABoxMetaModel" );
 //    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
-    static File mmaFile = FileUtil.getFileInResourceDir( "onts/in/SharpOwlABoxMetaModel.ofn" );
+    static File mmaFile = FileUtil.getFileInTestResourceDir( "onts/in/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainInsts" );
 //    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts.ofn" );
-    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts.ofn" );
+    static File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts.ofn" );
 
 
     OWLOntologyManager oom;

@@ -34,13 +34,13 @@ public class SkosABoxToTBox
 
     private PrefixManager pm;
 
-    private OWLOntology skos;
+//    private OWLOntology skos;
 
     private OWLOntology onta;
 
     private OWLOntology ontt;
 
-    private Set<OWLOntology> onts;
+//    private Set<OWLOntology> onts;
 
     private OWLClass topCodeClass;
 
@@ -73,28 +73,24 @@ public class SkosABoxToTBox
         OWLOntologyFormat oFormat;
         {
             String commonCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
+
             String aOntRelPath = commonCodesOntsRelPath + "icd9-pub";
             String tOntRelPath = commonCodesOntsRelPath + "icd9-classes5";
 
-//        static String aUriPath = "http:/" + aOntRelPath;
-//        static String aNamespace = aUriPath + "#";
-//        static IRI aIRI = IRI.create( aUriPath );
-//        String ontologiesHttpFileRoot = "/Users/rk/asu/prj" +
-//                "/sharp-editor/model-transform/src/test/resources/http";
-//        resourcesRoot = FileUtil.getFileInResourceDir( "" )
-//        String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
-//        IRI aDocIRI = IRI.create( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
-//        IRI tDocIRI = IRI.create( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
-            aDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + aOntRelPath + ".ofn" ).toURI() );
-            tDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + tOntRelPath + ".ofn" ).toURI() );
+            aDocIRI = IRI
+                    .create( FileUtil.getFileInTestResourceDir( "http/" + aOntRelPath + ".ofn" ).toURI() );
+            tDocIRI = IRI
+                    .create( FileUtil.getFileInTestResourceDir( "http/" + tOntRelPath + ".ofn" ).toURI() );
 
             String tUriPath = "http:/" + tOntRelPath;
             tIRI = IRI.create( tUriPath );
-            PrefixManager pm = new DefaultPrefixManager( tUriPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "a:", "http:/" + aOntRelPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "t:", "http:/" + tOntRelPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "skos:", skosNamespace );
-
+            PrefixManager pm;
+            {
+                pm = new DefaultPrefixManager( tUriPath + "#" );
+                ((DefaultPrefixManager) pm).setPrefix( "a:", "http:/" + aOntRelPath + "#" );
+                ((DefaultPrefixManager) pm).setPrefix( "t:", "http:/" + tOntRelPath + "#" );
+                ((DefaultPrefixManager) pm).setPrefix( "skos:", skosNamespace );
+            }
             oFormat = new OWLFunctionalSyntaxOntologyFormat();
             ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
         }
@@ -108,13 +104,14 @@ public class SkosABoxToTBox
 
         SkosABoxToTBox inst = new SkosABoxToTBox();
 
-        OWLOntology ont2 = inst.createTBoxOntology( ont1, tIRI );
+        OWLOntology ont2 = om.createOntology( tIRI );
+        inst.createTBoxOntology( ont1, ont2 );
 
         om.setOntologyFormat( ont2, oFormat );
         om.saveOntology( ont2, tDocIRI );
     }
 
-    //==============================================================================
+    //=================================================================================================
 
     /**
      * Create a T-Box Ontology equivalent to the input A-Box ontology.
@@ -124,13 +121,19 @@ public class SkosABoxToTBox
      *                             individuals via skos:broader or skos:broaderTransitive, the code values
      *                             are represented using skos:notation, and a friendly name of the concept
      *                             is indicated using skos:prefLabel.
-     * @param tboxOntologyIRI      the IRI to use to identify the T-Box Ontology that this method creates.
+     * @param tboxOntology         the T-Box Ontology that new axioms are added to.
      */
     public OWLOntology createTBoxOntology (final OWLOntology skosIcd9ABoxOntology,
-                                           final IRI tboxOntologyIRI)
+                                           final OWLOntology tboxOntology)
             throws OWLOntologyCreationException
     {
-        initTBoxOntology( skosIcd9ABoxOntology, tboxOntologyIRI );
+//        initTBoxOntology( skosIcd9ABoxOntology, tboxOntologyIRI );
+
+        this.onta = skosIcd9ABoxOntology;
+        this.ontt = tboxOntology;
+
+        this.oom = this.ontt.getOWLOntologyManager();
+        this.odf = this.oom.getOWLDataFactory();
 
         initNamespaces();
         addImports();
@@ -144,29 +147,31 @@ public class SkosABoxToTBox
         return this.ontt;
     }
 
-    private void initTBoxOntology (OWLOntology onta,
-                                   IRI tboxIRI)
-            throws OWLOntologyCreationException
-    {
-        this.onta = onta;
+    //=================================================================================================
 
-        oom = onta.getOWLOntologyManager();
-        odf = oom.getOWLDataFactory();
-
-        this.ontt = createNewOntology( tboxIRI );
-
-        onts = new HashSet<OWLOntology>();
-//        onts.add( skos );
-        onts.add( ontt );
-        onts.add( onta );
-//        onts = [skos, aboxModel];
-    }
-
-    private OWLOntology createNewOntology (IRI tboxIRI)
-            throws OWLOntologyCreationException
-    {
-        return oom.createOntology( tboxIRI );
-    }
+//    private void initTBoxOntology (OWLOntology onta,
+//                                   IRI tboxIRI)
+//            throws OWLOntologyCreationException
+//    {
+//        this.onta = onta;
+//
+//        oom = onta.getOWLOntologyManager();
+//        odf = oom.getOWLDataFactory();
+//
+//        this.ontt = createNewOntology( tboxIRI );
+//
+////        onts = new HashSet<OWLOntology>();
+////        onts.add( skos );
+////        onts.add( ontt );
+////        onts.add( onta );
+////        onts = [skos, aboxModel];
+//    }
+//
+//    private OWLOntology createNewOntology (IRI tboxIRI)
+//            throws OWLOntologyCreationException
+//    {
+//        return oom.createOntology( tboxIRI );
+//    }
 
     private void initNamespaces ()
     {
@@ -210,8 +215,10 @@ public class SkosABoxToTBox
 
     private void addCommonAxioms ()
     {
-        Set<OWLAxiom> axioms = new TreeSet();
-        ((TreeSet) axioms).add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
+        /* Add [skos:broaderTransitive rdfs:subPropertyOf :refines] */
+
+        Set<OWLAxiom> axioms = new TreeSet<OWLAxiom>();
+        axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
         oom.addAxioms( ontt, axioms );
     }
 
@@ -224,7 +231,6 @@ public class SkosABoxToTBox
         {
             addAxiomsForCode( (OWLNamedIndividual) ind );
         }
-
     }
 
     private void addAxiomsForCode (OWLNamedIndividual codeInd)

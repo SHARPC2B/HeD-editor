@@ -42,7 +42,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static String skosNamespace = skosUriPath + "#";
 //    static IRI skosIRI = new IRI( skosUriPath );
 //    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
-    static IRI skosDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
+    static IRI skosDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
 
     /*
      * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)
@@ -53,7 +53,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static String pubCodesNamespace = pubCodesUriPath + "#";
     static IRI pubCodesIRI = new IRI( pubCodesUriPath );
 //    static IRI pubCodesDocIRI = new IRI( ontologiesDocUriRoot + pubCodesOntRelPath + ".ofn" );
-    static IRI pubCodesDocIRI =  IRI.create( FileUtil.getFileInResourceDir( "http/" + pubCodesOntRelPath +
+    static IRI pubCodesDocIRI =  IRI.create( FileUtil.getFileInTestResourceDir( "http/" + pubCodesOntRelPath +
             ".ofn"
     ).toURI() );
 
@@ -65,7 +65,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     static String sharpCodesNamespace = sharpCodesUriPath + "#";
     static IRI sharpCodesIRI = new IRI( sharpCodesUriPath );
 //    static IRI sharpCodesDocIRI = new IRI( ontologiesDocUriRoot + sharpCodesOntRelPath + ".ofn" );
-    static IRI sharpCodesDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + sharpCodesOntRelPath + "" +
+    static IRI sharpCodesDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + sharpCodesOntRelPath + "" +
             ".ofn" ).toURI() );
 
 

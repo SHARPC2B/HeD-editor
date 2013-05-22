@@ -23,7 +23,7 @@ extends GroovyTestCase {
 //    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
 //            ".ofn" );
 //    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
-    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = FileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 //    static IRI inputOntIRI = IRI.create( "http://"+ inputOntUriCorePath );
 
 //    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/SharpOwlABoxDomainMetaModel" );
@@ -31,7 +31,7 @@ extends GroovyTestCase {
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainA" );
 //    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
-    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts6.ofn" );
+    static File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts6.ofn" );
 
     TBoxToABox inst;
 
@@ -129,7 +129,7 @@ extends GroovyTestCase {
         inst.populateABox( tboxModel, aboxModel );
 
 //        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts7.ofn" );
-        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts7.ofn" );
+        File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts7.ofn" );
         oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
 
 //        println "END Test"
@@ -147,7 +147,7 @@ extends GroovyTestCase {
         inst.populateABox( tboxModel, aboxModel );
 
 //        File outputOntFile = new File( testResourcesPath + "/onts/out/SkosClinicalDomainInsts6.ofn" );
-        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/SkosClinicalDomainInsts6.ofn" );
+        File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/SkosClinicalDomainInsts6.ofn" );
         oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
 
 //        println "END Test"

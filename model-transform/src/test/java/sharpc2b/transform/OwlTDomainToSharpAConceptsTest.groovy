@@ -16,13 +16,13 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
  * Date: 5/20/13
  * Time: 11:11 PM
  */
-class OwlTToDomainConceptsATest
+class OwlTDomainToSharpAConceptsTest
 extends GroovyTestCase {
 
-    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = FileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
-    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
+    static File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
 
     final static String resourceName_metaModelNames = "/OWL-to-Sharp-ABox-Concepts.properties";
 

@@ -45,7 +45,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
     static String skosNamespace = skosUriPath + "#";
     static IRI skosIRI = new IRI( skosUriPath );
 //    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
-    static IRI skosDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
+    static IRI skosDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
 
     /*
      * Original SKOS A-Box ICD9 Codes Ontology.  Imported by icd9-classes (T-Box).
@@ -55,7 +55,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 //    static String icdNamespace = icdUriPath + "#";
 //    static IRI icdIRI = new IRI( icdUriPath );
 //    static IRI icdDocIRI = new IRI( ontologiesDocUriRoot + icdOntRelPath + ".ofn" );
-    static IRI icdDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" +
+    static IRI icdDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" +
             icdOntRelPath +
             ".ofn"
     ).toURI() );
@@ -68,7 +68,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
     static String aNamespace = aUriPath + "#";
     static IRI aIRI = new IRI( aUriPath );
 //    static IRI aDocIRI = new IRI( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
-//    static IRI aDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + aOntRelPath +
+//    static IRI aDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + aOntRelPath +
 //            ".ofn" ).toURI() );
 
     /*
@@ -79,7 +79,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
     static String tNamespace = tUriPath + "#";
     static IRI tIRI = new IRI( tUriPath );
 //    static IRI tDocIRI = new IRI( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
-    static IRI tDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + tOntRelPath +
+    static IRI tDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + tOntRelPath +
             ".ofn" ).toURI() );
 
     OWLOntologyManager oom;
