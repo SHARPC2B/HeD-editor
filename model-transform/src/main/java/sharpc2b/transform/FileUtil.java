@@ -17,7 +17,7 @@ public class FileUtil
      * find this file in a machine-independent way, then uses the folder of this located file as the file
      * system folder to use as the root for locating other resource files.
      */
-    private static final String knownRootResourcePath = "/DomainMetaModelABoxEntities.properties";
+    private static final String knownRootResourcePath = "/FileInMainResourcesRoot.properties";
 
     /**
      * This is a file that must exist inside the 'test' classpath resources directory, right now:

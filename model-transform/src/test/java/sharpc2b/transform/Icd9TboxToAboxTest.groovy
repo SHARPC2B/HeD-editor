@@ -5,8 +5,6 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
@@ -22,65 +20,38 @@ import java.util.regex.Pattern
  * decided to use the ontology that was the output of the A to T direction.  That had class definitions
  * based on EquivalentClass definitions and a property named "refines" (or "refinesDisorder").
  *
+ * XXX Abandoned.
+ *
  * Part way through this process, realized something was kind of wrong with this whole scenario,
  * so stopped.  So this class could be scrapped.  However, the code for navigating through these class
  * definitions seems like it will likely be required at some point.
  */
-@RunWith(JUnit4.class)
-public class Icd9TboxToAboxTest extends GroovyTestCase {
+public class Icd9TboxToAboxTest
+extends GroovyTestCase {
 
-//    static String ontologiesHttpFileRoot =
-//        "/Users/rk/asu/prj" +
-//                "/sharp-editor/model-transform/src/test/resources/http";
-//    static String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
-
-    static String commonCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
+    static String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/03/";
 
     /*
      * SKOS
      */
-    static String skosRelPath = "/www.w3.org/2004/02/skos/core";
-//    static String skosRootPath = ontologiesHttpFileRoot + skosRelPath;
-    static String skosUriPath = "http:/" + skosRelPath;
-    static String skosNamespace = skosUriPath + "#";
-    static IRI skosIRI = new IRI( skosUriPath );
-//    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
-    static IRI skosDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
+    static File skosFile = FileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
 
     /*
      * Original SKOS A-Box ICD9 Codes Ontology.  Imported by icd9-classes (T-Box).
      */
-    static String icdOntRelPath = commonCodesOntsRelPath + "icd9-pub";
-    static String icdUriPath = "http:/" + icdOntRelPath;
-//    static String icdNamespace = icdUriPath + "#";
-//    static IRI icdIRI = new IRI( icdUriPath );
-//    static IRI icdDocIRI = new IRI( ontologiesDocUriRoot + icdOntRelPath + ".ofn" );
-    static IRI icdDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" +
-            icdOntRelPath +
-            ".ofn"
-    ).toURI() );
-
-    /*
-     * A-Box ICD9 Codes Ontology
-     */
-    static String aOntRelPath = commonCodesOntsRelPath + "icd9-abox";
-    static String aUriPath = "http:/" + aOntRelPath;
-    static String aNamespace = aUriPath + "#";
-    static IRI aIRI = new IRI( aUriPath );
-//    static IRI aDocIRI = new IRI( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
-//    static IRI aDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + aOntRelPath +
-//            ".ofn" ).toURI() );
+    static File icdFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-pub.ofn" );
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String tOntRelPath = commonCodesOntsRelPath + "icd9-classes";
-    static String tUriPath = "http:/" + tOntRelPath;
-    static String tNamespace = tUriPath + "#";
-    static IRI tIRI = new IRI( tUriPath );
-//    static IRI tDocIRI = new IRI( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
-    static IRI tDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "http/" + tOntRelPath +
-            ".ofn" ).toURI() );
+    static IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes" );
+    static tFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-classes.ofn" )
+
+    /*
+     * A-Box ICD9 Codes Ontology
+     */
+    static IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-abox" );
+    static aFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-abox.ofn" )
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
@@ -121,12 +92,13 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 //        println "SKOS Doc IRI = <${skosDocIRI}>";
 //        println "T-Box classes Doc IRI = <${tDocIRI}>";
 
-        assert new File( skosDocIRI.toURI() ).exists();
-        assert new File( tDocIRI.toURI() ).exists();
+        assert skosFile.exists();
+        println "fFile = " + tFile
+        assert tFile.exists();
 
-        skos = oom.loadOntologyFromOntologyDocument( skosDocIRI );
-        icd = oom.loadOntologyFromOntologyDocument( icdDocIRI );
-        ontt = oom.loadOntologyFromOntologyDocument( tDocIRI );
+        skos = oom.loadOntologyFromOntologyDocument( skosFile );
+        icd = oom.loadOntologyFromOntologyDocument( icdFile );
+        ontt = oom.loadOntologyFromOntologyDocument( tFile );
 
         onts = new HashSet<OWLOntology>();
         onts.add( skos );
@@ -150,7 +122,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
         addAxiomsForCodes();
 
         setUpOntologyFormat();
-        serialize();
+//        serialize();
 
         return ontt;
     }
@@ -306,7 +278,7 @@ public class Icd9TboxToAboxTest extends GroovyTestCase {
 
     def serialize () {
 
-        oom.saveOntology( ontt, tDocIRI );
+        oom.saveOntology( ontt, tFile );
     }
 
 }

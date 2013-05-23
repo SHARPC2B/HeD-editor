@@ -72,24 +72,25 @@ public class SkosABoxToTBox
         IRI tDocIRI;
         OWLOntologyFormat oFormat;
         {
-            String commonCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
+            String sharpCodesOntsVersion = "03";
+            String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/" + sharpCodesOntsVersion + "/";
 
-            String aOntRelPath = commonCodesOntsRelPath + "icd9-pub";
-            String tOntRelPath = commonCodesOntsRelPath + "icd9-classes5";
-
-            aDocIRI = IRI
-                    .create( FileUtil.getFileInTestResourceDir( "http/" + aOntRelPath + ".ofn" ).toURI() );
+            aDocIRI = IRI.create( FileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" ).toURI() );
             tDocIRI = IRI
-                    .create( FileUtil.getFileInTestResourceDir( "http/" + tOntRelPath + ".ofn" ).toURI() );
+                    .create( FileUtil.getFileInTestResourceDir( "/onts/out/icd9-classes.ofn" ).toURI() );
 
-            String tUriPath = "http:/" + tOntRelPath;
-            tIRI = IRI.create( tUriPath );
+//            String tUriPath = "http://" + tOntRelPath;
+            IRI aIRI;
+            aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-pub" );
+            tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes5" );
             PrefixManager pm;
             {
-                pm = new DefaultPrefixManager( tUriPath + "#" );
-                ((DefaultPrefixManager) pm).setPrefix( "a:", "http:/" + aOntRelPath + "#" );
-                ((DefaultPrefixManager) pm).setPrefix( "t:", "http:/" + tOntRelPath + "#" );
-                ((DefaultPrefixManager) pm).setPrefix( "skos:", skosNamespace );
+                pm = new DefaultPrefixManager( tIRI.toString() + "#" );
+//                String aOntRelPath = commonCodesOntsRelPath + "icd9-pub";
+
+                ((DefaultPrefixManager) pm).setPrefix( "a:", aIRI.toString() + "#" );
+                ((DefaultPrefixManager) pm).setPrefix( "t:", tIRI.toString() + "#" );
+                ((DefaultPrefixManager) pm).setPrefix( "skos:", IriUtil.skos + "#" );
             }
             oFormat = new OWLFunctionalSyntaxOntologyFormat();
             ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
