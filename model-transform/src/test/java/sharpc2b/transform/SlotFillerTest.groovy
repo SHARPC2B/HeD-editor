@@ -7,7 +7,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.semanticweb.HermiT.Reasoner
 import org.semanticweb.owlapi.apibinding.OWLManager
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.AddImport
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLClass
@@ -16,9 +15,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk
@@ -34,7 +32,7 @@ class SlotFillerTest extends GroovyTestCase {
     static String dmNamespace = dmIri.toString() + "#"
 
     static File ontFile (String name) {
-        FileUtil.getFileInTestResourceDir( "onts/in/" + name + ".ofn" )
+        TestFileUtil.getFileInTestResourceDir( "onts/in/" + name + ".ofn" )
     }
 
     static IRI ontIRI (String name) {
@@ -42,8 +40,7 @@ class SlotFillerTest extends GroovyTestCase {
     }
 
     OWLOntologyManager oom;
-    OWLOntologyFormat oFormat;
-    DefaultPrefixManager pm;
+    PrefixOWLOntologyFormat oFormat;
 
     OWLOntology ont;
     OWLOntology dma;
@@ -68,8 +65,9 @@ class SlotFillerTest extends GroovyTestCase {
 
         oom = OWLManager.createOWLOntologyManager();
         odf = oom.getOWLDataFactory()
-        pm = new DefaultPrefixManager( ontNamespace )
-        pm.setPrefix( "dmt:", dmNamespace )
+        oFormat = IriUtil.getDefaultSharpOntologyFormat()
+        oFormat.setDefaultPrefix( ontNamespace )
+        oFormat.setPrefix( "dmt:", dmNamespace )
 
 //        dma = oom.createOntology( dmIri )
         onts = new HashSet<OWLOntology>();
@@ -80,7 +78,7 @@ class SlotFillerTest extends GroovyTestCase {
 
         oom = null
         odf = null
-        pm = null
+        oFormat = null
         onts = null
     }
 
@@ -101,16 +99,16 @@ class SlotFillerTest extends GroovyTestCase {
         oom.applyChange( imp )
 //        oom.addAxiom( ont, odf.getOWLImportsDeclaration( dmt.getOntologyID().getOntologyIRI() ) )
 
-        OWLClass cPatient = odf.getOWLClass( "dmt:Patient", pm )
-        OWLClass cDrug = odf.getOWLClass( "dmt:Drug", pm )
-        OWLClass cDisorder = odf.getOWLClass( "dmt:Disorder", pm )
-        OWLObjectProperty hasDisorder = odf.getOWLObjectProperty( "dmt:hasDisorder", pm )
+        OWLClass cPatient = odf.getOWLClass( "dmt:Patient", oFormat )
+        OWLClass cDrug = odf.getOWLClass( "dmt:Drug", oFormat )
+        OWLClass cDisorder = odf.getOWLClass( "dmt:Disorder", oFormat )
+        OWLObjectProperty hasDisorder = odf.getOWLObjectProperty( "dmt:hasDisorder", oFormat )
 
-        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", pm )
-        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", pm )
-        OWLNamedIndividual hangover = odf.getOWLNamedIndividual( ":Hangover", pm )
+        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", oFormat )
+        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", oFormat )
+        OWLNamedIndividual hangover = odf.getOWLNamedIndividual( ":Hangover", oFormat )
 
-//        println pm.getIRI( "dmt:Disorder" )
+//        println oFormat.getIRI( "dmt:Disorder" )
 
         Set<OWLClassExpression> superOfDisorder
         superOfDisorder = cDisorder.getSuperClasses( onts )
@@ -120,9 +118,6 @@ class SlotFillerTest extends GroovyTestCase {
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cPatient, joe ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDisorder, hangover ) )
-
-        oFormat = new OWLFunctionalSyntaxOntologyFormat()
-        oFormat.copyPrefixesFrom( pm )
 
         oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirinT" ) ) )
 

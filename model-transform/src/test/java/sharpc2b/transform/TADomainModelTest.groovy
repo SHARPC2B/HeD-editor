@@ -4,9 +4,6 @@ import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.AddImport
@@ -27,8 +24,7 @@ import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.model.OWLProperty
 import org.semanticweb.owlapi.model.OWLPropertyExpression
-import org.semanticweb.owlapi.model.PrefixManager
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk
@@ -39,35 +35,28 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
  * version.
  */
 
-@RunWith(JUnit4.class)
 class TADomainModelTest extends GroovyTestCase {
 
-//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
-    static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
-//    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
-//            ".ofn" );
-//    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
-    static File inputOntFile = FileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
-    static IRI inputOntIRI = IRI.create( "http://", inputOntUriCorePath );
+    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
-    static IRI mmaIRI = IRI.create( "asu.edu/sharpc2b/rk/SharpOwlABoxMetaModel" );
-//    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
-    static File mmaFile = FileUtil.getFileInTestResourceDir( "onts/in/SharpOwlABoxMetaModel.ofn" );
+    static File mmaFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ABoxMetaModel.ofn" );
+    static File mmaOutFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOwlABoxMetaModel.ofn" );
 
-    static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainInsts" );
-//    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts.ofn" );
-    static File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts.ofn" );
+    static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainInsts" );
+    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainA.ofn" );
 
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
 
-    PrefixManager pm;
+    PrefixOWLOntologyFormat pm;
 
     OWLOntology mma;
-    OWLOntology onta;
-    OWLOntology ontt;
+    OWLOntology ontA;
+    OWLOntology ontT;
     Set<OWLOntology> onts;
+    IRI inputOntIRI
+    IRI mmaIRI
 
     OWLClass topCodeClass;
     OWLObjectProperty refinesProp;
@@ -101,16 +90,19 @@ class TADomainModelTest extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
+//        ontA = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + aOntRelPath + ".ofn" ) );
 
-        ontt = oom.loadOntologyFromOntologyDocument( inputOntFile );
-//        aboxModel = oom.createOntology( outputOntIRI );
+        ontT = oom.loadOntologyFromOntologyDocument( inputOntFile );
+        mma = oom.loadOntologyFromOntologyDocument( mmaFile );
+        mmaIRI = mma.getOntologyID().getOntologyIRI()
+//        ontA = oom.createOntology( outputOntIRI );
+        assert mma;
 
         onts = new HashSet<OWLOntology>();
         onts.add( mma );
-        onts.add( ontt );
-        onts.add( onta );
+        onts.add( ontT );
+        onts.add( ontA );
     }
 
     @After
@@ -118,14 +110,37 @@ class TADomainModelTest extends GroovyTestCase {
 
     }
 
-//        addCommonAxioms();
-//        addAxiomsForCodes();
-//
-//        setUpOntologyFormat();
-//        serialize();
+    void testRunIt () {
+
+        assert ontT;
+
+        inputOntIRI = ontT.getOntologyID().getOntologyIRI();
+
+        initNamespaces();
+        createNewOntology();
+
+        initMetaModelObjects();
+
+        /* Don't really need to import the domain meta-model */
+//        addImports();
+
+        doClasses();
+
+        def oProps = ontT.getObjectPropertiesInSignature( false );
+        for (OWLObjectProperty p : oProps) {
+            doObjectProperty( p );
+        }
+
+        def dProps = ontT.getDataPropertiesInSignature( false );
+        for (OWLDataProperty p : dProps) {
+            doDataProperty( p );
+        }
+
+        saveOutputOntology();
+    }
 
     def doClasses () {
-        def classes = ontt.getClassesInSignature( false );
+        def classes = ontT.getClassesInSignature( false );
         for (OWLClass cl : classes) {
             doClass( cl );
         }
@@ -152,19 +167,18 @@ class TADomainModelTest extends GroovyTestCase {
         OWLNamedIndividual iClass = odf.getOWLNamedIndividual( "mma:" + localName, pm );
         OWLAxiom isClass = odf.getOWLClassAssertionAxiom( aClass, iClass );
 
-        oom.addAxiom( onta, isClass );
+        oom.addAxiom( ontA, isClass );
 
-        for (OWLClassExpression tSuper : owlClass.getSuperClasses( ontt )) {
+        for (OWLClassExpression tSuper : owlClass.getSuperClasses( ontT )) {
 
 //            println tSuper;
 //            println tSuper.class;
             assert tSuper instanceof OWLClass;
             OWLClass oClass = (OWLClass) tSuper;
-//            OWLNamedIndividual iSuper = iClass( oClass );
             String localNameSuper = getLocalName( tSuper );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom subClassOf = odf.getOWLObjectPropertyAssertionAxiom( aSubClassOf, iClass, iSuper );
-            oom.addAxiom( onta, subClassOf );
+            oom.addAxiom( ontA, subClassOf );
         }
     }
 
@@ -173,38 +187,34 @@ class TADomainModelTest extends GroovyTestCase {
         OWLNamedIndividual iProperty = odf.getOWLNamedIndividual( "mma:" + localName, pm );
         OWLAxiom isProperty = odf.getOWLClassAssertionAxiom( aProperty, iProperty );
 
-        oom.addAxiom( onta, isProperty );
+        oom.addAxiom( ontA, isProperty );
 
-        for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontt )) {
+        for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontT )) {
 
 //            println tSuper;
 //            println tSuper.class;
             assert tSuper instanceof OWLProperty;
-            OWLProperty oProperty = (OWLProperty) tSuper;
-//            OWLNamedIndividual iSuper = iProperty( oProperty );
             String localNameSuper = getLocalName( tSuper );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom subPropertyOf = odf.getOWLObjectPropertyAssertionAxiom( aSubPropertyOf, iProperty, iSuper );
-            oom.addAxiom( onta, subPropertyOf );
+            oom.addAxiom( ontA, subPropertyOf );
         }
 
-        for (OWLClassExpression cl : owlProperty.getDomains( ontt )) {
+        for (OWLClassExpression cl : owlProperty.getDomains( ontT )) {
 
             OWLClass oClass = (OWLClass) cl;
-//            OWLNamedIndividual iSuper = iClass( oClass );
             String localNameSuper = getLocalName( oClass );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom domain = odf.getOWLObjectPropertyAssertionAxiom( aDomain, iProperty, iSuper );
-            oom.addAxiom( onta, domain );
+            oom.addAxiom( ontA, domain );
         }
-        for (OWLClassExpression cl : owlProperty.getRanges( ontt )) {
+        for (OWLClassExpression cl : owlProperty.getRanges( ontT )) {
 
             OWLClass oClass = (OWLClass) cl;
-//            OWLNamedIndividual iSuper = iClass( oClass );
             String localNameSuper = getLocalName( oClass );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom range = odf.getOWLObjectPropertyAssertionAxiom( aRange, iProperty, iSuper );
-            oom.addAxiom( onta, range );
+            oom.addAxiom( ontA, range );
         }
 
     }
@@ -214,75 +224,55 @@ class TADomainModelTest extends GroovyTestCase {
         OWLNamedIndividual iProperty = odf.getOWLNamedIndividual( "mma:" + localName, pm );
         OWLAxiom isProperty = odf.getOWLClassAssertionAxiom( aProperty, iProperty );
 
-        oom.addAxiom( onta, isProperty );
+        oom.addAxiom( ontA, isProperty );
 
-        for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontt )) {
+        for (OWLPropertyExpression tSuper : owlProperty.getSuperProperties( ontT )) {
 
 //            println tSuper;
 //            println tSuper.class;
             assert tSuper instanceof OWLProperty;
             OWLProperty oProperty = (OWLProperty) tSuper;
-//            OWLNamedIndividual iSuper = iProperty( oProperty );
             String localNameSuper = getLocalName( tSuper );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom subPropertyOf = odf.getOWLObjectPropertyAssertionAxiom( aSubPropertyOf, iProperty, iSuper );
-            oom.addAxiom( onta, subPropertyOf );
+            oom.addAxiom( ontA, subPropertyOf );
         }
 
-        for (OWLClassExpression cl : owlProperty.getDomains( ontt )) {
+        for (OWLClassExpression cl : owlProperty.getDomains( ontT )) {
 
             OWLClass oClass = (OWLClass) cl;
-//            OWLNamedIndividual iSuper = iClass( oClass );
             String localNameSuper = getLocalName( oClass );
             OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameSuper, pm );
             OWLAxiom domain = odf.getOWLObjectPropertyAssertionAxiom( aDomain, iProperty, iSuper );
-            oom.addAxiom( onta, domain );
+            oom.addAxiom( ontA, domain );
         }
-        for (OWLDataRange cl : owlProperty.getRanges( ontt )) {
+        for (OWLDataRange cl : owlProperty.getRanges( ontT )) {
 
             if (cl instanceof OWLNamedObject) {
-//            OWLClass oClass = (OWLClass) cl;
-//            OWLNamedIndividual iSuper = iClass( oClass );
                 String localNameRange = getLocalName( (OWLNamedObject) cl );
                 OWLNamedIndividual iSuper = odf.getOWLNamedIndividual( "mma:" + localNameRange, pm );
                 OWLAxiom range = odf.getOWLObjectPropertyAssertionAxiom( aRange, iProperty, iSuper );
-                oom.addAxiom( onta, range );
+                oom.addAxiom( ontA, range );
             }
         }
 
     }
 
-    void initMetaModel () {
+    void initMetaModelObjects () {
 
-        mma = oom.createOntology( mmaIRI );
-
-        aClass = odf.getOWLClass( "mma:a_Class", pm );
-        aIndividual = odf.getOWLClass( "mma:a_Individual", pm );
-        aProperty = odf.getOWLClass( "mma:a_Property", pm );
-        aType = odf.getOWLObjectProperty( "mma:a_type", pm );
-        aSubClassOf = odf.getOWLObjectProperty( "mma:a_subClassOf", pm );
-        aSubPropertyOf = odf.getOWLObjectProperty( "mma:a_subPropertyOf", pm );
-        aDomain = odf.getOWLObjectProperty( "mma:a_domain", pm );
-        aRange = odf.getOWLObjectProperty( "mma:a_range", pm );
-
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aClass ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aIndividual ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aProperty ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aSubClassOf ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aSubPropertyOf ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aType ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aDomain ) );
-        oom.addAxiom( mma, odf.getOWLDeclarationAxiom( aRange ) );
+        aClass = odf.getOWLClass( "mma:Class", pm );
+        aIndividual = odf.getOWLClass( "mma:Individual", pm );
+        aProperty = odf.getOWLClass( "mma:Property", pm );
+        aType = odf.getOWLObjectProperty( "mma:type", pm );
+        aSubClassOf = odf.getOWLObjectProperty( "mma:subClassOf", pm );
+        aSubPropertyOf = odf.getOWLObjectProperty( "mma:subPropertyOf", pm );
+        aDomain = odf.getOWLObjectProperty( "mma:domain", pm );
+        aRange = odf.getOWLObjectProperty( "mma:range", pm );
     }
 
     def initNamespaces () {
 
-//        icd9ClassesIriString = sharpUriRoot + "/" + "icd9Classes"
-//        icd9ClassesNamespace = icd9ClassesIriString + "#"
-//        icd9ClassesIRI = new IRI( icd9ClassesIriString );
-//        icd9ClassesDocIRI = new IRI( ontRootPath + "/" + "icd9Classes" + ".ofn" );
-
-        pm = new DefaultPrefixManager();
+        pm = IriUtil.getDefaultSharpOntologyFormat();
         pm.setPrefix( "a:", outputOntIRI.toString() + "#" );
         pm.setPrefix( "t:", inputOntIRI.toString() + "#" );
         pm.setPrefix( "mma:", mmaIRI.toString() + "#" );
@@ -290,25 +280,23 @@ class TADomainModelTest extends GroovyTestCase {
 
     def createNewOntology () {
 
-        onta = oom.createOntology( outputOntIRI );
+        ontA = oom.createOntology( outputOntIRI );
     }
 
     void addImports () {
         OWLImportsDeclaration importsAxiom;
         AddImport imp;
 
-        /* imports MM */
-
         assert odf;
         assert mma;
         assert mma.getOntologyID();
 
         importsAxiom = odf.getOWLImportsDeclaration( mma.getOntologyID().getOntologyIRI() );
-        imp = new AddImport( onta, importsAxiom );
+        imp = new AddImport( ontA, importsAxiom );
         oom.applyChange( imp );
 
 //        importsAxiom = odf.getOWLImportsDeclaration( skos.getOntologyID().getOntologyIRI() );
-//        imp = new AddImport( aboxModel, importsAxiom );
+//        imp = new AddImport( ontA, importsAxiom );
 //        oom.applyChange( imp );
     }
 
@@ -316,54 +304,10 @@ class TADomainModelTest extends GroovyTestCase {
 
         OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( onta, oFormat );
+        oom.setOntologyFormat( ontA, oFormat );
         IRI docIRI = IRI.create( outputOntFile );
 
-        oom.saveOntology( onta, oFormat, docIRI );
-    }
-
-    /**
-     * Only needed if want to save the meta model ontology to a file.
-     */
-    void saveMetaModelOntology () {
-
-        OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
-        oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( mma, oFormat );
-        IRI docIRI = IRI.create( mmaFile );
-
-        oom.saveOntology( mma, oFormat, docIRI );
-    }
-
-    @Test
-    void testRunIt () {
-
-        assert ontt;
-
-        initNamespaces();
-        createNewOntology();
-        initMetaModel();
-
-        /* Don't really need to import the domain meta-model */
-//        addImports();
-
-        doClasses();
-
-        def oProps = ontt.getObjectPropertiesInSignature( false );
-        for (OWLObjectProperty p : oProps) {
-            doObjectProperty( p );
-        }
-
-        def dProps = ontt.getDataPropertiesInSignature( false );
-        for (OWLDataProperty p : dProps) {
-            doDataProperty( p );
-        }
-
-        /*
-         * Uncomment the following line to saved the default domain meta model ontology to a file.
-         */
-//        saveMetaModelOntology();
-        saveOutputOntology();
+        oom.saveOntology( ontA, oFormat, docIRI );
     }
 
 }

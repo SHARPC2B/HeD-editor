@@ -1,13 +1,15 @@
-package sharpc2b
+package sharpc2b.transform
 
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLOntology
+import org.semanticweb.owlapi.model.OWLOntologyCreationException
+import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import sharpc2b.transform.FileUtil
-import sharpc2b.transform.IriUtil
-import sharpc2b.transform.SkosABoxToTBox
+import org.semanticweb.owlapi.model.OWLOntologyStorageException
+import org.semanticweb.owlapi.util.SimpleIRIMapper
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk
@@ -27,29 +29,36 @@ extends GroovyTestCase {
     /*
      * SKOS
      */
-//    static String skosResourcePath = "/onts/in/skos-core.rdfxml";
+//    static String skosResourcePath = "onts/in/skos-core.rdfxml";
 
     /*
      * Published ICD9 Codes Ontology
      */
-    static String pubCodesResourcePath = "/onts/in/icd9-pub.ofn";
+    static String pubCodesResourcePath = "onts/in/icd9-pub.ofn";
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String sharpCodesResourcePath = "/onts/out/icd9-T.ofn";
+    static String sharpCodesResourcePath = "onts/out/icd9-T.ofn";
 
-    static IRI sharpCodesIRI = IRI.create("http://" + sharpCodesOntsRelPath + "icd9-classes");
-//    static IRI sharpCodesDocIRI = new IRI( FileUtil.getFileInTestResourceDir( "http/" + sharpCodesOntRelPath +
-//            "2" + ".ofn" ).toURI() );
+    static IRI sharpCodesIRI = IRI.create( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
+
+    //===============================================================================
 
     OWLOntologyManager oom;
     OWLOntology aboxModel;
     OWLOntology tboxModel
 
+    File skosFile;
+    SimpleIRIMapper iriMapper;
+
     void setUp () {
 
         oom = OWLManager.createOWLOntologyManager();
+        skosFile = TestFileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
+        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
+                IRI.create( skosFile ) );
+        oom.addIRIMapper( iriMapper );
     }
 
     void tearDown () {
@@ -60,15 +69,13 @@ extends GroovyTestCase {
 
     void testRunIt () {
 
-        File inFile = FileUtil.getFileInTestResourceDir( pubCodesResourcePath );
-        File outFile = FileUtil.getFileInTestResourceDir( sharpCodesResourcePath );
+        File inFile = TestFileUtil.getFileInTestResourceDir( pubCodesResourcePath );
+        File outFile = TestFileUtil.getFileInTestResourceDir( sharpCodesResourcePath );
 
-//        assert new File( pubCodesDocIRI.toURI() ).exists();
         assert inFile.exists()
+        assert inFile.canRead()
 
-//                "http/" + pubCodesOntRelPath + ".ofn" )
-//        "http/" + pubCodesOntRelPath + ".ofn" )
-//                aboxModel = oom.loadOntologyFromOntologyDocument( outFile );
+//        println "inFile = '" + inFile + "'"
 
         aboxModel = oom.loadOntologyFromOntologyDocument( inFile );
 
@@ -76,7 +83,7 @@ extends GroovyTestCase {
 
         tboxModel = oom.createOntology( sharpCodesIRI );
 
-        tr.createTBoxOntology( aboxModel, tboxModel );
+        tr.addTBoxAxioms( aboxModel, tboxModel );
 
         OWLFunctionalSyntaxOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
 
@@ -84,8 +91,51 @@ extends GroovyTestCase {
         oFormat.setPrefix( "a:", aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
         oFormat.setPrefix( "skos:", IriUtil.skos + "#" );
 
-//        tboxModel.getOWLOntologyManager().saveOntology( tboxModel, sharpCodesDocIRI );
         tboxModel.getOWLOntologyManager().saveOntology( tboxModel, oFormat, IRI.create( outFile ) );
+    }
+
+    /**
+     * This is an example / test case of usage.
+     */
+    void test2 ()
+    throws OWLOntologyCreationException, OWLOntologyStorageException {
+        OWLOntologyFormat oFormat;
+
+        String sharpCodesOntsVersion = "03";
+        String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/" + sharpCodesOntsVersion + "/";
+
+        File aFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
+        File tFile = TestFileUtil.getFileInTestResourceDir( "/onts/out/icd9-classes.ofn" );
+        IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-pub" );
+        IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes5" );
+
+        PrefixOWLOntologyFormat pm = IriUtil.getDefaultSharpOntologyFormat();
+
+        pm.setDefaultPrefix( tIRI.toString() + "#" );
+        pm.setPrefix( "a:", aIRI.toString() + "#" );
+        pm.setPrefix( "t:", tIRI.toString() + "#" );
+        pm.setPrefix( "skos:", IriUtil.skos + "#" );
+
+        oFormat = new OWLFunctionalSyntaxOntologyFormat();
+        ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
+
+        /*
+         * Everything up to here was creating paths, IRIs, prefixes, etc.
+         */
+
+//        OWLOntologyManager oom = OWLManager.createOWLOntologyManager();
+
+        assertEquals( true, aFile.exists() )
+
+        OWLOntology ont1 = oom.loadOntologyFromOntologyDocument( aFile );
+
+        SkosABoxToTBox inst = new SkosABoxToTBox();
+
+        OWLOntology ont2 = oom.createOntology( tIRI );
+        inst.addTBoxAxioms( ont1, ont2 );
+
+        oom.setOntologyFormat( ont2, oFormat );
+        oom.saveOntology( ont2, oFormat, IRI.create( tFile ) );
     }
 
 }

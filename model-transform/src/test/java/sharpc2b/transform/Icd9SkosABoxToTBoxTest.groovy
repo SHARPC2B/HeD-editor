@@ -8,7 +8,7 @@ import org.junit.Test
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 import java.util.regex.Pattern
 
@@ -29,25 +29,25 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     /*
      * SKOS
      */
-    static File skosFile = FileUtil.getFileInTestResourceDir( "/onts/in/skos-core.rdfxml" );
+    static File skosFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/skos-core.rdfxml" );
 
     /*
      * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)
      */
     static IRI pubCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-pub" );
 
-    static File pubCodesFile = FileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
+    static File pubCodesFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
 
     /*
      * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
      */
-    static IRI sharpCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-classes2" );
-    static File sharpCodesFile = FileUtil.getFileInTestResourceDir( "onts/out/icd9-classes2.ofn" )
+    static IRI sharpCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
+    static File sharpCodesFile = TestFileUtil.getFileInTestResourceDir( "onts/out/icd9-classes-test.ofn" )
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
 
-    PrefixManager pm;
+    PrefixOWLOntologyFormat pm;
 
     OWLOntology skos;
     OWLOntology icd9pub;
@@ -76,7 +76,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
+//        ontA = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + pubCodesOntRelPath + ".ofn" ) );
 //        println "SKOS Doc IRI = <${skosDocIRI}>";
 //        println "SKOS Doc IRI = <${pubCodesDocIRI}>";
@@ -90,7 +90,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
         onts = new HashSet<OWLOntology>();
         onts.add( skos );
         onts.add( icd9pub );
-//        onts = [skos, aboxModel];
+//        onts = [skos, ontA];
     }
 
     @After
@@ -123,9 +123,9 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
     def initNamespaces () {
 
-        pm = new DefaultPrefixManager( sharpCodesIRI.toString() + "#" );
+        pm = IriUtil.getDefaultSharpOntologyFormat();
+        pm.setDefaultPrefix( sharpCodesIRI.toString() + "#" );
         pm.setPrefix( "icd9:", pubCodesIRI.toString() + "#" );
-        pm.setPrefix( "skos:", IriUtil.skos + "#" );
     }
 
     def createNewOntology () {

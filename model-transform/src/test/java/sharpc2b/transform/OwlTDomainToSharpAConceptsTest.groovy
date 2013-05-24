@@ -1,15 +1,13 @@
 package sharpc2b.transform
 
 import org.semanticweb.owlapi.apibinding.OWLManager
-import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLClass
 import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk
@@ -19,10 +17,10 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager
 class OwlTDomainToSharpAConceptsTest
 extends GroovyTestCase {
 
-    static File inputOntFile = FileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
-    static File outputOntFile = FileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
+    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
 
     final static String resourceName_metaModelNames = "/OWL-to-Sharp-ABox-Concepts.properties";
 
@@ -31,7 +29,7 @@ extends GroovyTestCase {
     TBoxToABox inst;
 
     OWLOntologyManager oom;
-    OWLOntologyFormat oFormat
+    PrefixOWLOntologyFormat oFormat
     OWLDataFactory odf
 
     /**
@@ -55,8 +53,7 @@ extends GroovyTestCase {
 
         aboxModel = oom.createOntology( outputOntIRI );
 
-        oFormat = new OWLFunctionalSyntaxOntologyFormat();
-        oFormat.copyPrefixesFrom( new DefaultPrefixManager() );
+        oFormat = IriUtil.getDefaultSharpOntologyFormat();
         oFormat.setDefaultPrefix( aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
         oFormat.setPrefix( "a:", aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
         oFormat.setPrefix( "a:", "http://asu.edu/sharpc2b/ops" + "#" );
@@ -71,7 +68,7 @@ extends GroovyTestCase {
     void testCreateABox () {
 //        println "BEGIN Test"
 
-        inst.populateABox( tboxModel, aboxModel );
+        inst.addABoxAxioms( tboxModel, aboxModel );
 
         OWLNamedIndividual patientA = odf.getOWLNamedIndividual( ":Patient", oFormat )
         OWLClass domainClass = odf.getOWLClass( "a:DomainClass", oFormat )

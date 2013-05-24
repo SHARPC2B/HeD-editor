@@ -6,36 +6,39 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * User: rk Date: 5/16/13 Time: 9:28 AM
+ * User: rk Date: 5/23/13 Time: 10:29 AM
  */
-public class FileUtil
+public class TestFileUtil
+        extends FileUtil
 {
 
     /**
-     * This is a file that must exist inside the main classpath resources directory, right now:
-     * ".../sharp-editor/model-transform/src/main/resources/".  This code uses the Java Resource locator to
+     * This is a file that must exist inside the 'test' classpath resources directory, right now:
+     * ".../sharp-editor/model-transform/src/test/resources/".  This code uses the Java Resource locator to
      * find this file in a machine-independent way, then uses the folder of this located file as the file
      * system folder to use as the root for locating other resource files.
      */
-    private static final String knownRootResourcePath = "/FileInMainResourcesRoot.properties";
+    private static final String knownRootTestResourcePath = "/FileInTestResourcesRoot.properties";
+
 
     /**
      * Create a java.io.File object for the input path argument.  The path is a String value relative to the
-     * main resources root folder, using '/' as the path separator character (whether Windows or Unix file
+     * 'test' resources root folder, using '/' as the path separator character (whether Windows or Unix file
      * system).  An example value of path would be "onts/in/ClinicalDomainT.ofn".  Thus, if resource root is
-     * ".. ./sharp-editor/model-transform/src/main/resources/", then the File object will correspond to
-     * ./sharp-editor/model-transform/src/main/resources/onts/in/ClinicalDomainT.ofn".
+     * ".. ./sharp-editor/model-transform/src/test/resources/", then the File object will correspond to
+     * ./sharp-editor/model-transform/src/test/resources/onts/in/ClinicalDomainT.ofn".
      *
      * The file does not have to exist for the File object to be successfully created.
      */
-    public static final File getFileInResourceDir (final String path)
+    public static final File getFileInTestResourceDir (final String path)
     {
-        URL url = System.class.getResource( knownRootResourcePath );
+        Class cl = TBoxToABoxTest.class;
+        URL url = System.class.getResource( knownRootTestResourcePath );
 
         if (url == null)
         {
-            final String message = "Not able to find root of Resources directory because method " +
-                    "depends on finding known resource with path = '" + knownRootResourcePath + "'";
+            final String message = "Not able to find root of 'test' Resources directory because method " +
+                    "depends on finding known resource with path = '" + knownRootTestResourcePath + "'";
             throw new RuntimeException( message );
         }
         try
@@ -62,12 +65,12 @@ public class FileUtil
     }
 
     /**
-     * An alternative to getFileInResourceDir() that takes a URI as input.  The input URI can either be an
-     * absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for that
-     * URI, or it can be a relative URI (no URI 'scheme'), in which case the File will be relative to the
-     * resource root -- this method will delegate to getFileInTestResourceDir().
+     * An alternative to getFileInTestResourceDir() that takes a URI as input.  The input URI can either be
+     * an absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for
+     * that URI, or it can be a relative URI (no URI 'scheme'), in which case the File will be relative to
+     * the resource root -- this method will delegate to getFileInTestResourceDir().
      */
-    public static final File getResourceFile (final URI uri)
+    public static final File getTestResourceFile (final URI uri)
     {
         if (uri == null)
         {
@@ -88,7 +91,7 @@ public class FileUtil
         {
 //            System.out.println( "uri.getPath() = " + uri.getPath() );
 
-            return getFileInResourceDir( uri.getPath() );
+            return getFileInTestResourceDir( uri.getPath() );
         }
     }
 

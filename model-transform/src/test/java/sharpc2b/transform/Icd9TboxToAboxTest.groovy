@@ -8,7 +8,7 @@ import org.junit.Test
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 import java.util.regex.Pattern
 
@@ -34,29 +34,29 @@ extends GroovyTestCase {
     /*
      * SKOS
      */
-    static File skosFile = FileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
+    static File skosFile = TestFileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
 
     /*
      * Original SKOS A-Box ICD9 Codes Ontology.  Imported by icd9-classes (T-Box).
      */
-    static File icdFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-pub.ofn" );
+    static File icdFile = TestFileUtil.getFileInTestResourceDir( "onts/in/icd9-pub.ofn" );
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
     static IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes" );
-    static tFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-classes.ofn" )
+    static tFile = TestFileUtil.getFileInTestResourceDir( "onts/in/icd9-classes.ofn" )
 
     /*
      * A-Box ICD9 Codes Ontology
      */
     static IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-abox" );
-    static aFile = FileUtil.getFileInTestResourceDir( "onts/in/icd9-abox.ofn" )
+//    static aFile = TestFileUtil.getFileInTestResourceDir( "onts/in/icd9-abox.ofn" )
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
 
-    PrefixManager pm;
+    PrefixOWLOntologyFormat pm;
 
     OWLOntology skos;
     OWLOntology icd;
@@ -87,13 +87,13 @@ extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        aboxModel = oom.loadOntologyFromOntologyDocument( new File(
+//        ontA = oom.loadOntologyFromOntologyDocument( new File(
 //                ontologiesHttpFileRoot + aOntRelPath + ".ofn" ) );
 //        println "SKOS Doc IRI = <${skosDocIRI}>";
 //        println "T-Box classes Doc IRI = <${tDocIRI}>";
 
         assert skosFile.exists();
-        println "fFile = " + tFile
+//        println "tFile = " + tFile
         assert tFile.exists();
 
         skos = oom.loadOntologyFromOntologyDocument( skosFile );
@@ -131,8 +131,8 @@ extends GroovyTestCase {
 //    @Ignore
     void testRunIt () {
 
-//        onta = createABoxOntology();
-//        assert ontt;
+//        ontA = createABoxOntology();
+//        assert ontT;
     }
 
     def initNamespaces () {
@@ -142,10 +142,10 @@ extends GroovyTestCase {
 //        icd9ClassesIRI = new IRI( icd9ClassesIriString );
 //        icd9ClassesDocIRI = new IRI( ontRootPath + "/" + "icd9Classes" + ".ofn" );
 
-        pm = new DefaultPrefixManager( aNamespace );
-        pm.setPrefix( "a:", aNamespace );
-        pm.setPrefix( "t:", tNamespace );
-        pm.setPrefix( "skos:", skosNamespace );
+        pm = IriUtil.getDefaultSharpOntologyFormat()
+        pm.setDefaultPrefix( aIRI.toString() + "#" );
+        pm.setPrefix( "a:", aIRI.toString() + "#" );
+        pm.setPrefix( "t:", tIRI.toString() + "#" );
     }
 
     def createNewOntology () {
@@ -179,7 +179,7 @@ extends GroovyTestCase {
 
 //        Set<OWLAxiom> axioms = new TreeSet();
 //        axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
-//        oom.addAxioms( tboxModel, axioms );
+//        oom.addAxioms( ontT, axioms );
     }
 
     def addAxiomsForCodes () {
