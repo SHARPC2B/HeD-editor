@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.AddImport
 import org.semanticweb.owlapi.model.IRI
-import org.semanticweb.owlapi.model.OWLAnnotationProperty
 import org.semanticweb.owlapi.model.OWLAxiom
 import org.semanticweb.owlapi.model.OWLClass
 import org.semanticweb.owlapi.model.OWLClassExpression
@@ -39,6 +38,9 @@ class TADomainModelTest extends GroovyTestCase {
 
     static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
+    /**
+     * Meta-model.  A-box versions of Class, Property, etc.  Perhaps don't really need to load.
+     */
     static File mmaFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ABoxMetaModel.ofn" );
     static File mmaOutFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOwlABoxMetaModel.ofn" );
 
@@ -58,11 +60,11 @@ class TADomainModelTest extends GroovyTestCase {
     IRI inputOntIRI
     IRI mmaIRI
 
-    OWLClass topCodeClass;
-    OWLObjectProperty refinesProp;
-    OWLObjectProperty skosBroaderTransitive;
-    OWLAnnotationProperty prefLabelProp;
-    OWLDataProperty icd9Prop;
+//    OWLClass topCodeClass;
+//    OWLObjectProperty refinesProp;
+//    OWLObjectProperty skosBroaderTransitive;
+//    OWLAnnotationProperty prefLabelProp;
+//    OWLDataProperty icd9Prop;
 
     OWLClass aClass;
     OWLClass aIndividual;

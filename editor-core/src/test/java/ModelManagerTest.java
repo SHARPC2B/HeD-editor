@@ -4,8 +4,8 @@ import com.clarkparsia.empire.config.ConfigKeys;
 import com.clarkparsia.empire.config.EmpireConfiguration;
 import com.clarkparsia.empire.sesametwo.OpenRdfEmpireModule;
 import com.clarkparsia.empire.sesametwo.RepositoryDataSourceFactory;
-import edu.asu.sharpc2b.prr.ExecutableRuleSet;
-import edu.asu.sharpc2b.prr.ExecutableRuleSetImpl;
+//import edu.asu.sharpc2b.prr.ExecutableRuleSet;
+//import edu.asu.sharpc2b.prr.ExecutableRuleSetImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -79,9 +79,9 @@ public class ModelManagerTest {
                     getTestEMConfigMap() );
             EntityManager em = emf.createEntityManager();
 
-        ExecutableRuleSet rs = new ExecutableRuleSetImpl();
-            rs.addName( "test" );
-        em.persist( rs );
+//        ExecutableRuleSet rs = new ExecutableRuleSetImpl();
+//            rs.addName( "test" );
+//        em.persist( rs );
 
 //        em.close();
 //        emf.close();
@@ -92,10 +92,10 @@ public class ModelManagerTest {
 //                getTestEMConfigMap() );
 //        em = emf.createEntityManager();
 
-        Object x = em.find( ExecutableRuleSetImpl.class, rs.getRdfId() );
+//        Object x = em.find( ExecutableRuleSetImpl.class, rs.getRdfId() );
 
-        System.out.println( x );
-        System.out.println( ((ExecutableRuleSetImpl) x).getPropertyNames() );
+//        System.out.println( x );
+//        System.out.println( ((ExecutableRuleSetImpl) x).getPropertyNames() );
         }
 
     private static Map<String, String> getTestEMConfigMap() {

@@ -19,6 +19,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
+ * Test to check that it works to use simple clinical domain ontologies and use reasoner to distinguish
+ * rule facts that make sense versus those that do not.  For example, makes sense create fact condition
+ * using property 'hasDisorder' to associate a Patient to a Disorder, but if try to use hasDisorder to
+ * associate a Patient and a Drug, that should be flagged as an inconsistency.
+ *
  * User: rk
  * Date: 5/12/13
  * Time: 9:17 PM

@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
+ * Demonstrate use of TBoxToABox.
+ *
  * User: rk
  * Date: 5/20/13
  * Time: 11:11 PM
@@ -22,6 +24,11 @@ extends GroovyTestCase {
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
     static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
 
+    /**
+     * Properties file to load to specify the meta-model entity IRIs to use for the output ontology.
+     * This file uses concepts from new Sharp ontologies, like ops:DomainProperty and
+     * skos-ext:evaluatesAs.
+     */
     final static String resourceName_metaModelNames = "/OWL-to-Sharp-ABox-Concepts.properties";
 
     //====================================================================================
@@ -36,6 +43,7 @@ extends GroovyTestCase {
      * input Ontology
      */
     OWLOntology tboxModel;
+
     /**
      * output Ontology
      */
