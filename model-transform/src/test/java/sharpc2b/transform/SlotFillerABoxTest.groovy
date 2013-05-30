@@ -15,9 +15,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import org.semanticweb.owlapi.util.DefaultPrefixManager
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk Date: 5/16/13 Time: 6:09 PM
@@ -36,7 +35,7 @@ extends GroovyTestCase {
     static String mmNamespace = mmIri.toString() + "#"
 
     static File ontFile (String name) {
-        FileUtil.getFileInResourceDir( "onts/in/" + name + ".ofn" )
+        TestFileUtil.getFileInTestResourceDir( "onts/in/" + name + ".ofn" )
     }
 
 //    static IRI ontIRI (String name) {
@@ -44,8 +43,7 @@ extends GroovyTestCase {
 //    }
 
     OWLOntologyManager oom;
-    OWLOntologyFormat oFormat;
-    DefaultPrefixManager pm;
+    PrefixOWLOntologyFormat oFormat;
 
     OWLOntology ont;
     OWLOntology dma;
@@ -70,9 +68,10 @@ extends GroovyTestCase {
 
         oom = OWLManager.createOWLOntologyManager();
         odf = oom.getOWLDataFactory()
-        pm = new DefaultPrefixManager( ontNamespace )
-        pm.setPrefix( "dma:", dmNamespace )
-        pm.setPrefix( "mm:", mmNamespace )
+        oFormat = IriUtil.getDefaultSharpOntologyFormat()
+        oFormat.setDefaultPrefix( ontNamespace )
+        oFormat.setPrefix( "dma:", dmNamespace )
+        oFormat.setPrefix( "mm:", mmNamespace )
 
 //        dma = oom.createOntology( dmIri )
         onts = new HashSet<OWLOntology>();
@@ -83,8 +82,8 @@ extends GroovyTestCase {
 
         oom = null
         odf = null
-        pm = null
         onts = null
+        oFormat = null
     }
 
     @Test
@@ -116,26 +115,26 @@ extends GroovyTestCase {
         addOwlImports( ont, mm )
         addOwlImports( ont, dma )
 
-        OWLClass mmClass = odf.getOWLClass( "mm:Class", pm )
-        OWLClass mmProperty = odf.getOWLClass( "mm:Property", pm )
-        OWLClass mmIndividual = odf.getOWLClass( "mm:Individual", pm )
+        OWLClass mmClass = odf.getOWLClass( "mm:Class", oFormat )
+        OWLClass mmProperty = odf.getOWLClass( "mm:Property", oFormat )
+        OWLClass mmIndividual = odf.getOWLClass( "mm:Individual", oFormat )
 
-        OWLObjectProperty mmType = odf.getOWLObjectProperty( "mm:type", pm )
+        OWLObjectProperty mmType = odf.getOWLObjectProperty( "mm:type", oFormat )
 
-        OWLClass mmTriple = odf.getOWLClass( "mm:Triple", pm )
-        OWLObjectProperty mmPredicate = odf.getOWLObjectProperty( "mm:predicate", pm )
-        OWLObjectProperty mmSubject = odf.getOWLObjectProperty( "mm:subject", pm )
-        OWLObjectProperty mmValue = odf.getOWLObjectProperty( "mm:value", pm )
+        OWLClass mmTriple = odf.getOWLClass( "mm:Triple", oFormat )
+        OWLObjectProperty mmPredicate = odf.getOWLObjectProperty( "mm:predicate", oFormat )
+        OWLObjectProperty mmSubject = odf.getOWLObjectProperty( "mm:subject", oFormat )
+        OWLObjectProperty mmValue = odf.getOWLObjectProperty( "mm:value", oFormat )
 
 
-        OWLNamedIndividual cPatient = odf.getOWLNamedIndividual( "dma:Patient", pm )
-        OWLNamedIndividual cDrug = odf.getOWLNamedIndividual( "dma:Drug", pm )
-        OWLNamedIndividual cDisorder = odf.getOWLNamedIndividual( "dma:Disorder", pm )
-        OWLNamedIndividual hasDisorder = odf.getOWLNamedIndividual( "dma:hasDisorder", pm )
+        OWLNamedIndividual cPatient = odf.getOWLNamedIndividual( "dma:Patient", oFormat )
+        OWLNamedIndividual cDrug = odf.getOWLNamedIndividual( "dma:Drug", oFormat )
+        OWLNamedIndividual cDisorder = odf.getOWLNamedIndividual( "dma:Disorder", oFormat )
+        OWLNamedIndividual hasDisorder = odf.getOWLNamedIndividual( "dma:hasDisorder", oFormat )
 
-        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", pm )
-        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", pm )
-        OWLNamedIndividual hangover = odf.getOWLNamedIndividual( ":Hangover", pm )
+        OWLNamedIndividual joe = odf.getOWLNamedIndividual( ":Joe", oFormat )
+        OWLNamedIndividual aspirin = odf.getOWLNamedIndividual( ":Aspirin", oFormat )
+        OWLNamedIndividual hangover = odf.getOWLNamedIndividual( ":Hangover", oFormat )
 
         /* Class Assertions */
 
@@ -147,7 +146,7 @@ extends GroovyTestCase {
 
         assert true == reasoner.isConsistent()
 
-        OWLNamedIndividual joeHasHangover = addAPropertyAssertion( ont, pm.getIRI( ":joeHasHangover" ),
+        OWLNamedIndividual joeHasHangover = addAPropertyAssertion( ont, oFormat.getIRI( ":joeHasHangover" ),
                 hasDisorder, joe, hangover )
 
         assert joeHasHangover
@@ -156,20 +155,18 @@ extends GroovyTestCase {
         reasoner = new Reasoner( ont );
         assert true == reasoner.isConsistent()
 
+//        OWLNamedIndividual joeHasAspirin = addAPropertyAssertion( ont, oFormat.getIRI( ":joeHasAspirin" ),
+//                hasDisorder, joe, aspirin )
 
-        OWLNamedIndividual joeHasAspirin = addAPropertyAssertion( ont, pm.getIRI( ":joeHasAspirin" ),
-                hasDisorder, joe, aspirin )
+//        assert joeHasAspirin
 
-        assert joeHasAspirin
-
-        reasoner.flush()
-        assert false == reasoner.isConsistent()
-
+//        reasoner.flush()
+//        assert false == reasoner.isConsistent()
+//
         /*
          * Save it to a File (for eyeball debugging)
          */
         saveOntologyToFile( ont, "JoeHasAspirinA" )
-
     }
 
     public OWLNamedIndividual addAPropertyAssertion (OWLOntology ont,
@@ -180,10 +177,10 @@ extends GroovyTestCase {
 
         OWLNamedIndividual triple = odf.getOWLNamedIndividual( tripleIRI )
 
-        OWLClass mmTriple = odf.getOWLClass( "mm:Triple", pm )
-        OWLObjectProperty mmPredicate = odf.getOWLObjectProperty( "mm:predicate", pm )
-        OWLObjectProperty mmSubject = odf.getOWLObjectProperty( "mm:subject", pm )
-        OWLObjectProperty mmValue = odf.getOWLObjectProperty( "mm:value", pm )
+        OWLClass mmTriple = odf.getOWLClass( "mm:Triple", oFormat )
+        OWLObjectProperty mmPredicate = odf.getOWLObjectProperty( "mm:predicate", oFormat )
+        OWLObjectProperty mmSubject = odf.getOWLObjectProperty( "mm:subject", oFormat )
+        OWLObjectProperty mmValue = odf.getOWLObjectProperty( "mm:value", oFormat )
 
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( mmTriple, triple, ) )
         oom.addAxiom( ont, odf.getOWLObjectPropertyAssertionAxiom( mmPredicate, triple, predicate ) )
@@ -201,9 +198,9 @@ extends GroovyTestCase {
     def saveOntologyToFile (OWLOntology ont, final String ontFileName) {
 
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
-        oFormat.copyPrefixesFrom( pm )
+        oFormat.copyPrefixesFrom( oFormat )
 
-        File outFile = FileUtil.getFileInResourceDir( "onts/out/" + ontFileName + ".ofn" )
+        File outFile = TestFileUtil.getFileInTestResourceDir( "onts/out/" + ontFileName + ".ofn" )
         oom.saveOntology( ont, oFormat, IRI.create( outFile ) )
     }
 

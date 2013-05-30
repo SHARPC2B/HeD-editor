@@ -44,7 +44,7 @@ SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:
 SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "711")) icd9:ICD9_Concept) :Connective_Tissue)
 SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "710")) icd9:ICD9_Concept) :Connective_Tissue_Disorder)
 SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "715")) icd9:ICD9_Concept) :Osteoarthrosis)
-SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "720")) icd9:ICD9_Concept) :AnkylosingSpondylitis)
 SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "725")) icd9:ICD9_Concept) :PolymyalgiaRheumatica)
+SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "720")) icd9:ICD9_Concept) :AnkylosingSpondylitis)
 SubClassOf(ObjectIntersectionOf(ObjectSomeValuesFrom(:refines DataHasValue(skos:notation "710.1")) icd9:ICD9_Concept) :systemic_sclerosis)
 )

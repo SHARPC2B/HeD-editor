@@ -1,18 +1,15 @@
-package sharpc2b
+package sharpc2b.transform
 
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.semanticweb.owlapi.apibinding.OWLManager
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLOntology
+import org.semanticweb.owlapi.model.OWLOntologyCreationException
+import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import sharpc2b.transform.SkosABoxToTBox
-import sharpc2b.transform.FileUtil
+import org.semanticweb.owlapi.model.OWLOntologyStorageException
+import org.semanticweb.owlapi.util.SimpleIRIMapper
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 
 /**
  * User: rk
@@ -23,96 +20,122 @@ import sharpc2b.transform.FileUtil
  * At this point [2013.05.05] mainly serves as an example of how to run SkosABoxToTBox with OWL files in
  * test/resources folder.
  */
-@RunWith(JUnit4.class)
-public class SkosABoxToTBoxTest extends GroovyTestCase {
+public class SkosABoxToTBoxTest
+extends GroovyTestCase {
 
-//    static String ontologiesHttpFileRoot =
-//        "/Users/rk/asu/prj" +
-//                "/sharp-editor/model-transform/src/test/resources/http";
-//    static String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
-
-    static String sharpCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
+    static String sharpCodesOntsVersion = "03";
+    static String sharpCodesOntsRelPath = "asu.edu/sharpc2b/codes/${sharpCodesOntsVersion}/";
 
     /*
      * SKOS
      */
-    static String skosRelPath = "/www.w3.org/2004/02/skos/core";
-//    static String skosRootPath = ontologiesHttpFileRoot + skosRelPath;
-    static String skosUriPath = "http:/" + skosRelPath;
-//    static String skosNamespace = skosUriPath + "#";
-//    static IRI skosIRI = new IRI( skosUriPath );
-//    static IRI skosDocIRI = new IRI( ontologiesDocUriRoot + skosRelPath + ".rdf" );
-    static IRI skosDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + skosRelPath + ".rdf" ).toURI() );
+//    static String skosResourcePath = "onts/in/skos-core.rdfxml";
 
     /*
      * Published ICD9 Codes Ontology
      */
-    static String pubCodesOntRelPath = sharpCodesOntsRelPath + "icd9-pub";
-//    static String sharpCodesOntRelPath = sharpCodesOntsRelPath +"icd9-Sharp" ;
-    static String pubCodesUriPath = "http:/" + pubCodesOntRelPath;
-    static String pubCodesNamespace = pubCodesUriPath + "#";
-    static IRI pubCodesIRI = new IRI( pubCodesUriPath );
-//    static IRI pubCodesDocIRI = new IRI( ontologiesDocUriRoot + pubCodesOntRelPath + ".ofn" );
-    static IRI pubCodesDocIRI = new IRI( FileUtil.getFileInResourceDir( "http/" + pubCodesOntRelPath + "" +
-            ".ofn" ).toURI()
-    );
+    static String pubCodesResourcePath = "onts/in/icd9-pub.ofn";
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String sharpCodesOntRelPath = sharpCodesOntsRelPath + "icd9-classes";
-    static String sharpCodesUriPath = "http:/" + sharpCodesOntRelPath;
-    static String sharpCodesNamespace = sharpCodesUriPath + "#";
-    static IRI sharpCodesIRI = new IRI( sharpCodesUriPath );
-//    static IRI sharpCodesDocIRI = new IRI( ontologiesDocUriRoot + sharpCodesOntRelPath + "2" + ".ofn" );
-    static IRI sharpCodesDocIRI = new IRI( FileUtil.getFileInResourceDir( "http/" + sharpCodesOntRelPath +
-            "2" + ".ofn" ).toURI() );
+    static String sharpCodesResourcePath = "onts/out/icd9-T.ofn";
+
+    static IRI sharpCodesIRI = IRI.create( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
+
+    //===============================================================================
 
     OWLOntologyManager oom;
     OWLOntology aboxModel;
+    OWLOntology tboxModel
 
-    @BeforeClass
-    static void setUpOnce () {
+    File skosFile;
+    SimpleIRIMapper iriMapper;
 
-    }
-
-    @AfterClass
-    static void tearDownOnce () {
-
-    }
-
-    @Before
     void setUp () {
 
         oom = OWLManager.createOWLOntologyManager();
-//        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
-//        final File outFile = new File(
-//                ontologiesHttpFileRoot + pubCodesOntRelPath + ".ofn" )
-        final File outFile = FileUtil.getFileInResourceDir(
-                "http/" + pubCodesOntRelPath + ".ofn" )
-        aboxModel = oom.loadOntologyFromOntologyDocument( outFile );
-//        println "SKOS Doc IRI = <${skosDocIRI}>";
-
-        assert new File( skosDocIRI.toURI() ).exists();
-        assert new File( pubCodesDocIRI.toURI() ).exists();
-
-//        skos = oom.loadOntologyFromOntologyDocument( skosDocIRI );
-
+        skosFile = TestFileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
+        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
+                IRI.create( skosFile ) );
+        oom.addIRIMapper( iriMapper );
     }
 
-    @After
     void tearDown () {
-
+        aboxModel = null
+        tboxModel = null
+        oom = null
     }
 
-    @Test
-//    @Ignore
     void testRunIt () {
+
+        File inFile = TestFileUtil.getFileInTestResourceDir( pubCodesResourcePath );
+        File outFile = TestFileUtil.getFileInTestResourceDir( sharpCodesResourcePath );
+
+        assert inFile.exists()
+        assert inFile.canRead()
+
+//        println "inFile = '" + inFile + "'"
+
+        aboxModel = oom.loadOntologyFromOntologyDocument( inFile );
+
         SkosABoxToTBox tr = new SkosABoxToTBox();
 
-        OWLOntology tboxModel = tr.createTBoxOntology( aboxModel, sharpCodesIRI );
+        tboxModel = oom.createOntology( sharpCodesIRI );
 
-        tboxModel.getOWLOntologyManager().saveOntology( tboxModel, sharpCodesDocIRI );
+        tr.addTBoxAxioms( aboxModel, tboxModel );
+
+        OWLFunctionalSyntaxOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
+
+        oFormat.setDefaultPrefix( tboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
+        oFormat.setPrefix( "a:", aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
+        oFormat.setPrefix( "skos:", IriUtil.skos + "#" );
+
+        tboxModel.getOWLOntologyManager().saveOntology( tboxModel, oFormat, IRI.create( outFile ) );
+    }
+
+    /**
+     * This is an example / test case of usage.
+     */
+    void test2 ()
+    throws OWLOntologyCreationException, OWLOntologyStorageException {
+        OWLOntologyFormat oFormat;
+
+        String sharpCodesOntsVersion = "03";
+        String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/" + sharpCodesOntsVersion + "/";
+
+        File aFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
+        File tFile = TestFileUtil.getFileInTestResourceDir( "/onts/out/icd9-classes.ofn" );
+        IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-pub" );
+        IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes5" );
+
+        PrefixOWLOntologyFormat pm = IriUtil.getDefaultSharpOntologyFormat();
+
+        pm.setDefaultPrefix( tIRI.toString() + "#" );
+        pm.setPrefix( "a:", aIRI.toString() + "#" );
+        pm.setPrefix( "t:", tIRI.toString() + "#" );
+        pm.setPrefix( "skos:", IriUtil.skos + "#" );
+
+        oFormat = new OWLFunctionalSyntaxOntologyFormat();
+        ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
+
+        /*
+         * Everything up to here was creating paths, IRIs, prefixes, etc.
+         */
+
+//        OWLOntologyManager oom = OWLManager.createOWLOntologyManager();
+
+        assertEquals( true, aFile.exists() )
+
+        OWLOntology ont1 = oom.loadOntologyFromOntologyDocument( aFile );
+
+        SkosABoxToTBox inst = new SkosABoxToTBox();
+
+        OWLOntology ont2 = oom.createOntology( tIRI );
+        inst.addTBoxAxioms( ont1, ont2 );
+
+        oom.setOntologyFormat( ont2, oFormat );
+        oom.saveOntology( ont2, oFormat, IRI.create( tFile ) );
     }
 
 }

@@ -2,13 +2,10 @@ package sharpc2b.transform;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,8 +15,8 @@ import java.util.regex.Pattern;
  * User: rk Date: 4/24/13
  *
  * Transform a SKOS A-Box ICD9 codes ontology into a T-Box ontology.  See the main() method and the test
- * case SkosABoxToTBoxTest for examples of usage.  Basically, create an instance with the constructor and
- * call method 'createTBoxOntology(..)'.
+ * case SkosABoxToTBoxTest for examples of usage.  To use, create an instance with the constructor and call
+ * method 'addTBoxAxioms(..)'.
  */
 public class SkosABoxToTBox
 {
@@ -32,15 +29,11 @@ public class SkosABoxToTBox
 
     private OWLDataFactory odf;
 
-    private PrefixManager pm;
-
-    private OWLOntology skos;
+    private PrefixOWLOntologyFormat pm;
 
     private OWLOntology onta;
 
     private OWLOntology ontt;
-
-    private Set<OWLOntology> onts;
 
     private OWLClass topCodeClass;
 
@@ -61,76 +54,30 @@ public class SkosABoxToTBox
 
     //==============================================================================
 
-    /**
-     * This main() is an example / test case of usage.
-     */
-    public static void main (String[] args)
-            throws OWLOntologyCreationException, OWLOntologyStorageException
-    {
-        IRI aDocIRI;
-        IRI tIRI;
-        IRI tDocIRI;
-        OWLOntologyFormat oFormat;
-        {
-            String commonCodesOntsRelPath = "/asu.edu/sharpc2b/codes/03/";
-            String aOntRelPath = commonCodesOntsRelPath + "icd9-pub";
-            String tOntRelPath = commonCodesOntsRelPath + "icd9-classes5";
-
-//        static String aUriPath = "http:/" + aOntRelPath;
-//        static String aNamespace = aUriPath + "#";
-//        static IRI aIRI = IRI.create( aUriPath );
-//        String ontologiesHttpFileRoot = "/Users/rk/asu/prj" +
-//                "/sharp-editor/model-transform/src/test/resources/http";
-//        resourcesRoot = FileUtil.getFileInResourceDir( "" )
-//        String ontologiesDocUriRoot = "file:" + ontologiesHttpFileRoot;
-//        IRI aDocIRI = IRI.create( ontologiesDocUriRoot + aOntRelPath + ".ofn" );
-//        IRI tDocIRI = IRI.create( ontologiesDocUriRoot + tOntRelPath + ".ofn" );
-            aDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + aOntRelPath + ".ofn" ).toURI() );
-            tDocIRI = IRI.create( FileUtil.getFileInResourceDir( "http/" + tOntRelPath + ".ofn" ).toURI() );
-
-            String tUriPath = "http:/" + tOntRelPath;
-            tIRI = IRI.create( tUriPath );
-            PrefixManager pm = new DefaultPrefixManager( tUriPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "a:", "http:/" + aOntRelPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "t:", "http:/" + tOntRelPath + "#" );
-            ((DefaultPrefixManager) pm).setPrefix( "skos:", skosNamespace );
-
-            oFormat = new OWLFunctionalSyntaxOntologyFormat();
-            ((OWLFunctionalSyntaxOntologyFormat) oFormat).copyPrefixesFrom( pm );
-        }
-        /*
-         * Everything up to here was creating paths, IRIs, prefixes, etc.
-         */
-
-        OWLOntologyManager om = OWLManager.createOWLOntologyManager();
-
-        OWLOntology ont1 = om.loadOntologyFromOntologyDocument( aDocIRI );
-
-        SkosABoxToTBox inst = new SkosABoxToTBox();
-
-        OWLOntology ont2 = inst.createTBoxOntology( ont1, tIRI );
-
-        om.setOntologyFormat( ont2, oFormat );
-        om.saveOntology( ont2, tDocIRI );
-    }
-
-    //==============================================================================
+    //=================================================================================================
 
     /**
-     * Create a T-Box Ontology equivalent to the input A-Box ontology.
+     * From the A-Box ontology provided as the first argument (skosABoxOntology), create the corresponding
+     * T-Box axioms and add them to the ontology provided as the second argument (targetTBoxOntology).
      *
-     * @param skosIcd9ABoxOntology an Ontology with a coding hierarchy, where each code is represented as an
-     *                             OWL Individual that is an instance of skos:Concept, related to other
-     *                             individuals via skos:broader or skos:broaderTransitive, the code values
-     *                             are represented using skos:notation, and a friendly name of the concept
-     *                             is indicated using skos:prefLabel.
-     * @param tboxOntologyIRI      the IRI to use to identify the T-Box Ontology that this method creates.
+     * @param skosABoxOntology   an Ontology with a coding hierarchy, where each code is represented as an
+     *                           OWL Individual that is an instance of skos:Concept, related to other
+     *                           individuals via skos:broader or skos:broaderTransitive, the code values are
+     *                           represented using skos:notation, and a friendly name of the concept is
+     *                           indicated using skos:prefLabel.
+     * @param targetTBoxOntology the T-Box Ontology that new axioms are added to.
      */
-    public OWLOntology createTBoxOntology (final OWLOntology skosIcd9ABoxOntology,
-                                           final IRI tboxOntologyIRI)
+    public void addTBoxAxioms (final OWLOntology skosABoxOntology,
+                               final OWLOntology targetTBoxOntology)
             throws OWLOntologyCreationException
     {
-        initTBoxOntology( skosIcd9ABoxOntology, tboxOntologyIRI );
+//        initTBoxOntology( skosABoxOntology, tboxOntologyIRI );
+
+        this.onta = skosABoxOntology;
+        this.ontt = targetTBoxOntology;
+
+        this.oom = this.ontt.getOWLOntologyManager();
+        this.odf = this.oom.getOWLDataFactory();
 
         initNamespaces();
         addImports();
@@ -139,51 +86,26 @@ public class SkosABoxToTBox
         addAxiomsForCodes();
 
         setUpOntologyFormat();
-//        serialize();
 
-        return this.ontt;
     }
 
-    private void initTBoxOntology (OWLOntology onta,
-                                   IRI tboxIRI)
-            throws OWLOntologyCreationException
-    {
-        this.onta = onta;
-
-        oom = onta.getOWLOntologyManager();
-        odf = oom.getOWLDataFactory();
-
-        this.ontt = createNewOntology( tboxIRI );
-
-        onts = new HashSet<OWLOntology>();
-//        onts.add( skos );
-        onts.add( ontt );
-        onts.add( onta );
-//        onts = [skos, aboxModel];
-    }
-
-    private OWLOntology createNewOntology (IRI tboxIRI)
-            throws OWLOntologyCreationException
-    {
-        return oom.createOntology( tboxIRI );
-    }
+    //=================================================================================================
 
     private void initNamespaces ()
     {
-//        icd9ClassesIriString = sharpUriRoot + "/" + "icd9Classes"
-//        icd9ClassesNamespace = icd9ClassesIriString + "#"
-//        icd9ClassesIRI = IRI.create( icd9ClassesIriString );
-//        icd9ClassesDocIRI = IRI.create( ontRootPath + "/" + "icd9Classes" + ".ofn" );
-
         String aboxNamespace = this.onta.getOntologyID().getOntologyIRI().toString() + "#";
         String tboxNamespace = this.ontt.getOntologyID().getOntologyIRI().toString() + "#";
 
-        pm = new DefaultPrefixManager( tboxNamespace );
-        ((DefaultPrefixManager) pm).setPrefix( "a:", aboxNamespace );
-        ((DefaultPrefixManager) pm).setPrefix( "t:", tboxNamespace );
-        ((DefaultPrefixManager) pm).setPrefix( "skos:", skosNamespace );
+        pm = IriUtil.getDefaultSharpOntologyFormat();
+        pm.setDefaultPrefix( tboxNamespace );
+        pm.setPrefix( "a:", aboxNamespace );
+        pm.setPrefix( "t:", tboxNamespace );
+        pm.setPrefix( "skos:", skosNamespace );
     }
 
+    /**
+     * Add owl:imports from the T-Box ontology to SKOS and to the A-Box ontology.
+     */
     private void addImports ()
     {
         OWLImportsDeclaration importsAxiom;
@@ -199,6 +121,9 @@ public class SkosABoxToTBox
         oom.applyChange( imp );
     }
 
+    /**
+     * Create objects to be commonly used.
+     */
     private void initObjects ()
     {
         topCodeClass = odf.getOWLClass( "a:ICD9_Concept", pm );
@@ -208,10 +133,15 @@ public class SkosABoxToTBox
         prefLabelProp = odf.getOWLAnnotationProperty( "skos:prefLabel", pm );
     }
 
+    /**
+     * Add Axioms that are not tied to a particular entity from the input ontology.
+     */
     private void addCommonAxioms ()
     {
-        Set<OWLAxiom> axioms = new TreeSet();
-        ((TreeSet) axioms).add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
+        /* Add [skos:broaderTransitive rdfs:subPropertyOf :refines] */
+
+        Set<OWLAxiom> axioms = new TreeSet<OWLAxiom>();
+        axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
         oom.addAxioms( ontt, axioms );
     }
 
@@ -224,9 +154,12 @@ public class SkosABoxToTBox
         {
             addAxiomsForCode( (OWLNamedIndividual) ind );
         }
-
     }
 
+    /**
+     * The input OWL Individual is from the input ontology and corresponds to a code in a coding hierarchy.
+     * Create the OWL Class and corresponding Axioms to add to the output ontology.
+     */
     private void addAxiomsForCode (OWLNamedIndividual codeInd)
     {
         Set<OWLAnnotationAssertionAxiom> annos = onta.getAnnotationAssertionAxioms( codeInd.getIRI() );
@@ -252,6 +185,11 @@ public class SkosABoxToTBox
         addDefinitionUsingCodeValue( codeInd, codeClass );
     }
 
+    /**
+     *
+     * @param codeInd
+     * @param codeClass
+     */
     private void addDefinitionUsingIndividual (OWLNamedIndividual codeInd,
                                                OWLClass codeClass)
     {
@@ -311,12 +249,6 @@ public class SkosABoxToTBox
         PrefixOWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
         oom.setOntologyFormat( ontt, oFormat );
-    }
-
-    private void serialize (File outputFile)
-            throws OWLOntologyStorageException
-    {
-        oom.saveOntology( ontt, IRI.create( outputFile ) );
     }
 
 }

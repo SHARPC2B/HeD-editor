@@ -1,13 +1,15 @@
 package sharpc2b.transform
 
-import org.junit.Ignore
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI
+import org.semanticweb.owlapi.model.OWLClass
+import org.semanticweb.owlapi.model.OWLDataFactory
+import org.semanticweb.owlapi.model.OWLNamedIndividual
+import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
-import org.semanticweb.owlapi.util.DefaultPrefixManager
 import org.semanticweb.owlapi.vocab.Namespaces
 
 /**
@@ -18,55 +20,86 @@ import org.semanticweb.owlapi.vocab.Namespaces
 class TBoxToABoxTest
 extends GroovyTestCase {
 
-//    static String testResourcesPath = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources";
-//    static String inputOntUriCorePath = "asu.edu/sharpc2b/rk/ClinicalDomain"
-//    static File inputOntFile = new File( "/Users/rk/VOM/export/http/" + inputOntUriCorePath +
-//            ".ofn" );
-//    static File inputOntFile = new File( testResourcesPath + "/onts/in/ClinicalDomainT.ofn" );
-    static File inputOntFile = FileUtil.getFileInResourceDir( "onts/in/ClinicalDomainT.ofn" );
-//    static IRI inputOntIRI = IRI.create( "http://"+ inputOntUriCorePath );
+    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
-//    static IRI mmaIRI = IRI.create( "http://asu.edu/sharpc2b/SharpOwlABoxDomainMetaModel" );
-//    static File mmaFile = new File( testResourcesPath + "/onts/in/SharpOwlABoxMetaModel.ofn" );
+    static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainA" );
+    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts8.ofn" );
+    static File outputSkosOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SkosClinicalDomainInsts8" +
+            ".ofn" );
 
-    static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/rk/ClinicalDomainA" );
-//    static File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts6.ofn" );
-    static File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts6.ofn" );
-
-    TBoxToABox inst;
+    /**
+     * Location in the classpath to find properties file containing entity IRIs to use in the output
+     * A-Box ontology.
+     */
+    static String tToAConfigResourcePath = "/OWL-to-Sharp-ABox-Concepts.properties";
 
     OWLOntologyManager oom;
     OWLOntologyFormat oFormat
 
-    OWLOntology tboxModel;
-    OWLOntology aboxModel;
+    OWLOntology ontT;
+    OWLOntology ontA;
 
     void setUp () {
 
-        inst = new TBoxToABox();
-
         oom = OWLManager.createOWLOntologyManager();
 
-        tboxModel = oom.loadOntologyFromOntologyDocument( inputOntFile );
+        ontT = oom.loadOntologyFromOntologyDocument( inputOntFile );
 
-        aboxModel = oom.createOntology( outputOntIRI );
+        ontA = oom.createOntology( outputOntIRI );
 
-        oFormat = new OWLFunctionalSyntaxOntologyFormat();
-//        oFormat.copyPrefixesFrom( inst.getPrefixManager() );
-        oFormat.copyPrefixesFrom( new DefaultPrefixManager() );
-        oFormat.setDefaultPrefix( aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        oFormat.setPrefix( "a:", aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        oFormat.setPrefix( "t:", tboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        oFormat.setPrefix( "mm:", TBoxToABox.aboxDomainMetaModelIRI.toString() + "#" );
+        oFormat = IriUtil.getDefaultSharpOntologyFormat();
 
+        oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
+        oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
     }
 
     void tearDown () {
-
+        oom = null;
+        ontT = null;
+        ontA = null;
+        oFormat = null;
     }
 
-    @Ignore
-    void ignore_testMMMap () {
+    void testResource () {
+        URL url;
+        url = System.getResource( "/DomainMetaModelABoxEntities.properties" );
+        def stream = url.openStream()
+        assert stream
+        assert 0 < stream.available()
+        println url;
+
+        Properties props
+        url = System.getResource( "/onts/in/DoesNotExist" );
+        assertNull url
+
+//        x= TBoxToABox.class.getResource("onts/in/ClinicalDomain.ofn");
+//        println x;
+        url = TBoxToABox.class.getResource( "/onts/in/ClinicalDomainT.ofn" );
+//        println "url = ${url}";
+//        println url.class;
+        File f = new File( url.toURI() );
+//        println "file = " + f.absolutePath;
+        URLConnection conn
+        conn = url.openConnection();
+
+        def typ = conn.getContentType();
+//        println typ.getClass()
+//        println typ
+
+
+        def content = conn.getContent();
+//        println content.class;
+//        println "length = " + conn.getContentLength();
+        def contentString = conn.getContent( String.class );
+//        println contentString?.class;
+//
+//        String text = url.openStream().text;
+//        println text.length();
+
+//       println Thread.currentThread().getContextClassLoader().getResource("/onts/in/ClinicalDomain.ofn")
+    }
+
+    void testMetaModelPropertiesMap () {
 
         URL url;
         url = System.getResource( "/DomainMetaModelABoxEntities.properties" );
@@ -84,55 +117,32 @@ extends GroovyTestCase {
 
         println props;
     }
-
-    @Ignore
-    void ignore_testResource () {
-        URL url;
-        url = System.getResource( "/DomainMetaModelABoxEntities.properties" );
-
-        Properties props
-        url = System.getResource( "/onts/in/ClinicalDomain.ofn" );
-        println url;
-
-//        x= TBoxToABox.class.getResource("onts/in/ClinicalDomain.ofn");
-//        println x;
-        url = TBoxToABox.class.getResource( "/onts/in/ClinicalDomain.ofn" );
-        println "url = ${url}";
-        println url.class;
-        File f = new File( url.toURI() );
-        println "file = " + f.absolutePath;
-        URLConnection conn
-        conn = url.openConnection();
-
-        def typ = conn.getContentType();
-        println typ.getClass()
-        println typ
-
-
-        def content = conn.getContent();
-        println content.class;
-        println "length = " + conn.getContentLength();
-        def contentString = conn.getContent( String.class );
-        println contentString?.class;
-
-        String text = url.openStream().text;
-        println text.length();
-
-//       println Thread.currentThread().getContextClassLoader().getResource("/onts/in/ClinicalDomain.ofn")
-    }
-
+    /**
+     * This is the primary test method.
+     */
     void testDefaultABox () {
-//        println "BEGIN Test"
 
-//        useSkosABoxConcepts( inst, oFormat )
+//        TBoxToABox inst = new TBoxToABox();
+        TBoxToABox inst = new TBoxToABox( tToAConfigResourcePath );
 
-        inst.populateABox( tboxModel, aboxModel );
+        inst.addABoxAxioms( ontT, ontA );
 
-//        File outputOntFile = new File( testResourcesPath + "/onts/out/ClinicalDomainInsts7.ofn" );
-        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/ClinicalDomainInsts7.ofn" );
-        oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
+        oom.saveOntology( ontA, oFormat, IRI.create( outputOntFile ) );
 
-//        println "END Test"
+        OWLDataFactory odf = oom.getOWLDataFactory();
+
+        /* Check that triple: [age partOf Patient] in output ontology */
+
+        OWLNamedIndividual patient = odf.getOWLNamedIndividual( "a:Patient", oFormat )
+        OWLNamedIndividual age = odf.getOWLNamedIndividual( "a:age", oFormat )
+        OWLClass clazz = odf.getOWLClass( "ops:DomainClass", oFormat )
+        OWLClass prop = odf.getOWLClass( "ops:DomainProperty", oFormat )
+        OWLObjectProperty partOf = odf.getOWLObjectProperty( "skos-ext:partOf", oFormat )
+
+        assert patient.getTypes( ontA ).contains( clazz )
+        assert age.getTypes( ontA ).contains( prop )
+        assert ontA.containsAxiom( odf.getOWLObjectPropertyAssertionAxiom( partOf, age, patient ) )
+        assert !ontA.containsAxiom( odf.getOWLObjectPropertyAssertionAxiom( partOf, patient, age ) )
     }
 
     /**
@@ -140,17 +150,14 @@ extends GroovyTestCase {
      * rdfs:subClassOf and rdfs:subPropertyOf, instead of the default A-Box entities.
      */
     void testSkosABox () {
-//        println "BEGIN Test"
+
+        TBoxToABox inst = new TBoxToABox();
 
         useSkosABoxConcepts( inst, oFormat )
 
-        inst.populateABox( tboxModel, aboxModel );
+        inst.addABoxAxioms( ontT, ontA );
 
-//        File outputOntFile = new File( testResourcesPath + "/onts/out/SkosClinicalDomainInsts6.ofn" );
-        File outputOntFile = FileUtil.getFileInResourceDir( "onts/out/SkosClinicalDomainInsts6.ofn" );
-        oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
-
-//        println "END Test"
+        oom.saveOntology( ontA, oFormat, IRI.create( outputSkosOntFile ) );
     }
 
     def useSkosABoxConcepts (TBoxToABox inst,
