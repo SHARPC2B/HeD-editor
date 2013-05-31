@@ -26,7 +26,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>asu.edu</groupId>
+  <groupId>sharpc2b</groupId>
   <artifactId>model-transform</artifactId>
   <version>0.1-SNAPSHOT</version>
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sharp-editor</artifactId>
+        <groupId>sharpc2b</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>model-transform-plugin</artifactId>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>sharpc2b</groupId>
+            <artifactId>model-transform</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>sharpc2b</groupId>
+                <artifactId>model-transform-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-tbox-to-abox</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+                    <inputFile>./generated-sources/.../foo.xml</inputFile>
+                    <outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>
+                    <outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

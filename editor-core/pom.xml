@@ -77,8 +77,10 @@
       <artifactId>pellet-el</artifactId>
     </dependency>
     <dependency>
-      <groupId>aterm</groupId>
-      <artifactId>aterm-java</artifactId>
+      <!--<groupId>aterm</groupId>-->
+      <!--<artifactId>aterm-java</artifactId>-->
+        <groupId>com.github.ansell.aterms</groupId>
+        <artifactId>aterm-java</artifactId>
     </dependency>
 
 

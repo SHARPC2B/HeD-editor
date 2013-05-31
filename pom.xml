@@ -23,7 +23,9 @@
     <module>arden-model</module>
     <module>model-importer</module>
     <module>model-transform</module>
+    <module>model-transform-plugin</module>
   </modules>
+
 
   <pluginRepositories>
     <pluginRepository>
