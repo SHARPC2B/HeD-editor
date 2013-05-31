@@ -53,7 +53,7 @@
                 </executions>
                 <configuration>
                     <tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-                    <inputFile>./generated-sources/.../foo.xml</inputFile>
+                    <inputFile>${pom.basedir}/generated-sources/.../foo.xml</inputFile>
                     <outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>
                     <outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>
                 </configuration>
