@@ -18,86 +18,136 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
+    <parent>
+        <groupId>sharpc2b</groupId>
+        <artifactId>sharp-editor</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <!--<groupId>asu.edu</groupId>-->
     <groupId>sharpc2b</groupId>
-    <artifactId>sharp-editor</artifactId>
+    <artifactId>model-importer</artifactId>
     <version>0.1-SNAPSHOT</version>
-  </parent>
 
-  <groupId>asu.edu</groupId>
-  <artifactId>model-importer</artifactId>
-  <version>0.1-SNAPSHOT</version>
+    <name>SHARPC-2B :: XSD to OWL2 Model Conversion</name>
 
-  <name>SHARPC-2B :: XSD to OWL2 Model Conversion</name>
+    <dependencies>
 
-  <dependencies>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-shapes-xsd-processor</artifactId>
+            <version>${chance.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.drools</groupId>
-      <artifactId>drools-shapes-xsd-processor</artifactId>
-      <version>${chance.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-api</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>net.sourceforge.owlapi</groupId>
-      <artifactId>owlapi-api</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>sharpc2b</groupId>
+            <artifactId>model-transform-plugin</artifactId>
+            <version>${editor.version}</version>
+        </dependency>
 
-  </dependencies>
+    </dependencies>
 
-  <build>
+    <build>
 
-    <resources>
-      <resource>
-        <directory>${pom.basedir}/src/main/resources</directory>
-        <includes>
-          <include>**/*.*</include>
-        </includes>
-      </resource>
-    </resources>
+        <resources>
+            <resource>
+                <directory>${pom.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
 
 
-      <plugin>
-        <groupId>org.drools</groupId>
-        <artifactId>drools-shapes-xsd-processor-plugin</artifactId>
-        <version>${chance.version}</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate-owl</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <schemaLocations>
-            <param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd</param>
-            <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>
-            <param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>
-            <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>
-          </schemaLocations>
-        </configuration>
-      </plugin>
+            <plugin>
+                <groupId>org.drools</groupId>
+                <artifactId>drools-shapes-xsd-processor-plugin</artifactId>
+                <version>${chance.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-owl</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaLocations>
+                        <param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd
+                        </param>
+                        <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>
+                        <param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>
+                        <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>
+                    </schemaLocations>
+                </configuration>
+            </plugin>
 
-    </plugins>
-  </build>
+
+            <!--<plugin>-->
+                <!--<groupId>sharpc2b</groupId>-->
+                <!--<artifactId>model-transform-plugin</artifactId>-->
+                <!--<version>0.1-SNAPSHOT</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>generate-skos-abox-to-tbox</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
+                    <!--<inputFile>${pom.basedir}/generated-sources/.../foo.xml</inputFile>-->
+                    <!--<outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>-->
+                    <!--<outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>sharpc2b</groupId>
+                <artifactId>model-transform-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-tbox-to-abox</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
+                    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+                    <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>
+                    <outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>

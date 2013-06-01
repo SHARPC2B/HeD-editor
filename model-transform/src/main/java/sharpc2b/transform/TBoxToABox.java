@@ -20,6 +20,8 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -217,6 +219,29 @@ public class TBoxToABox
 //        classLoader = this.getClass().getClassLoader();
         InputStream propertiesStream;
         propertiesStream = System.class.getResourceAsStream( resourceName );
+
+        if (propertiesStream == null)
+        {
+            File f = new File( resourceName );
+            propertiesStream = new FileInputStream( f );
+            if (propertiesStream == null)
+            {
+                throw new IOException( "Cannot create InputStream for resource or File, " +
+                                               "possibly File does not exist for resource = '" +
+                                               resourceName + "' or File = '" + f + "'" );
+            }
+            else if (propertiesStream.available() <= 0)
+            {
+                throw new IOException( "Able to create InputStream for resource or File, " +
+                                               "but stream appears to be empty or unreadable" +
+                                               " for resource = " +
+                                               resourceName + "' or File = '" + f + "'" );
+            }
+        }
+
+//        System.out.println( System.class.getResource( resourceName ) );
+//        System.out.println( propertiesStream );
+        System.out.println( "propertiesStream.available() = " + propertiesStream.available() );
 
         Properties properties = new Properties();
         properties.load( propertiesStream );

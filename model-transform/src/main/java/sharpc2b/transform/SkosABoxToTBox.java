@@ -69,7 +69,7 @@ public class SkosABoxToTBox
      */
     public void addTBoxAxioms (final OWLOntology skosABoxOntology,
                                final OWLOntology targetTBoxOntology)
-            throws OWLOntologyCreationException
+//            throws OWLOntologyCreationException
     {
 //        initTBoxOntology( skosABoxOntology, tboxOntologyIRI );
 

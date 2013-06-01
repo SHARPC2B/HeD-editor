@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import sharpc2b.transform.IriUtil;
 import sharpc2b.transform.TBoxToABox;
@@ -18,19 +19,24 @@ import java.io.IOException;
 /**
  * Goal
  *
+ * @Mojo( name = "generate-tbox-to-abox" )
  * @goal generate-tbox-to-abox
  * @phase generate-sources
- * @requiresDependencyResolution compile
+ * @requires DependencyResolution compile
  */
 public class TBoxToABoxPlugin
         extends AbstractMojo
 {
 
-//    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
-//    static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainA" );
-//    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts8.ofn" );
-//    static File outputSkosOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SkosClinicalDomainInsts8" +
-//                                                                                   ".ofn" );
+    static String baseDir = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources/";
+
+    static File default_inputOntFile = new File( baseDir + "onts/in/ClinicalDomainT.ofn" );
+
+    static IRI default_outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/text/ClinicalDomainA" );
+
+    static File default_outputOntFile = new File( baseDir + "onts/out/ClinicalDomainInsts8.ofn" );
+
+//    static File default_outputSkosOntFile = new File( baseDir + "onts/out/SkosClinicalDomainInsts8.ofn" );
 
     //=====================================================================================================
     // Maven parameters
@@ -114,43 +120,64 @@ public class TBoxToABoxPlugin
         OWLOntology ontT;
         OWLOntology ontA;
 
-        oom = OWLManager.createOWLOntologyManager();
+        System.out.println( "gettToAConfigResourcePath() = '" + gettToAConfigResourcePath() + "'" );
+        System.out.println( "getInputOntologyFile() = '" + getInputOntologyFile() + "'" );
+        System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
+        System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
+        System.out.println( "getInputOntologyFile().exists() = '" + getInputOntologyFile().exists() + "'" );
+//        System.out.println( "gettToAConfigResourcePath.exists() = '" + new File( gettToAConfigResourcePath()).exists() + "'" );
 
-        try
-        {
-            ontT = oom.loadOntologyFromOntologyDocument( getInputOntologyFile() );
-        }
-        catch (OWLOntologyCreationException e)
-        {
-            e.printStackTrace();
-            throw new MojoFailureException( "Failed to load input ontology", e );
-        }
-        try
-        {
-            ontA = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
-        }
-        catch (OWLOntologyCreationException e)
-        {
-            e.printStackTrace();
-            throw new MojoFailureException( "Failed to create output ontology", e );
-        }
+            oom = OWLManager.createOWLOntologyManager();
 
-        oFormat = IriUtil.getDefaultSharpOntologyFormat();
+//        if (false)
+//        {
+            try
+            {
+                ontT = oom.loadOntologyFromOntologyDocument( getInputOntologyFile() );
+            }
+            catch (OWLOntologyCreationException e)
+            {
+                e.printStackTrace();
+                throw new MojoFailureException( "Failed to load input ontology", e );
+            }
+            try
+            {
+                ontA = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
+            }
+            catch (OWLOntologyCreationException e)
+            {
+                e.printStackTrace();
+                throw new MojoFailureException( "Failed to create output ontology", e );
+            }
 
-        oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
-        oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
+            oFormat = IriUtil.getDefaultSharpOntologyFormat();
 
-        try
-        {
-            converter = new TBoxToABox( gettToAConfigResourcePath() );
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw new MojoFailureException( "Failed to create TBoxToABox converter instance.", e );
-        }
+            oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
+            oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
 
-        converter.addABoxAxioms( ontT, ontA );
+            try
+            {
+                converter = new TBoxToABox( gettToAConfigResourcePath() );
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                throw new MojoFailureException( "Failed to create TBoxToABox converter instance.", e );
+            }
+
+            converter.addABoxAxioms( ontT, ontA );
+
+            try
+            {
+                oom.saveOntology( ontA, oFormat, IRI.create( getOutputOntologyFile() ) );
+            }
+            catch (OWLOntologyStorageException e)
+            {
+                e.printStackTrace();
+                throw new MojoFailureException(
+                        "Failed to save output ontology to File = " + getOutputOntologyFile(), e );
+            }
+//        }
     }
 
 }

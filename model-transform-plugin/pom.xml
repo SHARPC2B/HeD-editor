@@ -9,15 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>sharpc2b</groupId>
     <artifactId>model-transform-plugin</artifactId>
-
+    <version>${editor.version}</version>
+    <packaging>maven-plugin</packaging>
 
     <dependencies>
 
         <dependency>
             <groupId>sharpc2b</groupId>
             <artifactId>model-transform</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>${editor.version}</version>
         </dependency>
 
         <dependency>
@@ -26,13 +28,27 @@
             <version>3.0.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-plugin-plugin</artifactId>
+            <version>3.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
+        <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -40,25 +56,37 @@
             </plugin>
 
             <plugin>
-                <groupId>sharpc2b</groupId>
-                <artifactId>model-transform-plugin</artifactId>
-                <version>0.1-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate-tbox-to-abox</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.2</version>
                 <configuration>
-                    <tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-                    <inputFile>${pom.basedir}/generated-sources/.../foo.xml</inputFile>
-                    <outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>
-                    <outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>
+                    <!--<goalPrefix>plugin</goalPrefix>-->
+                    <!--<outputDirectory>target/dir</outputDirectory>-->
                 </configuration>
             </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>sharpc2b</groupId>-->
+                <!--<artifactId>model-transform-plugin</artifactId>-->
+                <!--<version>0.1-SNAPSHOT</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>generate-tbox-to-abox</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
+                    <!--<inputFile>${pom.basedir}/generated-sources/.../foo.xml</inputFile>-->
+                    <!--<outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>-->
+                    <!--<outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
         </plugins>
+        </pluginManagement>
     </build>
 
 </project>
