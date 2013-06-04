@@ -61,6 +61,42 @@ public class FileUtil
         }
     }
 
+    public static final File getFileInProjectDir (final String path)
+    {
+        URL url = System.class.getResource( knownRootResourcePath );
+
+        if (url == null)
+        {
+            final String message = "Not able to find root of Resources directory because method " +
+                    "depends on finding known resource with path = '" + knownRootResourcePath + "'";
+            throw new RuntimeException( message );
+        }
+        try
+        {
+            File resourceDir = new File( url.toURI() ).getParentFile();
+            File projectDir;
+            try
+            {
+                projectDir = resourceDir.getParentFile().getParentFile().getParentFile();
+            }
+            catch (Exception ex)
+            {
+                throw new RuntimeException( ex );
+            }
+            String projectUriString = projectDir.toURI().toString();
+            String fileUriString = projectUriString + (projectUriString.endsWith( "/" ) ? "" : "/") + path;
+            URI fullURI = new URI( fileUriString );
+            File file = new File( fullURI );
+            return file;
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
     /**
      * An alternative to getFileInResourceDir() that takes a URI as input.  The input URI can either be an
      * absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for that

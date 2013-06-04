@@ -119,10 +119,9 @@
                     <!--</execution>-->
                 <!--</executions>-->
                 <!--<configuration>-->
-                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
-                    <!--<inputFile>${pom.basedir}/generated-sources/.../foo.xml</inputFile>-->
-                    <!--<outputFile>./generated-sources/ontologies/ta-maven.ofn</outputFile>-->
-                    <!--<outputIRI>http://asu.edu/sharpc2b/ontologies/ta-maven</outputIRI>-->
+                    <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/icd9-pub.ofn</inputOntologyFile>-->
+                    <!--<outputOntologyFile>${pom.basedir}/src/main/resources/onts/out/icd9-T.ofn</outputOntologyFile>-->
+                    <!--<outputOntologyIriString>http://asu.edu/sharpc2b/codes/03/icd9-T</outputOntologyIriString>-->
                 <!--</configuration>-->
             <!--</plugin>-->
 

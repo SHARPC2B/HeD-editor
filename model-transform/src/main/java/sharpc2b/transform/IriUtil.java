@@ -43,6 +43,9 @@ public class IriUtil
         of.setPrefix( "IOLite:", "http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#" );
         of.setPrefix( "dc2:", "http://purl.org/NET/dc_owl2dl#" );
         of.setPrefix( "skos:", skos+"#" );
+        of.setPrefix( "opsb:", sharpOntBase + "opsb#" );
+        of.setPrefix( "opsc:", sharpOntBase + "opsc#" );
+        of.setPrefix( "opsd:", sharpOntBase + "opsd#" );
     }
 
     public static void addSharpPrefixes (DefaultPrefixManager of)
@@ -60,6 +63,9 @@ public class IriUtil
         of.setPrefix( "lmm:", "http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#" );
         of.setPrefix( "IOLite:", "http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#" );
         of.setPrefix( "dc2:", "http://purl.org/NET/dc_owl2dl#" );
+        of.setPrefix( "opsb:", sharpOntBase + "opsb#" );
+        of.setPrefix( "opsc:", sharpOntBase + "opsc#" );
+        of.setPrefix( "opsd:", sharpOntBase + "opsd#" );
     }
 
 }
