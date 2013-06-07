@@ -1,4 +1,3 @@
-Prefix(:=<http://bmi.asu.edu/sharpc2b/skoslmm#>)
 Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
 Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
 Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
@@ -6,12 +5,12 @@ Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
 Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 
-Ontology(<http://bmi.asu.edu/sharpc2b/sharp-master>
+Ontology(<http://asu.edu/sharpc2b/sharp>
 Import(<http://asu.edu/sharpc2b/prr-sharp>)
-Import(<http://asu.edu/sharpc2b/metadata>)
 
-SubClassOf(<http://asu.edu/sharpc2b/ops#SharpExpression> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
-SubClassOf(<http://asu.edu/sharpc2b/prr#Expression> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
-SubClassOf(<http://asu.edu/sharpc2b/prr#RuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationObject>)
-SubObjectPropertyOf(<http://asu.edu/sharpc2b/prr#relatedRuleElement> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#associatedWith>)
+DisjointClasses(<http://asu.edu/sharpc2b/ops#TypeConcept> <http://asu.edu/sharpc2b/skos-ext#CodedConcept>)
+DisjointClasses(<http://asu.edu/sharpc2b/skos-ext#CodedConcept> <http://asu.edu/sharpc2b/ops#TypeConcept>)
+SubClassOf(rdf:List <http://asu.edu/sharpc2b/ops#Variable>)
+DisjointClasses(<http://asu.edu/sharpc2b/ops#Variable> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity> rdf:List <http://www.w3.org/2004/02/skos/core#Collection>)
+DisjointClasses(<http://asu.edu/sharpc2b/ops#Variable> <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Meaning> rdf:List <http://www.w3.org/2004/02/skos/core#Collection>)
 )
