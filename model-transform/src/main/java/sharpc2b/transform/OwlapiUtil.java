@@ -13,6 +13,8 @@ import java.io.File;
 public class OwlapiUtil
 {
 
+    public static final String ontologiesDirInProject = "/editor-models/src/main/resources/ontologies/";
+
     public static OWLOntologyManager createSharpOWLOntologyManager ()
     {
         OWLOntologyManager oom = OWLManager.createOWLOntologyManager();
@@ -24,7 +26,6 @@ public class OwlapiUtil
     {
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr-sharp", "prr-sharp.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr", "prr-core.owl" );
-        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/ops", "expr-core.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/dc2dul", "dc2dul.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/skos-ext", "skos-ext.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/metadata", "metadata.owl" );
@@ -37,15 +38,18 @@ public class OwlapiUtil
         addSharpIriMapping( oom, "http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl", "IOLite.owl" );
         addSharpIriMapping( oom, "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl", "DUL.owl" );
         addSharpIriMapping( oom, "http://www.w3.org/2004/02/skos/core", "skos-core.owl" );
-        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/ops", "demos/expr-core-coupled.owl" );
+        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/ops", "expr-core.owl" );
+        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsb", "demos/diffnames/expr-core-both.owl" );
+        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsc", "demos/diffnames/expr-core-coupled.owl" );
+        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsd",
+                            "demos/diffnames/expr-core-decoupled.owl" );
     }
 
     public static void addSharpIriMapping (OWLOntologyManager oom,
                                            String ontologyIriString,
                                            String relativeDocIriString)
     {
-        final String ontDirRelative = "/editor-models/src/main/resources/ontologies/";
-        File ontFile = FileUtil.getFileInProjectDir( ontDirRelative + relativeDocIriString );
+        File ontFile = FileUtil.getFileInProjectDir( ontologiesDirInProject + relativeDocIriString );
         SimpleIRIMapper m = new SimpleIRIMapper( IRI.create( ontologyIriString ), IRI.create( ontFile ) );
         oom.addIRIMapper( m );
     }

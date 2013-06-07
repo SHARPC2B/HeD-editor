@@ -9,7 +9,7 @@ import org.semanticweb.owlapi.model.IRI
  */
 class TestUtil {
 
-    static testIRI (String name) {
+    static IRI testIRI (String name) {
         IRI.create( "http://asu.edu/sharpc2b/test/" + name );
     }
 }
