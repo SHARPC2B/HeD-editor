@@ -24,7 +24,7 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
  * Date: 6/3/13
  * Time: 2:44 PM
  */
-class CheckOperationTest
+class CoupledOpsExp1Test
 extends GroovyTestCase {
 
     static File ontFile = FileUtil.getFileInProjectDir(
@@ -98,7 +98,7 @@ extends GroovyTestCase {
         assertEquals( 1, operators.size() )
         assertEquals( 2, operands.size() )
 
-        reasoner = reasonerFactory.createReasoner( ont );
+        reasoner = reasonerFactory.createNonBufferingReasoner( ont );
 
         assertEquals( true, reasoner.isConsistent() )
 
@@ -155,6 +155,8 @@ extends GroovyTestCase {
 
         ax = odf.getOWLObjectPropertyAssertionAxiom( returns, exp1, iString );
         oom.addAxiom( ont, ax );
+
+//        reasoner.flush()
 
         assertEquals( false, reasoner.isConsistent() )
 
