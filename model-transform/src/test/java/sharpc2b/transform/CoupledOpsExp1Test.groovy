@@ -80,9 +80,9 @@ extends GroovyTestCase {
         OWLObjectProperty hasOperator = odf.getOWLObjectProperty( "ops:hasOperator", oFormat )
         OWLObjectProperty hasOperand = odf.getOWLObjectProperty( "ops:hasOperand", oFormat )
         OWLObjectProperty returns = odf.getOWLObjectProperty( "ops:returns", oFormat )
-        OWLClass targetExprClass = odf.getOWLClass( "ops:IntSumExpression", oFormat )
-        OWLClass cInteger = odf.getOWLClass( "ops:Integer", oFormat )
-        OWLClass cString = odf.getOWLClass( "ops:String", oFormat )
+//        OWLClass targetExprClass = odf.getOWLClass( "ops:IntSumExpression", oFormat )
+//        OWLClass cInteger = odf.getOWLClass( "ops:Integer", oFormat )
+//        OWLClass cString = odf.getOWLClass( "ops:String", oFormat )
         OWLNamedIndividual iInteger = odf.getOWLNamedIndividual( "ops:intType", oFormat )
         OWLNamedIndividual iString = odf.getOWLNamedIndividual( "ops:stringType", oFormat )
 
@@ -122,6 +122,7 @@ extends GroovyTestCase {
         Set<OWLClass> flat1
         flat1 = rTypesNodeSet.getFlattened()
         assertEquals( 1, flat1.size() );
+
 //        int n = rTypesNodeSet.iterator().size()
 //        println "n = $n"
 

@@ -1,8 +1,6 @@
 package sharpc2b.transform
 
-import org.semanticweb.owlapi.reasoner.Node as OaNode
 import org.semanticweb.HermiT.Reasoner
-import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLAxiom
 import org.semanticweb.owlapi.model.OWLClass
 import org.semanticweb.owlapi.model.OWLClassExpression
@@ -45,10 +43,10 @@ extends GroovyTestCase {
         odf = oom.getOWLDataFactory();
         onts = new TreeSet<OWLOntology>();
         reasonerFactory = new Reasoner.ReasonerFactory();  // Hermit
-        if ( reasoner!=null){
+        if (reasoner != null) {
             reasoner.flush()
             reasoner.dispose()
-            reasoner=null
+            reasoner = null
         }
     }
 
@@ -59,15 +57,12 @@ extends GroovyTestCase {
         oFormat = null
         odf = null
         onts = null
-        if ( reasoner!=null){
+        if (reasoner != null) {
             reasoner.flush()
             reasoner.dispose()
-            reasoner=null
+            reasoner = null
         }
     }
-
-//    void testIfOperationOperandsOK () {
-//    }
 
     void testMockExp1 () {
 
@@ -105,9 +100,6 @@ extends GroovyTestCase {
         types1 = exp1.getTypes( ont );
         assertEquals( 0, types1.size() )
 
-//        Set<OWLIndividual> operators
-//        operators = exp1.getObjectPropertyValues( hasOperator, ont );
-
         Set<OWLIndividual> opCode1
         opCode1 = exp1.getObjectPropertyValues( opCode, ont );
         Set<OWLIndividual> operands
@@ -127,10 +119,10 @@ extends GroovyTestCase {
 
         Set<OWLClass> directClasses
         directClasses = reasoner.getTypes( exp1, true ).getFlattened();
-        directClasses.each{ println it }
-        assert 0 <  directClasses.size()
+        directClasses.each { println it }
+        assert 0 < directClasses.size()
 
-        assertEquals( true, directClasses.contains( targetExprClass))
+        assertEquals( true, directClasses.contains( targetExprClass ) )
 
         NodeSet<OWLClass> allTypeNodes
         allTypeNodes = reasoner.getTypes( exp1, false );

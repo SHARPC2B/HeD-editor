@@ -59,6 +59,9 @@ public final class IriUtil
         of.setPrefix( "skos:", skos + "#" );
     }
 
+    /**
+     * Same as above, but for DefaultPrefixManager.
+     */
     public static void addSharpPrefixes (DefaultPrefixManager of)
     {
         of.setPrefix( "opsb:", sharpOntBase + "opsb#" );
