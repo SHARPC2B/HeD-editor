@@ -1,6 +1,7 @@
 package sharpc2b.transform;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -8,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -321,6 +323,11 @@ public class TBoxToABox
 
     private void addImports ()
     {
+        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpIRI( "ops" ) );
+
+        System.out.println( "add owl:imports: " + importOps );
+
+        oom.applyChange( new AddImport( aboxModel, importOps ) );
     }
 
 //    private OWLNamedIndividual getA_Class (OWLClassExpression owlClassExpression)
@@ -352,7 +359,6 @@ public class TBoxToABox
 
     private void transform_Class (final OWLClass owlClass)
     {
-
         OWLNamedIndividual aEntity = getABoxIndividual( owlClass );
 
         oom.addAxiom( aboxModel, odf.getOWLClassAssertionAxiom( mm_Class(), aEntity ) );
@@ -366,19 +372,16 @@ public class TBoxToABox
 
     private void transform_ObjectProperty (final OWLObjectProperty owlProperty)
     {
-
         transform_Property( owlProperty );
     }
 
     private void transform_DataProperty (final OWLDataProperty owlProperty)
     {
-
         transform_Property( owlProperty );
     }
 
     private <R extends OWLPropertyRange, P extends OWLPropertyExpression<R, P>> void transform_Property (final OWLProperty<R, P> owlProperty)
     {
-
         OWLNamedIndividual aEntity = getABoxIndividual( owlProperty );
 
         oom.addAxiom( aboxModel, odf.getOWLClassAssertionAxiom( mm_Property(), aEntity ) );
@@ -397,13 +400,11 @@ public class TBoxToABox
         {
             transform_range( owlProperty, tSuper );
         }
-
     }
 
     private void transform_subClassOf (final OWLClassExpression owlSubClass,
                                        final OWLClassExpression owlSuperClass)
     {
-
         if (owlSubClass instanceof OWLEntity && owlSuperClass instanceof OWLEntity)
         {
             OWLNamedIndividual x = getABoxIndividual( (OWLEntity) owlSubClass );

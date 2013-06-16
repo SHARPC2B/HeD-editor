@@ -140,9 +140,12 @@
                 <configuration>
                     <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
                     <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-                    <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>
-                    <outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>
-                    <outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>
+                    <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>-->
+                    <!--<outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>-->
+                    <!--<outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>-->
+                    <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/vmr-clean.xsd.ttl</inputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/onts/out/vmr-clean-A.ofn</outputOntologyFile>
+                    <outputOntologyIriString>http://asu.edu/sharpc2b/test/vmr-clean-A</outputOntologyIriString>
                 </configuration>
             </plugin>
 
