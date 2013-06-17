@@ -11,8 +11,11 @@ import org.semanticweb.HermiT.Reasoner
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLAxiom
 import org.semanticweb.owlapi.model.OWLClass
+import org.semanticweb.owlapi.model.OWLClassExpression
 import org.semanticweb.owlapi.model.OWLDataFactory
+import org.semanticweb.owlapi.model.OWLDataProperty
 import org.semanticweb.owlapi.model.OWLNamedIndividual
+import org.semanticweb.owlapi.model.OWLObjectIntersectionOf
 import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
@@ -34,7 +37,8 @@ extends GroovyTestCase {
     static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
     static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOperators.ofn" );
 
-    static String opsBaseIRI = "http://asu.edu/sharpc2b/operators#";
+    static String opsCoreBaseIRI = "http://asu.edu/sharpc2b/ops#";
+    static String operatorsBaseIRI = "http://asu.edu/sharpc2b/shops#";
 
     /**
      * Location in the classpath to find properties file containing entity IRIs to use in the output
@@ -62,8 +66,11 @@ extends GroovyTestCase {
         reasonerFactory = new Reasoner.ReasonerFactory();  // Hermit
 
         initTypeNameMap();
+        initTypeNameIriMap();
+        initTypeExpressionNameMap();
+
 //        ontT = oom.loadOntologyFromOntologyDocument( inputOntFile );
-//
+
         ont = oom.createOntology( outputOntIRI );
 //        oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
 //        oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
@@ -75,7 +82,8 @@ extends GroovyTestCase {
         ont = null;
         oFormat = null;
         odf = null;
-        typeNameMap = null;
+        typeNameIriMap = null;
+        typeExpressionNameMap = null;
     }
 
     void openWorkbook (File file) throws FileNotFoundException,
@@ -136,24 +144,38 @@ extends GroovyTestCase {
         println "c[n,5] = " + rowLast.getCell( 0 ).getStringCellValue()
 
 
+        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperator" ) );
+        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperand" ) );
+        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( createOpsCoreIRI( "firstOperand" ) );
+        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( createOpsCoreIRI( "secondOperand" ) );
+        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( createOpsCoreIRI( "thirdOperand" ) );
+
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand1, hasOperand ) );
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand2, hasOperand ) );
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand3, hasOperand ) );
+
         OWLObjectProperty resultTypeRelationship = odf.getOWLObjectProperty( IRI.create
-                ( opsBaseIRI + "evaluatesAs" ) );
+                ( opsCoreBaseIRI + "evaluatesAs" ) );
         OWLObjectProperty operandTypeRelationship = odf.getOWLObjectProperty( IRI.create
-                ( opsBaseIRI + "hasOperandType" ) );
+                ( opsCoreBaseIRI + "hasOperandType" ) );
         OWLObjectProperty firstOperandTypeRelationship = odf.getOWLObjectProperty( IRI.create
-                ( opsBaseIRI + "hasFirstOperandType" ) );
+                ( opsCoreBaseIRI + "hasFirstOperandType" ) );
         OWLObjectProperty secondOperandTypeRelationship = odf.getOWLObjectProperty( IRI.create
-                ( opsBaseIRI + "hasSecondOperandType" ) );
+                ( opsCoreBaseIRI + "hasSecondOperandType" ) );
         OWLObjectProperty thirdOperandTypeRelationship = odf.getOWLObjectProperty( IRI.create
-                ( opsBaseIRI + "hasThirdOperandType" ) );
+                ( opsCoreBaseIRI + "hasThirdOperandType" ) );
 
-        OWLClass topOperatorClass = odf.getOWLClass( IRI.create( opsBaseIRI + "Operator" ) );
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( firstOperandTypeRelationship, operandTypeRelationship ) );
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( secondOperandTypeRelationship, operandTypeRelationship ) );
+        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( thirdOperandTypeRelationship, operandTypeRelationship ) );
 
-        OWLClass unaryOperator = odf.getOWLClass( IRI.create( opsBaseIRI + "UnaryOperator" ) );
-        OWLClass binaryOperator = odf.getOWLClass( IRI.create( opsBaseIRI + "BinaryOperator" ) );
-        OWLClass ternaryOperator = odf.getOWLClass( IRI.create( opsBaseIRI + "TernaryOperator" ) );
-        OWLClass naryOperator = odf.getOWLClass( IRI.create( opsBaseIRI + "NAryOperator" ) );
-        OWLClass aggregateOperator = odf.getOWLClass( IRI.create( opsBaseIRI + "AggregateOperator" ) );
+        OWLClass topOperatorClass = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "Operator" ) );
+
+        OWLClass unaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "UnaryOperator" ) );
+        OWLClass binaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "BinaryOperator" ) );
+        OWLClass ternaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "TernaryOperator" ) );
+        OWLClass naryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "NAryOperator" ) );
+        OWLClass aggregateOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "AggregateOperator" ) );
 
         addAxiom( odf.getOWLSubClassOfAxiom( unaryOperator, topOperatorClass ) );
         addAxiom( odf.getOWLSubClassOfAxiom( binaryOperator, topOperatorClass ) );
@@ -173,7 +195,14 @@ extends GroovyTestCase {
 
         for (int rowNum = 1; rowNum <= lastRowNum; rowNum++) {
             Row row = sheet.getRow( rowNum );
-            String opName = row.getCell( colOperatorName ).getStringCellValue();
+            String nextOperatorName;
+            if (rowNum < lastRowNum) {
+                nextOperatorName = sheet.getRow( rowNum + 1 ).getCell( colOperatorName ).getStringCellValue();
+            } else {
+                nextOperatorName = "NONE";
+            }
+            String opNameFromConfig = row.getCell( colOperatorName ).getStringCellValue();
+//            String opName = row.getCell( colOperatorName ).getStringCellValue();
 //            String numArgs = row.getCell( colNumArgs ).getStringCellValue();
             String numArgs = row.getCell( colNumArgs ).toString();
             String resultTypeName = row.getCell( colResultType ).getStringCellValue();
@@ -201,8 +230,13 @@ extends GroovyTestCase {
             String op2TypeName = 2 <= arity ? row.getCell( colOperand2Type ).getStringCellValue() : null;
             String op3TypeName = 3 <= arity ? row.getCell( colOperand3Type ).getStringCellValue() : null;
 
-            // ToDo: modify name if reused.
-            IRI operatorIRI = IRI.create( opsBaseIRI + opName )
+            /* check if operator name used in more than one row. */
+            boolean overloadedName = opNameFromConfig == lastOperatorName || opNameFromConfig ==
+                    nextOperatorName;
+            String opName = overloadedName ? (opNameFromConfig + typeNameMap.get( op1TypeName )) :
+                opNameFromConfig;
+
+            IRI operatorIRI = createOperatorIRI( opName );
             OWLNamedIndividual operator = odf.getOWLNamedIndividual( operatorIRI )
 
             /* At this point have operator name and arity. Now need to get result and operand types. */
@@ -241,6 +275,12 @@ extends GroovyTestCase {
             assertNotNull( thirdOperandTypeRelationship );
             assertNotNull( operand1Type );
 
+            OWLDataProperty skosNotation = odf.getOWLDataProperty(
+                    IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+
+            // notation
+            addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
+
             OWLAxiom ax;
             ax = odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType );
             addAxiom( ax );
@@ -266,10 +306,64 @@ extends GroovyTestCase {
                         operand3Type ) );
             }
 
-            lastOperatorName = opName;
+            /* Create Expression Class */
+
+//            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName ) );
+            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName + "Expression" ) );
+            OWLClass superClass = getExpressionTypeClass( resultTypeName );
+
+            addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
+
+            /* Define exprClass as hasOperator operatorInd AND hasOperand type Expr */
+
+            Set<? extends OWLClassExpression> requirements = new HashSet<? extends OWLClassExpression>();
+
+            requirements.add( odf.getOWLClass( createOpsCoreIRI( "Expression" ) ) );
+//            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
+
+            requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
+                    odf.getOWLDataHasValue( skosNotation, odf.getOWLLiteral( opNameFromConfig ) ) ) );
+
+            if (isNary) {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, getExpressionTypeClass( op1TypeName ) ) );
+                requirements.add( odf.getOWLObjectAllValuesFrom( hasOperand, getExpressionTypeClass( op1TypeName ) ) );
+            }
+
+            OWLClass listExpr = getExpressionTypeClass( "List" );
+            if (isListArg) {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, listExpr ) );
+                requirements.add( odf.getOWLObjectExactCardinality( 1, hasOperand ) );
+            }
+            if (isAry) {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1,
+                        getExpressionTypeClass( op1TypeName ) ) );
+            }
+            if (2 <= arity) {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2,
+                        getExpressionTypeClass( op2TypeName ) ) );
+            }
+            if (3 <= arity) {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3,
+                        getExpressionTypeClass( op3TypeName ) ) );
+            }
+
+            OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
+
+            addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
+
+            /* setup for next iteration */
+            lastOperatorName = opNameFromConfig;
         }
 
         oom.saveOntology( ont, oFormat, IRI.create( outputOntFile ) );
+    }
+
+    IRI createOperatorIRI (final String name) {
+        return IRI.create( operatorsBaseIRI + name );
+    }
+
+    IRI createOpsCoreIRI (final String name) {
+        return IRI.create( opsCoreBaseIRI + name );
     }
 
     Set<OWLAxiom> newAxioms = new HashSet<OWLAxiom>();
@@ -281,39 +375,107 @@ extends GroovyTestCase {
 
     static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
 
-    Map<String, IRI> typeNameMap = new HashMap<String, IRI>();
+    Map<String, IRI> typeNameIriMap = new HashMap<String, IRI>();
+
+    void initTypeNameIriMap () {
+        typeNameIriMap.put( "Any", IRI.create( typesBaseIRI + "anyType" ) );
+        typeNameIriMap.put( "T", IRI.create( typesBaseIRI + "anyType" ) );
+        typeNameIriMap.put( "C", IRI.create( typesBaseIRI + "anyType" ) );
+        typeNameIriMap.put( "Object", IRI.create( typesBaseIRI + "objectType" ) );
+        typeNameIriMap.put( "Object<T>", IRI.create( typesBaseIRI + "objectType" ) );
+        typeNameIriMap.put( "Number", IRI.create( typesBaseIRI + "numberType" ) );
+        typeNameIriMap.put( "Real", IRI.create( typesBaseIRI + "realType" ) );
+        typeNameIriMap.put( "Boolean", IRI.create( typesBaseIRI + "booleanType" ) );
+        typeNameIriMap.put( "String", IRI.create( typesBaseIRI + "stringType" ) );
+        typeNameIriMap.put( "Time/Duration", IRI.create( typesBaseIRI + "timeDurationType" ) );
+        typeNameIriMap.put( "Timestamp", IRI.create( typesBaseIRI + "timestampType" ) );
+        typeNameIriMap.put( "DateGranularity", IRI.create( typesBaseIRI + "dateGranularityType" ) );
+        typeNameIriMap.put( "Integer", IRI.create( typesBaseIRI + "integerType" ) );
+        typeNameIriMap.put( "Interval<T>", IRI.create( typesBaseIRI + "intervalType" ) );
+        typeNameIriMap.put( "Collection<T>", IRI.create( typesBaseIRI + "collectionType" ) );
+        typeNameIriMap.put( "List", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "List<T>", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "List<S>", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "List<String>", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "List<Boolean>", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "Ordered", IRI.create( typesBaseIRI + "orderedType" ) );
+        typeNameIriMap.put( "Ordered Type", IRI.create( typesBaseIRI + "orderedType" ) );
+        typeNameIriMap.put( "Scalar", IRI.create( typesBaseIRI + "scalarType" ) );
+        typeNameIriMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "expressionType" ) );
+    }
+
+    Map<String, String> typeNameMap = new HashMap<String, IRI>();
 
     void initTypeNameMap () {
-        typeNameMap.put( "Any", IRI.create( typesBaseIRI + "anyType" ) );
-        typeNameMap.put( "T", IRI.create( typesBaseIRI + "anyType" ) );
-        typeNameMap.put( "C", IRI.create( typesBaseIRI + "anyType" ) );
-        typeNameMap.put( "Object", IRI.create( typesBaseIRI + "objectType" ) );
-        typeNameMap.put( "Object<T>", IRI.create( typesBaseIRI + "objectType" ) );
-        typeNameMap.put( "Number", IRI.create( typesBaseIRI + "numberType" ) );
-        typeNameMap.put( "Real", IRI.create( typesBaseIRI + "realType" ) );
-        typeNameMap.put( "Boolean", IRI.create( typesBaseIRI + "booleanType" ) );
-        typeNameMap.put( "String", IRI.create( typesBaseIRI + "stringType" ) );
-        typeNameMap.put( "Time/Duration", IRI.create( typesBaseIRI + "timeDurationType" ) );
-        typeNameMap.put( "Timestamp", IRI.create( typesBaseIRI + "timestampType" ) );
-        typeNameMap.put( "DateGranularity", IRI.create( typesBaseIRI + "dateGranularityType" ) );
-        typeNameMap.put( "Integer", IRI.create( typesBaseIRI + "integerType" ) );
-        typeNameMap.put( "Interval<T>", IRI.create( typesBaseIRI + "intervalType" ) );
-        typeNameMap.put( "Collection<T>", IRI.create( typesBaseIRI + "collectionType" ) );
-        typeNameMap.put( "List", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameMap.put( "List<T>", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameMap.put( "List<S>", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameMap.put( "List<String>", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameMap.put( "List<Boolean>", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameMap.put( "Ordered", IRI.create( typesBaseIRI + "orderedType" ) );
-        typeNameMap.put( "Ordered Type", IRI.create( typesBaseIRI + "orderedType" ) );
-        typeNameMap.put( "Scalar", IRI.create( typesBaseIRI + "scalarType" ) );
-        typeNameMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "expressionType" ) );
+        typeNameMap.put( "Any", "Any" );
+        typeNameMap.put( "T", "Any" );
+        typeNameMap.put( "C", "Any" );
+        typeNameMap.put( "Object", "Object" );
+        typeNameMap.put( "Object<T>", "Object" );
+        typeNameMap.put( "Number", "Number" );
+        typeNameMap.put( "Real", "Real" );
+        typeNameMap.put( "Boolean", "Boolean" );
+        typeNameMap.put( "String", "String" );
+        typeNameMap.put( "Time/Duration", "TimeDuration" );
+        typeNameMap.put( "Timestamp", "Timestamp" );
+        typeNameMap.put( "DateGranularity", "DateGranularity" );
+        typeNameMap.put( "Integer", "Integer" );
+        typeNameMap.put( "Interval<T>", "Interval" );
+        typeNameMap.put( "Collection<T>", "Collection" );
+        typeNameMap.put( "List", "List" );
+        typeNameMap.put( "List<T>", "List" );
+        typeNameMap.put( "List<S>", "List" );
+        typeNameMap.put( "List<String>", "List" );
+        typeNameMap.put( "List<Boolean>", "List" );
+        typeNameMap.put( "Ordered", "Ordered" );
+        typeNameMap.put( "Ordered Type", "Ordered" );
+        typeNameMap.put( "Scalar", "Scalar" );
+        typeNameMap.put( "Expression<T:S>", "Expression" );
     }
 
     OWLNamedIndividual getOpsTypeIndividual (final String typeNameInSpreadsheet) {
 
-        IRI typeIRI = typeNameMap.get( typeNameInSpreadsheet );
+        IRI typeIRI = typeNameIriMap.get( typeNameInSpreadsheet );
         OWLNamedIndividual typeInd = typeIRI == null ? null : odf.getOWLNamedIndividual( typeIRI );
         return typeInd;
     }
+
+
+    Map<String, IRI> typeExpressionNameMap = new HashMap<String, IRI>();
+
+    void initTypeExpressionNameMap () {
+        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "" ) );
+        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "" ) );
+        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "" ) );
+        typeExpressionNameMap.put( "Object", IRI.create( typesBaseIRI + "Object" ) );
+        typeExpressionNameMap.put( "Object<T>", IRI.create( typesBaseIRI + "Object" ) );
+        typeExpressionNameMap.put( "Number", IRI.create( typesBaseIRI + "Number" ) );
+        typeExpressionNameMap.put( "Real", IRI.create( typesBaseIRI + "Real" ) );
+        typeExpressionNameMap.put( "Boolean", IRI.create( typesBaseIRI + "Boolean" ) );
+        typeExpressionNameMap.put( "String", IRI.create( typesBaseIRI + "String" ) );
+        typeExpressionNameMap.put( "Time/Duration", IRI.create( typesBaseIRI + "TimeDuration" ) );
+        typeExpressionNameMap.put( "Timestamp", IRI.create( typesBaseIRI + "Timestamp" ) );
+        typeExpressionNameMap.put( "DateGranularity", IRI.create( typesBaseIRI + "DateGranularity" ) );
+        typeExpressionNameMap.put( "Integer", IRI.create( typesBaseIRI + "Integer" ) );
+        typeExpressionNameMap.put( "Interval<T>", IRI.create( typesBaseIRI + "Interval" ) );
+        typeExpressionNameMap.put( "Collection<T>", IRI.create( typesBaseIRI + "Collection" ) );
+        typeExpressionNameMap.put( "List", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "List<T>", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "List<S>", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "List<String>", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "List<Boolean>", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "Ordered", IRI.create( typesBaseIRI + "Ordered" ) );
+        typeExpressionNameMap.put( "Ordered Type", IRI.create( typesBaseIRI + "Ordered" ) );
+        typeExpressionNameMap.put( "Scalar", IRI.create( typesBaseIRI + "Scalar" ) );
+        typeExpressionNameMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "Expression" ) );
+    }
+
+    OWLClass getExpressionTypeClass (final String typeNameInSpreadsheet) {
+
+        IRI typeIRI = typeExpressionNameMap.get( typeNameInSpreadsheet );
+        OWLClass type = typeIRI == null ? null : odf.getOWLClass(
+                IRI.create( typeIRI.toString() + "Expression" ) );
+        return type;
+    }
+
 }

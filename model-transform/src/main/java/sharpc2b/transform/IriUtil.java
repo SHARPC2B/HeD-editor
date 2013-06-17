@@ -44,6 +44,7 @@ public final class IriUtil
         of.setPrefix( "opsc:", sharpOntBase + "opsc#" );
         of.setPrefix( "opsd:", sharpOntBase + "opsd#" );
         of.setPrefix( "ops:", sharpOntBase + "ops#" );
+        of.setPrefix( "shops:", sharpOntBase + "shops#" );
         of.setPrefix( "prr:", sharpOntBase + "prr#" );
         of.setPrefix( "actions:", sharpOntBase + "actions#" );
         of.setPrefix( "skos-ext:", sharpOntBase + "skos-ext#" );
@@ -67,6 +68,7 @@ public final class IriUtil
         of.setPrefix( "opsb:", sharpOntBase + "opsb#" );
         of.setPrefix( "opsc:", sharpOntBase + "opsc#" );
         of.setPrefix( "opsd:", sharpOntBase + "opsd#" );
+        of.setPrefix( "shops:", sharpOntBase + "shops#" );
         of.setPrefix( "ops:", sharpOntBase + "ops#" );
         of.setPrefix( "prr:", sharpOntBase + "prr#" );
         of.setPrefix( "actions:", sharpOntBase + "actions#" );
