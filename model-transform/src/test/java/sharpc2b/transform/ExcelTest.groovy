@@ -8,12 +8,14 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.junit.Test
 import org.semanticweb.HermiT.Reasoner
+import org.semanticweb.owlapi.model.AddImport
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLAxiom
 import org.semanticweb.owlapi.model.OWLClass
 import org.semanticweb.owlapi.model.OWLClassExpression
 import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLDataProperty
+import org.semanticweb.owlapi.model.OWLImportsDeclaration
 import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf
 import org.semanticweb.owlapi.model.OWLObjectProperty
@@ -31,11 +33,15 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class ExcelTest
 extends GroovyTestCase {
 
-    static File excelFile = FileUtil.getFileInResourceDir( "SharpOperators.xlsx" );
+//    static File excelFile = FileUtil.getFileInResourceDir( "SharpOperators.xlsx" );
+    static File excelFile = FileUtil.getFileInProjectDir(
+            "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
     static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
-    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOperators.ofn" );
+//    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOperators.ofn" );
+    static File outputOntFile = FileUtil.getFileInProjectDir(
+            "/editor-models/src/main/resources/ontologies/SharpOperators.ofn" );
 
     static String opsCoreBaseIRI = "http://asu.edu/sharpc2b/ops#";
     static String operatorsBaseIRI = "http://asu.edu/sharpc2b/shops#";
@@ -142,7 +148,12 @@ extends GroovyTestCase {
 
         Row rowLast = sheet.getRow( lastRowNum );
         println "c[n,5] = " + rowLast.getCell( 0 ).getStringCellValue()
+    }
 
+    @Test
+    void testCreateOperatorOntology () {
+
+        addImports();
 
         OWLObjectProperty hasOperator = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperator" ) );
         OWLObjectProperty hasOperand = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperand" ) );
@@ -192,6 +203,16 @@ extends GroovyTestCase {
         int colOperand3Type = colIndex++;
 
         String lastOperatorName = "NONE";
+
+        openWorkbook( excelFile )
+        assert workbook
+
+        Sheet sheet
+        sheet = workbook.getSheet( "Operators" )
+
+//        int firstRowNum = sheet.getFirstRowNum()
+//        int nRows = sheet.getLastRowNum()
+        int lastRowNum = sheet.getLastRowNum()
 
         for (int rowNum = 1; rowNum <= lastRowNum; rowNum++) {
             Row row = sheet.getRow( rowNum );
@@ -356,6 +377,14 @@ extends GroovyTestCase {
         }
 
         oom.saveOntology( ont, oFormat, IRI.create( outputOntFile ) );
+    }
+
+    void addImports () {
+        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpIRI( "ops" ) );
+
+        System.out.println( "add owl:imports: " + importOps );
+
+        oom.applyChange( new AddImport( ont, importOps ) );
     }
 
     IRI createOperatorIRI (final String name) {
