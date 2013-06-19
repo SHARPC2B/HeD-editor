@@ -30,27 +30,19 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
  * Date: 6/15/13
  * Time: 1:57 PM
  */
-class ExcelTest
+class ExcelOperatorsTest
 extends GroovyTestCase {
 
-//    static File excelFile = FileUtil.getFileInResourceDir( "SharpOperators.xlsx" );
     static File excelFile = FileUtil.getFileInProjectDir(
             "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
-    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
 
-    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
-//    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SharpOperators.ofn" );
+//    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
+    static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/SharpOperators.ofn" );
+            "/editor-models/src/main/resources/ontologies/shops.ofn" );
 
-    static String opsCoreBaseIRI = "http://asu.edu/sharpc2b/ops#";
-    static String operatorsBaseIRI = "http://asu.edu/sharpc2b/shops#";
-
-    /**
-     * Location in the classpath to find properties file containing entity IRIs to use in the output
-     * A-Box ontology.
-     */
-    static String tToAConfigResourcePath = "/OWL-to-Sharp-ABox-Concepts.properties";
+    static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
+    static String operatorsBaseIRI = outputOntIRI.toString() + "#";
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
@@ -299,7 +291,7 @@ extends GroovyTestCase {
             OWLDataProperty skosNotation = odf.getOWLDataProperty(
                     IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
 
-            // notation
+            // skos:notation
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
 
             OWLAxiom ax;
@@ -327,6 +319,7 @@ extends GroovyTestCase {
                         operand3Type ) );
             }
 
+            /*###################################################*/
             /* Create Expression Class */
 
 //            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName ) );
@@ -433,7 +426,7 @@ extends GroovyTestCase {
         typeNameIriMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "expressionType" ) );
     }
 
-    Map<String, String> typeNameMap = new HashMap<String, IRI>();
+    Map<String, String> typeNameMap = new HashMap<String, String>();
 
     void initTypeNameMap () {
         typeNameMap.put( "Any", "Any" );

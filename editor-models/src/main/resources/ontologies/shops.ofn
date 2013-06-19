@@ -23,7 +23,7 @@ Prefix(prr-sharp:=<http://asu.edu/sharpc2b/prr-sharp#>)
 Prefix(sharp-master:=<http://asu.edu/sharpc2b/sharp-master#>)
 
 
-Ontology(<http://asu.edu/sharpc2b/test/SharpOperators>
+Ontology(<http://asu.edu/sharpc2b/shops>
 Import(<http://asu.edu/sharpc2b/ops>)
 
 SubClassOf(ops:AggregateOperator ops:Operator)

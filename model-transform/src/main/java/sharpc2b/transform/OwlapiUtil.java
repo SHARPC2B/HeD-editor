@@ -22,6 +22,11 @@ public class OwlapiUtil
         return oom;
     }
 
+    /**
+     * Add IRI mappings, to an OWLOntologyManager, for standard Sharp ontology files.  Doing so allows the
+     * OWLAPI to resolve and load ontologies based on the logical/name ontology IRI, especially ontologies
+     * referenced by an owl:imports.
+     */
     public static void addSharpIriMappings (OWLOntologyManager oom)
     {
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr-sharp", "prr-sharp.owl" );
@@ -45,6 +50,14 @@ public class OwlapiUtil
                             "demos/diffnames/expr-core-decoupled.owl" );
     }
 
+    /**
+     * Add a single IRI mapping, that maps an ontology IRI to a document location IRI, relative to the File
+     * folder where ontologies are stored in the "editor-models" project.
+     *
+     * @param oom                  The OWLOntologyManager the mapping is added to.
+     * @param ontologyIriString    IRI has a String
+     * @param relativeDocIriString Relative file location, such as "demos/expr-core-coupled.owl"
+     */
     public static void addSharpIriMapping (OWLOntologyManager oom,
                                            String ontologyIriString,
                                            String relativeDocIriString)
