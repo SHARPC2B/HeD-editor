@@ -1,8 +1,11 @@
 package sharpc2b.transform;
 
+import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.io.File;
@@ -65,6 +68,19 @@ public class OwlapiUtil
         File ontFile = FileUtil.getFileInProjectDir( ontologiesDirInProject + relativeDocIriString );
         SimpleIRIMapper m = new SimpleIRIMapper( IRI.create( ontologyIriString ), IRI.create( ontFile ) );
         oom.addIRIMapper( m );
+    }
+
+    public static Reasoner.ReasonerFactory getHermitReasonerFactory ()
+    {
+        return new Reasoner.ReasonerFactory();  // Hermit
+    }
+
+    public static OWLReasoner getHermitReasoner (final OWLOntology ont,
+                                                 final boolean buffering)
+    {
+        return buffering
+                ? getHermitReasonerFactory().createReasoner( ont )
+                : getHermitReasonerFactory().createNonBufferingReasoner( ont );
     }
 
 }
