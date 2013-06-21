@@ -288,11 +288,17 @@ extends GroovyTestCase {
             assertNotNull( thirdOperandTypeRelationship );
             assertNotNull( operand1Type );
 
+            /* assert skos:notation */
             OWLDataProperty skosNotation = odf.getOWLDataProperty(
                     IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
 
             // skos:notation
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
+
+            /* assert ops:code */
+            OWLDataProperty conceptCode = odf.getOWLDataProperty( createOpsCoreIRI( "code" ) );
+
+            addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
 
             OWLAxiom ax;
             ax = odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType );

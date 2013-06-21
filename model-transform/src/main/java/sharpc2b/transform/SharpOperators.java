@@ -201,11 +201,16 @@ public class SharpOperators
             /* assert rdf:type */
             addOperatorType( operator, arity );
 
+            /* assert skos:notation */
             OWLDataProperty skosNotation = odf
                     .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
 
-            /* assert skos:notation */
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
+
+            /* assert ops:code */
+            OWLDataProperty conceptCode = odf.getOWLDataProperty( createOpsCoreIRI( "code" ) );
+
+            addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
 
             /* assert operator return Type */
             OWLObjectProperty resultTypeRelationship = odf
