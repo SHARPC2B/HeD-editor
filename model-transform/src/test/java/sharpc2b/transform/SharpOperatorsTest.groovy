@@ -22,7 +22,7 @@ class SharpOperatorsTest extends GroovyTestCase {
 //    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
     static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/shops2.ofn" );
+            "/editor-models/src/main/resources/ontologies/shops.ofn" );
 
     static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = outputOntIRI.toString() + "#";

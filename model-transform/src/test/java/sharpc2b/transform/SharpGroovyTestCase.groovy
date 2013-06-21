@@ -1,6 +1,5 @@
 package sharpc2b.transform
 
-import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
@@ -13,7 +12,7 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
  * Date: 6/19/13
  * Time: 3:46 PM
  */
-class SharpGroovyTestCase
+abstract class SharpGroovyTestCase
 extends GroovyTestCase {
 
     OWLOntologyManager oom;

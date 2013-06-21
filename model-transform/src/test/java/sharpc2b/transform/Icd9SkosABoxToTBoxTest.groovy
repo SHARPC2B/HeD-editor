@@ -24,7 +24,12 @@ import java.util.regex.Pattern
 //@RunWith(JUnit4.class)
 public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
-    static String sharpCodesOntsRelPath = TrConfig.codeOntologiesRelPath;
+    private static final String codeOntologiesVersion = "03";
+
+    private static final String codeOntologiesRelPath = "asu.edu/sharpc2b/codes/" +
+            codeOntologiesVersion + "/";
+
+    static String sharpCodesOntsRelPath = codeOntologiesRelPath;
 
     /*
      * SKOS

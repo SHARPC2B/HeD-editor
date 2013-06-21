@@ -17,6 +17,11 @@ public final class IriUtil
 
     public static final IRI skosIRI = IRI.create( skos );
 
+    public static final IRI skosIRI (String name)
+    {
+        return IRI.create( skos + "#" + name );
+    }
+
     public static final String sharpOntBase = "http://asu.edu/sharpc2b/";
 
     public static final String sharpIRIString (String name)

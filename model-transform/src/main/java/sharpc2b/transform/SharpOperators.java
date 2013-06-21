@@ -245,7 +245,7 @@ public class SharpOperators
                         .getOWLObjectProperty( createOpsCoreIRI( "thirdOperand" ) );
 
                 /* it is an Expression */
-                requirements.add( odf.getOWLClass( createOpsCoreIRI( "Expression" ) ) );
+                requirements.add( odf.getOWLClass( createOpsCoreIRI( "SharpExpression" ) ) );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
                 /* AND has operator with the specified skos:notation */
@@ -569,9 +569,9 @@ public class SharpOperators
 
     static void initTypeExpressionNameMap ()
     {
-        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "" ) );
-        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "" ) );
-        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "" ) );
+        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "Sharp" ) );
+        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "Sharp" ) );
+        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "Sharp" ) );
         typeExpressionNameMap.put( "Object", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Object<T>", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Number", IRI.create( typesBaseIRI + "Number" ) );

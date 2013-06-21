@@ -7,9 +7,9 @@ package sharpc2b.transform;
  */
 public class TrConfig
 {
-    public static final String codeOntologiesVersion = "03";
-
-    public static final String codeOntologiesRelPath = "asu.edu/sharpc2b/codes/" +
-            codeOntologiesVersion + "/";
+//    public static final String codeOntologiesVersion = "03";
+//
+//    public static final String codeOntologiesRelPath = "asu.edu/sharpc2b/codes/" +
+//            codeOntologiesVersion + "/";
 
 }

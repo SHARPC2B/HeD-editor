@@ -326,13 +326,19 @@ extends GroovyTestCase {
             OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName + "Expression" ) );
             OWLClass superClass = getExpressionTypeClass( resultTypeName );
 
+            assertFalse( "has subClassOf = Expression, class = "+exprClass+"," +
+                    "resultTypeName = "+resultTypeName,
+                    superClass.getIRI().equals(
+                    createOpsCoreIRI
+                    ("Expression")))
+
             addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
 
             /* Define exprClass as hasOperator operatorInd AND hasOperand type Expr */
 
             Set<? extends OWLClassExpression> requirements = new HashSet<? extends OWLClassExpression>();
 
-            requirements.add( odf.getOWLClass( createOpsCoreIRI( "Expression" ) ) );
+            requirements.add( odf.getOWLClass( createOpsCoreIRI( "SharpExpression" ) ) );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
             requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
@@ -466,9 +472,9 @@ extends GroovyTestCase {
     Map<String, IRI> typeExpressionNameMap = new HashMap<String, IRI>();
 
     void initTypeExpressionNameMap () {
-        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "" ) );
-        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "" ) );
-        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "" ) );
+        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "Sharp" ) );
+        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "Sharp" ) );
+        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "Sharp" ) );
         typeExpressionNameMap.put( "Object", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Object<T>", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Number", IRI.create( typesBaseIRI + "Number" ) );
