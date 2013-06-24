@@ -82,6 +82,7 @@
           <groupId>pellet</groupId>
           <artifactId>pellet-owlapiv3</artifactId>
       </dependency>
+
       <dependency>
           <groupId>org.semanticweb</groupId>
           <artifactId>HermiT</artifactId>
@@ -93,7 +94,6 @@
           <!--<version>3.5-FINAL</version>-->
           <version>3.9</version>
       </dependency>
-
       <dependency>
           <groupId>org.apache.poi</groupId>
           <artifactId>poi-ooxml</artifactId>
