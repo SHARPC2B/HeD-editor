@@ -19,7 +19,6 @@ class SharpOperatorsTest extends GroovyTestCase {
     static File excelFile = FileUtil.getFileInProjectDir(
             "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
 
-//    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
     static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
             "/editor-models/src/main/resources/ontologies/shops.ofn" );
@@ -46,12 +45,12 @@ class SharpOperatorsTest extends GroovyTestCase {
 
     void testSharpOperators () {
 
-        SharpOperators inst = new SharpOperators();
+        SharpOperators sharpOperatorsCreator = new SharpOperators();
 
         oom = OWLManager.createOWLOntologyManager();
         ont = oom.createOntology( outputOntIRI );
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
-        inst.addSharpOperators( excelFile, ont );
+        sharpOperatorsCreator.addSharpOperators( excelFile, ont );
 
         oom.saveOntology( ont, oFormat, IRI.create( outputOntFile ) );
     }

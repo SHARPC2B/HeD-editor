@@ -17,9 +17,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +46,10 @@ public class SharpOperators
 
     static final String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
 
-    static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
+    static final String skosExtBaseIRI = IriUtil.sharpIRI( "skos-ext" ).toString() + "#";
+
+//    static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
+    static String typesBaseIRI = opsCoreBaseIRI;
 
     static Map<String, IRI> typeNameIriMap = new HashMap<String, IRI>();
 
@@ -64,6 +65,16 @@ public class SharpOperators
 
     }
 
+    static IRI opsIRI (final String name)
+    {
+        return IRI.create( opsCoreBaseIRI + name );
+    }
+
+    static IRI skosExtIRI (final String name)
+    {
+        return IRI.create( skosExtBaseIRI + name );
+    }
+
     //===============================================================================================
 
     private OWLOntologyManager oom;
@@ -74,7 +85,7 @@ public class SharpOperators
 
     private OWLOntology ont;
 
-    private String operatorsBaseIRI;
+    private String outputOntBaseIRI;
 
     //===============================================================================================
 
@@ -91,7 +102,7 @@ public class SharpOperators
         this.ont = ontology;
         setupOntologyManager( ont );
         addImports();
-        this.operatorsBaseIRI = ont.getOntologyID().getOntologyIRI().toString() + "#";
+        this.outputOntBaseIRI = ont.getOntologyID().getOntologyIRI().toString() + "#";
 
         addMissingCommonAxioms();
 
@@ -192,7 +203,7 @@ public class SharpOperators
 
             /* The OWL Individuals for the new Operator, and for the operand types and return type. */
 
-            OWLNamedIndividual operator = odf.getOWLNamedIndividual( createOperatorIRI( opName ) );
+            OWLNamedIndividual operator = odf.getOWLNamedIndividual( outputIRI( opName ) );
             OWLNamedIndividual resultType = getOpsTypeIndividual( resultTypeName );
             OWLNamedIndividual operand1Type = getOpsTypeIndividual( op1TypeName );
             OWLNamedIndividual operand2Type = 2 <= arity ? getOpsTypeIndividual( op2TypeName ) : null;
@@ -208,7 +219,7 @@ public class SharpOperators
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
 
             /* assert ops:code */
-            OWLDataProperty conceptCode = odf.getOWLDataProperty( createOpsCoreIRI( "code" ) );
+            OWLDataProperty conceptCode = odf.getOWLDataProperty( skosExtIRI( "code" ) );
 
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
 
@@ -222,8 +233,8 @@ public class SharpOperators
 
             /* Create Expression Class */
 
-//            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName ) );
-            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName + "Expression" ) );
+//            OWLClass exprClass = odf.getOWLClass( outputIRI( opName ) );
+            OWLClass exprClass = odf.getOWLClass( outputIRI( opName + "Expression" ) );
             OWLClass superClass = getExpressionTypeClass( resultTypeName );
 
             /* point to superclass */
@@ -240,17 +251,17 @@ public class SharpOperators
                 requirements = new HashSet<OWLClassExpression>();
 
                 OWLObjectProperty hasOperator = odf
-                        .getOWLObjectProperty( createOpsCoreIRI( "hasOperator" ) );
-                OWLObjectProperty hasOperand = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperand" ) );
+                        .getOWLObjectProperty( opsIRI( "hasOperator" ) );
+                OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
                 OWLObjectProperty hasOperand1 = odf
-                        .getOWLObjectProperty( createOpsCoreIRI( "firstOperand" ) );
+                        .getOWLObjectProperty( opsIRI( "firstOperand" ) );
                 OWLObjectProperty hasOperand2 = odf
-                        .getOWLObjectProperty( createOpsCoreIRI( "secondOperand" ) );
+                        .getOWLObjectProperty( opsIRI( "secondOperand" ) );
                 OWLObjectProperty hasOperand3 = odf
-                        .getOWLObjectProperty( createOpsCoreIRI( "thirdOperand" ) );
+                        .getOWLObjectProperty( opsIRI( "thirdOperand" ) );
 
                 /* it is an Expression */
-                requirements.add( odf.getOWLClass( createOpsCoreIRI( "SharpExpression" ) ) );
+                requirements.add( odf.getOWLClass( opsIRI( "SharpExpression" ) ) );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
                 /* AND has operator with the specified skos:notation */
@@ -311,11 +322,11 @@ public class SharpOperators
 
     private void addMissingCommonAxioms ()
     {
-//        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperator" ) );
-        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperand" ) );
-        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( createOpsCoreIRI( "firstOperand" ) );
-        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( createOpsCoreIRI( "secondOperand" ) );
-        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( createOpsCoreIRI( "thirdOperand" ) );
+//        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) );
+        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
+        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( opsIRI( "firstOperand" ) );
+        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( opsIRI( "secondOperand" ) );
+        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( opsIRI( "thirdOperand" ) );
 
         addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand1, hasOperand ) );
         addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand2, hasOperand ) );
@@ -420,20 +431,15 @@ public class SharpOperators
 
     //===============================================================================================
 
+    IRI outputIRI (final String name)
+    {
+        return IRI.create( outputOntBaseIRI + name );
+    }
+
     void addAxiom (final OWLAxiom axiom)
     {
         oom.addAxiom( ont, axiom );
 //        newAxioms.add( axiom );
-    }
-
-    IRI createOperatorIRI (final String name)
-    {
-        return IRI.create( operatorsBaseIRI + name );
-    }
-
-    IRI createOpsCoreIRI (final String name)
-    {
-        return IRI.create( opsCoreBaseIRI + name );
     }
 
     void addImports ()

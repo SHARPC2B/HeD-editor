@@ -36,13 +36,28 @@ extends GroovyTestCase {
     static File excelFile = FileUtil.getFileInProjectDir(
             "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
 
-//    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
     static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/shops.ofn" );
+            "/editor-models/src/main/resources/ontologies/shops3.ofn" );
+
 
     static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
+    static final String skosExtBaseIRI = IriUtil.sharpIRI( "skos-ext" ).toString() + "#";
     static String operatorsBaseIRI = outputOntIRI.toString() + "#";
+
+    IRI outputIRI (final String name) {
+        return IRI.create( operatorsBaseIRI + name );
+    }
+
+    static IRI opsIRI (final String name)
+    {
+        return IRI.create( opsCoreBaseIRI + name );
+    }
+
+    static IRI skosExtIRI (final String name)
+    {
+        return IRI.create( skosExtBaseIRI + name );
+    }
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
@@ -147,11 +162,11 @@ extends GroovyTestCase {
 
         addImports();
 
-        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperator" ) );
-        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( createOpsCoreIRI( "hasOperand" ) );
-        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( createOpsCoreIRI( "firstOperand" ) );
-        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( createOpsCoreIRI( "secondOperand" ) );
-        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( createOpsCoreIRI( "thirdOperand" ) );
+        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) );
+        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
+        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( opsIRI( "firstOperand" ) );
+        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( opsIRI( "secondOperand" ) );
+        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( opsIRI( "thirdOperand" ) );
 
         addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand1, hasOperand ) );
         addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand2, hasOperand ) );
@@ -249,7 +264,7 @@ extends GroovyTestCase {
             String opName = overloadedName ? (opNameFromConfig + typeNameMap.get( op1TypeName )) :
                 opNameFromConfig;
 
-            IRI operatorIRI = createOperatorIRI( opName );
+            IRI operatorIRI = outputIRI( opName );
             OWLNamedIndividual operator = odf.getOWLNamedIndividual( operatorIRI )
 
             /* At this point have operator name and arity. Now need to get result and operand types. */
@@ -296,7 +311,7 @@ extends GroovyTestCase {
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
 
             /* assert ops:code */
-            OWLDataProperty conceptCode = odf.getOWLDataProperty( createOpsCoreIRI( "code" ) );
+            OWLDataProperty conceptCode = odf.getOWLDataProperty( skosExtIRI( "code" ) );
 
             addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
 
@@ -328,14 +343,14 @@ extends GroovyTestCase {
             /*###################################################*/
             /* Create Expression Class */
 
-//            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName ) );
-            OWLClass exprClass = odf.getOWLClass( createOperatorIRI( opName + "Expression" ) );
+//            OWLClass exprClass = odf.getOWLClass( outputIRI( opName ) );
+            OWLClass exprClass = odf.getOWLClass( outputIRI( opName + "Expression" ) );
             OWLClass superClass = getExpressionTypeClass( resultTypeName );
 
             assertFalse( "has subClassOf = Expression, class = "+exprClass+"," +
                     "resultTypeName = "+resultTypeName,
                     superClass.getIRI().equals(
-                    createOpsCoreIRI
+                    opsIRI
                     ("Expression")))
 
             addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
@@ -344,7 +359,7 @@ extends GroovyTestCase {
 
             Set<? extends OWLClassExpression> requirements = new HashSet<? extends OWLClassExpression>();
 
-            requirements.add( odf.getOWLClass( createOpsCoreIRI( "SharpExpression" ) ) );
+            requirements.add( odf.getOWLClass( opsIRI( "SharpExpression" ) ) );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
             requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
@@ -390,14 +405,6 @@ extends GroovyTestCase {
         System.out.println( "add owl:imports: " + importOps );
 
         oom.applyChange( new AddImport( ont, importOps ) );
-    }
-
-    IRI createOperatorIRI (final String name) {
-        return IRI.create( operatorsBaseIRI + name );
-    }
-
-    IRI createOpsCoreIRI (final String name) {
-        return IRI.create( opsCoreBaseIRI + name );
     }
 
     Set<OWLAxiom> newAxioms = new HashSet<OWLAxiom>();
