@@ -48,7 +48,7 @@ public class SharpOperators
 
     static final String skosExtBaseIRI = IriUtil.sharpIRI( "skos-ext" ).toString() + "#";
 
-//    static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
+    //    static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
     static String typesBaseIRI = opsCoreBaseIRI;
 
     static Map<String, IRI> typeNameIriMap = new HashMap<String, IRI>();
@@ -62,7 +62,6 @@ public class SharpOperators
         initTypeNameMap();
         initTypeNameIriMap();
         initTypeExpressionNameMap();
-
     }
 
     static IRI opsIRI (final String name)
@@ -74,6 +73,18 @@ public class SharpOperators
     {
         return IRI.create( skosExtBaseIRI + name );
     }
+
+    static final int ARITY_NARY = -2;
+
+    static final int ARITY_LIST = -1;
+
+    static final int ARITY_NULLARY = 0;
+
+    static final int ARITY_UNARY = 1;
+
+    static final int ARITY_BINARY = 2;
+
+    static final int ARITY_TERNARY = 3;
 
     //===============================================================================================
 
@@ -91,7 +102,7 @@ public class SharpOperators
 
     SharpOperators ()
     {
-
+        super();
     }
 
     //===============================================================================================
@@ -110,15 +121,6 @@ public class SharpOperators
 
         int lastRowNum = sheet.getLastRowNum();
 
-        /* set up column indexes for sheet columns we care about */
-        int i = 0;
-        int colOperatorName = i++;
-        int colNumArgs = i++;
-        int colResultType = i++;
-        int colOperand1Type = i++;
-        int colOperand2Type = i++;
-        int colOperand3Type = i++;
-
         /*
          * Stores the operator name from the previous row of the spreadsheet. Needed to determine if same
           * operator name is used in multiple rows, in which case it needs a unique name to be created
@@ -126,11 +128,15 @@ public class SharpOperators
           */
         String lastOperatorName = "NONE";
 
-        /* skip first row, has column names */
+        /* skip the first row -- contains column names */
 
         for (int rowNum = 1; rowNum <= lastRowNum; rowNum++)
         {
             Row row = sheet.getRow( rowNum );
+            int colOperatorName = 0;
+
+            String operatorName = row.getCell( colOperatorName ).getStringCellValue();
+
             String nextOperatorName;
             if (rowNum < lastRowNum)
             {
@@ -141,177 +147,225 @@ public class SharpOperators
             {
                 nextOperatorName = "NONE";
             }
-            String opNameFromConfig = row.getCell( colOperatorName ).getStringCellValue();
-//            String opName = row.getCell( colOperatorName ).getStringCellValue();
+
+            boolean overloadedName = operatorName.equals( lastOperatorName ) ||
+                    operatorName.equals( nextOperatorName );
+
+            processOneRow( row, overloadedName );
+
+            /* setup for next iteration */
+            lastOperatorName = operatorName;
+        }
+    }
+
+    private void processOneRow (final Row row,
+                                final boolean isOverloadedName)
+    {
+        /* set up column indexes for sheet columns we care about */
+        int i = 0;
+        int colOperatorName = i++;
+        int colNumArgs = i++;
+        int colResultType = i++;
+        int colOperand1Type = i++;
+        int colOperand2Type = i++;
+        int colOperand3Type = i++;
+
+        String opNameFromConfig = row.getCell( colOperatorName ).getStringCellValue();
 //            String numArgs = row.getCell( colNumArgs ).getStringCellValue();
-            String numArgs = row.getCell( colNumArgs ).toString();
-            String resultTypeName = row.getCell( colResultType ).getStringCellValue();
-            String op1TypeName = row.getCell( colOperand1Type ).getStringCellValue();
+        String numArgs = row.getCell( colNumArgs ).toString();
+        String resultTypeName = row.getCell( colResultType ).getStringCellValue();
+        String op1TypeName = row.getCell( colOperand1Type ).getStringCellValue();
 
-            boolean isNary = numArgs.equals(  "n");
-            boolean isListArg = numArgs .equals(  "a");
-            boolean hasArity = !(isNary || isListArg);
+        boolean isNary = numArgs.equals( "n" );
+        boolean isListArg = numArgs.equals( "a" );
+        boolean hasArity = !(isNary || isListArg);
 
-            int arity;
+        int arity;
+        {
+            if (numArgs.equals( "n" ))
             {
-                if (numArgs.equals( "n" ))
-                {
-                    arity = -1;
-                }
-                else if (numArgs.equals( "a" ))
-                {
-                    arity = 0;
-                }
-                else if (numArgs.equals( "1.0" ))
-                {
-                    arity = 1;
-                }
-                else if (numArgs.equals( "2.0" ))
-                {
-                    arity = 2;
-                }
-                else if (numArgs.equals( "3.0" ))
-                {
-                    arity = 3;
-                }
-                else
-                {
-                    throw new RuntimeException(
-                            "Encountered bad value for number of operands: " + numArgs );
-                }
+                arity = -1;
             }
+            else if (numArgs.equals( "a" ))
+            {
+                arity = 0;
+            }
+            else if (numArgs.equals( "1.0" ))
+            {
+                arity = 1;
+            }
+            else if (numArgs.equals( "2.0" ))
+            {
+                arity = 2;
+            }
+            else if (numArgs.equals( "3.0" ))
+            {
+                arity = 3;
+            }
+            else
+            {
+                throw new RuntimeException( "Encountered bad value for number of operands: " + numArgs );
+            }
+        }
 
             /* only needed for arity = 2 or 3 */
-            String op2TypeName = 2 <= arity ? row.getCell( colOperand2Type ).getStringCellValue() : null;
-            String op3TypeName = 3 <= arity ? row.getCell( colOperand3Type ).getStringCellValue() : null;
+        String op2TypeName = 2 <= arity ? row.getCell( colOperand2Type ).getStringCellValue() : null;
+        String op3TypeName = 3 <= arity ? row.getCell( colOperand3Type ).getStringCellValue() : null;
 
             /* At this point, have all the values from the spreadsheet row. */
 
             /*
-             * check if this operator name used in more than one row.  If so,
+             * If this operator name is used in more than one row,
              * need to create a compound name, such as "PlusInteger" instead of just "Plus".
              */
 
-            String opName;
-            {
-                boolean overloadedName = opNameFromConfig .equals(  lastOperatorName )||
-                        opNameFromConfig .equals(  nextOperatorName);
-                opName = overloadedName
-                        ? (opNameFromConfig + typeNameMap.get( op1TypeName ))
-                        : opNameFromConfig;
-            }
+//            boolean isOverloadedName = opNameFromConfig .equals(  lastOperatorName )||
+//                    opNameFromConfig .equals(  nextOperatorName);
+        final String opName;
+        opName = isOverloadedName ? (opNameFromConfig + typeNameMap.get( op1TypeName )) : opNameFromConfig;
 
-            /* The OWL Individuals for the new Operator, and for the operand types and return type. */
+        defineOperatorIndividual( opName, opNameFromConfig, resultTypeName, arity, op1TypeName, op2TypeName,
+                                  op3TypeName );
 
-            OWLNamedIndividual operator = odf.getOWLNamedIndividual( outputIRI( opName ) );
-            OWLNamedIndividual resultType = getOpsTypeIndividual( resultTypeName );
-            OWLNamedIndividual operand1Type = getOpsTypeIndividual( op1TypeName );
-            OWLNamedIndividual operand2Type = 2 <= arity ? getOpsTypeIndividual( op2TypeName ) : null;
-            OWLNamedIndividual operand3Type = 3 <= arity ? getOpsTypeIndividual( op3TypeName ) : null;
+
+        defineOperatorExpressionClass( opName, opNameFromConfig, resultTypeName, arity, op1TypeName,
+                                       op2TypeName, op3TypeName );
+    }
+
+    /**
+     * Create Individual to define the Operator.
+     */
+    private void defineOperatorIndividual (final String opName,
+                                           final String opNameFromConfig,
+                                           final String resultTypeName,
+                                           final int arity,
+                                           final String op1TypeName,
+                                           final String op2TypeName,
+                                           final String op3TypeName)
+    {
+    /* The OWL Individuals for the new Operator, and for the operand types and return type. */
+
+        OWLNamedIndividual operator = odf.getOWLNamedIndividual( outputIRI( opName ) );
+        OWLNamedIndividual resultType = getOpsTypeIndividual( resultTypeName );
+        OWLNamedIndividual operand1Type = getOpsTypeIndividual( op1TypeName );
+        OWLNamedIndividual operand2Type = 2 <= arity ? getOpsTypeIndividual( op2TypeName ) : null;
+        OWLNamedIndividual operand3Type = 3 <= arity ? getOpsTypeIndividual( op3TypeName ) : null;
 
             /* assert rdf:type */
-            addOperatorType( operator, arity );
+        addOperatorType( operator, arity );
 
             /* assert skos:notation */
-            OWLDataProperty skosNotation = odf
-                    .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+        OWLDataProperty skosNotation = odf
+                .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
 
-            addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
+        addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
 
             /* assert ops:code */
-            OWLDataProperty conceptCode = odf.getOWLDataProperty( skosExtIRI( "code" ) );
+        OWLDataProperty conceptCode = odf.getOWLDataProperty( skosExtIRI( "code" ) );
 
-            addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
+        addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
 
             /* assert operator return Type */
-            OWLObjectProperty resultTypeRelationship = odf
-                    .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "evaluatesAs" ) );
-            addAxiom( odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator,
-                                                              resultType ) );
+        OWLObjectProperty resultTypeRelationship = odf
+                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "evaluatesAs" ) );
+        addAxiom( odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType ) );
 
-            assertOperandTypes( arity, operator, operand1Type, operand2Type, operand3Type );
+        assertOperandTypes( arity, operator, operand1Type, operand2Type, operand3Type );
+    }
 
-            /* Create Expression Class */
+    /**
+     * Create Expression Class
+     */
+    private void defineOperatorExpressionClass (final String opName,
+                                                final String opNameFromConfig,
+                                                final String resultTypeName,
+                                                final int arity,
+                                                final String op1TypeName,
+                                                final String op2TypeName,
+                                                final String op3TypeName)
+    {
+//        final String opNameFromConfig = ; final boolean nary = ; final boolean listArg = ;
+//
+//        final boolean hasArity = ; final OWLDataProperty skosNotation = ;
 
-//            OWLClass exprClass = odf.getOWLClass( outputIRI( opName ) );
-            OWLClass exprClass = odf.getOWLClass( outputIRI( opName + "Expression" ) );
-            OWLClass superClass = getExpressionTypeClass( resultTypeName );
+        //            OWLClass exprClass = odf.getOWLClass( outputIRI( opName ) );
+        OWLClass exprClass = odf.getOWLClass( outputIRI( opName + "Expression" ) );
+        OWLClass superClass = getExpressionTypeClass( resultTypeName );
 
             /* point to superclass */
-            addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
+        addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
 
             /*
              * Define the Expression OWLClass that defines the proper combination of operator and operand
              * types.
              */
-            {
+        {
                 /* Collect the conditions to AND together into a Collection. */
 
-                final Set<OWLClassExpression> requirements;
-                requirements = new HashSet<OWLClassExpression>();
+            final Set<OWLClassExpression> requirements;
+            requirements = new HashSet<OWLClassExpression>();
 
-                OWLObjectProperty hasOperator = odf
-                        .getOWLObjectProperty( opsIRI( "hasOperator" ) );
-                OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
-                OWLObjectProperty hasOperand1 = odf
-                        .getOWLObjectProperty( opsIRI( "firstOperand" ) );
-                OWLObjectProperty hasOperand2 = odf
-                        .getOWLObjectProperty( opsIRI( "secondOperand" ) );
-                OWLObjectProperty hasOperand3 = odf
-                        .getOWLObjectProperty( opsIRI( "thirdOperand" ) );
+            OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) );
+            OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
+            OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( opsIRI( "firstOperand" ) );
+            OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( opsIRI( "secondOperand" ) );
+            OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( opsIRI( "thirdOperand" ) );
 
                 /* it is an Expression */
-                requirements.add( odf.getOWLClass( opsIRI( "SharpExpression" ) ) );
+            requirements.add( odf.getOWLClass( opsIRI( "SharpExpression" ) ) );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
                 /* AND has operator with the specified skos:notation */
-                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
-                                                                  odf.getOWLDataHasValue( skosNotation,
-                                                                                          odf.getOWLLiteral(
-                                                                                                  opNameFromConfig ) ) ) );
+            OWLDataProperty skosNotation = odf
+                    .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+            requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
+                                                              odf.getOWLDataHasValue( skosNotation,
+                                                                                      odf.getOWLLiteral(
+                                                                                              opNameFromConfig ) ) ) );
 
                 /* AND if n-Ary, all operands are of a particular type, and at least one. */
-                if (isNary)
-                {
-                    requirements.add( odf.getOWLObjectAllValuesFrom( hasOperand, getExpressionTypeClass(
-                            op1TypeName ) ) );
-                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, getExpressionTypeClass(
-                            op1TypeName ) ) );
-                }
 
-                /* AND if aggregate type, only a single operand of type = ListExpression */
-                if (isListArg)
-                {
-                    OWLClass listExpr = getExpressionTypeClass( "List" );
-                    requirements.add( odf.getOWLObjectExactCardinality( 1, hasOperand ) );
-                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, listExpr ) );
-                }
-                /* AND if Arity type, add requirement for first operand */
-                if (hasArity)
-                {
-                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1, getExpressionTypeClass(
-                            op1TypeName ) ) );
-                }
-                /* AND if Binary or Ternary, add requirement for second operand */
-                if (2 <= arity)
-                {
-                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2, getExpressionTypeClass(
-                            op2TypeName ) ) );
-                }
-                /* AND if Ternary, add requirement for third operand */
-                if (3 <= arity)
-                {
-                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3, getExpressionTypeClass(
-                            op3TypeName ) ) );
-                }
+            boolean nary = arity == ARITY_NARY;
+            boolean listArg = arity == ARITY_LIST;
+            boolean hasArity = arity >= ARITY_NULLARY;
 
-                OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
-
-                addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
+            if (nary)
+            {
+                requirements.add( odf.getOWLObjectAllValuesFrom( hasOperand,
+                                                                 getExpressionTypeClass( op1TypeName ) ) );
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand,
+                                                                  getExpressionTypeClass( op1TypeName ) ) );
             }
 
-            /* setup for next iteration */
-            lastOperatorName = opNameFromConfig;
+                /* AND if aggregate type, only a single operand of type = ListExpression */
+            if (listArg)
+            {
+                OWLClass listExpr = getExpressionTypeClass( "List" );
+                requirements.add( odf.getOWLObjectExactCardinality( 1, hasOperand ) );
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, listExpr ) );
+            }
+                /* AND if Arity type, add requirement for first operand */
+            if (hasArity)
+            {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1,
+                                                                  getExpressionTypeClass( op1TypeName ) ) );
+            }
+                /* AND if Binary or Ternary, add requirement for second operand */
+            if (2 <= arity)
+            {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2,
+                                                                  getExpressionTypeClass( op2TypeName ) ) );
+            }
+                /* AND if Ternary, add requirement for third operand */
+            if (3 <= arity)
+            {
+                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3,
+                                                                  getExpressionTypeClass( op3TypeName ) ) );
+            }
+
+            OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
+
+            addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
         }
     }
 

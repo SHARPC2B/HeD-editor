@@ -20,7 +20,6 @@ public class TestFileUtil
      */
     private static final String knownRootTestResourcePath = "/FileInTestResourcesRoot.properties";
 
-
     /**
      * Create a java.io.File object for the input path argument.  The path is a String value relative to the
      * 'test' resources root folder, using '/' as the path separator character (whether Windows or Unix file

@@ -9,7 +9,6 @@ Ontology(<http://asu.edu/shaprc2b/ExprCases1>
 Import(<http://asu.edu/sharpc2b/shops-patch1>)
 Import(<http://asu.edu/sharpc2b/shops>)
 
-SubObjectPropertyOf(<http://www.w3.org/2004/02/skos/core#semanticRelation> <http://www.w3.org/2004/02/skos/core#member>)
 Declaration(NamedIndividual(<http://asu.edu/shaprc2b/ExprCases1#a_addIntExpr1>))
 ClassAssertion(<http://asu.edu/sharpc2b/ops#SharpExpression> <http://asu.edu/shaprc2b/ExprCases1#a_addIntExpr1>)
 ObjectPropertyAssertion(<http://asu.edu/sharpc2b/ops#firstOperand> <http://asu.edu/shaprc2b/ExprCases1#a_addIntExpr1> <http://asu.edu/shaprc2b/ExprCases1#a_intExpr1>)
