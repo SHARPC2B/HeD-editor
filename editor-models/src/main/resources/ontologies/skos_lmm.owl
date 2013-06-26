@@ -14,6 +14,7 @@ Import(<http://asu.edu/sharpc2b/skos-ext>)
 Import(<http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl>)
 
 SubClassOf(skos-ext:ConceptCode IOLite:FormalExpression)
+SubClassOf(skos:Concept <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Concept>)
 SubClassOf(skos:Concept <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Meaning>)
 SubClassOf(skos:ConceptScheme IOLite:KOS)
 SubObjectPropertyOf(skos:semanticRelation <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#relatedMeaning>)
