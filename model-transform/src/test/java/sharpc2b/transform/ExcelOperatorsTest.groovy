@@ -24,6 +24,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.reasoner.OWLReasoner
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 /**
  * User: rk
@@ -33,12 +34,11 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class ExcelOperatorsTest
 extends GroovyTestCase {
 
-    static File excelFile = FileUtil.getFileInProjectDir(
-            "/model-transform/src/main/resources/SharpOperators.xlsx" );
+    static File excelFile = FileUtil.getExistingResourceAsFile(
+            "/onts/import-operators/SharpOperators.xlsx");
 
     static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
-    static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/model-transform/src/test/resources/onts/editor-models/shops3.ofn" );
+    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/onts/out/shops-step-by-step.ofn" );
 
 
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
@@ -49,13 +49,11 @@ extends GroovyTestCase {
         return IRI.create( operatorsBaseIRI + name );
     }
 
-    static IRI opsIRI (final String name)
-    {
+    static IRI opsIRI (final String name) {
         return IRI.create( opsCoreBaseIRI + name );
     }
 
-    static IRI skosExtIRI (final String name)
-    {
+    static IRI skosExtIRI (final String name) {
         return IRI.create( skosExtBaseIRI + name );
     }
 
@@ -347,11 +345,11 @@ extends GroovyTestCase {
             OWLClass exprClass = odf.getOWLClass( outputIRI( opName + "Expression" ) );
             OWLClass superClass = getExpressionTypeClass( resultTypeName );
 
-            assertFalse( "has subClassOf = Expression, class = "+exprClass+"," +
-                    "resultTypeName = "+resultTypeName,
+            assertFalse( "has subClassOf = Expression, class = " + exprClass + "," +
+                    "resultTypeName = " + resultTypeName,
                     superClass.getIRI().equals(
-                    opsIRI
-                    ("Expression")))
+                            opsIRI
+                                    ( "Expression" ) ) )
 
             addAxiom( odf.getOWLSubClassOfAxiom( exprClass, superClass ) );
 

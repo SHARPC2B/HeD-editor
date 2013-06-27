@@ -18,8 +18,8 @@ import sharpc2b.transform.test.SharpGroovyTestCase
 class ShopsTest extends SharpGroovyTestCase {
 
     static IRI shopsOntIRI = IriUtil.sharpEditorIRI( "shops" );
-    static File shopsOntFile = FileUtil.getFileInProjectDir(
-            "/model-transform/src/main/resources/onts/editor-models/shops.ofn" );
+    static File shopsOntFile = FileUtil.getExistingResourceAsFile(
+            "/onts/import-operators/shops.ofn" );
 
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = shopsOntIRI.toString() + "#";

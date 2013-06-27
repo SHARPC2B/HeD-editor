@@ -38,16 +38,16 @@ import sharpc2b.transform.test.TestUtil
 
 class TADomainModelTest extends GroovyTestCase {
 
-    static File inputOntFile = TestFileUtil.getResourceAsFile( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getResourceAsFile( "/onts/in/ClinicalDomainT.ofn" );
 
     /**
      * Meta-model.  A-box versions of Class, Property, etc.  Perhaps don't really need to load.
      */
-    static File mmaFile = TestFileUtil.getResourceAsFile( "onts/in/ABoxMetaModel.ofn" );
-    static File mmaOutFile = TestFileUtil.getResourceAsFile( "onts/out/SharpOwlABoxMetaModel.ofn" );
+    static File mmaFile = TestFileUtil.getResourceAsFile( "/onts/in/ABoxMetaModel.ofn" );
+    static File mmaOutFile = TestFileUtil.getResourceAsFile( "/onts/out/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainInsts" );
-    static File outputOntFile = TestFileUtil.getResourceAsFile( "onts/out/ClinicalDomainA.ofn" );
+    static File outputOntFile = TestFileUtil.getResourceAsFile( "/onts/out/ClinicalDomainA.ofn" );
 
 
     OWLOntologyManager oom;

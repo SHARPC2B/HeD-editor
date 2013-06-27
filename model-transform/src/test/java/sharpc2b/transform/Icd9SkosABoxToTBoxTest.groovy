@@ -49,7 +49,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
      * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
      */
     static IRI sharpCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
-//    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "onts/out/icd9-classes-test.ofn" )
+//    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes-test.ofn" )
     static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes-test" +
             ".ofn" )
 

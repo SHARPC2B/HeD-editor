@@ -23,7 +23,7 @@ public class FileUtil
     /**
      * Create a java.io.File object for the input path argument.  The path is a String value relative to the
      * main resources root folder, using '/' as the path separator character (whether Windows or Unix file
-     * system).  An example value of path would be "onts/in/ClinicalDomainT.ofn".  Thus, if resource root is
+     * system).  An example value of path would be "/onts/in/ClinicalDomainT.ofn".  Thus, if resource root is
      * ".. ./sharp-editor/model-transform/src/main/resources/", then the File object will correspond to
      * ./sharp-editor/model-transform/src/main/resources/onts/in/ClinicalDomainT.ofn".
      *
@@ -45,7 +45,8 @@ public class FileUtil
         }
         URL referenceURL = System.class.getResource( knownRootResourcePath );
 
-        System.out.println( "referenceURL = " + referenceURL );
+//        System.out.println( "referenceURL = " + referenceURL );
+        System.out.println( "Failed to find Resource at: " + path );
 
         if (referenceURL == null)
         {
@@ -115,7 +116,7 @@ public class FileUtil
     /**
      * Create a java.io.InputStream object for the input path argument.  The path is a String value relative
      * to the main resources root folder, using '/' as the path separator character An example value of
-     * resourcePath would be "onts/in/ClinicalDomainT.ofn".
+     * resourcePath would be "/onts/in/ClinicalDomainT.ofn".
      */
     public static final InputStream getResourceAsStream (final String resourcePath)
     {

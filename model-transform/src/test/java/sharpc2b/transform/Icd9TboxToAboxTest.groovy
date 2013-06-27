@@ -35,24 +35,24 @@ extends GroovyTestCase {
     /*
      * SKOS
      */
-    static File skosFile = TestFileUtil.getResourceAsFile( "onts/in/skos-core.rdfxml" );
+    static File skosFile = TestFileUtil.getResourceAsFile( "/onts/in/skos-core.rdfxml" );
 
     /*
      * Original SKOS A-Box ICD9 Codes Ontology.  Imported by icd9-classes (T-Box).
      */
-    static File icdFile = TestFileUtil.getResourceAsFile( "onts/in/icd9-pub.ofn" );
+    static File icdFile = TestFileUtil.getResourceAsFile( "/onts/in/icd9-pub.ofn" );
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
     static IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes" );
-    static tFile = TestFileUtil.getResourceAsFile( "onts/in/icd9-classes.ofn" )
+    static tFile = TestFileUtil.getResourceAsFile( "/onts/in/icd9-classes.ofn" )
 
     /*
      * A-Box ICD9 Codes Ontology
      */
     static IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-abox" );
-//    static aFile = TestFileUtil.getFileForTestOutput( "onts/in/icd9-abox.ofn" )
+//    static aFile = TestFileUtil.getFileForTestOutput( "/onts/in/icd9-abox.ofn" )
 
     OWLOntologyManager oom;
     OWLDataFactory odf;

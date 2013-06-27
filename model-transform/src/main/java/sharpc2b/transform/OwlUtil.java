@@ -25,11 +25,12 @@ public class OwlUtil
      * Need a resource path (location in classpath) for a core Sharp ontology file.  This is used to find
      * other ontology files in the folder for code Sharp ontologies.
      */
-    private static String knownSharpOntologyResourcePath = "onts/editor-models/sharp.owl";
+    private static String knownSharpOntologyResourcePath = "/onts/editor-models/sharp.owl";
 
     public static File getSharpEditorOntologyDir ()
     {
         File knownFile = FileUtil.getExistingResourceAsFile( knownSharpOntologyResourcePath );
+        assert knownFile.exists();
         return knownFile.getParentFile();
     }
 

@@ -1,7 +1,6 @@
 package sharpc2b.transform.test;
 
 import sharpc2b.transform.FileUtil;
-import sharpc2b.transform.TBoxToABoxTest;
 
 import java.io.File;
 import java.net.URI;
@@ -27,14 +26,14 @@ public class TestFileUtil
      * Create a java.io.File object for the input relativePath argument.  The relativePath is a String value
      * relative to the 'test' resources root folder, using '/' as the relativePath separator character
      * (whether Windows or Unix file system).  An example value of relativePath would be
-     * "onts/in/ClinicalDomainT.ofn".  Thus, if resource root is ".. ./sharp-editor/model-transform/src/test/resources/",
+     * "/onts/in/ClinicalDomainT.ofn".  Thus, if resource root is ".. ./sharp-editor/model-transform/src/test/resources/",
      * then the File object will correspond to ./sharp-editor/model-transform/src/test/resources/onts/in/ClinicalDomainT.ofn".
      *
      * The file does not have to exist for the File object to be successfully created.
      */
     public static final File getFileForTestOutput (final String relativePath)
     {
-        Class cl = TBoxToABoxTest.class;
+//        Class cl = TBoxToABoxTest.class;
         URL url = System.class.getResource( knownRootTestResourcePath );
 //        InputStream inputStream = System.class.getResourceAsStream( knownRootTestResourcePath );
 

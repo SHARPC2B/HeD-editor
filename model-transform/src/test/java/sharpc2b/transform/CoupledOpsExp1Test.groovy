@@ -27,8 +27,10 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class CoupledOpsExp1Test
 extends GroovyTestCase {
 
-    static File ontFile = FileUtil.getFileInProjectDir(
-            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
+//    static File ontFile = FileUtil.getFileInProjectDir(
+//            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
+    static File ontFile = FileUtil.getExistingResourceAsFile( "/onts/editor-models/demos/expr-core-coupled.owl" );
+
 
     OWLOntologyManager oom;
     OWLOntology ont

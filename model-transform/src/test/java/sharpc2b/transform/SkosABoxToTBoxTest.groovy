@@ -30,7 +30,7 @@ extends GroovyTestCase {
     /*
      * SKOS
      */
-//    static String skosResourcePath = "onts/in/skos-core.rdfxml";
+//    static String skosResourcePath = "/onts/in/skos-core.rdfxml";
 
     /*
      * Published ICD9 Codes Ontology
@@ -57,7 +57,7 @@ extends GroovyTestCase {
 
 //        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();
-//        skosFile = TestFileUtil.getResourceAsFile( "onts/in/skos-core.rdfxml" );
+//        skosFile = TestFileUtil.getResourceAsFile( "/onts/in/skos-core.rdfxml" );
 //        skosFile = OwlUtil.getSharpEditorOntologyFile("skos-core.owl");
 //        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
 //                IRI.create( skosFile ) );

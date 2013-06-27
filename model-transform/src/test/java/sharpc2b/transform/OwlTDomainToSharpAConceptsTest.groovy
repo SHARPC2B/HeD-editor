@@ -20,10 +20,10 @@ import sharpc2b.transform.test.TestFileUtil
 class OwlTDomainToSharpAConceptsTest
 extends GroovyTestCase {
 
-    static File inputOntFile = TestFileUtil.getResourceAsFile( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getResourceAsFile( "/onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
-    static File outputOntFile = TestFileUtil.getResourceAsFile( "onts/out/ClinicalDomainConcepts.ofn" );
+    static File outputOntFile = TestFileUtil.getResourceAsFile( "/onts/out/ClinicalDomainConcepts.ofn" );
 
     /**
      * Properties file to load to specify the meta-model entity IRIs to use for the output ontology.

@@ -24,8 +24,10 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class DecoupledOpsExp1Test
 extends GroovyTestCase {
 
-    static File ontFile = FileUtil.getFileInProjectDir(
-            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-decoupled.owl" )
+//    static File ontFile = FileUtil.getFileInProjectDir(
+//            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-decoupled.owl" )
+    static File ontFile = FileUtil.getExistingResourceAsFile(
+            "/onts/editor-models/demos/expr-core-decoupled.owl" );
 
     OWLOntologyManager oom;
     OWLOntology ont

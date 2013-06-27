@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.reasoner.OWLReasoner
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 /**
  * User: rk
@@ -16,12 +17,11 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
  */
 class SharpOperatorsTest extends GroovyTestCase {
 
-    static File excelFile = FileUtil.getFileInProjectDir(
-            "/model-transform/src/main/resources/SharpOperators.xlsx" );
+    static File excelFile = FileUtil.getExistingResourceAsFile(
+            "/onts/import-operators/SharpOperators.xlsx" );
 
     static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
-    static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/model-transform/src/test/resources/onts/editor-models/shops.ofn" );
+    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/onts/out/shops.ofn" );
 
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = outputOntIRI.toString() + "#";

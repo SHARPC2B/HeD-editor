@@ -37,7 +37,7 @@ extends GroovyTestCase {
     static String mmNamespace = mmIri.toString() + "#"
 
     static File ontFile (String name) {
-        TestFileUtil.getResourceAsFile( "onts/in/" + name + ".ofn" )
+        TestFileUtil.getResourceAsFile( "/onts/in/" + name + ".ofn" )
     }
 
 //    static IRI ontIRI (String name) {
@@ -202,7 +202,7 @@ extends GroovyTestCase {
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
         oFormat.copyPrefixesFrom( oFormat )
 
-        File outFile = TestFileUtil.getResourceAsFile( "onts/out/" + ontFileName + ".ofn" )
+        File outFile = TestFileUtil.getResourceAsFile( "/onts/out/" + ontFileName + ".ofn" )
         oom.saveOntology( ont, oFormat, IRI.create( outFile ) )
     }
 

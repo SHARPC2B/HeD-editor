@@ -74,7 +74,7 @@ extends GroovyTestCase {
         url = System.getResource( "/onts/in/DoesNotExist" );
         assertNull url
 
-//        x= TBoxToABox.class.getResource("onts/in/ClinicalDomain.ofn");
+//        x= TBoxToABox.class.getResource("/onts/in/ClinicalDomain.ofn");
 //        println x;
         url = TBoxToABox.class.getResource( "/onts/in/ClinicalDomainT.ofn" );
 //        println "url = ${url}";
