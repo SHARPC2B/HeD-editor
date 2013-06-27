@@ -1,0 +1,3011 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix hed: <http://asu.edu/sharpc2b/hed#> .
+@prefix : <http://asu.edu/sharpc2b/hed#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://asu.edu/sharpc2b/hed> .
+
+<http://asu.edu/sharpc2b/hed> rdf:type owl:Ontology ;
+                              
+                              owl:imports <http://asu.edu/sharpc2b/ops> .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/hed#actionSentence
+
+hed:actionSentence rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:domain hed:Action ;
+                   
+                   rdfs:range hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#aggPath
+
+hed:aggPath rdf:type owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:domain hed:AggregateExpression ;
+            
+            rdfs:range hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#aggSource
+
+hed:aggSource rdf:type owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:domain hed:AggregateExpression ;
+              
+              rdfs:range hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#channel
+
+hed:channel rdf:type owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:domain hed:SimpleAction ;
+            
+            rdfs:range <http://asu.edu/sharpc2b/lmm#ConceptCode> .
+
+
+
+###  http://asu.edu/sharpc2b/hed#destination
+
+hed:destination rdf:type owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:domain hed:SimpleAction ;
+                
+                rdfs:range <http://asu.edu/sharpc2b/lmm#IndividualIdentifier> .
+
+
+
+###  http://asu.edu/sharpc2b/hed#hasOperand
+
+hed:hasOperand rdf:type owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:range hed:Expression ;
+               
+               rdfs:domain hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#hasOperator
+
+hed:hasOperator rdf:type owl:AsymmetricProperty ,
+                         owl:FunctionalProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:domain hed:Operation .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ifExprCondition
+
+hed:ifExprCondition rdf:type owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ,
+                             owl:ObjectProperty ;
+                    
+                    rdfs:range hed:Expression ;
+                    
+                    rdfs:domain hed:IfExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ifExprElse
+
+hed:ifExprElse rdf:type owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:range hed:Expression ;
+               
+               rdfs:domain hed:IfExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ifExprThen
+
+hed:ifExprThen rdf:type owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:range hed:Expression ;
+               
+               rdfs:domain hed:IfExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#intervalBegin
+
+hed:intervalBegin rdf:type owl:AsymmetricProperty ,
+                           owl:FunctionalProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:range hed:Expression ;
+                  
+                  rdfs:domain hed:IntervalExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#intervalEnd
+
+hed:intervalEnd rdf:type owl:AsymmetricProperty ,
+                         owl:FunctionalProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:range hed:Expression ;
+                
+                rdfs:domain hed:IntervalExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#listElement
+
+hed:listElement rdf:type owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:range hed:Expression ;
+                
+                rdfs:domain hed:ListExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#listToCombine
+
+hed:listToCombine rdf:type owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:domain hed:CombineExpression ;
+                  
+                  rdfs:range hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#moode
+
+hed:moode rdf:type owl:AsymmetricProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:domain hed:SimpleAction ;
+          
+          rdfs:range <http://asu.edu/sharpc2b/lmm#ConceptCode> .
+
+
+
+###  http://asu.edu/sharpc2b/hed#objectClassRef
+
+hed:objectClassRef rdf:type owl:AsymmetricProperty ,
+                            owl:FunctionalProperty ,
+                            owl:IrreflexiveProperty ,
+                            owl:ObjectProperty ;
+                   
+                   rdfs:domain hed:ObjectExpression ;
+                   
+                   rdfs:range <http://asu.edu/sharpc2b/lmm#ConceptCode> .
+
+
+
+###  http://asu.edu/sharpc2b/hed#propertyRef
+
+hed:propertyRef rdf:type owl:AsymmetricProperty ,
+                         owl:FunctionalProperty ,
+                         owl:IrreflexiveProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:domain hed:PropertyExpression ;
+                
+                rdfs:range <http://asu.edu/sharpc2b/lmm#ConceptCode> .
+
+
+
+###  http://asu.edu/sharpc2b/hed#separator
+
+hed:separator rdf:type owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:range hed:Expression ;
+              
+              rdfs:domain [ rdf:type owl:Class ;
+                            owl:unionOf ( hed:CombineExpression
+                                          hed:SplitExpression
+                                        )
+                          ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#stringToSplit
+
+hed:stringToSplit rdf:type owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ,
+                           owl:ObjectProperty ;
+                  
+                  rdfs:range hed:Expression ;
+                  
+                  rdfs:domain hed:SplitExpression .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#isExpressedBy
+
+<http://asu.edu/sharpc2b/lmm#isExpressedBy> rdf:type owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/hed#actionOffset
+
+hed:actionOffset rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:domain hed:SimpleAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#actionPeriod
+
+hed:actionPeriod rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:domain hed:SimpleAction ;
+                 
+                 rdfs:range xsd:long .
+
+
+
+###  http://asu.edu/sharpc2b/hed#actionRepeats
+
+hed:actionRepeats rdf:type owl:DatatypeProperty ;
+                  
+                  rdfs:domain hed:SimpleAction ;
+                  
+                  rdfs:range xsd:int .
+
+
+
+###  http://asu.edu/sharpc2b/hed#exprRefName
+
+hed:exprRefName rdf:type owl:DatatypeProperty ;
+                
+                rdfs:domain hed:ExpressionRef ;
+                
+                rdfs:range xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/hed#intervalBeginOpen
+
+hed:intervalBeginOpen rdf:type owl:DatatypeProperty ;
+                      
+                      rdfs:domain hed:IntervalExpression ;
+                      
+                      rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/hed#intervalEndOpen
+
+hed:intervalEndOpen rdf:type owl:DatatypeProperty ;
+                    
+                    rdfs:domain hed:IntervalExpression ;
+                    
+                    rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/hed#notifying
+
+hed:notifying rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              
+              rdfs:domain hed:SimpleAction ;
+              
+              rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ordered
+
+hed:ordered rdf:type owl:DatatypeProperty ,
+                     owl:FunctionalProperty ;
+            
+            rdfs:domain hed:CompositeAction ;
+            
+            rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/hed#synchronous
+
+hed:synchronous rdf:type owl:DatatypeProperty ;
+                
+                rdfs:domain hed:SimpleAction ;
+                
+                rdfs:range xsd:boolean .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#code
+
+<http://asu.edu/sharpc2b/lmm#code> rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/hed#Abs
+
+hed:Abs rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "abs"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "abs"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AbsExpression
+
+hed:AbsExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                             owl:hasValue "abs"
+                                                                           ]
+                                                                         )
+                                                    ] ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:UnaryExpression ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:allValuesFrom [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "abs"
+                                                                             ]
+                                                                           )
+                                                      ]
+                                  ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Action
+
+hed:Action rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Add
+
+hed:Add rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom <http://asu.edu/sharpc2b/ops#AddCode>
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom <http://asu.edu/sharpc2b/ops#AddCode>
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AddExpression
+
+hed:AddExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass <http://asu.edu/sharpc2b/ops#AddCode> ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:BinaryExpression ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:allValuesFrom <http://asu.edu/sharpc2b/ops#AddCode>
+                                  ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggAll
+
+hed:AggAll rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_all"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_all"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggAllExpression
+
+hed:AggAllExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "agg_all"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:AggregateExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_all"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggAny
+
+hed:AggAny rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_any"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_any"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggAnyExpression
+
+hed:AggAnyExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "agg_any"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:AggregateExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_any"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggAvg
+
+hed:AggAvg rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_avg"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_avg"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggCountExpression
+
+hed:AggCountExpression rdf:type owl:Class ;
+                       
+                       owl:equivalentClass [ rdf:type owl:Restriction ;
+                                             owl:onProperty hed:hasOperator ;
+                                             owl:onClass [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_cnt"
+                                                                                ]
+                                                                              )
+                                                         ] ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                           ] ;
+                       
+                       rdfs:subClassOf hed:AggregateExpression ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperator ;
+                                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                  [ rdf:type owl:Restriction ;
+                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                    owl:hasValue "agg_cnt"
+                                                                                  ]
+                                                                                )
+                                                           ]
+                                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggMax
+
+hed:AggMax rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_max"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_max"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggMaxExpression
+
+hed:AggMaxExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "agg_max"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:AggregateExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_max"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggMin
+
+hed:AggMin rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_min"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_min"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggMinExpression
+
+hed:AggMinExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "agg_min"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:AggregateExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_min"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggSum
+
+hed:AggSum rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "agg_sum"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "agg_sum"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggSumExpression
+
+hed:AggSumExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "agg_sum"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:AggregateExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "agg_sum"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AggregateExpression
+
+hed:AggregateExpression rdf:type owl:Class ;
+                        
+                        rdfs:subClassOf hed:Expression ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:aggPath ;
+                                          owl:onClass hed:Expression ;
+                                          owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:aggSource ;
+                                          owl:onClass hed:Expression ;
+                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AllOfAction
+
+hed:AllOfAction rdf:type owl:Class ;
+                
+                rdfs:subClassOf hed:CompositeAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#And
+
+hed:And rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "and"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "and"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AndExpression
+
+hed:AndExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                             owl:hasValue "and"
+                                                                           ]
+                                                                         )
+                                                    ] ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:NaryExpression ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:allValuesFrom [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "and"
+                                                                             ]
+                                                                           )
+                                                      ]
+                                  ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#AnyOfAction
+
+hed:AnyOfAction rdf:type owl:Class ;
+                
+                rdfs:subClassOf hed:CompositeAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#BinaryExpression
+
+hed:BinaryExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Class ;
+                                           owl:intersectionOf ( hed:Expression
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty hed:hasOperand ;
+                                                                  owl:onClass hed:Expression ;
+                                                                  owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                                                ]
+                                                              )
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:Expression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperand ;
+                                       owl:allValuesFrom hed:Expression
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Ceil
+
+hed:Ceil rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "ceil"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "ceil"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#CeilExpression
+
+hed:CeilExpression rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperator ;
+                                         owl:onClass [ rdf:type owl:Class ;
+                                                       owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                            [ rdf:type owl:Restriction ;
+                                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                              owl:hasValue "ceil"
+                                                                            ]
+                                                                          )
+                                                     ] ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                       ] ;
+                   
+                   rdfs:subClassOf hed:UnaryExpression ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hed:hasOperator ;
+                                     owl:allValuesFrom [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "ceil"
+                                                                              ]
+                                                                            )
+                                                       ]
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#CoalesceExpression
+
+hed:CoalesceExpression rdf:type owl:Class ;
+                       
+                       rdfs:subClassOf hed:NaryExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Combine
+
+hed:Combine rdf:type owl:Class ;
+            
+            owl:equivalentClass [ rdf:type owl:Class ;
+                                  owl:intersectionOf ( hed:Operator
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                         owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                   [ rdf:type owl:Restriction ;
+                                                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                     owl:hasValue "combine"
+                                                                                                   ]
+                                                                                                 )
+                                                                            ]
+                                                       ]
+                                                     )
+                                ] ;
+            
+            rdfs:subClassOf hed:Operator ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                              owl:allValuesFrom [ rdf:type owl:Class ;
+                                                  owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                         owl:hasValue "combine"
+                                                                       ]
+                                                                     )
+                                                ]
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#CombineExpression
+
+hed:CombineExpression rdf:type owl:Class ;
+                      
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty hed:hasOperator ;
+                                            owl:onClass [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue "combine"
+                                                                               ]
+                                                                             )
+                                                        ] ;
+                                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                          ] ;
+                      
+                      rdfs:subClassOf hed:Expression ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:allValuesFrom [ rdf:type owl:Class ;
+                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                 [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                   owl:hasValue "combine"
+                                                                                 ]
+                                                                               )
+                                                          ]
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:listToCombine ;
+                                        owl:onClass hed:Expression ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:separator ;
+                                        owl:onClass hed:Expression ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#CommunicationAction
+
+hed:CommunicationAction rdf:type owl:Class ;
+                        
+                        rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:channel ;
+                                          owl:onClass <http://asu.edu/sharpc2b/lmm#IndividualIdentifier> ;
+                                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:destination ;
+                                          owl:onClass <http://asu.edu/sharpc2b/lmm#IndividualIdentifier> ;
+                                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ComplexLiteralExpression
+
+hed:ComplexLiteralExpression rdf:type owl:Class ;
+                             
+                             rdfs:subClassOf hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#CompositeAction
+
+hed:CompositeAction rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf hed:Action ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:ordered ;
+                                      owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                      owl:onDataRange xsd:boolean
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Concat
+
+hed:Concat rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "concat"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "concat"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ConcatExpression
+
+hed:ConcatExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "concat"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:BinaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "concat"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Div
+
+hed:Div rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "/"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "/"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#DivideExpression
+
+hed:DivideExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "/"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:BinaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "/"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Equal
+
+hed:Equal rdf:type owl:Class ;
+          
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:intersectionOf ( hed:Operator
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                       owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                   owl:hasValue "=="
+                                                                                                 ]
+                                                                                               )
+                                                                          ]
+                                                     ]
+                                                   )
+                              ] ;
+          
+          rdfs:subClassOf hed:Operator .
+
+
+
+###  http://asu.edu/sharpc2b/hed#EqualExpression
+
+hed:EqualExpression rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:hasOperator ;
+                                          owl:onClass [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "=="
+                                                                             ]
+                                                                           )
+                                                      ] ;
+                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ;
+                    
+                    rdfs:subClassOf hed:BinaryExpression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:hasOperator ;
+                                      owl:allValuesFrom [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue "=="
+                                                                               ]
+                                                                             )
+                                                        ]
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Expression
+
+hed:Expression rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ExpressionRef
+
+hed:ExpressionRef rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:exprRefName ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                        owl:onDataRange xsd:string
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Floor
+
+hed:Floor rdf:type owl:Class ;
+          
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:intersectionOf ( hed:Operator
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                       owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                   owl:hasValue "floor"
+                                                                                                 ]
+                                                                                               )
+                                                                          ]
+                                                     ]
+                                                   )
+                              ] ;
+          
+          rdfs:subClassOf hed:Operator ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                            owl:allValuesFrom [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                       owl:hasValue "floor"
+                                                                     ]
+                                                                   )
+                                              ]
+                          ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#FloorExpression
+
+hed:FloorExpression rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:hasOperator ;
+                                          owl:onClass [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "floor"
+                                                                             ]
+                                                                           )
+                                                      ] ;
+                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ;
+                    
+                    rdfs:subClassOf hed:UnaryExpression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:hasOperator ;
+                                      owl:allValuesFrom [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue "floor"
+                                                                               ]
+                                                                             )
+                                                        ]
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Greater
+
+hed:Greater rdf:type owl:Class ;
+            
+            owl:equivalentClass [ rdf:type owl:Class ;
+                                  owl:intersectionOf ( hed:Operator
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                         owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                   [ rdf:type owl:Restriction ;
+                                                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                     owl:hasValue ">"
+                                                                                                   ]
+                                                                                                 )
+                                                                            ]
+                                                       ]
+                                                     )
+                                ] ;
+            
+            rdfs:subClassOf hed:Operator ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                              owl:allValuesFrom [ rdf:type owl:Class ;
+                                                  owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                         owl:hasValue ">"
+                                                                       ]
+                                                                     )
+                                                ]
+                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#GreaterEqual
+
+hed:GreaterEqual rdf:type owl:Class ;
+                 
+                 owl:equivalentClass [ rdf:type owl:Class ;
+                                       owl:intersectionOf ( hed:Operator
+                                                            [ rdf:type owl:Restriction ;
+                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                              owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                                   owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                        [ rdf:type owl:Restriction ;
+                                                                                                          owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                          owl:hasValue ">="
+                                                                                                        ]
+                                                                                                      )
+                                                                                 ]
+                                                            ]
+                                                          )
+                                     ] ;
+                 
+                 rdfs:subClassOf hed:Operator ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                   owl:allValuesFrom [ rdf:type owl:Class ;
+                                                       owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                            [ rdf:type owl:Restriction ;
+                                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                              owl:hasValue ">="
+                                                                            ]
+                                                                          )
+                                                     ]
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#GreaterEqualExpression
+
+hed:GreaterEqualExpression rdf:type owl:Class ;
+                           
+                           owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                 owl:onProperty hed:hasOperator ;
+                                                 owl:onClass [ rdf:type owl:Class ;
+                                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                    [ rdf:type owl:Restriction ;
+                                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                      owl:hasValue ">="
+                                                                                    ]
+                                                                                  )
+                                                             ] ;
+                                                 owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                               ] ;
+                           
+                           rdfs:subClassOf hed:BinaryExpression ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty hed:hasOperator ;
+                                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                      [ rdf:type owl:Restriction ;
+                                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                        owl:hasValue ">="
+                                                                                      ]
+                                                                                    )
+                                                               ]
+                                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#GreaterExpression
+
+hed:GreaterExpression rdf:type owl:Class ;
+                      
+                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                            owl:onProperty hed:hasOperator ;
+                                            owl:onClass [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue ">"
+                                                                               ]
+                                                                             )
+                                                        ] ;
+                                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                          ] ;
+                      
+                      rdfs:subClassOf hed:BinaryExpression ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:allValuesFrom [ rdf:type owl:Class ;
+                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                 [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                   owl:hasValue ">"
+                                                                                 ]
+                                                                               )
+                                                          ]
+                                      ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IDiv
+
+hed:IDiv rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "div"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "div"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IMod
+
+hed:IMod rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "mod"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "mod"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IfExpression
+
+hed:IfExpression rdf:type owl:Class ;
+                 
+                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:ifExprElse ;
+                                       owl:onClass hed:Expression ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:ifExprCondition ;
+                                       owl:onClass hed:Expression ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:ifExprThen ;
+                                       owl:onClass hed:Expression ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ;
+                 
+                 rdfs:subClassOf hed:Expression ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty hed:ifExprThen ;
+                                   owl:allValuesFrom hed:Expression
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty hed:ifExprCondition ;
+                                   owl:allValuesFrom hed:Expression
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty hed:ifExprElse ;
+                                   owl:allValuesFrom hed:Expression
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IntDivExpression
+
+hed:IntDivExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "div"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:BinaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "div"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IntModExpression
+
+hed:IntModExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "mod"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:BinaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "mod"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IntervalExpression
+
+hed:IntervalExpression rdf:type owl:Class ;
+                       
+                       rdfs:subClassOf hed:Expression ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalEndOpen ;
+                                         owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:boolean
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalEndOpen ;
+                                         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:boolean
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalBeginOpen ;
+                                         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:boolean
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalBeginOpen ;
+                                         owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:boolean
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalEnd ;
+                                         owl:onClass hed:Expression ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:intervalBegin ;
+                                         owl:onClass hed:Expression ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IsNull
+
+hed:IsNull rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "isNull"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "isNull"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#IsNullExpression
+
+hed:IsNullExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "isNull"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:UnaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "isNull"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Length
+
+hed:Length rdf:type owl:Class ;
+           
+           owl:equivalentClass [ rdf:type owl:Class ;
+                                 owl:intersectionOf ( hed:Operator
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                        owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                  [ rdf:type owl:Restriction ;
+                                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                    owl:hasValue "length"
+                                                                                                  ]
+                                                                                                )
+                                                                           ]
+                                                      ]
+                                                    )
+                               ] ;
+           
+           rdfs:subClassOf hed:Operator ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                             owl:allValuesFrom [ rdf:type owl:Class ;
+                                                 owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                        owl:hasValue "length"
+                                                                      ]
+                                                                    )
+                                               ]
+                           ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LengthExpression
+
+hed:LengthExpression rdf:type owl:Class ;
+                     
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hed:hasOperator ;
+                                           owl:onClass [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "length"
+                                                                              ]
+                                                                            )
+                                                       ] ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                         ] ;
+                     
+                     rdfs:subClassOf hed:Expression ,
+                                     hed:UnaryExpression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:allValuesFrom [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "length"
+                                                                                ]
+                                                                              )
+                                                         ]
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Less
+
+hed:Less rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "<"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "<"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LessEqual
+
+hed:LessEqual rdf:type owl:Class ;
+              
+              owl:equivalentClass [ rdf:type owl:Class ;
+                                    owl:intersectionOf ( hed:Operator
+                                                         [ rdf:type owl:Restriction ;
+                                                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                           owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                                owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                     [ rdf:type owl:Restriction ;
+                                                                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                       owl:hasValue "<="
+                                                                                                     ]
+                                                                                                   )
+                                                                              ]
+                                                         ]
+                                                       )
+                                  ] ;
+              
+              rdfs:subClassOf hed:Operator ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                owl:allValuesFrom [ rdf:type owl:Class ;
+                                                    owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                         [ rdf:type owl:Restriction ;
+                                                                           owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                           owl:hasValue "<="
+                                                                         ]
+                                                                       )
+                                                  ]
+                              ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LessEqualExpression
+
+hed:LessEqualExpression rdf:type owl:Class ;
+                        
+                        owl:equivalentClass [ rdf:type owl:Restriction ;
+                                              owl:onProperty hed:hasOperator ;
+                                              owl:onClass [ rdf:type owl:Class ;
+                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                 [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                   owl:hasValue "<="
+                                                                                 ]
+                                                                               )
+                                                          ] ;
+                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                            ] ;
+                        
+                        rdfs:subClassOf hed:BinaryExpression ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:hasOperator ;
+                                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                   [ rdf:type owl:Restriction ;
+                                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                     owl:hasValue "<="
+                                                                                   ]
+                                                                                 )
+                                                            ]
+                                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LessExpression
+
+hed:LessExpression rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperator ;
+                                         owl:onClass [ rdf:type owl:Class ;
+                                                       owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                            [ rdf:type owl:Restriction ;
+                                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                              owl:hasValue "<"
+                                                                            ]
+                                                                          )
+                                                     ] ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                       ] ;
+                   
+                   rdfs:subClassOf hed:BinaryExpression ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hed:hasOperator ;
+                                     owl:allValuesFrom [ rdf:type owl:Class ;
+                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                owl:hasValue "<"
+                                                                              ]
+                                                                            )
+                                                       ]
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ListExpression
+
+hed:ListExpression rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf hed:Expression ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hed:listElement ;
+                                     owl:someValuesFrom hed:Expression
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LiteralExpression
+
+hed:LiteralExpression rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Ln
+
+hed:Ln rdf:type owl:Class ;
+       
+       owl:equivalentClass [ rdf:type owl:Class ;
+                             owl:intersectionOf ( hed:Operator
+                                                  [ rdf:type owl:Restriction ;
+                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                    owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                              [ rdf:type owl:Restriction ;
+                                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                owl:hasValue "ln"
+                                                                                              ]
+                                                                                            )
+                                                                       ]
+                                                  ]
+                                                )
+                           ] ;
+       
+       rdfs:subClassOf hed:Operator ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                    owl:hasValue "ln"
+                                                                  ]
+                                                                )
+                                           ]
+                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LnExpression
+
+hed:LnExpression rdf:type owl:Class ;
+                 
+                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:onClass [ rdf:type owl:Class ;
+                                                     owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                          [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                            owl:hasValue "ln"
+                                                                          ]
+                                                                        )
+                                                   ] ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ;
+                 
+                 rdfs:subClassOf hed:UnaryExpression ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty hed:hasOperator ;
+                                   owl:allValuesFrom [ rdf:type owl:Class ;
+                                                       owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                            [ rdf:type owl:Restriction ;
+                                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                              owl:hasValue "ln"
+                                                                            ]
+                                                                          )
+                                                     ]
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Log
+
+hed:Log rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "log"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "log"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#LogExpression
+
+hed:LogExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                             owl:hasValue "log"
+                                                                           ]
+                                                                         )
+                                                    ] ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:BinaryExpression ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:allValuesFrom [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "log"
+                                                                             ]
+                                                                           )
+                                                      ]
+                                  ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Mul
+
+hed:Mul rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "*"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "*"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#MultiplyExpression
+
+hed:MultiplyExpression rdf:type owl:Class ;
+                       
+                       owl:equivalentClass [ rdf:type owl:Restriction ;
+                                             owl:onProperty hed:hasOperator ;
+                                             owl:onClass [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "*"
+                                                                                ]
+                                                                              )
+                                                         ] ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                           ] ;
+                       
+                       rdfs:subClassOf hed:BinaryExpression ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperator ;
+                                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                  [ rdf:type owl:Restriction ;
+                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                    owl:hasValue "*"
+                                                                                  ]
+                                                                                )
+                                                           ]
+                                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#NaryExpression
+
+hed:NaryExpression rdf:type owl:Class ;
+                   
+                   owl:equivalentClass [ rdf:type owl:Class ;
+                                         owl:intersectionOf ( hed:Expression
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty hed:hasOperand ;
+                                                                owl:onClass hed:Expression ;
+                                                                owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                                              ]
+                                                            )
+                                       ] ;
+                   
+                   rdfs:subClassOf hed:Expression ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hed:hasOperand ;
+                                     owl:allValuesFrom hed:Expression
+                                   ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#NoneOfAction
+
+hed:NoneOfAction rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf hed:CompositeAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Not
+
+hed:Not rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "not"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "not"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#NotExpression
+
+hed:NotExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                             owl:hasValue "not"
+                                                                           ]
+                                                                         )
+                                                    ] ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:UnaryExpression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ObjectExpression
+
+hed:ObjectExpression rdf:type owl:Class ;
+                     
+                     rdfs:subClassOf hed:Expression ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:objectClassRef ;
+                                       owl:onClass <http://asu.edu/sharpc2b/lmm#ConceptCode> ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperand ;
+                                       owl:someValuesFrom hed:PropertyExpression
+                                     ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ObjectRedfineExpression
+
+hed:ObjectRedfineExpression rdf:type owl:Class ;
+                            
+                            rdfs:subClassOf hed:Expression ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty hed:hasOperand ;
+                                              owl:someValuesFrom hed:PropertyExpression
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty hed:hasOperand ;
+                                              owl:onClass hed:Expression ;
+                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                            ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#OneOfAction
+
+hed:OneOfAction rdf:type owl:Class ;
+                
+                rdfs:subClassOf hed:CompositeAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Operation
+
+hed:Operation rdf:type owl:Class ;
+              
+              owl:equivalentClass [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:onClass <http://asu.edu/sharpc2b/lmm#ConceptCode> ;
+                                    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                  ] ;
+              
+              rdfs:subClassOf hed:Expression .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Operator
+
+hed:Operator rdf:type owl:Class ;
+             
+             rdfs:subClassOf <http://asu.edu/sharpc2b/lmm#CodedConcept> ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                               owl:onClass <http://asu.edu/sharpc2b/lmm#ConceptCode> ;
+                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                             ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Or
+
+hed:Or rdf:type owl:Class ;
+       
+       owl:equivalentClass [ rdf:type owl:Class ;
+                             owl:intersectionOf ( hed:Operator
+                                                  [ rdf:type owl:Restriction ;
+                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                    owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                         owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                              [ rdf:type owl:Restriction ;
+                                                                                                owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                owl:hasValue "or"
+                                                                                              ]
+                                                                                            )
+                                                                       ]
+                                                  ]
+                                                )
+                           ] ;
+       
+       rdfs:subClassOf hed:Operator ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                    owl:hasValue "or"
+                                                                  ]
+                                                                )
+                                           ]
+                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#OrExpression
+
+hed:OrExpression rdf:type owl:Class ;
+                 
+                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                       owl:onProperty hed:hasOperator ;
+                                       owl:onClass [ rdf:type owl:Class ;
+                                                     owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                          [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                            owl:hasValue "or"
+                                                                          ]
+                                                                        )
+                                                   ] ;
+                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                     ] ;
+                 
+                 rdfs:subClassOf hed:NaryExpression ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty hed:hasOperator ;
+                                   owl:allValuesFrom [ rdf:type owl:Class ;
+                                                       owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                            [ rdf:type owl:Restriction ;
+                                                                              owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                              owl:hasValue "or"
+                                                                            ]
+                                                                          )
+                                                     ]
+                                 ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Pow
+
+hed:Pow rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "pow"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "pow"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#PowExpression
+
+hed:PowExpression rdf:type owl:Class ;
+                  
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperator ;
+                                        owl:onClass [ rdf:type owl:Class ;
+                                                      owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                             owl:hasValue "pow"
+                                                                           ]
+                                                                         )
+                                                    ] ;
+                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                      ] ;
+                  
+                  rdfs:subClassOf hed:BinaryExpression ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty hed:hasOperator ;
+                                    owl:allValuesFrom [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "pow"
+                                                                             ]
+                                                                           )
+                                                      ]
+                                  ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Pred
+
+hed:Pred rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "--"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "--"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#PropertyExpression
+
+hed:PropertyExpression rdf:type owl:Class ;
+                       
+                       owl:equivalentClass [ rdf:type owl:Restriction ;
+                                             owl:onProperty hed:propertyRef ;
+                                             owl:onClass <http://asu.edu/sharpc2b/lmm#ConceptCode> ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                           ] ;
+                       
+                       rdfs:subClassOf hed:Expression ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperand ;
+                                         owl:onClass hed:Expression ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Round
+
+hed:Round rdf:type owl:Class ;
+          
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:intersectionOf ( hed:Operator
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                       owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                   owl:hasValue "round"
+                                                                                                 ]
+                                                                                               )
+                                                                          ]
+                                                     ]
+                                                   )
+                              ] ;
+          
+          rdfs:subClassOf hed:Operator ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                            owl:allValuesFrom [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                       owl:hasValue "round"
+                                                                     ]
+                                                                   )
+                                              ]
+                          ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#RoundExpression
+
+hed:RoundExpression rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:hasOperator ;
+                                          owl:onClass [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "round"
+                                                                             ]
+                                                                           )
+                                                      ] ;
+                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ;
+                    
+                    rdfs:subClassOf hed:BinaryExpression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:hasOperator ;
+                                      owl:allValuesFrom [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue "round"
+                                                                               ]
+                                                                             )
+                                                        ]
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#SequentialOrderAction
+
+hed:SequentialOrderAction rdf:type owl:Class ;
+                          
+                          owl:equivalentClass [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( hed:CompositeAction
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty hed:ordered ;
+                                                                       owl:hasValue "true"^^xsd:boolean
+                                                                     ]
+                                                                   )
+                                              ] ;
+                          
+                          rdfs:subClassOf hed:CompositeAction .
+
+
+
+###  http://asu.edu/sharpc2b/hed#SimpleAction
+
+hed:SimpleAction rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf hed:Action .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Split
+
+hed:Split rdf:type owl:Class ;
+          
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:intersectionOf ( hed:Operator
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                       owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                            owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                 [ rdf:type owl:Restriction ;
+                                                                                                   owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                   owl:hasValue "split"
+                                                                                                 ]
+                                                                                               )
+                                                                          ]
+                                                     ]
+                                                   )
+                              ] ;
+          
+          rdfs:subClassOf hed:Operator ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                            owl:allValuesFrom [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                       owl:hasValue "split"
+                                                                     ]
+                                                                   )
+                                              ]
+                          ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#SplitExpression
+
+hed:SplitExpression rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty hed:hasOperator ;
+                                          owl:onClass [ rdf:type owl:Class ;
+                                                        owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                               owl:hasValue "split"
+                                                                             ]
+                                                                           )
+                                                      ] ;
+                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                        ] ;
+                    
+                    rdfs:subClassOf hed:Expression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:hasOperator ;
+                                      owl:allValuesFrom [ rdf:type owl:Class ;
+                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                               [ rdf:type owl:Restriction ;
+                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                 owl:hasValue "split"
+                                                                               ]
+                                                                             )
+                                                        ]
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Sub
+
+hed:Sub rdf:type owl:Class ;
+        
+        owl:equivalentClass [ rdf:type owl:Class ;
+                              owl:intersectionOf ( hed:Operator
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                     owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                          owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                               [ rdf:type owl:Restriction ;
+                                                                                                 owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                 owl:hasValue "-"
+                                                                                               ]
+                                                                                             )
+                                                                        ]
+                                                   ]
+                                                 )
+                            ] ;
+        
+        rdfs:subClassOf hed:Operator ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                          owl:allValuesFrom [ rdf:type owl:Class ;
+                                              owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                   [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                     owl:hasValue "-"
+                                                                   ]
+                                                                 )
+                                            ]
+                        ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#SubtractExpression
+
+hed:SubtractExpression rdf:type owl:Class ;
+                       
+                       owl:equivalentClass [ rdf:type owl:Restriction ;
+                                             owl:onProperty hed:hasOperator ;
+                                             owl:onClass [ rdf:type owl:Class ;
+                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                [ rdf:type owl:Restriction ;
+                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                  owl:hasValue "-"
+                                                                                ]
+                                                                              )
+                                                         ] ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                           ] ;
+                       
+                       rdfs:subClassOf hed:BinaryExpression ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hed:hasOperator ;
+                                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                                             owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                  [ rdf:type owl:Restriction ;
+                                                                                    owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                    owl:hasValue "-"
+                                                                                  ]
+                                                                                )
+                                                           ]
+                                       ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#Succ
+
+hed:Succ rdf:type owl:Class ;
+         
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:intersectionOf ( hed:Operator
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                                                      owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                           owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                                                [ rdf:type owl:Restriction ;
+                                                                                                  owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                                                  owl:hasValue "++"
+                                                                                                ]
+                                                                                              )
+                                                                         ]
+                                                    ]
+                                                  )
+                             ] ;
+         
+         rdfs:subClassOf hed:Operator ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://asu.edu/sharpc2b/lmm#isExpressedBy> ;
+                           owl:allValuesFrom [ rdf:type owl:Class ;
+                                               owl:intersectionOf ( <http://asu.edu/sharpc2b/lmm#ConceptCode>
+                                                                    [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty <http://asu.edu/sharpc2b/lmm#code> ;
+                                                                      owl:hasValue "++"
+                                                                    ]
+                                                                  )
+                                             ]
+                         ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#TernaryExpression
+
+hed:TernaryExpression rdf:type owl:Class ;
+                      
+                      owl:equivalentClass [ rdf:type owl:Class ;
+                                            owl:intersectionOf ( hed:Expression
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty hed:hasOperand ;
+                                                                   owl:onClass hed:Expression ;
+                                                                   owl:qualifiedCardinality "3"^^xsd:nonNegativeInteger
+                                                                 ]
+                                                               )
+                                          ] ;
+                      
+                      rdfs:subClassOf hed:Expression ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty hed:hasOperand ;
+                                        owl:allValuesFrom hed:Expression
+                                      ] .
+
+
+
+###  http://asu.edu/sharpc2b/hed#UnaryExpression
+
+hed:UnaryExpression rdf:type owl:Class ;
+                    
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:intersectionOf ( hed:Expression
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty hed:hasOperand ;
+                                                                 owl:onClass hed:Expression ;
+                                                                 owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                                               ]
+                                                             )
+                                        ] ;
+                    
+                    rdfs:subClassOf hed:Expression ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hed:hasOperand ;
+                                      owl:allValuesFrom hed:Expression
+                                    ] .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#CodedConcept
+
+<http://asu.edu/sharpc2b/lmm#CodedConcept> rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#ConceptCode
+
+<http://asu.edu/sharpc2b/lmm#ConceptCode> rdf:type owl:Class .
+
+
+
+###  http://asu.edu/sharpc2b/lmm#IndividualIdentifier
+
+<http://asu.edu/sharpc2b/lmm#IndividualIdentifier> rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/hed#addCD
+
+hed:addCD rdf:type owl:NamedIndividual .
+
+
+
+###  http://asu.edu/sharpc2b/hed#ae
+
+hed:ae rdf:type owl:NamedIndividual ;
+       
+       hed:hasOperator hed:addCD .
+
+
+
+
+###  Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net
+

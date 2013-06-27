@@ -22,6 +22,8 @@ public final class IriUtil
         return IRI.create( skos + "#" + name );
     }
 
+    public static String skosNamespace = skosIRI.toString() + "#";
+
     public static final String sharpOntBase = "http://asu.edu/sharpc2b/";
 
     public static final String sharpIRIString (String name)
@@ -29,7 +31,7 @@ public final class IriUtil
         return sharpOntBase + name;
     }
 
-    public static final IRI sharpIRI (String name)
+    public static final IRI sharpEditorIRI (String name)
     {
         return IRI.create( sharpIRIString( name ) );
     }

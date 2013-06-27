@@ -16,11 +16,11 @@ import org.semanticweb.owlapi.model.OWLObjectProperty
  */
 class ShopsTest extends SharpGroovyTestCase {
 
-    static IRI shopsOntIRI = IriUtil.sharpIRI( "shops" );
+    static IRI shopsOntIRI = IriUtil.sharpEditorIRI( "shops" );
     static File shopsOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/shops.ofn" );
+            "/model-transform/src/main/resources/onts/editor-models/shops.ofn" );
 
-    static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
+    static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = shopsOntIRI.toString() + "#";
 
     void setUp () {
@@ -65,7 +65,7 @@ class ShopsTest extends SharpGroovyTestCase {
         OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) )
 
         OWLDataProperty skosNotation = odf.getOWLDataProperty( IriUtil.skosIRI( "notation" ) )
-//        OWLDataProperty conceptCode = odf.getOWLDataProperty( IriUtil.sharpIRI( "skos-ext#code" ) )
+//        OWLDataProperty conceptCode = odf.getOWLDataProperty( IriUtil.sharpEditorIRI( "skos-ext#code" ) )
 //        OWLObjectProperty opCode = odf.getOWLObjectProperty( exampleIRI( "opCode" ) )
 //        OWLDataProperty representation = odf.getOWLDataProperty( exampleIRI( "representation" ) );
 

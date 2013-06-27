@@ -21,19 +21,15 @@ import java.util.regex.Pattern;
 public class SkosABoxToTBox
 {
 
-    private static IRI skosIRI = IRI.create( "http://www.w3.org/2004/02/skos/core" );
-
-    private static String skosNamespace = skosIRI.toString() + "#";
-
     private OWLOntologyManager oom;
 
     private OWLDataFactory odf;
 
     private PrefixOWLOntologyFormat pm;
 
-    private OWLOntology onta;
+    private OWLOntology ontA;
 
-    private OWLOntology ontt;
+    private OWLOntology ontT;
 
     private OWLClass topCodeClass;
 
@@ -73,10 +69,10 @@ public class SkosABoxToTBox
     {
 //        initTBoxOntology( skosABoxOntology, tboxOntologyIRI );
 
-        this.onta = skosABoxOntology;
-        this.ontt = targetTBoxOntology;
+        this.ontA = skosABoxOntology;
+        this.ontT = targetTBoxOntology;
 
-        this.oom = this.ontt.getOWLOntologyManager();
+        this.oom = this.ontT.getOWLOntologyManager();
         this.odf = this.oom.getOWLDataFactory();
 
         initNamespaces();
@@ -93,14 +89,14 @@ public class SkosABoxToTBox
 
     private void initNamespaces ()
     {
-        String aboxNamespace = this.onta.getOntologyID().getOntologyIRI().toString() + "#";
-        String tboxNamespace = this.ontt.getOntologyID().getOntologyIRI().toString() + "#";
+        String aboxNamespace = this.ontA.getOntologyID().getOntologyIRI().toString() + "#";
+        String tboxNamespace = this.ontT.getOntologyID().getOntologyIRI().toString() + "#";
 
         pm = IriUtil.getDefaultSharpOntologyFormat();
         pm.setDefaultPrefix( tboxNamespace );
         pm.setPrefix( "a:", aboxNamespace );
         pm.setPrefix( "t:", tboxNamespace );
-        pm.setPrefix( "skos:", skosNamespace );
+        pm.setPrefix( "skos:", IriUtil.skosNamespace );
     }
 
     /**
@@ -111,13 +107,13 @@ public class SkosABoxToTBox
         OWLImportsDeclaration importsAxiom;
         AddImport imp;
 
-        importsAxiom = odf.getOWLImportsDeclaration( onta.getOntologyID().getOntologyIRI() );
-        imp = new AddImport( ontt, importsAxiom );
+        importsAxiom = odf.getOWLImportsDeclaration( ontA.getOntologyID().getOntologyIRI() );
+        imp = new AddImport( ontT, importsAxiom );
         oom.applyChange( imp );
 
 //        importsAxiom = odf.getOWLImportsDeclaration( skos.getOntologyID().getOntologyIRI() );
-        importsAxiom = odf.getOWLImportsDeclaration( skosIRI );
-        imp = new AddImport( ontt, importsAxiom );
+        importsAxiom = odf.getOWLImportsDeclaration( IriUtil.skosIRI );
+        imp = new AddImport( ontT, importsAxiom );
         oom.applyChange( imp );
     }
 
@@ -142,12 +138,12 @@ public class SkosABoxToTBox
 
         Set<OWLAxiom> axioms = new TreeSet<OWLAxiom>();
         axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
-        oom.addAxioms( ontt, axioms );
+        oom.addAxioms( ontT, axioms );
     }
 
     private void addAxiomsForCodes ()
     {
-        Set<OWLIndividual> codeIndividuals = topCodeClass.getIndividuals( onta );
+        Set<OWLIndividual> codeIndividuals = topCodeClass.getIndividuals( ontA );
         assert codeIndividuals.size() > 0;
 
         for (OWLIndividual ind : codeIndividuals)
@@ -162,7 +158,7 @@ public class SkosABoxToTBox
      */
     private void addAxiomsForCode (OWLNamedIndividual codeInd)
     {
-        Set<OWLAnnotationAssertionAxiom> annos = onta.getAnnotationAssertionAxioms( codeInd.getIRI() );
+        Set<OWLAnnotationAssertionAxiom> annos = ontA.getAnnotationAssertionAxioms( codeInd.getIRI() );
 
         Set<OWLAnnotationAssertionAxiom> labelAnnos = new HashSet<OWLAnnotationAssertionAxiom>();
         for (OWLAnnotationAssertionAxiom ax : annos)
@@ -199,13 +195,13 @@ public class SkosABoxToTBox
         OWLEquivalentClassesAxiom eqAxiom = odf
                 .getOWLEquivalentClassesAxiom( codeClass, codeConceptAndValue );
         assert eqAxiom != null;
-        oom.addAxiom( ontt, eqAxiom );
+        oom.addAxiom( ontT, eqAxiom );
     }
 
     private void addDefinitionUsingCodeValue (OWLNamedIndividual codeInd,
                                               OWLClass codeClass)
     {
-        Set<OWLLiteral> codeValues = codeInd.getDataPropertyValues( icd9Prop, onta );
+        Set<OWLLiteral> codeValues = codeInd.getDataPropertyValues( icd9Prop, ontA );
 //        println codeValues.size();
         if (codeValues.isEmpty())
         {
@@ -223,7 +219,7 @@ public class SkosABoxToTBox
         OWLObjectIntersectionOf codeConceptAndValue = odf.getOWLObjectIntersectionOf( some, topCodeClass );
         OWLSubClassOfAxiom eqAxiom = odf.getOWLSubClassOfAxiom( codeConceptAndValue, codeClass );
         assert eqAxiom != null;
-        oom.addAxiom( ontt, eqAxiom );
+        oom.addAxiom( ontT, eqAxiom );
     }
 
     private String localName (String s)
@@ -248,7 +244,7 @@ public class SkosABoxToTBox
     {
         PrefixOWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
-        oom.setOntologyFormat( ontt, oFormat );
+        oom.setOntologyFormat( ontT, oFormat );
     }
 
 }

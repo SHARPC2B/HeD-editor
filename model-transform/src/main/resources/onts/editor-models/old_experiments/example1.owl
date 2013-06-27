@@ -1,0 +1,459 @@
+@prefix : <http://asu.edu/sharpc2b/example1#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://asu.edu/sharpc2b/example1> .
+
+<http://asu.edu/sharpc2b/example1> rdf:type owl:Ontology ;
+                                   
+                                   owl:imports <http://asu.edu/sharpc2b/prr> .
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://asu.edu/sharpc2b/example1#CTCodeSystemLiteral
+
+:CTCodeSystemLiteral rdf:type <http://asu.edu/sharpc2b/ocl#StringLiteralExpr> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/ocl#literalValue> "1.2.3.4.5.6.7.8"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#PADCodeLiteral
+
+:PADCodeLiteral rdf:type <http://asu.edu/sharpc2b/ocl#StringLiteralExpr> ,
+                         owl:NamedIndividual ;
+                
+                <http://asu.edu/sharpc2b/ocl#literalValue> "12345.6"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#PADExpression
+
+:PADExpression rdf:type <http://asu.edu/sharpc2b/prr#ExpressionInOCL> ,
+                        owl:NamedIndividual ;
+               
+               <http://asu.edu/sharpc2b/prr#bodyExpression> :PAD_FilterIterator .
+
+
+
+###  http://asu.edu/sharpc2b/example1#PADVarRef
+
+:PADVarRef rdf:type <http://asu.edu/sharpc2b/ocl#VariableExpr> ,
+                    owl:NamedIndividual ;
+           
+           <http://asu.edu/sharpc2b/ocl#referredVar> :persistentAsthmaDiagnosisCPT .
+
+
+
+###  http://asu.edu/sharpc2b/example1#PAD_FilterIterator
+
+:PAD_FilterIterator rdf:type <http://asu.edu/sharpc2b/ocl#IteratorExpr> ,
+                             owl:NamedIndividual ;
+                    
+                    <http://asu.edu/sharpc2b/ocl#iteratorName> "select"^^xsd:string ;
+                    
+                    <http://asu.edu/sharpc2b/ocl#aggregatingIterator> "true"^^xsd:boolean ;
+                    
+                    <http://asu.edu/sharpc2b/ocl#loopBody> :PADfilterAndExpr ;
+                    
+                    <http://asu.edu/sharpc2b/ocl#iterator> :iteratingProblemVar ;
+                    
+                    <http://asu.edu/sharpc2b/ocl#sourceExpr> :vmrVarRef .
+
+
+
+###  http://asu.edu/sharpc2b/example1#PADfilterAndExpr
+
+:PADfilterAndExpr rdf:type <http://asu.edu/sharpc2b/ops#OperationCallExpr> ,
+                           owl:NamedIndividual ;
+                  
+                  <http://asu.edu/sharpc2b/ocl#argument> :codeEqualsABC ,
+                                                         :codeSystemEqualsXYZ ;
+                  
+                  <http://asu.edu/sharpc2b/ops#opCode> <http://asu.edu/sharpc2b/ops#andCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#codeEqualsABC
+
+:codeEqualsABC rdf:type <http://asu.edu/sharpc2b/ops#OperationCallExpr> ,
+                        owl:NamedIndividual ;
+               
+               <http://asu.edu/sharpc2b/ocl#argument> :PADCodeLiteral ;
+               
+               <http://asu.edu/sharpc2b/ocl#sourceExpr> :problemCode_getCode ;
+               
+               <http://asu.edu/sharpc2b/ops#opCode> <http://asu.edu/sharpc2b/ops#equalsCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#codeSystemEqualsXYZ
+
+:codeSystemEqualsXYZ rdf:type <http://asu.edu/sharpc2b/ops#OperationCallExpr> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/ocl#argument> :CTCodeSystemLiteral ;
+                     
+                     <http://asu.edu/sharpc2b/ocl#sourceExpr> :problemCode_getCodeSystem ;
+                     
+                     <http://asu.edu/sharpc2b/ops#opCode> <http://asu.edu/sharpc2b/ops#equalsCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#codeSystem_propertyCode
+
+:codeSystem_propertyCode rdf:type owl:NamedIndividual ;
+                         
+                         <http://asu.edu/sharpc2b/lmm#code> "codeSystem"^^xsd:string ;
+                         
+                         <http://asu.edu/sharpc2b/lmm#codeSystem> "iso"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#code_propertyCode
+
+:code_propertyCode rdf:type <http://asu.edu/sharpc2b/ops#PropertyCode> ,
+                            owl:NamedIndividual ;
+                   
+                   <http://asu.edu/sharpc2b/lmm#code> "code"^^xsd:string ;
+                   
+                   <http://asu.edu/sharpc2b/lmm#codeSystem> "iso"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#iteratingProblemVar
+
+:iteratingProblemVar rdf:type <http://asu.edu/sharpc2b/prr#Variable> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/prr#name> "prob"^^xsd:string ;
+                     
+                     <http://asu.edu/sharpc2b/prr#hasDeclaredTypeCode> :vmrProblemClassCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#newProposalExpression
+
+:newProposalExpression rdf:type <http://asu.edu/sharpc2b/ocl#OCLExpression> ,
+                                owl:NamedIndividual ;
+                       
+                       <http://asu.edu/sharpc2b/ocl#argument> :proposedProcedure_Date_assignment ;
+                       
+                       <http://asu.edu/sharpc2b/ops#newTypeCode> :vmrProcedureProposalClassCode ;
+                       
+                       <http://asu.edu/sharpc2b/ops#opCode> <http://asu.edu/sharpc2b/ops#newCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#noProblemExistExpression
+
+:noProblemExistExpression rdf:type <http://asu.edu/sharpc2b/ocl#OCLExpression> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/ops#hasArgument> :PADVarRef ;
+                          
+                          <http://asu.edu/sharpc2b/ops#opCode> <http://asu.edu/sharpc2b/ops#collectionIsEmptyCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#patientParam
+
+:patientParam rdf:type <http://asu.edu/sharpc2b/prr#Parameter> ,
+                       owl:NamedIndividual ;
+              
+              <http://asu.edu/sharpc2b/prr#name> "patient"^^xsd:string ;
+              
+              <http://asu.edu/sharpc2b/prr#hasDeclaredTypeCode> :vmrPatientClassCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#patientVarRef
+
+:patientVarRef rdf:type <http://asu.edu/sharpc2b/ocl#VariableExpr> ,
+                        owl:NamedIndividual ;
+               
+               <http://asu.edu/sharpc2b/ocl#referredVar> :patientParam .
+
+
+
+###  http://asu.edu/sharpc2b/example1#patient_getVMR
+
+:patient_getVMR rdf:type <http://asu.edu/sharpc2b/ocl#PropertyCallExpr> ,
+                         owl:NamedIndividual ;
+                
+                <http://asu.edu/sharpc2b/ocl#sourceExpr> :patientVarRef ;
+                
+                <http://asu.edu/sharpc2b/ocl#referredProperty> :vmr_propertyCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#persistentAsthmaDiagnosisCPT
+
+:persistentAsthmaDiagnosisCPT rdf:type <http://asu.edu/sharpc2b/prr#RuleVariable> ,
+                                       owl:NamedIndividual ;
+                              
+                              <http://asu.edu/sharpc2b/prr#name> "persistentAsthmaDiagnosisCPT"^^xsd:string ;
+                              
+                              <http://asu.edu/sharpc2b/prr#hasFilterRepresentation> :PADExpression ;
+                              
+                              <http://asu.edu/sharpc2b/prr#hasDeclaredTypeCode> <http://asu.edu/sharpc2b/ops#setCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#problemCode_getCode
+
+:problemCode_getCode rdf:type <http://asu.edu/sharpc2b/ocl#PropertyCallExpr> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/ocl#referredProperty> :code_propertyCode ;
+                     
+                     <http://asu.edu/sharpc2b/ocl#sourceExpr> :problem_getProblemCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#problemCode_getCodeSystem
+
+:problemCode_getCodeSystem rdf:type <http://asu.edu/sharpc2b/ocl#PropertyCallExpr> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/ocl#referredProperty> :codeSystem_propertyCode ;
+                           
+                           <http://asu.edu/sharpc2b/ocl#sourceExpr> :problem_getProblemCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#problemCode_propertyCode
+
+:problemCode_propertyCode rdf:type <http://asu.edu/sharpc2b/ops#PropertyCode> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/lmm#code> "propertyCode"^^xsd:string ;
+                          
+                          <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#problemVarRef
+
+:problemVarRef rdf:type <http://asu.edu/sharpc2b/ocl#VariableExpr> ,
+                        owl:NamedIndividual ;
+               
+               <http://asu.edu/sharpc2b/ocl#referredVar> :iteratingProblemVar .
+
+
+
+###  http://asu.edu/sharpc2b/example1#problem_getProblemCode
+
+:problem_getProblemCode rdf:type <http://asu.edu/sharpc2b/ocl#PropertyCallExpr> ,
+                                 owl:NamedIndividual ;
+                        
+                        <http://asu.edu/sharpc2b/ocl#referredProperty> :problemCode_propertyCode ;
+                        
+                        <http://asu.edu/sharpc2b/ocl#sourceExpr> :problemVarRef .
+
+
+
+###  http://asu.edu/sharpc2b/example1#proposedDate_propertyCode
+
+:proposedDate_propertyCode rdf:type <http://asu.edu/sharpc2b/ops#PropertyCode> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/lmm#code> "proposedDate"^^xsd:string ;
+                           
+                           <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#proposedProcedure_Date_assignment
+
+:proposedProcedure_Date_assignment rdf:type <http://asu.edu/sharpc2b/ocl#OCLExpression> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/ocl#assignmentTarget> :proposedProcedure_getDate ;
+                                   
+                                   <http://asu.edu/sharpc2b/ocl#argument> :someDateLiteral .
+
+
+
+###  http://asu.edu/sharpc2b/example1#proposedProcedure_getDate
+
+:proposedProcedure_getDate rdf:type <http://asu.edu/sharpc2b/ocl#PropertyCallExpr> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/ocl#sourceExpr> :newProposalExpression ;
+                           
+                           <http://asu.edu/sharpc2b/ocl#referredProperty> :proposedDate_propertyCode .
+
+
+
+###  http://asu.edu/sharpc2b/example1#rule1
+
+:rule1 rdf:type <http://asu.edu/sharpc2b/prr#ProductionRule> ,
+                owl:NamedIndividual ;
+       
+       <http://asu.edu/sharpc2b/prr#name> "corticoSteroidInhalerExample"^^xsd:string ;
+       
+       <http://asu.edu/sharpc2b/prr#binds> :persistentAsthmaDiagnosisCPT ;
+       
+       <http://asu.edu/sharpc2b/prr#checks> :rule1Condition ;
+       
+       <http://asu.edu/sharpc2b/prr#does> :ruleAction1 .
+
+
+
+###  http://asu.edu/sharpc2b/example1#rule1Condition
+
+:rule1Condition rdf:type <http://asu.edu/sharpc2b/prr#RuleCondition> ,
+                         owl:NamedIndividual ;
+                
+                <http://asu.edu/sharpc2b/prr#hasConditionRepresentation> :rule1ConditionExpr .
+
+
+
+###  http://asu.edu/sharpc2b/example1#rule1ConditionExpr
+
+:rule1ConditionExpr rdf:type <http://asu.edu/sharpc2b/prr#LogicalExpression> ,
+                             owl:NamedIndividual ;
+                    
+                    <http://asu.edu/sharpc2b/prr#bodyExpression> :noProblemExistExpression .
+
+
+
+###  http://asu.edu/sharpc2b/example1#ruleAction1
+
+:ruleAction1 rdf:type <http://asu.edu/sharpc2b/prr#RuleAction> ,
+                      owl:NamedIndividual ;
+             
+             <http://asu.edu/sharpc2b/prr#hasActionRepresentation> :ruleActionExpr1 .
+
+
+
+###  http://asu.edu/sharpc2b/example1#ruleActionExpr1
+
+:ruleActionExpr1 rdf:type <http://asu.edu/sharpc2b/prr#AssertExpr> ,
+                          owl:NamedIndividual ;
+                 
+                 <http://asu.edu/sharpc2b/prr#bodyExpression> :newProposalExpression .
+
+
+
+###  http://asu.edu/sharpc2b/example1#ruleSet1
+
+:ruleSet1 rdf:type <http://asu.edu/sharpc2b/prr#ExecutableRuleSet> ,
+                   owl:NamedIndividual ;
+          
+          <http://asu.edu/sharpc2b/prr#name> "exampleRuleSet"^^xsd:string ;
+          
+          <http://asu.edu/sharpc2b/prr#hasParameter> :patientParam ;
+          
+          <http://asu.edu/sharpc2b/prr#contains> :rule1 ;
+          
+          <http://asu.edu/sharpc2b/prr#scopes> :vmrVar .
+
+
+
+###  http://asu.edu/sharpc2b/example1#someDateLiteral
+
+:someDateLiteral rdf:type <http://asu.edu/sharpc2b/ocl#DateLiteralExpr> ,
+                          owl:NamedIndividual ;
+                 
+                 <http://asu.edu/sharpc2b/ocl#literalValue> "01/01/2111"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrPatientClassCode
+
+:vmrPatientClassCode rdf:type <http://asu.edu/sharpc2b/ops#TypeCode> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/lmm#code> "Patient"^^xsd:string ;
+                     
+                     <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrProblemClassCode
+
+:vmrProblemClassCode rdf:type <http://asu.edu/sharpc2b/ops#TypeCode> ,
+                              owl:NamedIndividual ;
+                     
+                     <http://asu.edu/sharpc2b/lmm#code> "Problem"^^xsd:string ;
+                     
+                     <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrProcedureProposalClassCode
+
+:vmrProcedureProposalClassCode rdf:type <http://asu.edu/sharpc2b/ops#TypeCode> ,
+                                        owl:NamedIndividual ;
+                               
+                               <http://asu.edu/sharpc2b/lmm#code> "ProcedureProposal"^^xsd:string ;
+                               
+                               <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrVar
+
+:vmrVar rdf:type <http://asu.edu/sharpc2b/prr#Variable> ,
+                 owl:NamedIndividual ;
+        
+        <http://asu.edu/sharpc2b/prr#name> "vmr"^^xsd:string ;
+        
+        <http://asu.edu/sharpc2b/prr#hasInitialValueExpressedAs> :vmrVarInitExpression ;
+        
+        <http://asu.edu/sharpc2b/prr#hasDeclaredTypeCode> <http://asu.edu/sharpc2b/ops#setCode> .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrVarInitExpression
+
+:vmrVarInitExpression rdf:type <http://asu.edu/sharpc2b/prr#ExpressionInOCL> ,
+                               owl:NamedIndividual ;
+                      
+                      <http://asu.edu/sharpc2b/prr#bodyExpression> :patient_getVMR .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmrVarRef
+
+:vmrVarRef rdf:type <http://asu.edu/sharpc2b/ocl#VariableExpr> ,
+                    owl:NamedIndividual ;
+           
+           <http://asu.edu/sharpc2b/ocl#referredVar> :vmrVar .
+
+
+
+###  http://asu.edu/sharpc2b/example1#vmr_propertyCode
+
+:vmr_propertyCode rdf:type <http://asu.edu/sharpc2b/ops#PropertyCode> ,
+                           owl:NamedIndividual ;
+                  
+                  <http://asu.edu/sharpc2b/lmm#code> "VMR"^^xsd:string ;
+                  
+                  <http://asu.edu/sharpc2b/lmm#codeSystem> "vmr"^^xsd:string .
+
+
+
+
+###  Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net
+

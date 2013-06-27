@@ -16,12 +16,13 @@ import java.io.File;
 public class OwlapiUtil
 {
 
-    public static final String ontologiesDirInProject = "/editor-models/src/main/resources/ontologies/";
+    static final String sharpEditorOntologiesDirInProject
+            = "/model-transform/src/main/resources/onts/editor-models/";
 
     public static OWLOntologyManager createSharpOWLOntologyManager ()
     {
         OWLOntologyManager oom = OWLManager.createOWLOntologyManager();
-        addSharpIriMappings( oom );
+        addSharpEditorIriMappings( oom );
         return oom;
     }
 
@@ -30,7 +31,7 @@ public class OwlapiUtil
      * OWLAPI to resolve and load ontologies based on the logical/name ontology IRI, especially ontologies
      * referenced by an owl:imports.
      */
-    public static void addSharpIriMappings (OWLOntologyManager oom)
+    private static void addSharpEditorIriMappings (OWLOntologyManager oom)
     {
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr-sharp", "prr-sharp.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr", "prr-core.owl" );
@@ -47,10 +48,9 @@ public class OwlapiUtil
         addSharpIriMapping( oom, "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl", "DUL.owl" );
         addSharpIriMapping( oom, "http://www.w3.org/2004/02/skos/core", "skos-core.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/ops", "expr-core.owl" );
-        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsb", "demos/diffnames/expr-core-both.owl" );
-        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsc", "demos/diffnames/expr-core-coupled.owl" );
-        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsd",
-                            "demos/diffnames/expr-core-decoupled.owl" );
+//        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsb", "demos/diffnames/expr-core-both.owl" );
+//        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsc", "demos/diffnames/expr-core-coupled.owl" );
+//        addSharpIriMapping( oom, "http://asu.edu/sharpc2b/opsd", "demos/diffnames/expr-core-decoupled.owl" );
     }
 
     /**
@@ -61,11 +61,12 @@ public class OwlapiUtil
      * @param ontologyIriString    IRI has a String
      * @param relativeDocIriString Relative file location, such as "demos/expr-core-coupled.owl"
      */
-    public static void addSharpIriMapping (OWLOntologyManager oom,
-                                           String ontologyIriString,
-                                           String relativeDocIriString)
+    static void addSharpIriMapping (OWLOntologyManager oom,
+                                    String ontologyIriString,
+                                    String relativeDocIriString)
     {
-        File ontFile = FileUtil.getFileInProjectDir( ontologiesDirInProject + relativeDocIriString );
+        File ontFile = FileUtil
+                .getFileInProjectDir( sharpEditorOntologiesDirInProject + relativeDocIriString );
         SimpleIRIMapper m = new SimpleIRIMapper( IRI.create( ontologyIriString ), IRI.create( ontFile ) );
         oom.addIRIMapper( m );
     }

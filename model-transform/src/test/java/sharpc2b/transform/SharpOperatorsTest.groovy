@@ -17,13 +17,13 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class SharpOperatorsTest extends GroovyTestCase {
 
     static File excelFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
+            "/model-transform/src/main/resources/SharpOperators.xlsx" );
 
-    static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
+    static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/shops.ofn" );
+            "/model-transform/src/test/resources/onts/editor-models/shops.ofn" );
 
-    static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
+    static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = outputOntIRI.toString() + "#";
 
     OWLOntologyManager oom;

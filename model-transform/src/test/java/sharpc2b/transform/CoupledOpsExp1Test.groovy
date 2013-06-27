@@ -28,7 +28,7 @@ class CoupledOpsExp1Test
 extends GroovyTestCase {
 
     static File ontFile = FileUtil.getFileInProjectDir(
-            OwlapiUtil.ontologiesDirInProject + "demos/expr-core-coupled.owl" )
+            OwlapiUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
 
     OWLOntologyManager oom;
     OWLOntology ont

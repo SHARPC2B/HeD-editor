@@ -55,19 +55,10 @@ public class TBoxToABox
 {
 
     /**
-     * Base namespace IRI for the Domain meta-Model entities.
-     */
-    static String genericConceptsResourcePath = "/onts/in/SharpOwlABoxDomainMetaModel";
-
-    static String testConceptsResourcePath = "/DomainMetaModelABoxEntities.properties";
-
-    static String sharpConceptsResourcePath = "/OWL-to-Sharp-ABox-Concepts.properties";
-
-    /**
      * Default file to load to obtain the A-Box IRIs to use as substitutes for OWL Class, Property,
      * subClassOf, etc.
      */
-    private static String defaultResourcePath = sharpConceptsResourcePath;
+    private static String defaultResourcePathForSharpABoxConcepts = "/OWL-to-Sharp-ABox-Concepts.properties";
 
     //==================================================================================
 
@@ -97,7 +88,7 @@ public class TBoxToABox
 
         try
         {
-            initDomainModelABoxSubstitutionsFromPropertiesFile( defaultResourcePath );
+            initDomainModelABoxSubstitutionsFromPropertiesFile( defaultResourcePathForSharpABoxConcepts );
         }
         catch (IOException e)
         {
@@ -323,7 +314,7 @@ public class TBoxToABox
 
     private void addImports ()
     {
-        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpIRI( "ops" ) );
+        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpEditorIRI( "ops" ) );
 
         System.out.println( "add owl:imports: " + importOps );
 

@@ -34,15 +34,15 @@ class ExcelOperatorsTest
 extends GroovyTestCase {
 
     static File excelFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
+            "/model-transform/src/main/resources/SharpOperators.xlsx" );
 
-    static IRI outputOntIRI = IriUtil.sharpIRI( "shops" );
+    static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
     static File outputOntFile = FileUtil.getFileInProjectDir(
-            "/editor-models/src/main/resources/ontologies/shops3.ofn" );
+            "/model-transform/src/test/resources/onts/editor-models/shops3.ofn" );
 
 
-    static String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
-    static final String skosExtBaseIRI = IriUtil.sharpIRI( "skos-ext" ).toString() + "#";
+    static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
+    static final String skosExtBaseIRI = IriUtil.sharpEditorIRI( "skos-ext" ).toString() + "#";
     static String operatorsBaseIRI = outputOntIRI.toString() + "#";
 
     IRI outputIRI (final String name) {
@@ -400,7 +400,7 @@ extends GroovyTestCase {
     }
 
     void addImports () {
-        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpIRI( "ops" ) );
+        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpEditorIRI( "ops" ) );
 
         System.out.println( "add owl:imports: " + importOps );
 

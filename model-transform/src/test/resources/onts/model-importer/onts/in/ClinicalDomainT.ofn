@@ -1,0 +1,51 @@
+Prefix(:=<http://asu.edu/sharpc2b/test/ClinicalDomainT#>)
+Prefix(cl:=<http://asu.edu/sharpc2b/test/ClinicalDomainT#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<http://asu.edu/sharpc2b/test/ClinicalDomainT>
+
+Declaration(Class(:Disorder))
+Declaration(Class(:Doctor))
+Declaration(Class(:Drug))
+Declaration(Class(:Patient))
+DisjointClasses( :Patient :Drug :Disorder :Doctor )
+
+Declaration(ObjectProperty(:refinesDisorder))
+TransitiveObjectProperty(:refinesDisorder)
+// ReflexiveObjectProperty(:refinesDisorder)
+ObjectPropertyDomain(:refinesDisorder :Disorder)
+ObjectPropertyRange(:refinesDisorder :Disorder)
+
+Declaration(ObjectProperty(:hasDisorder))
+ObjectPropertyDomain(:hasDisorder :Patient)
+ObjectPropertyRange(:hasDisorder :Disorder)
+
+Declaration(ObjectProperty(:usesDrug))
+ObjectPropertyDomain(:usesDrug :Patient)
+ObjectPropertyRange(:usesDrug :Drug)
+
+Declaration(DataProperty(:age))
+DataPropertyDomain(:age :Patient)
+DataPropertyRange(:age xsd:integer)
+
+Declaration(DataProperty(:icd9))
+DataPropertyDomain(:icd9 :Disorder)
+DataPropertyRange(:icd9 xsd:string)
+
+Declaration(DataProperty(:ndcCode))
+DataPropertyDomain(:ndcCode :Drug)
+DataPropertyRange(:ndcCode xsd:string)
+
+Declaration(DataProperty(:providerID))
+DataPropertyDomain(:providerID :Doctor)
+DataPropertyRange(:providerID xsd:string)
+
+Declaration(DataProperty(:ssn))
+DataPropertyDomain(:ssn :Patient)
+DataPropertyRange(:ssn xsd:string)
+)

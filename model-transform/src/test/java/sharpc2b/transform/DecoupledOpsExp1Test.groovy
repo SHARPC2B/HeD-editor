@@ -25,7 +25,7 @@ class DecoupledOpsExp1Test
 extends GroovyTestCase {
 
     static File ontFile = FileUtil.getFileInProjectDir(
-            OwlapiUtil.ontologiesDirInProject + "demos/expr-core-decoupled.owl" )
+            OwlapiUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-decoupled.owl" )
 
     OWLOntologyManager oom;
     OWLOntology ont

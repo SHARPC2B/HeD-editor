@@ -33,22 +33,13 @@ import java.util.Set;
 public class SharpOperators
 {
 
-    static final File defaultExcelFile = FileUtil
-            .getFileInProjectDir( "/editor-models/src/main/resources/ontologies/SharpOperators.xlsx" );
+//    static final File defaultExcelFile = FileUtil
+//            .getFileInProjectDir( "/model-transform/src/main/resources/SharpOperators.xlsx" );
 
-    //    static IRI outputOntIRI = TestUtil.testIRI( "SharpOperators" );
-//    static final IRI defaultOutputOntIRI = IriUtil.sharpIRI( "shops" );
+    static final String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
 
-//    static final File defaultOutputOntFile = FileUtil
-//            .getFileInProjectDir( "/editor-models/src/main/resources/ontologies/shops.ofn" );
+    static final String skosExtBaseIRI = IriUtil.sharpEditorIRI( "skos-ext" ).toString() + "#";
 
-//    static final String defaultShopsBaseIRI = defaultOutputOntIRI.toString() + "#";
-
-    static final String opsCoreBaseIRI = IriUtil.sharpIRI( "ops" ).toString() + "#";
-
-    static final String skosExtBaseIRI = IriUtil.sharpIRI( "skos-ext" ).toString() + "#";
-
-    //    static String typesBaseIRI = "http://asu.edu/sharpc2b/ops#";
     static String typesBaseIRI = opsCoreBaseIRI;
 
     static Map<String, IRI> typeNameIriMap = new HashMap<String, IRI>();
@@ -498,7 +489,7 @@ public class SharpOperators
 
     void addImports ()
     {
-        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpIRI( "ops" ) );
+        OWLImportsDeclaration importOps = odf.getOWLImportsDeclaration( IriUtil.sharpEditorIRI( "ops" ) );
 
         System.out.println( "add owl:imports: " + importOps );
 
