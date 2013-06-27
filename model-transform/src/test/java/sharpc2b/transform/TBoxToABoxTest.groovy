@@ -11,6 +11,8 @@ import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyFormat
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.Namespaces
+import sharpc2b.transform.test.TestFileUtil
+import sharpc2b.transform.test.TestUtil
 
 /**
  * User: rk
@@ -20,12 +22,12 @@ import org.semanticweb.owlapi.vocab.Namespaces
 class TBoxToABoxTest
 extends GroovyTestCase {
 
-    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getResourceAsFile( "/onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainA" );
-    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts8.ofn" );
-    static File outputSkosOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SkosClinicalDomainInsts8" +
-            ".ofn" );
+    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/onts/out/ClinicalDomainInsts8.ofn" );
+    static File outputSkosOntFile = TestFileUtil.getFileForTestOutput(
+            "/onts/out/SkosClinicalDomainInsts8.ofn" );
 
     /**
      * Location in the classpath to find properties file containing entity IRIs to use in the output

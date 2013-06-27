@@ -28,7 +28,7 @@ class CoupledOpsExp1Test
 extends GroovyTestCase {
 
     static File ontFile = FileUtil.getFileInProjectDir(
-            OwlapiUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
+            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
 
     OWLOntologyManager oom;
     OWLOntology ont
@@ -41,7 +41,7 @@ extends GroovyTestCase {
     void setUp () {
 
 //        oom = OWLManager.createOWLOntologyManager()
-        oom = OwlapiUtil.createSharpOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
         odf = oom.getOWLDataFactory();
         onts = new TreeSet<OWLOntology>();

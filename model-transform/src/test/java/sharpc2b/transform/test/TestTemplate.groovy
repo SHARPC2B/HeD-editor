@@ -1,4 +1,4 @@
-package sharpc2b
+package sharpc2b.transform.test
 
 import org.junit.*
 import org.junit.runner.RunWith

@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 /**
  * Demonstrate use of TBoxToABox.
@@ -19,10 +20,10 @@ import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 class OwlTDomainToSharpAConceptsTest
 extends GroovyTestCase {
 
-    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getResourceAsFile( "onts/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
-    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainConcepts.ofn" );
+    static File outputOntFile = TestFileUtil.getResourceAsFile( "onts/out/ClinicalDomainConcepts.ofn" );
 
     /**
      * Properties file to load to specify the meta-model entity IRIs to use for the output ontology.

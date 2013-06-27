@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 /**
  * Test to check that it works to use simple clinical domain ontologies and use reasoner to distinguish
@@ -37,7 +38,7 @@ class SlotFillerTest extends GroovyTestCase {
     static String dmNamespace = dmIri.toString() + "#"
 
     static File ontFile (String name) {
-        TestFileUtil.getFileInTestResourceDir( "onts/in/" + name + ".ofn" )
+        TestFileUtil.getResourceAsFile( "onts/in/" + name + ".ofn" )
     }
 
     static IRI ontIRI (String name) {

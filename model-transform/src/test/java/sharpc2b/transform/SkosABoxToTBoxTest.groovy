@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.model.OWLOntologyStorageException
 import org.semanticweb.owlapi.util.SimpleIRIMapper
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 /**
  * User: rk
@@ -34,12 +35,12 @@ extends GroovyTestCase {
     /*
      * Published ICD9 Codes Ontology
      */
-    static String pubCodesResourcePath = "onts/in/icd9-pub.ofn";
+    static String pubCodesResourcePath = "/onts/in/icd9-pub.ofn";
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String sharpCodesResourcePath = "onts/out/icd9-T.ofn";
+    static String sharpCodesResourcePath = "/onts/out/icd9-T.ofn";
 
     static IRI sharpCodesIRI = IRI.create( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
 
@@ -54,11 +55,13 @@ extends GroovyTestCase {
 
     void setUp () {
 
-        oom = OWLManager.createOWLOntologyManager();
-        skosFile = TestFileUtil.getFileInTestResourceDir( "onts/in/skos-core.rdfxml" );
-        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
-                IRI.create( skosFile ) );
-        oom.addIRIMapper( iriMapper );
+//        oom = OWLManager.createOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
+//        skosFile = TestFileUtil.getResourceAsFile( "onts/in/skos-core.rdfxml" );
+//        skosFile = OwlUtil.getSharpEditorOntologyFile("skos-core.owl");
+//        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
+//                IRI.create( skosFile ) );
+//        oom.addIRIMapper( iriMapper );
     }
 
     void tearDown () {
@@ -69,8 +72,10 @@ extends GroovyTestCase {
 
     void testRunIt () {
 
-        File inFile = TestFileUtil.getFileInTestResourceDir( pubCodesResourcePath );
-        File outFile = TestFileUtil.getFileInTestResourceDir( sharpCodesResourcePath );
+        File inFile = TestFileUtil.getResourceAsFile( pubCodesResourcePath );
+        File outFile = TestFileUtil.getFileForTestOutput( sharpCodesResourcePath );
+        println "inFile = "+ inFile
+        println "outFile = "+ outFile
 
         assert inFile.exists()
         assert inFile.canRead()
@@ -104,8 +109,8 @@ extends GroovyTestCase {
         String sharpCodesOntsVersion = "03";
         String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/" + sharpCodesOntsVersion + "/";
 
-        File aFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
-        File tFile = TestFileUtil.getFileInTestResourceDir( "/onts/out/icd9-classes.ofn" );
+        File aFile = TestFileUtil.getResourceAsFile( "/onts/in/icd9-pub.ofn" );
+        File tFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes.ofn" );
         IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-pub" );
         IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes5" );
 

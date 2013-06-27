@@ -72,7 +72,7 @@ extends GroovyTestCase {
 
     void setUp () {
 
-        oom = OwlapiUtil.createSharpOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
         odf = oom.getOWLDataFactory();
 //        onts = new TreeSet<OWLOntology>();

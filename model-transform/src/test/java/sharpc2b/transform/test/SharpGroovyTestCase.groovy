@@ -1,4 +1,4 @@
-package sharpc2b.transform
+package sharpc2b.transform.test
 
 import org.semanticweb.owlapi.model.OWLDataFactory
 import org.semanticweb.owlapi.model.OWLOntology
@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.reasoner.OWLReasoner
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.OwlUtil
 
 /**
  * User: rk
@@ -28,7 +29,7 @@ extends GroovyTestCase {
     protected void setUp () throws Exception {
         super.setUp()
 
-        oom = OwlapiUtil.createSharpOWLOntologyManager()
+        oom = OwlUtil.createSharpOWLOntologyManager()
         odf = oom.getOWLDataFactory()
     }
 

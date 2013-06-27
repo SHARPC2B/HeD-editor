@@ -5,10 +5,10 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
 
 import java.util.regex.Pattern
 
@@ -34,20 +34,24 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     /*
      * SKOS
      */
-    static File skosFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/skos-core.rdfxml" );
+//    static File skosFile = TestFileUtil.getFileForTestOutput( "/onts/in/skos-core.rdfxml" );
+    static File skosFile = OwlUtil.getSharpEditorOntologyFile( "skos-core.owl" );
 
     /*
      * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)
      */
     static IRI pubCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-pub" );
 
-    static File pubCodesFile = TestFileUtil.getFileInTestResourceDir( "/onts/in/icd9-pub.ofn" );
+//    static File pubCodesFile = TestFileUtil.getFileForTestOutput( "/onts/in/icd9-pub.ofn" );
+    static File pubCodesFile = FileUtil.getExistingResourceAsFile( "/onts/in/icd9-pub.ofn" );
 
     /*
      * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
      */
     static IRI sharpCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
-    static File sharpCodesFile = TestFileUtil.getFileInTestResourceDir( "onts/out/icd9-classes-test.ofn" )
+//    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "onts/out/icd9-classes-test.ofn" )
+    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes-test" +
+            ".ofn" )
 
     OWLOntologyManager oom;
     OWLDataFactory odf;
@@ -77,7 +81,9 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
     @Before
     void setUp () {
-        oom = OWLManager.createOWLOntologyManager();
+//        oom = OWLManager.createOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
+
         odf = oom.getOWLDataFactory();
 
 //        skos = oom.loadOntologyFromOntologyDocument( new File( skosRootPath + ".rdf" ) );
@@ -245,6 +251,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
 
     def serialize () {
 
+        println "Saving ontology to: " + sharpCodesFile
         oom.saveOntology( icd9cl, IRI.create( sharpCodesFile ) );
     }
 

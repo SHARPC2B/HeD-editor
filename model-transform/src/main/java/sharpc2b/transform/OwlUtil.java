@@ -4,26 +4,54 @@ import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * User: rk Date: 6/3/13 Time: 8:54 PM
  */
-public class OwlapiUtil
+public class OwlUtil
 {
 
     static final String sharpEditorOntologiesDirInProject
             = "/model-transform/src/main/resources/onts/editor-models/";
+
+    /**
+     * Need a resource path (location in classpath) for a core Sharp ontology file.  This is used to find
+     * other ontology files in the folder for code Sharp ontologies.
+     */
+    private static String knownSharpOntologyResourcePath = "onts/editor-models/sharp.owl";
+
+    public static File getSharpEditorOntologyDir ()
+    {
+        File knownFile = FileUtil.getExistingResourceAsFile( knownSharpOntologyResourcePath );
+        return knownFile.getParentFile();
+    }
+
+    public static File getSharpEditorOntologyFile (final String filename)
+    {
+        File dir = getSharpEditorOntologyDir();
+        return new File( dir, filename );
+    }
 
     public static OWLOntologyManager createSharpOWLOntologyManager ()
     {
         OWLOntologyManager oom = OWLManager.createOWLOntologyManager();
         addSharpEditorIriMappings( oom );
         return oom;
+    }
+
+    public static final OWLOntology loadOntologyFromResource (final OWLOntologyManager oom,
+                                                              final String resourcePath)
+            throws OWLOntologyCreationException
+    {
+        InputStream inputStream = FileUtil.getResourceAsStream( resourcePath );
+        return oom.loadOntologyFromOntologyDocument( inputStream );
     }
 
     /**
@@ -57,16 +85,18 @@ public class OwlapiUtil
      * Add a single IRI mapping, that maps an ontology IRI to a document location IRI, relative to the File
      * folder where ontologies are stored in the "editor-models" project.
      *
-     * @param oom                  The OWLOntologyManager the mapping is added to.
-     * @param ontologyIriString    IRI has a String
-     * @param relativeDocIriString Relative file location, such as "demos/expr-core-coupled.owl"
+     * @param oom               The OWLOntologyManager the mapping is added to.
+     * @param ontologyIriString IRI has a String
+     * @param filename          Relative file location, such as "demos/expr-core-coupled.owl"
      */
     static void addSharpIriMapping (OWLOntologyManager oom,
                                     String ontologyIriString,
-                                    String relativeDocIriString)
+                                    String filename)
     {
-        File ontFile = FileUtil
-                .getFileInProjectDir( sharpEditorOntologiesDirInProject + relativeDocIriString );
+        File sharpOntDir = getSharpEditorOntologyDir();
+        File ontFile;
+        ontFile = FileUtil.getFileInProjectDir( sharpEditorOntologiesDirInProject + filename );
+        ontFile = new File( getSharpEditorOntologyDir(), filename );
         SimpleIRIMapper m = new SimpleIRIMapper( IRI.create( ontologyIriString ), IRI.create( ontFile ) );
         oom.addIRIMapper( m );
     }

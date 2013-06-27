@@ -1,4 +1,4 @@
-package sharpc2b.transform
+package sharpc2b.transform.test
 
 import org.semanticweb.owlapi.model.IRI
 

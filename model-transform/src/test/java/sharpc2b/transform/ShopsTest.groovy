@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty
 import org.semanticweb.owlapi.model.OWLIndividual
 import org.semanticweb.owlapi.model.OWLNamedIndividual
 import org.semanticweb.owlapi.model.OWLObjectProperty
+import sharpc2b.transform.test.SharpGroovyTestCase
 
 /**
  * User: rk
@@ -40,7 +41,7 @@ class ShopsTest extends SharpGroovyTestCase {
 
         ont = oom.loadOntologyFromOntologyDocument( IRI.create( shopsOntFile ) );
 
-        reasoner = OwlapiUtil.getHermitReasoner( ont, false );
+        reasoner = OwlUtil.getHermitReasoner( ont, false );
 
         assert reasoner.isConsistent();
 
@@ -86,7 +87,7 @@ class ShopsTest extends SharpGroovyTestCase {
 
         OWLClass targetExprClass = odf.getOWLClass( shopsIRI( "AddIntegerExpression" ) )
 
-//        reasoner = OwlapiUtil.getHermitReasoner( ont, false );
+//        reasoner = OwlUtil.getHermitReasoner( ont, false );
 
 //        NodeSet<OWLClass> nodeTypes
 //        nodeTypes = reasoner.getTypes(addInts);

@@ -17,6 +17,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import sharpc2b.transform.test.TestFileUtil
+import sharpc2b.transform.test.TestUtil
 
 /**
  * User: rk Date: 5/16/13 Time: 6:09 PM
@@ -35,7 +37,7 @@ extends GroovyTestCase {
     static String mmNamespace = mmIri.toString() + "#"
 
     static File ontFile (String name) {
-        TestFileUtil.getFileInTestResourceDir( "onts/in/" + name + ".ofn" )
+        TestFileUtil.getResourceAsFile( "onts/in/" + name + ".ofn" )
     }
 
 //    static IRI ontIRI (String name) {
@@ -200,7 +202,7 @@ extends GroovyTestCase {
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
         oFormat.copyPrefixesFrom( oFormat )
 
-        File outFile = TestFileUtil.getFileInTestResourceDir( "onts/out/" + ontFileName + ".ofn" )
+        File outFile = TestFileUtil.getResourceAsFile( "onts/out/" + ontFileName + ".ofn" )
         oom.saveOntology( ont, oFormat, IRI.create( outFile ) )
     }
 

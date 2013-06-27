@@ -1,6 +1,7 @@
 package sharpc2b.transform;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -28,11 +29,25 @@ public class FileUtil
      *
      * The file does not have to exist for the File object to be successfully created.
      */
-    public static final File getFileInResourceDir (final String path)
+    public static final File getExistingResourceAsFile (final String path)
     {
-        URL url = System.class.getResource( knownRootResourcePath );
+        URL url = System.class.getResource( path );
+        if (url != null)
+        {
+            try
+            {
+                return new File( url.toURI() );
+            }
+            catch (URISyntaxException e)
+            {
+//                e.printStackTrace();
+            }
+        }
+        URL referenceURL = System.class.getResource( knownRootResourcePath );
 
-        if (url == null)
+        System.out.println( "referenceURL = " + referenceURL );
+
+        if (referenceURL == null)
         {
             final String message = "Not able to find root of Resources directory because method " +
                     "depends on finding known resource with path = '" + knownRootResourcePath + "'";
@@ -40,7 +55,7 @@ public class FileUtil
         }
         try
         {
-            URI rootURI = new File( url.toURI() ).getParentFile().toURI();
+            URI rootURI = new File( referenceURL.toURI() ).getParentFile().toURI();
 //            System.out.println(rootURI);
             final String fullPath = rootURI.toString() + path;
             URI fullURI = new URI( fullPath );
@@ -98,12 +113,32 @@ public class FileUtil
     }
 
     /**
-     * An alternative to getFileInResourceDir() that takes a URI as input.  The input URI can either be an
+     * Create a java.io.InputStream object for the input path argument.  The path is a String value relative
+     * to the main resources root folder, using '/' as the path separator character An example value of
+     * resourcePath would be "onts/in/ClinicalDomainT.ofn".
+     */
+    public static final InputStream getResourceAsStream (final String resourcePath)
+    {
+//        InputStream inStream = System.class.getResourceAsStream( resourcePath );
+        InputStream inStream = FileUtil.class.getResourceAsStream( resourcePath );
+
+        if (inStream == null)
+        {
+            final String message = "Not able to find root of Resources directory because method " +
+                    "depends on finding known resource with path = '" + knownRootResourcePath + "'";
+            throw new RuntimeException( message );
+        }
+
+        return inStream;
+    }
+
+    /**
+     * An alternative to getExistingResourceAsFile() that takes a URI as input.  The input URI can either be an
      * absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for that
      * URI, or it can be a relative URI (no URI 'scheme'), in which case the File will be relative to the
      * resource root -- this method will delegate to getFileInTestResourceDir().
      */
-    public static final File getResourceFile (final URI uri)
+    public static final File getExistingResourceAsFile (final URI uri)
     {
         if (uri == null)
         {
@@ -124,7 +159,7 @@ public class FileUtil
         {
 //            System.out.println( "uri.getPath() = " + uri.getPath() );
 
-            return getFileInResourceDir( uri.getPath() );
+            return getExistingResourceAsFile( uri.getPath() );
         }
     }
 

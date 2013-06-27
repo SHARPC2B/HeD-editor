@@ -1,4 +1,7 @@
-package sharpc2b.transform;
+package sharpc2b.transform.test;
+
+import sharpc2b.transform.FileUtil;
+import sharpc2b.transform.TBoxToABoxTest;
 
 import java.io.File;
 import java.net.URI;
@@ -21,36 +24,38 @@ public class TestFileUtil
     private static final String knownRootTestResourcePath = "/FileInTestResourcesRoot.properties";
 
     /**
-     * Create a java.io.File object for the input path argument.  The path is a String value relative to the
-     * 'test' resources root folder, using '/' as the path separator character (whether Windows or Unix file
-     * system).  An example value of path would be "onts/in/ClinicalDomainT.ofn".  Thus, if resource root is
-     * ".. ./sharp-editor/model-transform/src/test/resources/", then the File object will correspond to
-     * ./sharp-editor/model-transform/src/test/resources/onts/in/ClinicalDomainT.ofn".
+     * Create a java.io.File object for the input relativePath argument.  The relativePath is a String value
+     * relative to the 'test' resources root folder, using '/' as the relativePath separator character
+     * (whether Windows or Unix file system).  An example value of relativePath would be
+     * "onts/in/ClinicalDomainT.ofn".  Thus, if resource root is ".. ./sharp-editor/model-transform/src/test/resources/",
+     * then the File object will correspond to ./sharp-editor/model-transform/src/test/resources/onts/in/ClinicalDomainT.ofn".
      *
      * The file does not have to exist for the File object to be successfully created.
      */
-    public static final File getFileInTestResourceDir (final String path)
+    public static final File getFileForTestOutput (final String relativePath)
     {
         Class cl = TBoxToABoxTest.class;
         URL url = System.class.getResource( knownRootTestResourcePath );
+//        InputStream inputStream = System.class.getResourceAsStream( knownRootTestResourcePath );
 
         if (url == null)
         {
             final String message = "Not able to find root of 'test' Resources directory because method " +
-                    "depends on finding known resource with path = '" + knownRootTestResourcePath + "'";
+                    "depends on finding known resource with relativePath = '" + knownRootTestResourcePath +
+                    "'";
             throw new RuntimeException( message );
         }
         try
         {
             URI rootURI = new File( url.toURI() ).getParentFile().toURI();
 //            System.out.println(rootURI);
-            final String fullPath = rootURI.toString() + path;
+            final String fullPath = rootURI.toString() + relativePath;
             URI fullURI = new URI( fullPath );
             File f = new File( fullURI );
 //            System.out.println( "fullPath to create URI = " + fullPath );
 //            System.out.println( "resource file = " + f );
 //            System.out.println( "Resource Root = " + knownResouceFile.getParentFile() );
-//            String fullPath = knownResouceFile.getParentFile().getAbsolutePath() + path;
+//            String fullPath = knownResouceFile.getParentFile().getAbsolutePath() + relativePath;
 //            File f = new File( fullPath );
 
             return f;
@@ -64,10 +69,10 @@ public class TestFileUtil
     }
 
     /**
-     * An alternative to getFileInTestResourceDir() that takes a URI as input.  The input URI can either be
-     * an absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for
-     * that URI, or it can be a relative URI (no URI 'scheme'), in which case the File will be relative to
-     * the resource root -- this method will delegate to getFileInTestResourceDir().
+     * An alternative to getFileForTestOutput() that takes a URI as input.  The input URI can either be an
+     * absolute file URI (i.e., URI scheme = "file"), in which case the method will return a File for that
+     * URI, or it can be a relative URI (no URI 'scheme'), in which case the File will be relative to the
+     * resource root -- this method will delegate to getFileForTestOutput().
      */
     public static final File getTestResourceFile (final URI uri)
     {
@@ -90,8 +95,12 @@ public class TestFileUtil
         {
 //            System.out.println( "uri.getPath() = " + uri.getPath() );
 
-            return getFileInTestResourceDir( uri.getPath() );
+            return getExistingResourceAsFile( uri.getPath() );
         }
     }
 
+    public static File getResourceAsFile (final String knownRootTestResourcePath)
+    {
+        return getExistingResourceAsFile( knownRootTestResourcePath );
+    }
 }
