@@ -35,11 +35,11 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.drools</groupId>
-            <artifactId>drools-shapes-xsd-processor</artifactId>
-            <version>${chance.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.drools</groupId>-->
+            <!--<artifactId>drools-shapes-xsd-processor</artifactId>-->
+            <!--<version>${chance.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
@@ -54,7 +54,19 @@
 
         <dependency>
             <groupId>sharpc2b</groupId>
+            <artifactId>skos-to-T-plugin</artifactId>
+            <version>${editor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sharpc2b</groupId>
             <artifactId>model-transform-plugin</artifactId>
+            <version>${editor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sharpc2b</groupId>
+            <artifactId>define-operators-plugin</artifactId>
             <version>${editor.version}</version>
         </dependency>
 
@@ -82,48 +94,48 @@
             </plugin>
 
 
-            <plugin>
-                <groupId>org.drools</groupId>
-                <artifactId>drools-shapes-xsd-processor-plugin</artifactId>
-                <version>${chance.version}</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate-owl</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <schemaLocations>
-                        <param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd
-                        </param>
-                        <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>
-                        <param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>
-                        <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>
-                    </schemaLocations>
-                </configuration>
-            </plugin>
-
-
             <!--<plugin>-->
-                <!--<groupId>sharpc2b</groupId>-->
-                <!--<artifactId>model-transform-plugin</artifactId>-->
-                <!--<version>0.1-SNAPSHOT</version>-->
+                <!--<groupId>org.drools</groupId>-->
+                <!--<artifactId>drools-shapes-xsd-processor-plugin</artifactId>-->
+                <!--<version>${chance.version}</version>-->
                 <!--<executions>-->
                     <!--<execution>-->
                         <!--<phase>generate-sources</phase>-->
                         <!--<goals>-->
-                            <!--<goal>generate-skos-abox-to-tbox</goal>-->
+                            <!--<goal>generate-owl</goal>-->
                         <!--</goals>-->
                     <!--</execution>-->
                 <!--</executions>-->
                 <!--<configuration>-->
-                    <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/icd9-pub.ofn</inputOntologyFile>-->
-                    <!--<outputOntologyFile>${pom.basedir}/src/main/resources/onts/out/icd9-T.ofn</outputOntologyFile>-->
-                    <!--<outputOntologyIriString>http://asu.edu/sharpc2b/codes/03/icd9-T</outputOntologyIriString>-->
+                    <!--<schemaLocations>-->
+                        <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd-->
+                        <!--</param>-->
+                        <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>-->
+                        <!--<param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>-->
+                        <!--<param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>-->
+                    <!--</schemaLocations>-->
                 <!--</configuration>-->
             <!--</plugin>-->
+
+
+            <plugin>
+                <groupId>sharpc2b</groupId>
+                <artifactId>skos-to-T-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-skos-abox-to-tbox</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputOntologyFile>${pom.basedir}/src/main/resources/onts/icd9-pub.ofn</inputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/icd9-T.ofn</outputOntologyFile>
+                    <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>sharpc2b</groupId>
@@ -139,10 +151,10 @@
                 </executions>
                 <configuration>
                     <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
-                    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
                     <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>-->
                     <!--<outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>-->
                     <!--<outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>-->
+                    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
                     <inputOntologyFile>../imported-models/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
                     <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A-06-27.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>

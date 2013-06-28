@@ -26,6 +26,7 @@
     <module>model-transform-plugin</module>
       <module>imported-models</module>
       <module>define-operators-plugin</module>
+      <module>skos-to-T-plugin</module>
   </modules>
 
 
