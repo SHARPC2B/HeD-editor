@@ -144,8 +144,28 @@
                     <!--<outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>-->
                     <!--<outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>-->
                     <inputOntologyFile>../imported-models/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
-                    <outputOntologyFile>${pom.basedir}/target/onts/out/vmr-clean-A-06-27.ofn</outputOntologyFile>
-                    <outputOntologyIriString>http://asu.edu/sharpc2b/test/vmr-clean-A</outputOntologyIriString>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A-06-27.ofn</outputOntologyFile>
+                    <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>sharpc2b</groupId>
+                <artifactId>define-operators-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>define-operators</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
+                    <operatorDefinitionFile>${pom.basedir}/src/main/resources/SharpOperators.xlsx</operatorDefinitionFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/shops.ofn</outputOntologyFile>
+                    <outputOntologyIriString>http://asu.edu/sharpc2b/shops</outputOntologyIriString>
                 </configuration>
             </plugin>
 

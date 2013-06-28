@@ -91,7 +91,7 @@ public class SharpOperators
 
     //===============================================================================================
 
-    SharpOperators ()
+    public SharpOperators ()
     {
         super();
     }

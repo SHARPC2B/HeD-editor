@@ -94,9 +94,9 @@ public class OwlUtil
                                     String ontologyIriString,
                                     String filename)
     {
-        File sharpOntDir = getSharpEditorOntologyDir();
+//        File sharpOntDir = getSharpEditorOntologyDir();
         File ontFile;
-        ontFile = FileUtil.getFileInProjectDir( sharpEditorOntologiesDirInProject + filename );
+//        ontFile = FileUtil.getFileInProjectDir( sharpEditorOntologiesDirInProject + filename );
         ontFile = new File( getSharpEditorOntologyDir(), filename );
         SimpleIRIMapper m = new SimpleIRIMapper( IRI.create( ontologyIriString ), IRI.create( ontFile ) );
         oom.addIRIMapper( m );

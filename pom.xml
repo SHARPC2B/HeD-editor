@@ -25,6 +25,7 @@
     <module>model-transform</module>
     <module>model-transform-plugin</module>
       <module>imported-models</module>
+      <module>define-operators-plugin</module>
   </modules>
 
 

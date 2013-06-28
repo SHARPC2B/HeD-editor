@@ -11,49 +11,33 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import sharpc2b.transform.IriUtil;
-import sharpc2b.transform.TBoxToABox;
+import sharpc2b.transform.OwlUtil;
+import sharpc2b.transform.SharpOperators;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Goal
  *
- * @Mojo( name = "generate-tbox-to-abox" )
- * @goal generate-tbox-to-abox
+ * @Mojo( name = "define-operators" )
+ * @goal define-operators
  * @phase generate-sources
  * @requires DependencyResolution compile
  */
-public class TBoxToABoxPlugin
+public class DefineOperatorsPlugin
         extends AbstractMojo
 {
-
-//    static String baseDir = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources/";
-//
-//    static File default_inputOntFile = new File( baseDir + "onts/in/ClinicalDomainT.ofn" );
-//
-//    static IRI default_outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/text/ClinicalDomainA" );
-//
-//    static File default_outputOntFile = new File( baseDir + "onts/out/ClinicalDomainInsts8.ofn" );
-
-//    static File default_outputSkosOntFile = new File( baseDir + "onts/out/SkosClinicalDomainInsts8.ofn" );
 
     //=====================================================================================================
     // Maven parameters
     //=====================================================================================================
 
     /**
-     * Location in the classpath to find properties file containing entity IRIs to use in the output A-Box
-     * ontology.
+     * Location in the classpath to find Excel file containing Operator definitions.
      *
-     * @parameter default-value="./OWL-to-Sharp-ABox-Concepts.properties"
-     */
-    private String tToAConfigResourcePath;
-
-    /**
      * @parameter default-value="./target/generated-sources"
      */
-    private File inputOntologyFile;
+    private File operatorDefinitionFile;
 
     /**
      * @parameter default-value="./target/generated-sources"
@@ -69,24 +53,14 @@ public class TBoxToABoxPlugin
     // Maven parameter Getters and Setters
     //=====================================================================================================
 
-    public String gettToAConfigResourcePath ()
+    public File getOperatorDefinitionFile ()
     {
-        return tToAConfigResourcePath;
+        return operatorDefinitionFile;
     }
 
-    public void settToAConfigResourcePath (final String tToAConfigResourcePath)
+    public void setOperatorDefinitionFile (final File operatorDefinitionFile)
     {
-        this.tToAConfigResourcePath = tToAConfigResourcePath;
-    }
-
-    public File getInputOntologyFile ()
-    {
-        return inputOntologyFile;
-    }
-
-    public void setInputOntologyFile (final File inputOntologyFile)
-    {
-        this.inputOntologyFile = inputOntologyFile;
+        this.operatorDefinitionFile = operatorDefinitionFile;
     }
 
     public File getOutputOntologyFile ()
@@ -112,37 +86,28 @@ public class TBoxToABoxPlugin
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
-        TBoxToABox converter;
+        SharpOperators converter;
 
         OWLOntologyManager oom;
         PrefixOWLOntologyFormat oFormat;
 
-        OWLOntology ontT;
-        OWLOntology ontA;
+//        OWLOntology ontT;
+        OWLOntology operatorOntology;
 
-        System.out.println( "gettToAConfigResourcePath() = '" + gettToAConfigResourcePath() + "'" );
-        System.out.println( "getInputOntologyFile() = '" + getInputOntologyFile() + "'" );
+        System.out.println( "getOperatorDefinitionFile() = '" + getOperatorDefinitionFile() + "'" );
         System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
-        System.out.println( "getInputOntologyFile().exists() = '" + getInputOntologyFile().exists() + "'" );
-//        System.out.println( "gettToAConfigResourcePath.exists() = '" + new File( gettToAConfigResourcePath()).exists() + "'" );
+        System.out.println(
+                "getOperatorDefinitionFile().exists() = '" + getOperatorDefinitionFile().exists() + "'" );
 
         oom = OWLManager.createOWLOntologyManager();
+//        oom = OwlUtil.createSharpOWLOntologyManager();
 
 //        if (false)
 //        {
         try
         {
-            ontT = oom.loadOntologyFromOntologyDocument( getInputOntologyFile() );
-        }
-        catch (OWLOntologyCreationException e)
-        {
-            e.printStackTrace();
-            throw new MojoFailureException( "Failed to load input ontology", e );
-        }
-        try
-        {
-            ontA = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
+            operatorOntology = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
         }
         catch (OWLOntologyCreationException e)
         {
@@ -152,24 +117,15 @@ public class TBoxToABoxPlugin
 
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
 
-        oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
-        oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
+        oFormat.setPrefix( "a:", operatorOntology.getOntologyID().getOntologyIRI().toString() + "#" );
+
+        converter = new SharpOperators();
+
+        converter.addSharpOperators( operatorDefinitionFile, operatorOntology );
 
         try
         {
-            converter = new TBoxToABox( gettToAConfigResourcePath() );
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            throw new MojoFailureException( "Failed to create TBoxToABox converter instance.", e );
-        }
-
-        converter.addABoxAxioms( ontT, ontA );
-
-        try
-        {
-            oom.saveOntology( ontA, oFormat, IRI.create( getOutputOntologyFile() ) );
+            oom.saveOntology( operatorOntology, oFormat, IRI.create( getOutputOntologyFile() ) );
         }
         catch (OWLOntologyStorageException e)
         {
@@ -177,9 +133,5 @@ public class TBoxToABoxPlugin
             throw new MojoFailureException(
                     "Failed to save output ontology to File = " + getOutputOntologyFile(), e );
         }
-//        }
     }
-
 }
-
-
