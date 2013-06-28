@@ -24,6 +24,7 @@
     <module>model-importer</module>
     <module>model-transform</module>
     <module>model-transform-plugin</module>
+      <module>imported-models</module>
   </modules>
 
 
