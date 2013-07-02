@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import sharpc2b.transform.IriUtil;
+import sharpc2b.transform.OwlUtil;
 import sharpc2b.transform.SkosABoxToTBox;
 
 import java.io.File;
@@ -96,7 +97,8 @@ public class SkosToTPlugin
         System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
 
-        oom = OWLManager.createOWLOntologyManager();
+//        oom = OWLManager.createOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
 
         try
         {

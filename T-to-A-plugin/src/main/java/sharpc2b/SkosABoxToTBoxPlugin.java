@@ -9,8 +9,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.util.OWLDataUtil;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import sharpc2b.transform.IriUtil;
+import sharpc2b.transform.OwlUtil;
 import sharpc2b.transform.SkosABoxToTBox;
 
 import java.io.File;
@@ -107,7 +109,8 @@ class SkosABoxToTBoxPlugin
         System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
 
-        oom = OWLManager.createOWLOntologyManager();
+//        oom = OWLManager.createOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
 
         try
         {

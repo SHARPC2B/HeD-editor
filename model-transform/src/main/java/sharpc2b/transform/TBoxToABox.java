@@ -123,7 +123,8 @@ public class TBoxToABox
         oom = aboxDomainModel.getOWLOntologyManager();
         if (oom == null)
         {
-            oom = OWLManager.createOWLOntologyManager();
+//            oom = OWLManager.createOWLOntologyManager();
+            oom = OwlUtil.createSharpOWLOntologyManager();
         }
         odf = oom.getOWLDataFactory();
 

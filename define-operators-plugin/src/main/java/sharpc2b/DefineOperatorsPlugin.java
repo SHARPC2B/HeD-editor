@@ -100,8 +100,8 @@ public class DefineOperatorsPlugin
         System.out.println(
                 "getOperatorDefinitionFile().exists() = '" + getOperatorDefinitionFile().exists() + "'" );
 
-        oom = OWLManager.createOWLOntologyManager();
-//        oom = OwlUtil.createSharpOWLOntologyManager();
+//        oom = OWLManager.createOWLOntologyManager();
+        oom = OwlUtil.createSharpOWLOntologyManager();
 
 //        if (false)
 //        {
