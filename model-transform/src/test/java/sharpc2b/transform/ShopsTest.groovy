@@ -19,7 +19,7 @@ class ShopsTest extends SharpGroovyTestCase {
 
     static IRI shopsOntIRI = IriUtil.sharpEditorIRI( "shops" );
     static File shopsOntFile = FileUtil.getExistingResourceAsFile(
-            "/onts/import-operators/shops.ofn" );
+            "/ontologies/import-operators/shops.ofn" );
 
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = shopsOntIRI.toString() + "#";

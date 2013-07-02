@@ -30,13 +30,13 @@ public class TBoxToABoxPlugin
 
 //    static String baseDir = "/Users/rk/asu/prj/sharp-editor/model-transform/src/test/resources/";
 //
-//    static File default_inputOntFile = new File( baseDir + "onts/in/ClinicalDomainT.ofn" );
+//    static File default_inputOntFile = new File( baseDir + "ontologies/in/ClinicalDomainT.ofn" );
 //
 //    static IRI default_outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/text/ClinicalDomainA" );
 //
-//    static File default_outputOntFile = new File( baseDir + "onts/out/ClinicalDomainInsts8.ofn" );
+//    static File default_outputOntFile = new File( baseDir + "ontologies/out/ClinicalDomainInsts8.ofn" );
 
-//    static File default_outputSkosOntFile = new File( baseDir + "onts/out/SkosClinicalDomainInsts8.ofn" );
+//    static File default_outputSkosOntFile = new File( baseDir + "ontologies/out/SkosClinicalDomainInsts8.ofn" );
 
     //=====================================================================================================
     // Maven parameters

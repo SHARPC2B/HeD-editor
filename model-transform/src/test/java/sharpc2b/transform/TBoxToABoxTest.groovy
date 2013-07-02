@@ -22,12 +22,12 @@ import sharpc2b.transform.test.TestUtil
 class TBoxToABoxTest
 extends GroovyTestCase {
 
-    static File inputOntFile = TestFileUtil.getResourceAsFile( "/onts/in/ClinicalDomainT.ofn" );
+    static File inputOntFile = TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainA" );
-    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/onts/out/ClinicalDomainInsts8.ofn" );
+    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/ClinicalDomainInsts8.ofn" );
     static File outputSkosOntFile = TestFileUtil.getFileForTestOutput(
-            "/onts/out/SkosClinicalDomainInsts8.ofn" );
+            "/ontologies/out/SkosClinicalDomainInsts8.ofn" );
 
     /**
      * Location in the classpath to find properties file containing entity IRIs to use in the output
@@ -71,12 +71,12 @@ extends GroovyTestCase {
         println url;
 
         Properties props
-        url = System.getResource( "/onts/in/DoesNotExist" );
+        url = System.getResource( "/ontologies/in/DoesNotExist" );
         assertNull url
 
-//        x= TBoxToABox.class.getResource("/onts/in/ClinicalDomain.ofn");
+//        x= TBoxToABox.class.getResource("/ontologies/in/ClinicalDomain.ofn");
 //        println x;
-        url = TBoxToABox.class.getResource( "/onts/in/ClinicalDomainT.ofn" );
+        url = TBoxToABox.class.getResource( "/ontologies/in/ClinicalDomainT.ofn" );
 //        println "url = ${url}";
 //        println url.class;
         File f = new File( url.toURI() );
@@ -98,7 +98,7 @@ extends GroovyTestCase {
 //        String text = url.openStream().text;
 //        println text.length();
 
-//       println Thread.currentThread().getContextClassLoader().getResource("/onts/in/ClinicalDomain.ofn")
+//       println Thread.currentThread().getContextClassLoader().getResource("/ontologies/in/ClinicalDomain.ofn")
     }
 
     void testMetaModelPropertiesMap () {

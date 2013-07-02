@@ -30,17 +30,17 @@ extends GroovyTestCase {
     /*
      * SKOS
      */
-//    static String skosResourcePath = "/onts/in/skos-core.rdfxml";
+//    static String skosResourcePath = "/ontologies/in/skos-core.rdfxml";
 
     /*
      * Published ICD9 Codes Ontology
      */
-    static String pubCodesResourcePath = "/onts/in/icd9-pub.ofn";
+    static String pubCodesResourcePath = "/ontologies/in/icd9-pub.ofn";
 
     /*
      * Sharp Ontology of ICD9 Code OWL Classes
      */
-    static String sharpCodesResourcePath = "/onts/out/icd9-T.ofn";
+    static String sharpCodesResourcePath = "/ontologies/out/icd9-T.ofn";
 
     static IRI sharpCodesIRI = IRI.create( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
 
@@ -57,7 +57,7 @@ extends GroovyTestCase {
 
 //        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();
-//        skosFile = TestFileUtil.getResourceAsFile( "/onts/in/skos-core.rdfxml" );
+//        skosFile = TestFileUtil.getResourceAsFile( "/ontologies/in/skos-core.rdfxml" );
 //        skosFile = OwlUtil.getSharpEditorOntologyFile("skos-core.owl");
 //        iriMapper = new SimpleIRIMapper( IriUtil.skosIRI,
 //                IRI.create( skosFile ) );
@@ -109,8 +109,8 @@ extends GroovyTestCase {
         String sharpCodesOntsVersion = "03";
         String commonCodesOntsRelPath = "asu.edu/sharpc2b/codes/" + sharpCodesOntsVersion + "/";
 
-        File aFile = TestFileUtil.getResourceAsFile( "/onts/in/icd9-pub.ofn" );
-        File tFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes.ofn" );
+        File aFile = TestFileUtil.getResourceAsFile( "/ontologies/in/icd9-pub.ofn" );
+        File tFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/icd9-classes.ofn" );
         IRI aIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-pub" );
         IRI tIRI = IRI.create( "http://" + commonCodesOntsRelPath + "icd9-classes5" );
 

@@ -35,10 +35,10 @@ class ExcelOperatorsTest
 extends GroovyTestCase {
 
     static File excelFile = FileUtil.getExistingResourceAsFile(
-            "/onts/import-operators/SharpOperators.xlsx");
+            "/ontologies/import-operators/SharpOperators.xlsx");
 
     static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
-    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/onts/out/shops-step-by-step.ofn" );
+    static File outputOntFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/shops-step-by-step.ofn" );
 
 
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
@@ -60,7 +60,7 @@ extends GroovyTestCase {
     OWLOntologyManager oom;
     OWLDataFactory odf;
     PrefixOWLOntologyFormat oFormat
-//    Set<OWLOntology> onts;
+//    Set<OWLOntology>ontologies;
     OWLReasonerFactory reasonerFactory;
     OWLReasoner reasoner;
 
@@ -73,7 +73,7 @@ extends GroovyTestCase {
         oom = OwlUtil.createSharpOWLOntologyManager();
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
         odf = oom.getOWLDataFactory();
-//        onts = new TreeSet<OWLOntology>();
+//        ontologies = new TreeSet<OWLOntology>();
         reasonerFactory = new Reasoner.ReasonerFactory();  // Hermit
 
         initTypeNameMap();

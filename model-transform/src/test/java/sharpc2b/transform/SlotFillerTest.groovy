@@ -38,7 +38,7 @@ class SlotFillerTest extends GroovyTestCase {
     static String dmNamespace = dmIri.toString() + "#"
 
     static File ontFile (String name) {
-        TestFileUtil.getResourceAsFile( "/onts/in/" + name + ".ofn" )
+        TestFileUtil.getResourceAsFile( "/ontologies/in/" + name + ".ofn" )
     }
 
     static IRI ontIRI (String name) {

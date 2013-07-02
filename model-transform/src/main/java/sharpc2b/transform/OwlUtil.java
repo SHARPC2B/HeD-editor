@@ -19,13 +19,13 @@ public class OwlUtil
 {
 
     static final String sharpEditorOntologiesDirInProject
-            = "/model-transform/src/main/resources/onts/editor-models/";
+            = "/model-transform/src/main/resources/ontologies/editor-models/";
 
     /**
      * Need a resource path (location in classpath) for a core Sharp ontology file.  This is used to find
      * other ontology files in the folder for code Sharp ontologies.
      */
-    private static String knownSharpOntologyResourcePath = "/onts/editor-models/sharp.owl";
+    private static String knownSharpOntologyResourcePath = "/ontologies/editor-models/sharp.owl";
 
     public static File getSharpEditorOntologyDir ()
     {

@@ -34,7 +34,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
     /*
      * SKOS
      */
-//    static File skosFile = TestFileUtil.getFileForTestOutput( "/onts/in/skos-core.rdfxml" );
+//    static File skosFile = TestFileUtil.getFileForTestOutput( "/ontologies/in/skos-core.rdfxml" );
     static File skosFile = OwlUtil.getSharpEditorOntologyFile( "skos-core.owl" );
 
     /*
@@ -42,15 +42,15 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
      */
     static IRI pubCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-pub" );
 
-//    static File pubCodesFile = TestFileUtil.getFileForTestOutput( "/onts/in/icd9-pub.ofn" );
-    static File pubCodesFile = FileUtil.getExistingResourceAsFile( "/onts/in/icd9-pub.ofn" );
+//    static File pubCodesFile = TestFileUtil.getFileForTestOutput( "/ontologies/in/icd9-pub.ofn" );
+    static File pubCodesFile = FileUtil.getExistingResourceAsFile( "/ontologies/in/icd9-pub.ofn" );
 
     /*
      * T-Box defined Sharp Ontology of ICD9 Code OWL Classes
      */
     static IRI sharpCodesIRI = new IRI( "http://" + sharpCodesOntsRelPath + "icd9-classes" );
-//    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes-test.ofn" )
-    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/onts/out/icd9-classes-test" +
+//    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/icd9-classes-test.ofn" )
+    static File sharpCodesFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/icd9-classes-test" +
             ".ofn" )
 
     OWLOntologyManager oom;
@@ -101,7 +101,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
         onts = new HashSet<OWLOntology>();
         onts.add( skos );
         onts.add( icd9pub );
-//        onts = [skos, ontA];
+//        ontologies = [skos, ontA];
     }
 
     @After

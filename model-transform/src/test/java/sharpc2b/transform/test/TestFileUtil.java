@@ -26,8 +26,8 @@ public class TestFileUtil
      * Create a java.io.File object for the input relativePath argument.  The relativePath is a String value
      * relative to the 'test' resources root folder, using '/' as the relativePath separator character
      * (whether Windows or Unix file system).  An example value of relativePath would be
-     * "/onts/in/ClinicalDomainT.ofn".  Thus, if resource root is ".. ./sharp-editor/model-transform/src/test/resources/",
-     * then the File object will correspond to ./sharp-editor/model-transform/src/test/resources/onts/in/ClinicalDomainT.ofn".
+     * "/ontologies/in/ClinicalDomainT.ofn".  Thus, if resource root is ".. ./sharp-editor/model-transform/src/test/resources/",
+     * then the File object will correspond to ./sharp-editor/model-transform/src/test/resources/ontologies/in/ClinicalDomainT.ofn".
      *
      * The file does not have to exist for the File object to be successfully created.
      */

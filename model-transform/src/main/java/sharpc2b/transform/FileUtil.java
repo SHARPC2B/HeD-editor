@@ -23,9 +23,9 @@ public class FileUtil
     /**
      * Create a java.io.File object for the input path argument.  The path is a String value relative to the
      * main resources root folder, using '/' as the path separator character (whether Windows or Unix file
-     * system).  An example value of path would be "/onts/in/ClinicalDomainT.ofn".  Thus, if resource root is
+     * system).  An example value of path would be "/ontologies/in/ClinicalDomainT.ofn".  Thus, if resource root is
      * ".. ./sharp-editor/model-transform/src/main/resources/", then the File object will correspond to
-     * ./sharp-editor/model-transform/src/main/resources/onts/in/ClinicalDomainT.ofn".
+     * ./sharp-editor/model-transform/src/main/resources/ontologies/in/ClinicalDomainT.ofn".
      *
      * The file does not have to exist for the File object to be successfully created.
      */
@@ -116,7 +116,7 @@ public class FileUtil
     /**
      * Create a java.io.InputStream object for the input path argument.  The path is a String value relative
      * to the main resources root folder, using '/' as the path separator character An example value of
-     * resourcePath would be "/onts/in/ClinicalDomainT.ofn".
+     * resourcePath would be "/ontologies/in/ClinicalDomainT.ofn".
      */
     public static final InputStream getResourceAsStream (final String resourcePath)
     {

@@ -31,10 +31,10 @@ class SkosABoxToTBoxPlugin
         extends AbstractMojo
 {
 
-//    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/in/ClinicalDomainT.ofn" );
+//    static File inputOntFile = TestFileUtil.getFileInTestResourceDir( "ontologies/in/ClinicalDomainT.ofn" );
 //    static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainA" );
-//    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/ClinicalDomainInsts8.ofn" );
-//    static File outputSkosOntFile = TestFileUtil.getFileInTestResourceDir( "onts/out/SkosClinicalDomainInsts8" +
+//    static File outputOntFile = TestFileUtil.getFileInTestResourceDir( "ontologies/out/ClinicalDomainInsts8.ofn" );
+//    static File outputSkosOntFile = TestFileUtil.getFileInTestResourceDir( "ontologies/out/SkosClinicalDomainInsts8" +
 //                                                                                   ".ofn" );
 
     //=====================================================================================================

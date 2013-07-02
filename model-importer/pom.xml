@@ -117,10 +117,11 @@
                 <!--</configuration>-->
             <!--</plugin>-->
 
+            <!-- SHARP PLUGINS -->
 
             <plugin>
-                <groupId>sharpc2b</groupId>
                 <artifactId>skos-to-T-plugin</artifactId>
+                <groupId>sharpc2b</groupId>
                 <version>0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
@@ -131,15 +132,15 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <inputOntologyFile>${pom.basedir}/src/main/resources/onts/icd9-pub.ofn</inputOntologyFile>
-                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/icd9-T.ofn</outputOntologyFile>
+                    <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/icd9-pub.ofn</inputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/icd9-T.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
                 </configuration>
             </plugin>
 
             <plugin>
+                <artifactId>T-to-A-plugin</artifactId>
                 <groupId>sharpc2b</groupId>
-                <artifactId>model-transform-plugin</artifactId>
                 <version>0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
@@ -150,20 +151,16 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
-                    <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>-->
-                    <!--<outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>-->
-                    <!--<outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>-->
                     <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
                     <inputOntologyFile>../imported-models/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
-                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A-06-27.ofn</outputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/vmr-clean-A-06-27.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
                 </configuration>
             </plugin>
 
             <plugin>
-                <groupId>sharpc2b</groupId>
                 <artifactId>define-operators-plugin</artifactId>
+                <groupId>sharpc2b</groupId>
                 <version>0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
@@ -176,7 +173,7 @@
                 <configuration>
                     <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
                     <operatorDefinitionFile>${pom.basedir}/src/main/resources/SharpOperators.xlsx</operatorDefinitionFile>
-                    <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/shops.ofn</outputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/shops.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/shops</outputOntologyIriString>
                 </configuration>
             </plugin>

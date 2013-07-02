@@ -19,7 +19,7 @@ extends GroovyTestCase {
     OWLOntologyManager oom;
     OWLDataFactory odf;
     PrefixOWLOntologyFormat oFormat
-//    Set<OWLOntology> onts;
+//    Set<OWLOntology> ontologies;
     OWLReasonerFactory reasonerFactory;
     OWLReasoner reasoner;
 

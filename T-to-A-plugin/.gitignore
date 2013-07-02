@@ -18,5 +18,5 @@
 
 model-transform/src/test/resources/http/asu.edu/sharpc2b/codes/03/icd9-classes*.ofn
 
-model-transform/src/test/resources/onts/out/
+model-transform/src/test/resources/ontologies/out/
 /target-BU/
