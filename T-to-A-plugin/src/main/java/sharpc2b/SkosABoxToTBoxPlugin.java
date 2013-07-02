@@ -16,14 +16,18 @@ import sharpc2b.transform.SkosABoxToTBox;
 import java.io.File;
 
 /**
- * Goal
- *
- * @goal generate-skos-abox-to-tbox
- * @phase generate-sources
- * @requiresDependencyResolution compile
+ * Moved to Module skos-to-T-Plugin
  */
 
-public class SkosABoxToTBoxPlugin
+///**
+// * Goal
+// *
+// * @goal generate-skos-abox-to-tbox
+// * @phase generate-sources
+// * @requiresDependencyResolution compile
+// */
+
+class SkosABoxToTBoxPlugin
         extends AbstractMojo
 {
 
