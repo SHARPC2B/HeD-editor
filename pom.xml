@@ -23,10 +23,10 @@
     <module>arden-model</module>
     <module>model-importer</module>
     <module>model-transform</module>
-    <module>model-transform-plugin</module>
-      <module>imported-models</module>
-      <module>define-operators-plugin</module>
-      <module>skos-to-T-plugin</module>
+    <module>T-to-A-plugin</module>
+    <module>imported-models</module>
+    <module>define-operators-plugin</module>
+    <module>skos-to-T-plugin</module>
   </modules>
 
 

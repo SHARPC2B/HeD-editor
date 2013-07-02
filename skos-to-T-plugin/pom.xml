@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sharpc2b</groupId>
     <artifactId>skos-to-T-plugin</artifactId>
+    <groupId>sharpc2b</groupId>
 
     <version>${editor.version}</version>
     <packaging>maven-plugin</packaging>

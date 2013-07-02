@@ -53,20 +53,20 @@
         </dependency>
 
         <dependency>
-            <groupId>sharpc2b</groupId>
             <artifactId>skos-to-T-plugin</artifactId>
+            <groupId>sharpc2b</groupId>
             <version>${editor.version}</version>
         </dependency>
 
         <dependency>
+            <artifactId>T-to-A-plugin</artifactId>
             <groupId>sharpc2b</groupId>
-            <artifactId>model-transform-plugin</artifactId>
             <version>${editor.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>sharpc2b</groupId>
             <artifactId>define-operators-plugin</artifactId>
+            <groupId>sharpc2b</groupId>
             <version>${editor.version}</version>
         </dependency>
 
