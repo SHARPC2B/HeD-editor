@@ -135,6 +135,7 @@
                     <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/icd9-pub.ofn</inputOntologyFile>
                     <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/icd9-T.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
+                    <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
                 </configuration>
             </plugin>
 
@@ -151,10 +152,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-                    <inputOntologyFile>../imported-models/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
-                    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/vmr-clean-A-06-27.ofn</outputOntologyFile>
+                    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/ontologies/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+                    <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
+                    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/vmr-clean-A.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
+                    <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
                 </configuration>
             </plugin>
 
@@ -175,6 +177,7 @@
                     <operatorDefinitionFile>${pom.basedir}/src/main/resources/SharpOperators.xlsx</operatorDefinitionFile>
                     <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/shops.ofn</outputOntologyFile>
                     <outputOntologyIriString>http://asu.edu/sharpc2b/shops</outputOntologyIriString>
+                    <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
                 </configuration>
             </plugin>
 

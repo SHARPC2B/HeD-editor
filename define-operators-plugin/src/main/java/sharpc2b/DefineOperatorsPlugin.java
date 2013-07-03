@@ -49,6 +49,11 @@ public class DefineOperatorsPlugin
      */
     private String outputOntologyIriString;
 
+    /**
+     * @parameter default-value="./target/generated-sources"
+     */
+    private File alternateResourceDir;
+
     //=====================================================================================================
     // Maven parameter Getters and Setters
     //=====================================================================================================
@@ -83,6 +88,11 @@ public class DefineOperatorsPlugin
         this.outputOntologyIriString = outputOntologyIriString;
     }
 
+    public File getAlternateResourceDir ()
+    {
+        return alternateResourceDir;
+    }
+
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
@@ -99,6 +109,7 @@ public class DefineOperatorsPlugin
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
         System.out.println(
                 "getOperatorDefinitionFile().exists() = '" + getOperatorDefinitionFile().exists() + "'" );
+        System.out.println( "getAlternateResourceDir() = '" + getAlternateResourceDir() + "'" );
 
 //        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();

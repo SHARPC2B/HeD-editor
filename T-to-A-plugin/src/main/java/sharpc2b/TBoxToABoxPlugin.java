@@ -65,6 +65,11 @@ public class TBoxToABoxPlugin
      */
     private String outputOntologyIriString;
 
+    /**
+     * @parameter default-value="./target/generated-sources"
+     */
+    private File alternateResourceDir;
+
     //=====================================================================================================
     // Maven parameter Getters and Setters
     //=====================================================================================================
@@ -109,6 +114,11 @@ public class TBoxToABoxPlugin
         this.outputOntologyIriString = outputOntologyIriString;
     }
 
+    public File getAlternateResourceDir ()
+    {
+        return alternateResourceDir;
+    }
+
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
@@ -126,6 +136,7 @@ public class TBoxToABoxPlugin
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
         System.out.println( "getInputOntologyFile().exists() = '" + getInputOntologyFile().exists() + "'" );
 //        System.out.println( "gettToAConfigResourcePath.exists() = '" + new File( gettToAConfigResourcePath()).exists() + "'" );
+        System.out.println( "getAlternateResourceDir() = '" + getAlternateResourceDir() + "'" );
 
         oom = OWLManager.createOWLOntologyManager();
 

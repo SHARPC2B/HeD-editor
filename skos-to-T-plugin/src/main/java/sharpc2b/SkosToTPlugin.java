@@ -3,13 +3,13 @@ package sharpc2b;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import sharpc2b.transform.FileUtil;
 import sharpc2b.transform.IriUtil;
 import sharpc2b.transform.OwlUtil;
 import sharpc2b.transform.SkosABoxToTBox;
@@ -24,7 +24,7 @@ import java.io.File;
  * @requiresDependencyResolution compile
  */
 public class SkosToTPlugin
-    extends AbstractMojo
+        extends AbstractMojo
 {
 
     //=====================================================================================================
@@ -45,6 +45,11 @@ public class SkosToTPlugin
      * @parameter default-value="./target/generated-sources"
      */
     private String outputOntologyIriString;
+
+    /**
+     * @parameter default-value="./target/generated-sources"
+     */
+    private File alternateResourceDir;
 
     //=====================================================================================================
     // Maven parameter Getters and Setters
@@ -75,6 +80,11 @@ public class SkosToTPlugin
         return outputOntologyIriString;
     }
 
+    public File getAlternateResourceDir ()
+    {
+        return alternateResourceDir;
+    }
+
     public void setOutputOntologyIriString (final String outputOntologyIriString)
     {
         this.outputOntologyIriString = outputOntologyIriString;
@@ -96,7 +106,12 @@ public class SkosToTPlugin
         System.out.println( "getInputOntologyFile() = '" + getInputOntologyFile() + "'" );
         System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
         System.out.println( "getOutputOntologyIriString() = '" + getOutputOntologyIriString() + "'" );
+        System.out.println( "getAlternateResourceDir() = '" + getAlternateResourceDir() + "'" );
 
+        if (getAlternateResourceDir() != null)
+        {
+            FileUtil.alternateResourceRootFolder = getAlternateResourceDir();
+        }
 //        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();
 
