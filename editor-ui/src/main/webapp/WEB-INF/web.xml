@@ -17,8 +17,11 @@
 		</user-data-constraint>
 	</security-constraint>
 	<login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name>Teste</realm-name>
+		<auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/partials/login.html</form-login-page>
+            <form-error-page>/partials/login.html</form-error-page>
+        </form-login-config>
 	</login-config>
 	<security-role>
     	<role-name>tomcat</role-name>
