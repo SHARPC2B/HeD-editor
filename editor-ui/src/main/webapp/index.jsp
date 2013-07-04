@@ -1,5 +1,5 @@
 <html>
 <body>
-    <h2>editor-ui</h2>
+    <h1>editor-ui</h1>
 </body>
 </html>
