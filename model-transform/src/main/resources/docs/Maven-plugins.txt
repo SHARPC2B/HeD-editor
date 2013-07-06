@@ -1,0 +1,50 @@
+Sharp Model Transformation Plugins
+
+3 Java/Maven Plugin Modules
+
+Run from model-importer module.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module/Artifact : skos-to-T-plugin / generate-skos-abox-to-tbox
+Java Classes: SkosToTPlugin -> SkosABoxToTBox
+
+inputOntologyFile = /src/main/resources/ontologies/icd9-pub.ofn
+alternateResourceDir = /src/main/resources
+ -->
+outputOntologyFile = /target/generated-sources/ontologies/icd9-T.ofn
+outputOntologyIriString = http://asu.edu/sharpc2b/icd9-T
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module/Artifact + goal: T-to-A-plugin / generate-tbox-to-abox
+Java Classes: TBoxToABoxPlugin -> TBoxToABox
+
+tToAConfigResourcePath = /src/main/resources/OWL-to-Sharp-ABox-Concepts.properties
+inputOntologyFile = ../imported-models/src/main/resources/ontologies/vmr-clean.xsd.ttl
+alternateResourceDir = /src/main/resources
+ -->
+outputOntologyFile = /target/generated-sources/ontologies/vmr-clean-A.ofn
+outputOntologyIriString = http://asu.edu/sharpc2b/vmr-clean-A
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Module/Artifact + goal: define-operators-plugin / define-operators
+Java Classes: DefineOperatorsPlugin -> SharpOperators
+
+operatorDefinitionFile = /src/main/resources/SharpOperators.xlsx
+alternateResourceDir = /src/main/resources
+ -->
+outputOntologyFile = /target/generated-sources/ontologies/shops.ofn
+outputOntologyIriString = http://asu.edu/sharpc2b/shops
+
+
+--------------------------
+Maven calls to run plugins
+--------------------------
+
+mvn sharpc2b:skos-to-T-plugin:0.1-SNAPSHOT:generate-skos-abox-to-tbox
+mvn sharpc2b:T-to-A-plugin:0.1-SNAPSHOT:generate-tbox-to-abox
+mvn sharpc2b:define-operators-plugin:0.1-SNAPSHOT:define-operators
+
+================================================================
