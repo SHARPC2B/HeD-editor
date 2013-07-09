@@ -1,5 +1,37 @@
-<html>
-<body>
-    <h1>editor-ui</h1>
-</body>
+<!doctype html>
+<html lang="en" ng-app="ruleApp">
+	<head>
+		<meta charset="utf-8">
+		<title>Implementer's Workbench</title>
+		<meta name="description" content="Login screen">
+		<meta name="author" content="Edinardo Potrich">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+		<link rel="stylesheet" href="css/app.css"/>
+	</head>
+	<body>
+	<header>
+		<a  href="#/home"><i class="icon-edit-sign icon-5x"></i></a>
+		<div class="mainMenu">
+			<h2>&nbsp;</h2>
+			<ul class="nav nav-pills">
+				<li><a href="#/standard">Standard Mode</a></li>
+				<li><a href="#/advanced">Advanced Mode</a></li>
+				<li><a href="#/revise">Revise My Rules</a></li>
+				<li><a href="#/others">Use Others' Rules</a></li>
+				<li><a href="#/help">Help</a></li>
+			</ul>
+		</div>
+		<div>Welcome, <a href="">Edinardo</a><br><a href="">Log Out</a></div>
+	</header>
+
+	<ng-view></ng-view>
+
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/controllers.js"></script>
+  	<script src="js/filters.js"></script>
+  	<script src="js/directives.js"></script>
+	</body>
 </html>
