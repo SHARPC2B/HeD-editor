@@ -10,6 +10,10 @@ angular.module('ruleApp', ['ruleApp.controllers'])
 				templateUrl : 'partials/standard.html',
 				controller : 'StandardCtrl'
 			});
+			$routeProvider.when('/graph', {
+				templateUrl : 'partials/graph.html',
+				controller : 'GraphCtrl'
+			});
 			$routeProvider.otherwise({
 				redirectTo : '/home'
 			});
