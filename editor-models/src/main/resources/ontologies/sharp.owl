@@ -8,9 +8,5 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 Ontology(<http://asu.edu/sharpc2b/sharp>
 Import(<http://asu.edu/sharpc2b/prr-sharp>)
 
-DisjointClasses(<http://asu.edu/sharpc2b/ops#TypeConcept> <http://asu.edu/sharpc2b/skos-ext#CodedConcept>)
-DisjointClasses(<http://asu.edu/sharpc2b/skos-ext#CodedConcept> <http://asu.edu/sharpc2b/ops#TypeConcept>)
-SubClassOf(rdf:List <http://asu.edu/sharpc2b/ops#Variable>)
-DisjointClasses(<http://asu.edu/sharpc2b/ops#Variable> <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity> rdf:List <http://www.w3.org/2004/02/skos/core#Collection>)
-DisjointClasses(<http://asu.edu/sharpc2b/ops#Variable> <http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#Meaning> rdf:List <http://www.w3.org/2004/02/skos/core#Collection>)
+SubClassOf(<http://asu.edu/sharpc2b/ops#Variable> <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#FormalExpression>)
 )

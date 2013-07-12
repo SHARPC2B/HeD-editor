@@ -5,107 +5,10 @@
 	elementFormDefault="qualified">
 
 	<xs:import namespace="urn:hl7-org:v3/cdsdt" schemaLocation="datatypes.xsd" />
-
+	<!--xs:import namespace="http://www.w3.org/1999/xhtml"
+		schemaLocation="xhtml1-strict.xsd" /-->
 
 	<xs:include schemaLocation="enum/resourcerelationshiptype.xsd"/>
-
-	<xs:complexType name="Person">
-		<xs:annotation>
-			<xs:documentation>Identifies a person who is associated with the
-				knowledge artifact. A person may be a contributor, a rights holder,
-				a publisher, and so on. Person extends party by adding a person name
-				attribute and an affiliation. Note, Person.name should be
-				constrained to be of type EN.PN
-			</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="name" type="dt:EN">
-				<xs:annotation>
-					<xs:documentation>The name of the person.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="addresses" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The set of addresses associated with this person.
-					</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="address" type="dt:AD" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>An individual address of type AD associated
-									with this person.
-								</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="telecoms" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The set of contact information associated with
-						this person.
-					</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="telecom" type="dt:TEL" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>An individual contact item of type TEL
-									associated with this entity.
-								</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="Organization">
-		<xs:sequence>
-			<xs:element name="name" type="dt:EN">
-				<xs:annotation>
-					<xs:documentation>The name of the organization.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="addresses" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The set of addresses associated with this
-						organization.
-					</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="address" type="dt:AD" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>An individual address of type AD associated
-									with this organization.
-								</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="telecoms" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The set of contact information associated with this organization.
-					</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="telecom" type="dt:TEL" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>An individual contact item of type TEL
-									associated with this organization.
-								</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
 
 	<xs:complexType name="SupportingEvidence">
 		<xs:annotation>
@@ -142,20 +45,82 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="Party">
+	<xs:complexType name="Party" abstract="true">
 		<xs:annotation>
-			<xs:documentation>Represents the humans and organizations and the
-				relationships between the two.
+			<xs:documentation>Party represents the abstract base type for entities that have addresses and contact information. It is intended to be extended and specialized by the Person and Organization concept. Note that Party allows for polymorphism using the xsi:type construct. For instance, by defining a 'contributor' to be of type 'Party', one allows the contributor to be either a person or a company (its derived types).
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="assignedResponsiblePerson" type="Person"
-				minOccurs="0" />
-			<xs:element name="representedOrganization" type="Organization"
-				minOccurs="0" />
-
+			<xs:element name="addresses" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The set of addresses associated with this entity.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="address" type="dt:AD" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>An individual address of type AD associated with this entity.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="contacts" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The set of contact information associated with this entity.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="contact" type="dt:TEL" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>An individual contact item of type TEL associated with this entity.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="Organization">
+		<xs:annotation>
+			<xs:documentation>Identifies an organization, a corporation, an institution, or a government department that has relevance to the knowledge artifact. Note that organization extends Party by adding a name attribute of type ST.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Party">
+				<xs:sequence>
+					<xs:element name="name" type="dt:ST">
+						<xs:annotation>
+							<xs:documentation>The name of the organization.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Person">
+		<xs:annotation>
+			<xs:documentation>Identifies a person who is associated with the knowledge artifact. A person may be a contributor, a rights holder, a publisher, and so on. Person extends party by adding a person name attribute and an affiliation. Note, Person.name should be constrained to be of type EN.PN
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Party">
+				<xs:sequence>
+					<xs:element name="name" type="dt:EN">
+						<xs:annotation>
+							<xs:documentation>The name of the person.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="affiliation" type="Organization" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The organizational affiliation for this person.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
 	<xs:complexType name="ResourceRelationshipReference">
 		<xs:annotation>
 			<xs:documentation>ResourceRelationshipReference defines the
@@ -230,11 +195,11 @@
 							<xs:documentation>The document content in xhtml format.
 							</xs:documentation>
 						</xs:annotation>
-						<xs:complexType>
+						<!--xs:complexType>
 							<xs:sequence>
-								<xs:element ref="xs:any" />
+								<xs:element ref="xhtml:div" />
 							</xs:sequence>
-						</xs:complexType>
+						</xs:complexType-->
 					</xs:element>
 				</xs:sequence>
 			</xs:extension>

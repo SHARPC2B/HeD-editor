@@ -80,7 +80,7 @@ For instance, one may define a MonthThreshold parameter, and use this parameter 
 				</xs:annotation>
 			</xs:element>
 			<!-- actions -->
-			<xs:element name="actionGroups" type="ActionGroup" minOccurs="1" maxOccurs="1">
+			<xs:element name="actionGroup" type="ActionGroup" minOccurs="1" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation>The actionGroups is essentially the top-level container for the groups of actions that make up a given knowledge document. This container defines the main content of the knowledge artifact: logical grouping constructs such as the clinical sections and orderables in an order set, the tasks to be performed by a rule, or the sections and menu choices that make up a document template. </xs:documentation>
 				</xs:annotation>

@@ -19,19 +19,18 @@ import static junit.framework.Assert.assertTrue;
 
 public class ModelManagerTest {
 
+//    @Test
+//    @Ignore
+//    public void testOntologyLoad() throws Exception {
+//
+//        ModelManagerOwlAPIHermit mm = new ModelManagerOwlAPIHermit();
+//
+//        mm.loadModel();
+//
+//    }
+
+
     @Test
-    @Ignore
-    public void testOntologyLoad() throws Exception {
-
-        ModelManagerOwlAPIHermit mm = new ModelManagerOwlAPIHermit();
-
-        mm.loadModel();
-
-    }
-
-
-    @Test
-    @Ignore
     public void testExampleLoad() throws Exception {
 
         ModelManagerOwlAPIHermit mm = new ModelManagerOwlAPIHermit();
@@ -79,7 +78,7 @@ public class ModelManagerTest {
                     getTestEMConfigMap() );
             EntityManager em = emf.createEntityManager();
 
-//        ExecutableRuleSet rs = new ExecutableRuleSetImpl();
+//      -  ExecutableRuleSet rs = new ExecutableRuleSetImpl();
 //            rs.addName( "test" );
 //        em.persist( rs );
 

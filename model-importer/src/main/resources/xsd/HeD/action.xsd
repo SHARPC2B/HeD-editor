@@ -179,14 +179,14 @@
 											</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="group" type="ActionGroup">
+									<xs:element name="actionGroup" type="ActionGroup">
 										<xs:annotation>
 											<xs:documentation>This subelement is a group of actions that
 												are specified in line.
 											</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="groupReference" type="VersionedIdentifier">
+									<xs:element name="actionGroupReference" type="VersionedIdentifier">
 										<xs:annotation>
 											<xs:documentation>A group can be included in an artifact or
 												another group by reference. This is accomplished by
@@ -323,9 +323,7 @@
 	</xs:complexType>
 	<xs:complexType name="MessageAction">
 		<xs:annotation>
-			<xs:documentation>An action to deliver a message to a destination
-				using an optionally specified channel.
-				The recipient is specified
+			<xs:documentation>An action to deliver a message. The recipient is specified
 				using the actor element.
 			</xs:documentation>
 		</xs:annotation>
@@ -365,7 +363,7 @@
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="AtomicAction">
-				<xs:attribute name="Name" type="xs:string" use="optional" default="Responses"/>
+				<xs:attribute name="name" type="xs:string" use="optional" default="Responses"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

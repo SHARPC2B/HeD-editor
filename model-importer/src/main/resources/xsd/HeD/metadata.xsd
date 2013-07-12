@@ -46,7 +46,7 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="KnowledgeAttribute">
+	<xs:complexType name="Coverage">
 		<xs:annotation>
 			<xs:documentation>Specifies various attributes of the patient
 				population for whom and/or environment of care in which the CDS
@@ -60,7 +60,7 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="description" type="dt:ST" minOccurs="0" />
-			<xs:element name="value" type="dt:ANY" minOccurs="0" />
+			<xs:element name="value" type="dt:CD" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
@@ -73,17 +73,23 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
+			<xs:element name="identifiers">
+				<xs:annotation>
+					<xs:documentation>Each version of a CDS knowledge artifact may have more than one identifier associated with it.  Note that each identifier must be globally unique in the universe of CDS knowledge artifacts in which a particular artifact resides.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="identifier" type="VersionedIdentifier"
+							maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The identifier of a CDS knowledge artifact consists of two parts:  (1) a base identifier which uniquely identifies the CDS Knowledge Artifact from all other CDS Knowledge Artifacts, regardless of version.  (2) a version identifier which uniquely identifies the CDS Knowledge Artifact from all other CDS Knowledge Artifact versions.
 
-
-			<xs:element name="id" type="dt:II">
-                <xs:annotation>
-                	<xs:documentation>A unique identifier for the artifact. This must be unique even across versions of the artifact.</xs:documentation>
-                </xs:annotation>
+Essentially, the full identifier is for a particular "artifact version".</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
 			</xs:element>
-
-			<xs:element name="setId" type="dt:II" />
-
-			<xs:element name="versionNumber" type="dt:INT" />
 
 		<xs:element name="artifactType">
 				<xs:annotation>
@@ -94,7 +100,7 @@
 				</xs:complexType>
 			</xs:element>
 			
-			<xs:element name="schemaId" type="dt:II">
+			<xs:element name="schemaIdentifier" type="VersionedIdentifier">
 				<xs:annotation>
 					<xs:documentation>This is the identifier of the XML schema (and its version) which governs the structure of this CDS Knowledge Artifact.</xs:documentation>
 				</xs:annotation>
@@ -122,13 +128,13 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="modelReference" type="NamedReference"
+						<xs:element name="modelReference" type="ModelReference"
 							maxOccurs="unbounded">
 							<xs:annotation>
-								<xs:documentation>Named references for the data models that are
+								<xs:documentation>A reference for the data models that are
 									used in the artifact, e..g., the Virtual Medical Record. In
-									this case, the name could be "vmr" and the identifier root is
-									the identifier for the HL7 VMR object
+									this case, the name could be "vmr" and the value is
+									the namespace universal resource identifier of the HL7 VMR schema
 								</xs:documentation>
 							</xs:annotation>
 						</xs:element>
@@ -175,12 +181,23 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="subjectOf" type="KnowledgeAttribute"
+						<xs:element name="coverage" type="Coverage"
 							 maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 
+			<xs:element name="keyTerms" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Provides a list of coded key terms that pertain to this artifact.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="term" type="dt:CD" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
 			<xs:element name="categories" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Provides a list of coded categories to which this
@@ -194,9 +211,9 @@
 				</xs:complexType>
 			</xs:element>
 
-			<xs:element name="languageCode" type="dt:CD" minOccurs="0" />
+			<xs:element name="language" type="dt:CD" minOccurs="0" />
 
-			<xs:element name="statusCode" >
+			<xs:element name="status" >
 				<xs:complexType>
 					<xs:attribute name="value" type="ArtifactStatusType" use="required"/>
 				</xs:complexType>
@@ -282,28 +299,31 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="NamedReference">
+	<xs:complexType name="ModelReference">
 		<xs:annotation>
-			<xs:documentation>A reference to some object by its identifier.
+			<xs:documentation>A reference to some model by its Universal Resource Identifier.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="name">
+			<xs:element name="description" type="dt:ST">
 				<xs:annotation>
 					<xs:documentation>The object is assigned a name that can be used in
 						this artifact.
 					</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:attribute name="value" type="xs:NCName" />
-				</xs:complexType>
 			</xs:element>
-			<xs:element name="referencedObject" type="VersionedIdentifier">
+			<xs:element name="referencedModel">
 				<xs:annotation>
 					<xs:documentation>The identifier of the object that is being
 						referenced.
 					</xs:documentation>
 				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="value" type="xs:anyURI">
+						<xs:annotation>
+							<xs:documentation>The URI of the object that is being referenced. This URL must also be defined as a namespace in the root element of the document</xs:documentation>
+						</xs:annotation></xs:attribute>
+				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>

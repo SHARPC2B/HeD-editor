@@ -1,16 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
-	xmlns:dt="urn:hl7-org:v3/cdsdt"
-	xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xhtml="http://www.w3.org/1999/xhtml"
-	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
-
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by Bryn Rhodes (Database Consulting Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed" xmlns:dt="urn:hl7-org:v3/cdsdt" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
 	<xs:import namespace="urn:hl7-org:v3/cdsdt" schemaLocation="datatypes.xsd"/>
-
 	<xs:include schemaLocation="literalexpression.xsd"/>
 	<xs:include schemaLocation="expression.xsd"/>
 	<xs:include schemaLocation="enum/eventtype.xsd"/>
 	<xs:include schemaLocation="enum/dataeventtype.xsd"/>
-	
 	<xs:simpleType name="RequestCardinality">
 		<xs:annotation>
 			<xs:documentation>
@@ -62,14 +57,20 @@
 				</xs:sequence>
 				<xs:attribute name="scope" type="xs:string" use="optional"/>
 				<xs:attribute name="cardinality" type="RequestCardinality" use="required"/>
-				<xs:attribute name="dataType" type="xs:string" use="required"/>
+				<xs:attribute name="dataType" type="xs:QName" use="required"/>
 				<xs:attribute name="templateId" type="xs:string" use="optional"/>
 				<xs:attribute name="idProperty" type="xs:string" use="optional"/>
 				<xs:attribute name="triggerType" type="DataEventType" use="optional"/>
 				<xs:attribute name="isInitial" type="xs:boolean" use="optional" default="true"/>
 			</xs:extension>
 		</xs:complexContent>
-	</xs:complexType>
+	</xs:complexType>
+	<xs:complexType name="DataRequest">
+		<xs:complexContent>
+			<xs:extension base="RequestBase">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="ClinicalRequest">
 		<xs:annotation>
 			<xs:documentation>
@@ -105,15 +106,16 @@
 				<xs:sequence>
 					<xs:element name="codes" type="Expression" minOccurs="0" maxOccurs="1"/>
 					<xs:element name="dateRange" type="Expression" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="subject" type="Expression" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 				<xs:attribute name="codeProperty" type="xs:string" use="optional"/>
 				<xs:attribute name="dateProperty" type="xs:string" use="optional"/>
+				<xs:attribute name="subjectProperty" type="xs:string" use="optional"/>
 				<xs:attribute name="useValueSets" type="xs:boolean" use="optional" default="false"/>
 				<xs:attribute name="useSubsumption" type="xs:boolean" use="optional" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-
 	<!-- 
 		TODO: This needs to be expanded, we need to know how to reference a value set.
 		id and version is assumed for now, but we need a clear mechanism for referring
@@ -148,7 +150,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="Expression">
+			<xs:extension base="UnaryExpression">
 				<xs:attribute name="id" type="xs:string" use="required"/>
 				<xs:attribute name="version" type="xs:string" use="optional"/>
 				<xs:attribute name="authority" type="xs:string" use="optional"/>

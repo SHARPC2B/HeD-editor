@@ -1,16 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Jeff Bronte (Zynx Health, Inc.) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
-	xmlns:dt="urn:hl7-org:v3/cdsdt"
-	xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xhtml="http://www.w3.org/1999/xhtml"
-	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
-
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by Bryn Rhodes (Database Consulting Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed" xmlns:dt="urn:hl7-org:v3/cdsdt" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified">
 	<xs:import namespace="urn:hl7-org:v3/cdsdt" schemaLocation="datatypes.xsd"/>
-
 	<!--xs:include schemaLocation="base.xsd"/-->
 	<xs:include schemaLocation="extdatatypes.xsd"/>
 	<xs:include schemaLocation="expression.xsd"/>
-
 	<!-- 
 		AD - Address : ANY
 			use : set_PostalAddressUse
@@ -70,7 +64,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-
 	<!--
 		CO - CodedOrdinal : ANY
 			code : CD
@@ -92,8 +85,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-
-
 	<!--
 		CS - CodeSimple : ANY
 			code : xs:string
@@ -235,22 +226,44 @@
 	</xs:complexType>
 	 -->
 	<!--
-		IVL_RTO - RatioInterval : ANY
+		IVL_RTO_INT - IntegerRatioInterval : ANY
 			ATTR_RTO_LOW
 			ATTR_RTO_HIGH
 			lowIsInclusive : xs:boolean
 			highIsInclusive : xs:boolean
 	-->
-	<xs:complexType name="RatioIntervalLiteral">
+	<xs:complexType name="IntegerRatioIntervalLiteral">
 		<xs:annotation>
 			<xs:documentation>
-				Returns a value of type IVL_RTO with the given attributes.
+				Returns a value of type IVL_RTO_INT with the given attributes.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="Expression">
-				<xs:attributeGroup ref="dt:ATTR_RTO_LOW"/>
-				<xs:attributeGroup ref="dt:ATTR_RTO_HIGH"/>
+				<xs:attributeGroup ref="dt:ATTR_RTO_INT_LOW"/>
+				<xs:attributeGroup ref="dt:ATTR_RTO_INT_HIGH"/>
+				<xs:attribute name="lowIsInclusive" type="xs:boolean" use="optional"/>
+				<xs:attribute name="highIsInclusive" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--
+		IVL_RTO_PQ - PhysicalQuantityRatioInterval : ANY
+			ATTR_RTO_LOW
+			ATTR_RTO_HIGH
+			lowIsInclusive : xs:boolean
+			highIsInclusive : xs:boolean
+	-->
+	<xs:complexType name="PhysicalQuantityRatioIntervalLiteral">
+		<xs:annotation>
+			<xs:documentation>
+				Returns a value of type IVL_RTO_PQ with the given attributes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Expression">
+				<xs:attributeGroup ref="dt:ATTR_RTO_PQ_LOW"/>
+				<xs:attributeGroup ref="dt:ATTR_RTO_PQ_HIGH"/>
 				<xs:attribute name="lowIsInclusive" type="xs:boolean" use="optional"/>
 				<xs:attribute name="highIsInclusive" type="xs:boolean" use="optional"/>
 			</xs:extension>
@@ -333,18 +346,34 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<!--
-		RTO - Ratio : QTY
-			ATTR_RTO
+		RTO_INT - Ratio : QTY
+			ATTR_RTO_INT
 	-->
-	<xs:complexType name="RatioLiteral">
+	<xs:complexType name="IntegerRatioLiteral">
 		<xs:annotation>
 			<xs:documentation>
-				Returns a value of type RTO with the given attributes.
+				Returns a value of type RTO_INT with the given attributes.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="Expression">
-				<xs:attributeGroup ref="dt:ATTR_RTO"/>
+				<xs:attributeGroup ref="dt:ATTR_RTO_INT"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--
+		RTO_PQ - Ratio : QTY
+			ATTR_RTO_PQ
+	-->
+	<xs:complexType name="PhysicalQuantityRatioLiteral">
+		<xs:annotation>
+			<xs:documentation>
+				Returns a value of type RTO_PQ with the given attributes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Expression">
+				<xs:attributeGroup ref="dt:ATTR_RTO_PQ"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -401,7 +430,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-
 	<!--
 		PIVL_TS
 			value : xs:string (regex restricted)
@@ -416,7 +444,7 @@
 		<xs:complexContent>
 			<xs:extension base="Expression">
 				<xs:sequence>
-					<xs:element name="phase" minOccurs="0" maxOccurs="1" type="dt:IVL_TS">
+					<xs:element name="phase" type="dt:IVL_TS" minOccurs="0" maxOccurs="1">
 						<xs:annotation>
 							<xs:documentation>
                         A prototype of the repeating interval specifying the
@@ -425,7 +453,7 @@
                      </xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="period" minOccurs="0" maxOccurs="1" type="dt:PQ">
+					<xs:element name="period" type="dt:PQ" minOccurs="0" maxOccurs="1">
 						<xs:annotation>
 							<xs:documentation>
                         A time duration specifying a reciprocal measure of
@@ -447,9 +475,6 @@
                   </xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
-				<!--  changed from bl to xs:boolean since bl was removed as a type 
-					Aziz Boxwala 
-				 -->
 				<xs:attribute name="institutionSpecified" type="xs:boolean" use="optional" default="false">
 					<xs:annotation>
 						<xs:documentation>
@@ -460,6 +485,9 @@
 					</xs:annotation>
 				</xs:attribute>
 			</xs:extension>
+			<!--  changed from bl to xs:boolean since bl was removed as a type 
+					Aziz Boxwala 
+				 -->
 		</xs:complexContent>
 	</xs:complexType>
 </xs:schema>

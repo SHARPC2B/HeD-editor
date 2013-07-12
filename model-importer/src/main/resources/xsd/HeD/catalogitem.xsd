@@ -84,18 +84,23 @@
 						</xs:complexType>
 					</xs:element>
 
-					<xs:element name="responseDataType" type="ValueType">
+					<xs:element name="responseDataType">
 						<xs:annotation>
 							<xs:documentation>The data type of the value or the response that
 								is entered by the user.</xs:documentation>
 						</xs:annotation>
+						<xs:complexType>
+							<xs:attribute name="value" type="ValueType"/>
+						</xs:complexType>
 					</xs:element>
-					<xs:element name="responseCardinality" type="Cardinality"
-						minOccurs="0" maxOccurs="1">
+					<xs:element name="responseCardinality" minOccurs="0" maxOccurs="1">
 						<xs:annotation>
 							<xs:documentation>The number of allowed responses, single or
 								multiple.</xs:documentation>
 						</xs:annotation>
+						<xs:complexType>
+						 <xs:attribute name="value" type="Cardinality"/>
+						</xs:complexType>
 					</xs:element>
 					<xs:element name="responseRange" type="RangeConstraint"
 						minOccurs="0" maxOccurs="unbounded">
@@ -113,12 +118,15 @@
 	<xs:complexType name="RangeConstraint" abstract="true">
 
 		<xs:sequence>
-			<xs:element name="constraintType" type="RangeConstraintType">
+			<xs:element name="constraintType">
 				<xs:annotation>
 					<xs:documentation>The constraint type defines how the value range
 						is being constrained. For example, the constraint type may
 						indicate the lower bound of the range.</xs:documentation>
 				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="value" type="RangeConstraintType"/>
+				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>

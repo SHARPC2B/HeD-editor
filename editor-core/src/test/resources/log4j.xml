@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="com.clarkparsia">
-        <level value="error" />
+        <level value="ERROR" />
     </logger>
 
 </log4j:configuration>

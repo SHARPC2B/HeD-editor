@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed"
-	targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified"
-	attributeFormDefault="qualified">
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by Bryn Rhodes (Database Consulting Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3/hed" targetNamespace="urn:hl7-org:v3/hed" elementFormDefault="qualified" attributeFormDefault="qualified">
 	<xs:include schemaLocation="expression.xsd"/>
-	
 	<xs:complexType name="Actor">
-        <xs:annotation>
-        	<xs:documentation>An actor is an entity responsible for the execution of an action.</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
+		<xs:annotation>
+			<xs:documentation>An actor is an entity responsible for the execution of an action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
 			<xs:element name="actor" type="ExpressionDef">
 				<xs:annotation>
 					<xs:documentation>The expression must evaluate to one of the following:
@@ -19,6 +17,4 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	
-
 </xs:schema>

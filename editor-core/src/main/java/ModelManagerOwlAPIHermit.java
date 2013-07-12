@@ -9,10 +9,15 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.sail.SailGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphson.GraphSONWriter;
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import org.coode.owlapi.rdf.model.AbstractTranslator;
 import org.coode.owlapi.rdf.model.RDFGraph;
 import org.coode.owlapi.rdf.model.RDFTranslator;
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
+import org.drools.io.ResourceFactory;
+import org.drools.semantics.AbstractObjectGraphVisitor;
+import org.hl7.v3.hed.KnowledgeDocument;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.LiteralImpl;
@@ -30,6 +35,7 @@ import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.io.StreamDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -47,15 +53,19 @@ import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredClassAssertionAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredEquivalentClassAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredEquivalentObjectPropertyAxiomGenerator;
+import org.semanticweb.owlapi.util.InferredIndividualAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 import org.semanticweb.owlapi.util.InferredPropertyAssertionGenerator;
 import org.semanticweb.owlapi.util.InferredSubClassAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredSubObjectPropertyAxiomGenerator;
+import org.w3._2002._07.owl.Thing;
+import org.w3._2002._07.owl.ThingImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,13 +97,9 @@ public class ModelManagerOwlAPIHermit
     private static final String EXAMPLE_root = EXAMPLE1 + "#" + "ruleSet1";
 
 
-    private String[] sources = {"lmm.owl", "ops.owl", "ocl.owl", "prr.owl"};
 
-    private String[] example1 = {"precompiled/prr_inf.owl", "example1.owl"};
-
-    public OWLOntology parseOntology (IRI target,
-                                      String path,
-                                      String[] resources)
+    public OWLOntology parseOntology ( IRI target,
+                                       org.drools.io.Resource[] resources)
     {
 
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -101,26 +107,17 @@ public class ModelManagerOwlAPIHermit
         config.setMissingOntologyHeaderStrategy(
                 OWLOntologyLoaderConfiguration.MissingOntologyHeaderStrategy.IMPORT_GRAPH );
 
-        File dir = new File( ModelManagerOwlAPIHermit.class.getResource( path ).getPath() );
-        for (String fileName : resources)
-        {
-            File f = new File( dir.getAbsolutePath() + File.separator + fileName );
-            if (f.getName().endsWith( ".owl" ))
-            {
-                System.out.println(
-                        "Found OWL file " + f.getName() + ", looking into " + (path + f.getName()) );
+        for ( org.drools.io.Resource res : resources ) {
 
-                try
-                {
-                    InputStream is = ModelManagerOwlAPIHermit.class
-                            .getResourceAsStream( path + f.getName() );
-                    OWLOntologyDocumentSource source = new StreamDocumentSource( is );
-                    manager.loadOntologyFromOntologyDocument( source, config );
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+            try
+            {
+                InputStream is = res.getInputStream();
+                OWLOntologyDocumentSource source = new StreamDocumentSource( is );
+                manager.loadOntologyFromOntologyDocument( source, config );
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
 
@@ -133,59 +130,81 @@ public class ModelManagerOwlAPIHermit
     }
 
 
-    public void loadModel ()
-            throws Exception
-    {
-
-        OWLOntology onto = parseOntology( IRI.create( PRR ), "/ontologies/", sources );
-        System.out.println( "Loaded model size " + onto.getImports().size() );
-
-        System.out.println( onto.getABoxAxioms( true ).size() );
-
-        List<InferredAxiomGenerator<? extends OWLAxiom>> axiomGenerators
-                = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
-        axiomGenerators.add( new InferredClassAssertionAxiomGenerator() );
-//            axiomGenerators.add(new InferredDataPropertyCharacteristicAxiomGenerator());
-        axiomGenerators.add( new InferredEquivalentClassAxiomGenerator() );
-//            axiomGenerators.add(new InferredEquivalentDataPropertiesAxiomGenerator());
-        axiomGenerators.add( new InferredEquivalentObjectPropertyAxiomGenerator() );
-//            axiomGenerators.add(new InferredInverseObjectPropertiesAxiomGenerator());
-//            axiomGenerators.add(new InferredObjectPropertyCharacteristicAxiomGenerator());
-        axiomGenerators.add( new InferredPropertyAssertionGenerator() );
-        axiomGenerators.add( new InferredSubClassAxiomGenerator() );
-//            axiomGenerators.add(new InferredSubDataPropertyAxiomGenerator());
-        axiomGenerators.add( new InferredSubObjectPropertyAxiomGenerator() );
-        applyReasoner( onto, axiomGenerators );
-
-        System.out.println( onto.getABoxAxioms( true ).size() );
-
-        File base = new File(
-                ModelManagerOwlAPIHermit.class.getResource( "/ontologies/" + sources[0] ).getPath() );
-//        File dir = new File( base.getParent() + File.separator + "precompiled" );
-//        if ( ! dir.exists() ) {
-//            dir.mkdirs();
-//        }
-//        System.out.println( dir.getAbsolutePath() );
-
-        OutputStream outStream = new FileOutputStream(
-                new File( base.getParentFile().getAbsolutePath() + File.separator + "prr_inf.owl" ) );
-        OWLOntologyFormat format = new TurtleOntologyFormat();
-        onto.getOWLOntologyManager().saveOntology( onto, format, outStream );
-
-    }
+//    public void loadModel ()
+//            throws Exception
+//    {
+//
+//        OWLOntology onto = parseOntology( IRI.create( PRR ), "/ontologies/", sources );
+//        System.out.println( "Loaded model size " + onto.getImports().size() );
+//
+//        System.out.println( onto.getABoxAxioms( true ).size() );
+//
+//        List<InferredAxiomGenerator<? extends OWLAxiom>> axiomGenerators
+//                = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
+//        axiomGenerators.add( new InferredClassAssertionAxiomGenerator() );
+////            axiomGenerators.add(new InferredDataPropertyCharacteristicAxiomGenerator());
+//        axiomGenerators.add( new InferredEquivalentClassAxiomGenerator() );
+////            axiomGenerators.add(new InferredEquivalentDataPropertiesAxiomGenerator());
+//        axiomGenerators.add( new InferredEquivalentObjectPropertyAxiomGenerator() );
+////            axiomGenerators.add(new InferredInverseObjectPropertiesAxiomGenerator());
+////            axiomGenerators.add(new InferredObjectPropertyCharacteristicAxiomGenerator());
+//        axiomGenerators.add( new InferredPropertyAssertionGenerator() );
+//        axiomGenerators.add( new InferredSubClassAxiomGenerator() );
+////            axiomGenerators.add(new InferredSubDataPropertyAxiomGenerator());
+//        axiomGenerators.add( new InferredSubObjectPropertyAxiomGenerator() );
+//        applyReasoner( onto, axiomGenerators );
+//
+//        System.out.println( onto.getABoxAxioms( true ).size() );
+//
+//        File base = new File(
+//                ModelManagerOwlAPIHermit.class.getResource( "/ontologies/" + sources[0] ).getPath() );
+////        File dir = new File( base.getParent() + File.separator + "precompiled" );
+////        if ( ! dir.exists() ) {
+////            dir.mkdirs();
+////        }
+////        System.out.println( dir.getAbsolutePath() );
+//
+//        OutputStream outStream = new FileOutputStream(
+//                new File( base.getParentFile().getAbsolutePath() + File.separator + "prr_inf.owl" ) );
+//        OWLOntologyFormat format = new TurtleOntologyFormat();
+//        onto.getOWLOntologyManager().saveOntology( onto, format, outStream );
+//
+//    }
 
 
     public void processExample ()
             throws Exception
     {
 
-        OWLOntology onto = parseOntology( IRI.create( EXAMPLE1 ), "/ontologies/", example1 );
+
+        org.drools.io.Resource[] res = new org.drools.io.Resource[] {
+                ResourceFactory.newClassPathResource( "ontologies/DUL.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/IOLite.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/LMM_L1.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/skos-core.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/skos-ext.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/skos_lmm.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/dc_owl2dl.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/dc2dul.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/metadata.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/expr-core.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/actions.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/events.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/domain.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/prr-core.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/prr-sharp.owl" ),
+                ResourceFactory.newClassPathResource( "ontologies/sharp.owl" ),
+
+                ResourceFactory.newFileResource( "/home/davide/Projects/Git/sharp-editor/model-importer/target/generated-sources/org/hl7/v3/hed/newMentor.owl" ),
+        };
+
+        OWLOntology onto = parseOntology( IRI.create( "www.newmentor.com/cds/rule/NQF-0068" ), res );
         System.out.println( "Loaded model size " + onto.getImports().size() );
 
         List<InferredAxiomGenerator<? extends OWLAxiom>> axiomGenerators
                 = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
-        axiomGenerators.add( new InferredClassAssertionAxiomGenerator() );
-        applyReasoner( onto, axiomGenerators );
+//        axiomGenerators.add( new InferredClassAssertionAxiomGenerator() );
+//        applyReasoner( onto, axiomGenerators );
 
 
         convertToOwlAPI_RDF( onto );
@@ -206,102 +225,111 @@ public class ModelManagerOwlAPIHermit
         EmpireOptions.ENFORCE_ENTITY_ANNOTATION = false;
 
         PersistenceProvider aProvider = Empire.get().persistenceProvider();
-
         EntityManagerFactory emf = aProvider.createEntityManagerFactory(
-                "edu.asu.sharpc2b.example1:edu.asu.sharpc2b.lmm:edu.asu.sharpc2b.ocl:edu.asu.sharpc2b.ops:edu.asu.sharpc2b.prr:org.w3._2002._07.owl",
+                "HeD",
                 aMap );
         EntityManager em = emf.createEntityManager();
+
 
         System.out.println( em.isOpen() );
 
 
         long now = System.currentTimeMillis();
         Object o;
-//        o = em.find( ProductionRuleSetImpl.class,
-//                     URI.create( "http://asu.edu/sharpc2b/example1#ruleSet1" ) );
+        o = em.find( HeDKnowledgeDocument.class,
+                     URI.create( "http://www.newmentor.com/cds/rule/NQF-0068#KnowledgeDocument" ) );
         now = System.currentTimeMillis() - now;
         System.err.println( "Empire de-frosting " + now );
 
         com.tinkerpop.blueprints.Graph blueGraph1 = asPropertyGraph( onto );
 
-//        com.tinkerpop.blueprints.Graph blueGraph2 = asObjectGraph( (Thing) o );
-
-
+        com.tinkerpop.blueprints.Graph blueGraph2 = asObjectGraph( (Thing) o );
+//
+//
+        System.out.println( o );
         em.close();
         repo.shutDown();
-
-
-        File base = new File(
-                ModelManagerOwlAPIHermit.class.getResource( "/ontologies/" + sources[0] ).getPath() );
-        File dir = new File( base.getParent() );
+//
+//
+        File base = new File( ModelManagerOwlAPIHermit.class.getResource( "." ).getPath() + "../../target/generated-sources/" );
+        if ( ! base.exists() ) {
+            base.mkdirs();
+        }
+        System.out.println( base.getAbsolutePath() );
         OutputStream outStream = new FileOutputStream(
-                new File( dir.getAbsolutePath() + File.separator + "example1.obj.gson" ) );
-//        GraphSONWriter.outputGraph( blueGraph2, outStream );
+                new File( base.getAbsolutePath() + File.separator + "newmentor.obj.gson" ) );
+        GraphSONWriter.outputGraph( blueGraph2, outStream );
 
     }
 
-//    private com.tinkerpop.blueprints.Graph asObjectGraph (Thing o)
-//    {
-//
-//        long now = System.currentTimeMillis();
-//
-//        Graph blueGraph = (Graph) new AbstractObjectGraphVisitor()
-//        {
-//
-//            private Graph blueGraph = new TinkerGraph();
-//
-//            @Override
-//            protected Object visitRoot (org.drools.semantics.Thing root)
-//            {
-//                visitNode( root );
-//                return blueGraph;
-//            }
-//
-//            @Override
-//            protected void visitRelationEdge (org.drools.semantics.Thing node,
-//                                              String prop,
-//                                              Object tgt)
-//            {
-//                if (blueGraph.getVertex( tgt ) == null)
-//                {
-//                    blueGraph.addVertex( tgt );
-//                }
-//                blueGraph.addEdge( UUID.randomUUID(), blueGraph.getVertex( node.getRdfId() ),
-//                                   blueGraph.getVertex( tgt ), prop );
-//                if (tgt instanceof ThingImpl)
-//                {
-//                    visitNode( (Thing) tgt );
-//                }
-//            }
-//
-//            @Override
-//            protected void visitTypeEdge (org.drools.semantics.Thing node,
-//                                          URI tgt)
-//            {
-//                visitRelationEdge( node, "isA", tgt );
-//            }
-//
-//            @Override
-//            protected void postVisitNode (org.drools.semantics.Thing node)
-//            {
-//            }
-//
-//            @Override
-//            protected void preVisitNode (org.drools.semantics.Thing node)
-//            {
-//                if (blueGraph.getVertex( node.getRdfId() ) == null)
-//                {
-//                    blueGraph.addVertex( node.getRdfId() );
-//                }
-//            }
-//
-//        }.visit( o );
-//
-//        System.err.println(
-//                " DUMPING AS OBJECT GRAPH : time elapsed >> " + (System.currentTimeMillis() - now) );
 
-//        return blueGraph;
-//    }
+
+
+    private com.tinkerpop.blueprints.Graph asObjectGraph (Thing o)  {
+
+        long now = System.currentTimeMillis();
+
+        Graph blueGraph = (Graph) new AbstractObjectGraphVisitor() {
+
+            private Graph blueGraph = new TinkerGraph();
+
+            @Override
+            protected Object visitRoot (org.drools.semantics.Thing root)
+            {
+                visitNode( root );
+                return blueGraph;
+            }
+
+            @Override
+            protected void visitRelationEdge ( org.drools.semantics.Thing node,
+                                               String prop,
+                                               Object tgt ) {
+                if ( tgt instanceof ThingImpl ) {
+
+                    Vertex v = blueGraph.getVertex( ( (ThingImpl) tgt ).getRdfId() );
+                    if ( v == null ) {
+                        v = blueGraph.addVertex( ( (ThingImpl) tgt ).getRdfId() );
+                    }
+
+                    visitNode( (Thing) tgt );
+
+                    blueGraph.addEdge( UUID.randomUUID(),
+                                       blueGraph.getVertex( node.getRdfId() ),
+                                       v,
+                                       prop );
+
+                } else {
+                    Vertex v = blueGraph.getVertex( node.getRdfId() );
+                    v.setProperty( prop, tgt );
+                }
+            }
+
+            @Override
+            protected void visitTypeEdge ( org.drools.semantics.Thing node,
+                                           URI tgt ) {
+                visitRelationEdge( node, "isA", tgt );
+            }
+
+            @Override
+            protected void postVisitNode ( org.drools.semantics.Thing node ) {
+
+            }
+
+            @Override
+            protected void preVisitNode ( org.drools.semantics.Thing node ) {
+                if ( blueGraph.getVertex( node.getRdfId() ) == null ) {
+                    blueGraph.addVertex( node.getRdfId() );
+                }
+            }
+
+        }.visit( o );
+
+        System.err.println(
+                " DUMPING AS OBJECT GRAPH : time elapsed >> " + (System.currentTimeMillis() - now) );
+        System.err.println( blueGraph );
+
+        return blueGraph;
+    }
 
 
     private com.tinkerpop.blueprints.Graph asPropertyGraph (OWLOntology onto)

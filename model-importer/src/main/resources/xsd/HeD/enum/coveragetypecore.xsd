@@ -39,11 +39,6 @@
 					<xs:documentation>The venue in which an artifact could be used.  For example, Outpatient, Inpatient, Home, Nursing home. The code value may originate from either the HL7 ActEncounter (OID: 2.16.840.1.113883.1.11.13955) or NUCC non-individual provider codes OID: 2.16.840.1.113883.1.11.19465</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="KeyTerm">
-				<xs:annotation>
-					<xs:documentation>A key term associated with this artifact. The term may be any code or a text string.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>
