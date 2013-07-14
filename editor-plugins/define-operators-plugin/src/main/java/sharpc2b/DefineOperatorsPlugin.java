@@ -39,16 +39,23 @@ public class DefineOperatorsPlugin
     private File operatorDefinitionFile;
 
     /**
+     * File in which to save the output OWL Ontology containing Operator and Expression definitions..
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File outputOntologyFile;
 
     /**
+     * The IRI to give the saved output Ontology.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private String outputOntologyIriString;
 
     /**
+     * The underlying classes were written to look for resource files (such as OWL files) in the classpath.
+     * This is an alternate file system directory under which to search for resource files.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File alternateResourceDir;
@@ -95,13 +102,13 @@ public class DefineOperatorsPlugin
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
-        SharpOperators converter;
+        final SharpOperators converter;
 
-        OWLOntologyManager oom;
-        PrefixOWLOntologyFormat oFormat;
+        final OWLOntologyManager oom;
+        final PrefixOWLOntologyFormat oFormat;
 
 //        OWLOntology ontT;
-        OWLOntology operatorOntology;
+        final OWLOntology operatorOntology;
 
         System.out.println( "getOperatorDefinitionFile() = '" + getOperatorDefinitionFile() + "'" );
         System.out.println( "getOutputOntologyFile() = '" + getOutputOntologyFile() + "'" );
@@ -110,11 +117,8 @@ public class DefineOperatorsPlugin
                 "getOperatorDefinitionFile().exists() = '" + getOperatorDefinitionFile().exists() + "'" );
         System.out.println( "getAlternateResourceDir() = '" + getAlternateResourceDir() + "'" );
 
-//        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();
 
-//        if (false)
-//        {
         try
         {
             operatorOntology = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );

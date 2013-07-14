@@ -21,15 +21,22 @@ import java.util.regex.Pattern;
 public class SkosABoxToTBox
 {
 
+    /**
+     * The SKOS A-Box Ontology, containing a coding scheme hierarchy, such as for ICD-9 Conditions,
+     * encoding using SKOS concepts such as skos:Concept, broaderThan, and notation.
+     */
+    private OWLOntology ontA;
+
+    /**
+     * The Ontology that the resulting T-Box axioms are added to.l
+     */
+    private OWLOntology ontT;
+
     private OWLOntologyManager oom;
 
     private OWLDataFactory odf;
 
     private PrefixOWLOntologyFormat pm;
-
-    private OWLOntology ontA;
-
-    private OWLOntology ontT;
 
     private OWLClass topCodeClass;
 

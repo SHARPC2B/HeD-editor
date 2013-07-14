@@ -32,21 +32,33 @@ public class SkosToTPlugin
     //=====================================================================================================
 
     /**
+     * The input SKOS A-Box ontology file, with a coding hierarchy, where each code is represented as an OWL
+     * Individual that is an instance of skos:Concept, related to other individuals via skos:broader or
+     * skos:broaderTransitive, the code values are represented using skos:notation, and a friendly name of
+     * the concept is indicated using skos:prefLabel.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File inputOntologyFile;
 
     /**
+     * The File where the output T-Box ontology will be saved.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File outputOntologyFile;
 
     /**
+     * The IRI to give the saved output Ontology.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private String outputOntologyIriString;
 
     /**
+     * The underlying classes were written to look for resource files (such as OWL files) in the
+     * classpath.  This is an alternate file system directory under which to search for resource files.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File alternateResourceDir;
@@ -112,7 +124,6 @@ public class SkosToTPlugin
         {
             FileUtil.alternateResourceRootFolder = getAlternateResourceDir();
         }
-//        oom = OWLManager.createOWLOntologyManager();
         oom = OwlUtil.createSharpOWLOntologyManager();
 
         try
@@ -124,6 +135,7 @@ public class SkosToTPlugin
             e.printStackTrace();
             throw new MojoFailureException( "Failed to load input ontology", e );
         }
+
         try
         {
             ontT = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
@@ -134,13 +146,15 @@ public class SkosToTPlugin
             throw new MojoFailureException( "Failed to create output ontology", e );
         }
 
+        /*
+         * Defines serialization format and namespace prefix abbreviations
+         */
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
 
         oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
         oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
 
         converter = new SkosABoxToTBox();
-//            throw new MojoFailureException( "Failed to create TBoxToABox converter instance.", e );
 
         converter.addTBoxAxioms( ontA, ontT );
 

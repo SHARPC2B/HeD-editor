@@ -57,7 +57,8 @@ public class TBoxToABox
      * Default file to load to obtain the A-Box IRIs to use as substitutes for OWL Class, Property,
      * subClassOf, etc.
      */
-    private static String defaultResourcePathForSharpABoxConcepts = "/OWL-to-Sharp-ABox-Concepts.properties";
+    private static String defaultResourcePathForSharpABoxConcepts
+            = "/OWL-to-Sharp-ABox-Concepts.properties";
 
     //==================================================================================
 
@@ -72,12 +73,12 @@ public class TBoxToABox
     /**
      * The input T-Box Domain Model Ontology.
      */
-    private OWLOntology tboxModel;
+    private OWLOntology ontT;
 
     /**
      * The output A-Box version of the Domain Model Ontology.
      */
-    private OWLOntology aboxModel;
+    private OWLOntology ontA;
 
     //==================================================================================
 
@@ -116,8 +117,8 @@ public class TBoxToABox
     public void addABoxAxioms (final OWLOntology tboxDomainModel,
                                final OWLOntology aboxDomainModel)
     {
-        this.tboxModel = tboxDomainModel;
-        this.aboxModel = aboxDomainModel;
+        this.ontT = tboxDomainModel;
+        this.ontA = aboxDomainModel;
 
         oom = aboxDomainModel.getOWLOntologyManager();
         if (oom == null)
@@ -131,17 +132,17 @@ public class TBoxToABox
 
         addImports();
 
-        for (OWLClass e : this.tboxModel.getClassesInSignature( false ))
+        for (OWLClass e : this.ontT.getClassesInSignature( false ))
         {
             transform_Class( e );
         }
 
-        for (OWLObjectProperty e : this.tboxModel.getObjectPropertiesInSignature( false ))
+        for (OWLObjectProperty e : this.ontT.getObjectPropertiesInSignature( false ))
         {
             transform_ObjectProperty( e );
         }
 
-        for (OWLDataProperty e : this.tboxModel.getDataPropertiesInSignature( false ))
+        for (OWLDataProperty e : this.ontT.getDataPropertiesInSignature( false ))
         {
             transform_DataProperty( e );
         }
@@ -177,7 +178,7 @@ public class TBoxToABox
     {
         if (pm == null)
         {
-            OWLOntologyFormat ooFormat = oom.getOntologyFormat( aboxModel );
+            OWLOntologyFormat ooFormat = oom.getOntologyFormat( ontA );
             if (ooFormat != null && ooFormat.isPrefixOWLOntologyFormat())
             {
                 pm = (PrefixOWLOntologyFormat) ooFormat;
@@ -195,14 +196,19 @@ public class TBoxToABox
     {
         getOntologyFormat();  // Make sure initialized.
 
-        pm.setDefaultPrefix( this.aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        pm.setPrefix( "a:", this.aboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
-        pm.setPrefix( "t:", this.tboxModel.getOntologyID().getOntologyIRI().toString() + "#" );
+        pm.setDefaultPrefix( this.ontA.getOntologyID().getOntologyIRI().toString() + "#" );
+        pm.setPrefix( "a:", this.ontA.getOntologyID().getOntologyIRI().toString() + "#" );
+        pm.setPrefix( "t:", this.ontT.getOntologyID().getOntologyIRI().toString() + "#" );
         IriUtil.addSharpPrefixes( pm );
 
         // ToDo: Add prefixes for ops:, skos-ext:, etc.?
     }
 
+    /**
+     * Read the properties file containing mappings from standard OWL T-box concepts to replacement entities
+     * in the A-Box ontology.  Maps an IRI to an IRI.  An example mapping would be to map rdfs:subClassOf in
+     * the input ontology to skos:subConceptOf in the output ontology.
+     */
     private void initDomainModelABoxSubstitutionsFromPropertiesFile (final String resourceName)
             throws IOException
     {
@@ -318,7 +324,7 @@ public class TBoxToABox
 
         System.out.println( "add owl:imports: " + importOps );
 
-        oom.applyChange( new AddImport( aboxModel, importOps ) );
+        oom.applyChange( new AddImport( ontA, importOps ) );
     }
 
 //    private OWLNamedIndividual getA_Class (OWLClassExpression owlClassExpression)
@@ -352,9 +358,9 @@ public class TBoxToABox
     {
         OWLNamedIndividual aEntity = getABoxIndividual( owlClass );
 
-        oom.addAxiom( aboxModel, odf.getOWLClassAssertionAxiom( mm_Class(), aEntity ) );
+        oom.addAxiom( ontA, odf.getOWLClassAssertionAxiom( mm_Class(), aEntity ) );
 
-        for (OWLClassExpression tSuper : owlClass.getSuperClasses( tboxModel ))
+        for (OWLClassExpression tSuper : owlClass.getSuperClasses( ontT ))
         {
             transform_subClassOf( owlClass, tSuper );
         }
@@ -375,19 +381,19 @@ public class TBoxToABox
     {
         OWLNamedIndividual aEntity = getABoxIndividual( owlProperty );
 
-        oom.addAxiom( aboxModel, odf.getOWLClassAssertionAxiom( mm_Property(), aEntity ) );
+        oom.addAxiom( ontA, odf.getOWLClassAssertionAxiom( mm_Property(), aEntity ) );
 
-        for (P tSuper : owlProperty.getSuperProperties( tboxModel ))
+        for (P tSuper : owlProperty.getSuperProperties( ontT ))
         {
             transform_subPropertyOf( owlProperty, tSuper );
         }
 
-        for (OWLClassExpression tSuper : owlProperty.getDomains( tboxModel ))
+        for (OWLClassExpression tSuper : owlProperty.getDomains( ontT ))
         {
             transform_domain( owlProperty, tSuper );
         }
 
-        for (OWLPropertyRange tSuper : owlProperty.getRanges( tboxModel ))
+        for (OWLPropertyRange tSuper : owlProperty.getRanges( ontT ))
         {
             transform_range( owlProperty, tSuper );
         }
@@ -403,7 +409,7 @@ public class TBoxToABox
 
             OWLAxiom axiom = odf.getOWLObjectPropertyAssertionAxiom( mm_subClassOf(), x, y );
 
-            oom.addAxiom( aboxModel, axiom );
+            oom.addAxiom( ontA, axiom );
         }
 
     }
@@ -419,7 +425,7 @@ public class TBoxToABox
 
             OWLAxiom axiom = odf.getOWLObjectPropertyAssertionAxiom( mm_subPropertyOf(), x, y );
 
-            oom.addAxiom( aboxModel, axiom );
+            oom.addAxiom( ontA, axiom );
         }
 
     }
@@ -435,7 +441,7 @@ public class TBoxToABox
 
             OWLAxiom axiom = odf.getOWLObjectPropertyAssertionAxiom( mm_domain(), x, y );
 
-            oom.addAxiom( aboxModel, axiom );
+            oom.addAxiom( ontA, axiom );
         }
 
     }
@@ -451,7 +457,7 @@ public class TBoxToABox
 
             OWLAxiom axiom = odf.getOWLObjectPropertyAssertionAxiom( mm_range(), x, y );
 
-            oom.addAxiom( aboxModel, axiom );
+            oom.addAxiom( ontA, axiom );
         }
 
     }

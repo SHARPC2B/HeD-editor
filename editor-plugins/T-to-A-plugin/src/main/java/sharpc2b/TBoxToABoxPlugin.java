@@ -33,29 +33,50 @@ public class TBoxToABoxPlugin
     //=====================================================================================================
 
     /**
-     * Location in the classpath to find properties file containing entity IRIs to use in the output A-Box
-     * ontology.
+     * Location in the classpath to find the properties file containing entity IRIs to use in the output
+     * A-Box ontology.
+     *
+     * For example, a couple of example entries are shown here, which means that for any OWL Class in the
+     * input ontology, in the output ontology it would be represented as an OWL Individual, who's rdf:type
+     * is the OWL Class with IRI "http://asu.edu/sharpc2b/ops#DomainClass", and if it had a rdfs:subClassOf
+     * relationship to OWL Class Foo, the output ontology would have an object property assertion added,
+     * pointing to the OWL Individual for Foo, with a predicate of "skos:subConceptOf".
+     *
+     * http\://www.w3.org/2002/07/owl#Class = http\://asu.edu/sharpc2b/ops#DomainClass
+     * http\://www.w3.org/2000/01/rdf-schema#subClassOf = http\://asu.edu/sharpc2b/skos-ext#subConceptOf
+     *
+     * Note: in the properties file, the ':' must be quoted with a '\' character, otherwise it will be
+     * interpreted as a delimiter (like '=').
      *
      * @parameter default-value="./OWL-to-Sharp-ABox-Concepts.properties"
      */
     private String tToAConfigResourcePath;
 
     /**
+     * The input T-Box domain model ontology to convert into an A-Box model.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File inputOntologyFile;
 
     /**
+     * File in which to save the output A-Box domain model Ontology.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File outputOntologyFile;
 
     /**
+     * The IRI to give the saved output Ontology.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private String outputOntologyIriString;
 
     /**
+     * The underlying classes were written to look for resource files (such as OWL files) in the classpath.
+     * This is an alternate file system directory under which to search for resource files.
+     *
      * @parameter default-value="./target/generated-sources"
      */
     private File alternateResourceDir;
