@@ -1,0 +1,31 @@
+<div class="standardBackground">
+	<br>
+	<p>Rule Name: <input type="text"></p>
+	<p>What is this rule about? (Choose as many as you like from the list or use the search feature below)</p>
+	<div class="flexibleBox borderedBox">
+		<div class="leftBox">
+			<div class="search-prepend">
+  				<div class="icon-search icon-white"></div>
+  				<input type="text" class="search-query" placeholder="search">
+			</div><br>
+			hypertension heart failure <b style="font-size: 20px; color: red;">diabetes</b> pediatrics <b style="font-size: 20px">laboratory tests</b><br>
+			<b style="font-size: 20px">kidney failure</b> national guidelines <b style="font-size: 20px">drug dosing polypharmacy</b><br>
+			<b style="font-size: 20px">pharmacogenomics</b> <b style="font-size: 16px">genetic screening</b> pregnancy <b style="font-size: 20px">diagnosis</b> <b style="font-size: 16px">preventative care</b><br>
+			<b style="font-size: 20px">inpatient</b> outpatient acute care
+		</div>
+		<div class="rightBox">
+			Selected topics (click a topic to remove it)
+			<div class="borderedBox">
+				 <p><button class="btn" type="button">kidney failure</button></p>
+				 <p><button class="btn" type="button">diabetes</button></p>
+				 <p><button class="btn" type="button">diagnosis</button></p>
+			</div>
+		</div>
+	</div><br>
+	<p>Describe this rule in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
+	<div class="flexibleBox">
+		<textarea rows="5"></textarea>
+	</div><br>
+	<p>References&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><i class="icon-expand-alt"></i> Add reference</a></p>
+	<div class="borderedBox gridStyle" ng-grid="gridOptions"></div>
+</div>

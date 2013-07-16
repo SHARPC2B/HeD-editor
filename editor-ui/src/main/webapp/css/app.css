@@ -38,9 +38,6 @@ ng-view {
 	width: 330px;
 	height: 170px;
 	margin: 0 auto;
-	border: 3px solid #e5e5e5;
-	border-radius: 5px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
 
 .homeBox * {
@@ -55,8 +52,53 @@ ng-view {
 	text-align: left;
 }
 
-.nodeBox {
+.borderedBox {
 	border: 3px solid #e5e5e5;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.flexibleBox {
+	display: -webkit-flex;
+}
+
+.standardBackground {
+	width: 100%
+}
+
+.search-prepend {
+	position: relative;
+}
+  
+.search-prepend .search-query {
+	padding-left: 29px;
+}
+
+.search-prepend .icon-search {
+	position: absolute;
+	top: 7px;
+	left: 11px;
+}
+
+.leftBox {
+	border-right: 3px solid #e5e5e5;
+	padding: 10px;
+	-webkit-flex:3;
+}
+
+.rightBox {
+	-webkit-flex:2;
+	padding: 10px;
+}
+
+.rightBox div {
+	padding: 10px;
+}
+
+textarea {
+	width: 100%;
+}
+
+.gridStyle {
+	height: 100px;
 }
