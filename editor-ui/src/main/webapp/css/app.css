@@ -24,7 +24,6 @@ header div {
 }
 
 ng-view {
-	display: -webkit-flex;
 	position: absolute;
 	top: 115px;
 	bottom: 7px;
@@ -101,4 +100,8 @@ textarea {
 
 .gridStyle {
 	height: 100px;
+}
+
+.radio {
+	vertical-align: top;
 }

@@ -10,6 +10,10 @@ var ruleApp = angular.module('ruleApp', ['ruleApp.controllers', 'ngGrid'])
 				templateUrl : 'partials/standard/background.html',
 				controller : 'BackgroundCtrl'
 			});
+			$routeProvider.when('/standard/trigger', {
+				templateUrl : 'partials/standard/trigger.html',
+				controller : 'TriggerCtrl'
+			});
 			$routeProvider.when('/graph', {
 				templateUrl : 'partials/graph.html',
 				controller : 'GraphCtrl'
