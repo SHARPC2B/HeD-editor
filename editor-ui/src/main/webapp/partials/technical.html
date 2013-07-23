@@ -1,0 +1,49 @@
+<div class="row-fluid">
+	<svg id="force" class="span7"></svg>
+	<div class="span5">
+		<div class="borderedBox">
+			<h4>Legend</h4>
+			<span style="color: {{color('ConceptCode')}};">ConceptCode</span><br>
+			<span style="color: {{color('RightsDeclaration')}};">RightsDeclaration</span><br>
+			<span style="color: {{color('RuleVariable')}};">RuleVariable</span><br>
+			<span style="color: {{color('ProductionRule')}};">ProductionRule</span><br>
+			<span style="color: {{color('VersionedIdentifier')}};">VersionedIdentifier</span><br>
+			<span style="color: {{color('HeDKnowledgeDocument')}};">HeDKnowledgeDocument</span><br>
+			<span style="color: {{color('ClinicalCoverage')}};">ClinicalCoverage</span><br>
+			<span style="color: {{color('RuleCondition')}};">RuleCondition</span><br>
+			<span style="color: {{color('CompositeAction')}};">CompositeAction</span><br>
+			<span style="color: {{color('Variable')}};">Variable</span><br>
+			<span style="color: {{color('Evidence')}};">Evidence</span><br>
+			<span style="color: {{color('DataModelRealization')}};">DataModelRealization</span><br>
+			<span style="color: {{color('RightsStatement')}};">RightsStatement</span>
+		</div><br>
+		<div class="borderedBox">
+			<h4>Node Details (click on the node for details)</h4>
+			<span ng-show="root.codeSystem"><b>Code System:</b> {{root.codeSystem}}<br></span>
+			<span ng-show="root.name"><b>Name:</b> {{root.name}}<br></span>
+			<span ng-show="root.versionId"><b>Version Id:</b> {{root.versionId}}<br></span>
+			<span ng-show="root.artifactId"><b>Artifact Id:</b> {{root.artifactId}}<br></span>
+			<span ng-show="root.title"><b>Title:</b> {{root.title}}<br></span>
+			<span ng-show="root.status"><b>Status:</b> {{root.status}}<br></span>
+			<span ng-show="root.description"><b>Description:</b> {{root.description}}<br></span>
+			<span ng-show="root.contributor"><b>Contributor:</b> <a href="{{root.contributor}}" target="_blank">{{root.contributor}}</a><br></span>
+			<span ng-show="root.prePublished"><b>Pre Published:</b> {{root.prePublished + 'T24:00Z' | date:'mediumDate'}}<br></span>
+			<span ng-show="root.adaptedFrom"><b>Adapted From:</b> <a href="{{root.contributor}}" target="_blank">{{root.contributor}}</a><br></span>
+			<span ng-show="root.documentation"><b>Documentation:</b> <a href="{{root.documentation}}" target="_blank">{{root.documentation}}</a><br></span>
+			<span ng-show="root.coverageType"><b>Coverage Type:</b> {{root.coverageType}}<br></span>
+			<span ng-show="root.supportingResource"><b>Supporting Resource:</b> {{root.supportingResource}}<br></span>
+			<span ng-show="root.realizesInformation"><b>Realizes Information:</b> {{root.realizesInformation}}<br></span>
+			<span ng-show="root.isA"><b>Is a:</b> {{root.isA}}<br></span>
+			<span ng-show="root.label"><b>Label:</b> {{root.label}}<br></span>
+			<span ng-show="root.code"><b>Code:</b> {{root.code}}<br></span>
+			<span ng-show="root.rightsHolder"><b>Rights Holder:</b> {{root.rightsHolder}}<br></span>
+			<span ng-show="root.variableFilterExpression"><b>Variable Filter Expression:</b> {{root.variableFilterExpression}}<br></span>
+			<span ng-show="root.productionRuleBoundRuleVariable"><b>Production Rule Bound Rule Variable:</b> {{root.productionRuleBoundRuleVariable}}<br></span>
+			<span ng-show="root.associatedResource"><b>Associated Resource:</b> <a href="{{root.associatedResource}}" target="_blank">{{root.associatedResource}}</a><br></span>
+			<span ng-show="root.publisher"><b>Publisher:</b> <a href="{{root.publisher}}" target="_blank">{{root.publisher}}</a><br></span>
+			<span ng-show="root.conditionRepresentation"><b>Condition Representation:</b> {{root.conditionRepresentation}}<br></span>
+			<span ng-show="root.memberAction"><b>Member Action:</b> {{root.memberAction}}<br></span>
+			<span ng-show="root.identifier"><b>Identifier:</b> {{root.identifier}}</span>
+		</div>
+	</div>
+</div>

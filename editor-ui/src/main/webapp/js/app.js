@@ -14,9 +14,13 @@ var ruleApp = angular.module('ruleApp', ['ruleApp.controllers', 'ngGrid'])
 				templateUrl : 'partials/standard/trigger.html',
 				controller : 'TriggerCtrl'
 			});
-			$routeProvider.when('/graph', {
-				templateUrl : 'partials/graph.html',
-				controller : 'GraphCtrl'
+			$routeProvider.when('/standard/logic', {
+				templateUrl : 'partials/standard/logic.html',
+				controller : 'LogicCtrl'
+			});
+			$routeProvider.when('/technical', {
+				templateUrl : 'partials/technical.html',
+				controller : 'TechnicalCtrl'
 			});
 			$routeProvider.otherwise({
 				redirectTo : '/home'
