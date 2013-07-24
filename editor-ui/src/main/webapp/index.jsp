@@ -19,14 +19,17 @@
 				<li ng-repeat="menuItem in menuItems" ng-class="menuItem.status"><a href="{{menuItem.href}}">{{menuItem.text}}</a></li>
 			</ul>
 		</div>
-		<div>Welcome, <a href="">Edinardo</a><br><a href="">Log Out</a></div>
+		<div>
+			Welcome, <a href="" style="text-transform: capitalize;"><%=request.getRemoteUser()%></a><br>
+			<a href="logout">Log Out</a>
+		</div>
 	</header>
 
 	<ng-view class="container-fluid"></ng-view>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
 	<script src="lib/ng-grid/ng-grid-2.0.7.min.js"></script>
-	<script src="http://d3js.org/d3.v3.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/controllers.js"></script>
 	</body>
