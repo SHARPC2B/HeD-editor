@@ -28,8 +28,17 @@
 
 
     <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-shapes-utilities</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.clarkparsia</groupId>
       <artifactId>Empire-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.clarkparsia</groupId>
+      <artifactId>Empire-sesame2</artifactId>
     </dependency>
 
     <dependency>

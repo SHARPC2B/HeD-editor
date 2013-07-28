@@ -1,8 +1,6 @@
 package edu.asu.sharpc2b.transform;
 
 import org.drools.spi.KnowledgeHelper;
-import org.hl7.v3.hed.CD;
-import org.hl7.v3.hed.KnowledgeDocument;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -18,8 +16,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
-import javax.xml.namespace.QName;
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -48,7 +45,7 @@ public class HeD2OwlHelper {
 
 
     public String uniqueName( Object x ) {
-        if ( x instanceof KnowledgeDocument ) {
+        if ( x.getClass().getName().contains( "KnowledgeDocument" ) ) {
             return "tns:" + x.getClass().getSimpleName();
         } else {
             return "tns:" + x.getClass().getSimpleName() + "_" + x.hashCode();
@@ -101,19 +98,62 @@ public class HeD2OwlHelper {
                 factory.getOWLLiteral( tgt ) );
     }
 
-    public void assertCD( KnowledgeHelper kh, String property, OWLNamedIndividual src, CD code ) {
+    public void assertCD( KnowledgeHelper kh, String property, OWLNamedIndividual src, Object code ) {
         OWLNamedIndividual cd = asIndividual( code );
         kh.insert( assertObjectProperty( property, src, cd ) );
         kh.insert( assertType( cd, "skos-ext:ConceptCode" ) );
-        if ( code.getCode() != null ) {
-            kh.insert( assertDataProperty( "skos-ext:code", cd, code.getCode() ) );
+
+        String codeVal = getCode( code );
+        if ( codeVal != null ) {
+            kh.insert( assertDataProperty( "skos-ext:code", cd, codeVal ) );
         }
-        if ( code.getCodeSystem() != null ) {
-            kh.insert( assertDataProperty( "skos-ext:codeSystem", cd, code.getCodeSystem() ) );
+        String codeSystem = getCodeSystem( code );
+        if ( codeSystem != null ) {
+            kh.insert( assertDataProperty( "skos-ext:codeSystem", cd, codeSystem ) );
         }
-        if ( code.getOriginalText() != null ) {
-            kh.insert( assertDataProperty( "skos-ext:label", cd, code.getOriginalText() ) );
+        String text = getOriginalText( code );
+        if ( text != null ) {
+            kh.insert( assertDataProperty( "skos-ext:label", cd, text ) );
         }
+    }
+
+    private String getCode( Object code ) {
+        try {
+            return (String) code.getClass().getMethod( "getCode" ).invoke( code );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getCodeSystem( Object code ) {
+        try {
+            return (String) code.getClass().getMethod( "getCodeSystem" ).invoke( code );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getOriginalText( Object code ) {
+        try {
+            return (String) code.getClass().getMethod( "getOriginalText" ).invoke( code );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public OWLNamedIndividual assertExpression( KnowledgeHelper kh, String op, Object link ) {

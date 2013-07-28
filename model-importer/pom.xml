@@ -148,9 +148,12 @@
       <!--</configuration>-->
       <!--</plugin>-->
 
+
+
+
       <!-- SHARP PLUGINS -->
 
-      <plugin>
+      <!--plugin>
         <artifactId>skos-to-T-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -168,9 +171,9 @@
           <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
           <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
         </configuration>
-      </plugin>
+      </plugin-->
 
-      <plugin>
+      <!--plugin>
         <artifactId>T-to-A-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -189,9 +192,9 @@
           <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
           <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
         </configuration>
-      </plugin>
+      </plugin-->
 
-      <plugin>
+      <!--plugin>
         <artifactId>define-operators-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -204,16 +207,12 @@
           </execution>
         </executions>
         <configuration>
-          <!--<tToAConfigResourcePath>./OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>-->
           <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-          <!--<inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/ClinicalDomainT.ofn</inputOntologyFile>-->
-          <!--<outputOntologyFile>${pom.basedir}/target/onts/out/t-a-maven.ofn</outputOntologyFile>-->
-          <!--<outputOntologyIriString>http://asu.edu/sharpc2b/test/t-a-maven</outputOntologyIriString>-->
           <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/vmr-clean.xsd.ttl</inputOntologyFile>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A.ofn</outputOntologyFile>
           <outputOntologyIriString>http://asu.edu/sharpc2b/test/vmr-clean-A</outputOntologyIriString>
         </configuration>
-      </plugin>
+      </plugin-->
 
     </plugins>
   </build>

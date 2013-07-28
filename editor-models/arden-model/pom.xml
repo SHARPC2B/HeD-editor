@@ -167,7 +167,7 @@
         </executions>
       </plugin>
 
-      <plugin>
+      <!--plugin>
         <groupId>org.drools</groupId>
         <artifactId>drools-shapes-generator-plugin</artifactId>
         <version>${chance.version}</version>
@@ -195,7 +195,7 @@
           <compilationOptionsPackage>default</compilationOptionsPackage>
 
         </configuration>
-      </plugin>
+      </plugin-->
 
 
       <plugin>

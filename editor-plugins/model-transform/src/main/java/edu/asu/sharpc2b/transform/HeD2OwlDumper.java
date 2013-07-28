@@ -50,7 +50,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 
 public class HeD2OwlDumper {
@@ -82,18 +86,19 @@ public class HeD2OwlDumper {
 
         Object hed = loadModel( HED, stream );
 
-        VersionedIdentifier versionedIdentifier = hed.getMetadata().getIdentifiers().getIdentifiers().iterator().next();
+        Object vid = getIdentifiersList( hed ).iterator().next();
+        String root = getRoot( vid );
+        String version = getVersion( vid );
 
-        PrefixManager prefixManager = mapNamespaces( versionedIdentifier );
+        PrefixManager prefixManager = mapNamespaces( root );
 
-        OWLOntology result = transform( hed, versionedIdentifier, prefixManager );
+        OWLOntology result = transform( hed, root, version, prefixManager );
 
         String path = targetFile.substring( 0, targetFile.lastIndexOf( File.separator ) );
         File dir = new File( path );
-        if ( ! dir.exists() ) {
+        if ( !dir.exists() ) {
             dir.mkdirs();
         }
-
 
         PrefixOWLOntologyFormat format = new OWLFunctionalSyntaxOntologyFormat();
         format.copyPrefixesFrom( prefixManager );
@@ -118,7 +123,7 @@ public class HeD2OwlDumper {
         );
     }
 
-    private PrefixManager mapNamespaces( VersionedIdentifier versionedIdentifier ) {
+    private PrefixManager mapNamespaces( String root ) {
         DefaultPrefixManager prefixManager = new DefaultPrefixManager();
         prefixManager.setPrefix( "DUL:", "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#" );
         prefixManager.setPrefix( "IOLite:", "http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#" );
@@ -130,7 +135,6 @@ public class HeD2OwlDumper {
         prefixManager.setPrefix( "skos:", "http://www.w3.org/2004/02/skos/core#" );
         prefixManager.setPrefix( "skos-ext:", "http://asu.edu/sharpc2b/skos-ext#" );
         prefixManager.setPrefix( "dcterms:", "http://purl.org/dc/terms/" );
-        String root = versionedIdentifier.getRoot();
         if ( ! root.startsWith( "http://" ) ) {
             root = "http://" + root;
         }
@@ -139,7 +143,7 @@ public class HeD2OwlDumper {
     }
 
 
-    public OWLOntology transform( Object doc, VersionedIdentifier versionedIdentifier, PrefixManager prefixManager ) {
+    public OWLOntology transform( Object doc, String root, String version, PrefixManager prefixManager ) {
         System.out.println( "Transforming...." );
         StatefulKnowledgeSession kSession = kBase.newStatefulKnowledgeSession();
         OWLOntology ontology = null;
@@ -149,8 +153,8 @@ public class HeD2OwlDumper {
             OWLDataFactory factory = manager.getOWLDataFactory();
 
             ontology = manager.createOntology( new OWLOntologyID(
-                    IRI.create( versionedIdentifier.getRoot() ),
-                    IRI.create( versionedIdentifier.getRoot() + "/" + versionedIdentifier.getVersion() ) ) );
+                    IRI.create( root ),
+                    IRI.create( root + "/" + version ) ) );
 
 //            kSession.setGlobal( "ontology", ontology );
 //            kSession.setGlobal( "manager", manager );
@@ -158,7 +162,7 @@ public class HeD2OwlDumper {
 //            kSession.setGlobal( "prefixManager", prefixManager );
             kSession.setGlobal( "helper", new HeD2OwlHelper( ontology, manager, factory, prefixManager ) );
 
-            kSession.setGlobal( "tns", versionedIdentifier.getRoot() + "#" );
+            kSession.setGlobal( "tns", root + "#" );
 
             visit( doc, kSession, manager );
 
@@ -232,6 +236,31 @@ public class HeD2OwlDumper {
     }
 
 
+    private String getRoot( Object x ) {
+        try {
+            return (String) x.getClass().getMethod( "getRoot", null ).invoke( x );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return "http://" + UUID.randomUUID().toString();
+    }
+
+    private String getVersion( Object x ) {
+        try {
+            return (String) x.getClass().getMethod( "getVersion", null ).invoke( x );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();
+        }
+        return "http://" + UUID.randomUUID().toString() + "/1.0" ;
+    }
 
 
 
@@ -241,4 +270,18 @@ public class HeD2OwlDumper {
     }
 
 
+    public List getIdentifiersList( Object root ) {
+        try {
+            Object metaData = root.getClass().getMethod( "getMetadata" ).invoke( root );
+            Object ids = metaData.getClass().getMethod( "getIdentifiers" ).invoke( metaData );
+            return (List) ids.getClass().getMethod( "getIdentifiers" ).invoke( ids );
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch ( InvocationTargetException e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch ( NoSuchMethodException e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return Collections.EMPTY_LIST;
+    }
 }

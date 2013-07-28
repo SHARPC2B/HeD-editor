@@ -182,8 +182,9 @@
           <outputDirectory>${pom.basedir}</outputDirectory>
 
 
-          <ontology>${pom.basedir}/src/main/resources/ontologies/sharp.owl</ontology>
-          <ontologyImports>
+          <ontology>${pom.basedir}/src/main/resources/ontologies/DUL.owl</ontology>
+          <!--ontology>${pom.basedir}/src/main/resources/ontologies/sharp.owl</ontology-->
+          <!--ontologyImports>
             <import>${pom.basedir}/src/main/resources/ontologies/DUL.owl</import>
             <import>${pom.basedir}/src/main/resources/ontologies/IOLite.owl</import>
             <import>${pom.basedir}/src/main/resources/ontologies/LMM_L1.owl</import>
@@ -199,7 +200,7 @@
             <import>${pom.basedir}/src/main/resources/ontologies/domain.owl</import>
             <import>${pom.basedir}/src/main/resources/ontologies/prr-core.owl</import>
             <import>${pom.basedir}/src/main/resources/ontologies/prr-sharp.owl</import>
-          </ontologyImports>
+          </ontologyImports-->
 
 
           <!--ontology>${pom.basedir}/src/main/resources/ontologies/prr-sharp.owl</ontology>

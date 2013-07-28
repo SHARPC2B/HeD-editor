@@ -21,7 +21,6 @@
     <module>editor-core</module>
 
     <module>model-importer</module>
-    <module>model-transform</module>
     <module>imported-models</module>
 
     <module>editor-plugins</module>
@@ -115,7 +114,11 @@
         <groupId>org.drools</groupId>
         <artifactId>drools-shapes-xsd-processor</artifactId>
         <version>${chance.version}</version>
-        <!--<version>${drools.version}</version>-->
+      </dependency>
+      <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-shapes-utilities</artifactId>
+        <version>${chance.version}</version>
       </dependency>
 
 
@@ -172,6 +175,11 @@
       <dependency>
         <groupId>com.clarkparsia</groupId>
         <artifactId>Empire-core</artifactId>
+        <version>0.7.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.clarkparsia</groupId>
+        <artifactId>Empire-sesame2</artifactId>
         <version>0.7.3</version>
       </dependency>
 
