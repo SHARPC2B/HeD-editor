@@ -1,0 +1,98 @@
+	<xs:complexType name="Metadata">
+
+			<xs:element name="identifiers">
+				mapped by hasVersion some VersionedIdentifier ( that identifier exactly 1 string and versionID exactly 1 string )
+			</xs:element>
+
+			<xs:element name="schemaIdentifier" type="VersionedIdentifier">
+				meta:hasSchemaVersion exactly 1 VersionedIdentifier
+			</xs:element>
+
+			<xs:element name="templateIds" minOccurs="0">
+				meta:hasTemplate (domain KnowledgeArtifact, range VersionedIdentifier) min 0 VersionedIdentifier
+			</xs:element>
+
+
+			<xs:element name="dataModels" minOccurs="0">
+			    KnowledgeArtifact references min 0 DataModelRealization (that description min 1 string and identifier min 1 string and realizes some DataModel)
+			</xs:element>
+
+
+
+			<xs:element name="title" type="dt:ST" >
+			    title exactly 1 string
+			</xs:element>
+
+			<xs:element name="description" type="dt:ST" >
+			    description min 0 string
+			</xs:element>
+
+            <xs:element name="documentation" type="InlineResource"
+                documentation min 0 InlineResource
+            </xs:element>
+
+            location (inherited)
+                spatial min 0 Site (that urlLocation exactly 1 anyURI)
+
+            citation
+                bibliographicCitation min 0 string
+
+            <xs:element name="language" type="dt:CD" minOccurs="0">
+                language min 0 IOLite:Language
+
+            artifactType
+                implicitly, by classification. Classes for clinical artifact types are provided
+
+
+			<xs:element name="relatedResources" minOccurs="0">
+			    relation only KnowledgeResource
+			</xs:element>
+
+			<xs:element name="supportingEvidence" type="SupportingEvidence"
+			    supportingEvidence only Evidence ( supportingResource only KnwledgeResource, strengthOfReccomendation 1 CD, qualityOfEvidence 1 CD)
+				minOccurs="0" />
+
+            <xs:element name="applicability" minOccurs="0">
+				applicability only ClinicalCoverage ( coverageType enumerated, description string, coveredConcept ConceptCode )
+			</xs:element>
+
+			<xs:element name="keyTerms" minOccurs="0">
+				keyTerm only ConceptCode
+			</xs:element>
+
+			<xs:element name="status" >
+				status some (from enum)
+			</xs:element>
+
+			<xs:element name="eventHistory" minOccurs="0">
+				use appropriate dataProperties
+			</xs:element>
+
+
+
+
+			<xs:element name="categories" minOccurs="0">
+				category only ConceptCode
+			</xs:element>
+
+			<xs:element name="usageTerms" minOccurs="0">
+				usageTerms only RightsDeclaration ( accessRights some RightsStatement, license exactly 1 LicenseDocument, rightsHolder exactly 1 SocialAgent )
+			</xs:element>
+
+
+
+			<xs:element name="contributions" minOccurs="0">
+				contributor only Agent ( contactInfo, address, role )
+			</xs:element>
+
+			<xs:element name="publishers" minOccurs="0">
+				publisher only Agent
+			</xs:element>
+
+
+
+
+
+		</xs:sequence>
+	</xs:complexType>
+
