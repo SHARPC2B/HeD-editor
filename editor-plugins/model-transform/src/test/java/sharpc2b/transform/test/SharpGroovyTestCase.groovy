@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager
 import org.semanticweb.owlapi.reasoner.OWLReasoner
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
-import sharpc2b.transform.OwlUtil
+import edu.asu.sharpc2b.transform.OwlUtil
 
 /**
  * User: rk

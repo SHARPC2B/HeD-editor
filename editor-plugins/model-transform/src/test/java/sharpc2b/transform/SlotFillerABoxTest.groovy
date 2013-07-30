@@ -1,5 +1,6 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.IriUtil
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before

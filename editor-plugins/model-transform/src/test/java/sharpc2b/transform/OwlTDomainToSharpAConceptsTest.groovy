@@ -1,12 +1,9 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.IriUtil
+import edu.asu.sharpc2b.transform.TBoxToABox
 import org.semanticweb.owlapi.apibinding.OWLManager
-import org.semanticweb.owlapi.model.IRI
-import org.semanticweb.owlapi.model.OWLClass
-import org.semanticweb.owlapi.model.OWLDataFactory
-import org.semanticweb.owlapi.model.OWLNamedIndividual
-import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.OWLOntologyManager
+import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 import sharpc2b.transform.test.TestFileUtil
 

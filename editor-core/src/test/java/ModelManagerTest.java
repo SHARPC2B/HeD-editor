@@ -31,6 +31,7 @@ public class ModelManagerTest {
 
 
     @Test
+    @Ignore
     public void testExampleLoad() throws Exception {
 
         ModelManagerOwlAPIHermit mm = new ModelManagerOwlAPIHermit();

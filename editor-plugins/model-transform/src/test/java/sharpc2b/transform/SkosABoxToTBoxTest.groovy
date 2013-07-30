@@ -1,13 +1,10 @@
 package sharpc2b.transform
 
-import org.semanticweb.owlapi.apibinding.OWLManager
+import edu.asu.sharpc2b.transform.IriUtil
+import edu.asu.sharpc2b.transform.OwlUtil
+import edu.asu.sharpc2b.transform.SkosABoxToTBox
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
-import org.semanticweb.owlapi.model.IRI
-import org.semanticweb.owlapi.model.OWLOntology
-import org.semanticweb.owlapi.model.OWLOntologyCreationException
-import org.semanticweb.owlapi.model.OWLOntologyFormat
-import org.semanticweb.owlapi.model.OWLOntologyManager
-import org.semanticweb.owlapi.model.OWLOntologyStorageException
+import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.util.SimpleIRIMapper
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
 import sharpc2b.transform.test.TestFileUtil

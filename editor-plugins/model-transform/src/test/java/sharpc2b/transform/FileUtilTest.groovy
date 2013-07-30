@@ -1,5 +1,6 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.FileUtil
 import sharpc2b.transform.test.TestFileUtil
 
 /**
@@ -23,18 +24,19 @@ class FileUtilTest extends GroovyTestCase {
 //        File f = TestFileUtil.getFileForTestOutput(path)
 
         /* The Java default for getting resources appears to be case-insensitive */
+        /* ds : may be platform-dependent? */
 
         assertEquals false, TestFileUtil.getResourceAsFile( "ontologies/in/ClinicalDomainT.ofn" ).exists()
         assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "/ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ontologies/in/ClinicalDomainT.OFN" ).exists()
-        assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/CLINICALDOMAINT.ofn" ).exists()
+        assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ONTS/IN/ClinicalDomainT.OFN" ).exists()
 
-        assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/clinicaldomaint.ofn" ).exists()
-        assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.oFN" ).exists()
-        assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/cLINICALdOMAINt.oFn" ).exists()
+        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/clinicaldomaint.ofn" ).exists()
+        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.oFN" ).exists()
+        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/cLINICALdOMAINt.oFn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ontologies/in/ClinicalDomainT" ).exists()
     }
 
@@ -82,12 +84,12 @@ class FileUtilTest extends GroovyTestCase {
         assertNull getClass().getResource( "ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "/ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "ontologies/in/ClinicalDomainT.OFN" )
-        assertNotNull getClass().getResource( "/ontologies/in/CLINICALDOMAINT.ofn" )
+        assertNotNull getClass().getResource( "/ontologies/in/ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "ONTS/IN/ClinicalDomainT.OFN" )
 
-        assertNotNull getClass().getResource( "/ontologies/in/clinicaldomaint.ofn" )
-        assertNotNull getClass().getResource( "/ontologies/in/ClinicalDomainT.oFN" )
-        assertNotNull getClass().getResource( "/ontologies/in/cLINICALdOMAINt.oFn" )
+        assertNull getClass().getResource( "/ontologies/in/clinicaldomaint.ofn" )
+        assertNull getClass().getResource( "/ontologies/in/ClinicalDomainT.oFN" )
+        assertNull getClass().getResource( "/ontologies/in/cLINICALdOMAINt.oFn" )
         assertNull getClass().getResource( "ontologies/in/ClinicalDomainT" )
     }
 

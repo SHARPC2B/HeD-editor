@@ -1,5 +1,6 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.OwlUtil
 import org.semanticweb.HermiT.Reasoner
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLAxiom
@@ -18,6 +19,9 @@ import org.semanticweb.owlapi.reasoner.NodeSet
 import org.semanticweb.owlapi.reasoner.OWLReasoner
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat
+import edu.asu.sharpc2b.transform.FileUtil
+import edu.asu.sharpc2b.transform.IriUtil
+
 
 /**
  * User: rk
@@ -78,15 +82,15 @@ extends GroovyTestCase {
         assertEquals( 3, onts.size() )
 
 
-        OWLIndividual exp1 = odf.getOWLNamedIndividual( "ops:mockExp1", oFormat )
-        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( "ops:hasOperator", oFormat )
-        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( "ops:hasOperand", oFormat )
-        OWLObjectProperty returns = odf.getOWLObjectProperty( "ops:returns", oFormat )
-        OWLClass targetExprClass = odf.getOWLClass( "ops:IntSumExpression", oFormat )
-        OWLClass cInteger = odf.getOWLClass( "ops:Integer", oFormat )
-        OWLClass cString = odf.getOWLClass( "ops:String", oFormat )
-        OWLNamedIndividual iInteger = odf.getOWLNamedIndividual( "ops:intType", oFormat )
-        OWLNamedIndividual iString = odf.getOWLNamedIndividual( "ops:stringType", oFormat )
+        OWLIndividual exp1 = odf.getOWLNamedIndividual( "opsc:mockExp1", oFormat )
+        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( "opsc:hasOperator", oFormat )
+        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( "opsc:hasOperand", oFormat )
+        OWLObjectProperty returns = odf.getOWLObjectProperty( "opsc:returns", oFormat )
+        OWLClass targetExprClass = odf.getOWLClass( "opsc:IntSumExpression", oFormat )
+        OWLClass cInteger = odf.getOWLClass( "opsc:Integer", oFormat )
+        OWLClass cString = odf.getOWLClass( "opsc:String", oFormat )
+        OWLNamedIndividual iInteger = odf.getOWLNamedIndividual( "opsc:intType", oFormat )
+        OWLNamedIndividual iString = odf.getOWLNamedIndividual( "opsc:stringType", oFormat )
 
         Set<OWLClassExpression> types1
         types1 = exp1.getTypes( ont );
@@ -138,7 +142,7 @@ extends GroovyTestCase {
         assert (inferredExpType instanceof OWLClass)
         OWLClass expClass = (OWLClass) inferredExpType;
         IRI expClassIRI = expClass.getIRI();
-        IRI expectedIRI = oFormat.getIRI( "ops:IntSumExpression" );
+        IRI expectedIRI = oFormat.getIRI( "opsc:IntSumExpression" );
 
         assertEquals( expectedIRI, expClassIRI );
 
@@ -203,8 +207,8 @@ extends GroovyTestCase {
 
         OWLObjectProperty hasOperator
         OWLObjectProperty hasOperand
-        hasOperator = odf.getOWLObjectProperty( "ops:hasOperator", oFormat );
-        hasOperand = odf.getOWLObjectProperty( "ops:hasOperand", oFormat );
+        hasOperator = odf.getOWLObjectProperty( "opsc:hasOperator", oFormat );
+        hasOperand = odf.getOWLObjectProperty( "opsc:hasOperand", oFormat );
 
         testAxioms.add( odf.getOWLObjectPropertyAssertionAxiom( hasOperator, testExpr, operatorInst ) );
 

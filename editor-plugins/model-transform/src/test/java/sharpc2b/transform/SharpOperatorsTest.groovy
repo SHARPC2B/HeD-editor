@@ -1,5 +1,8 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.FileUtil
+import edu.asu.sharpc2b.transform.IriUtil
+import edu.asu.sharpc2b.transform.SharpOperators
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLDataFactory

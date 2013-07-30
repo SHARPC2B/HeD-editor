@@ -1,5 +1,7 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.IriUtil
+import edu.asu.sharpc2b.transform.TBoxToABox
 import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat
 import org.semanticweb.owlapi.model.IRI

@@ -1,5 +1,8 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.FileUtil
+import edu.asu.sharpc2b.transform.IriUtil
+import edu.asu.sharpc2b.transform.OwlUtil
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before

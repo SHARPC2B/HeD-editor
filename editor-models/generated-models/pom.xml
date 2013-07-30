@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>sharpc2b</groupId>
+    <artifactId>sharp-editor</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <!--<groupId>asu.edu</groupId>-->
+  <groupId>sharpc2b</groupId>
+  <artifactId>generated-models</artifactId>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>SHARPC-2B :: Model Conversion</name>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>net.sourceforge.owlapi</groupId>
+      <artifactId>owlapi-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sourceforge.owlapi</groupId>
+      <artifactId>owlapi-api</artifactId>
+    </dependency>
+
+  </dependencies>
+
+
+
+  <build>
+
+    <resources>
+      <resource>
+        <directory>${pom.basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+
+      <!--plugin>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-shapes-xsd-processor-plugin</artifactId>
+        <version>${chance.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate-owl</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <schemaLocations>
+            <param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd</param>
+            <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>
+            <param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>
+            <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>
+          </schemaLocations>
+        </configuration>
+      </plugin-->
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <outputDirectory>${basedir}/target/generated-sources/java</outputDirectory>
+          <packageName>org.hl7.v3.hed</packageName>
+          <schemaDirectory>${basedir}/src/main/resources/xsd/HeD</schemaDirectory>
+          <bindingDirectory>${basedir}/src/main/resources/xsd/HeD</bindingDirectory>
+          <extension>true</extension>
+          <clearOutputDir>false</clearOutputDir>
+          <arguments>-no-header</arguments>
+        </configuration>
+      </plugin>
+
+
+      <!--<plugin>-->
+      <!--<groupId>sharpc2b</groupId>-->
+      <!--<artifactId>model-transform-plugin</artifactId>-->
+      <!--<version>0.1-SNAPSHOT</version>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<phase>generate-sources</phase>-->
+      <!--<goals>-->
+      <!--<goal>generate-owl</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--<configuration>-->
+      <!--<schemaLocations>-->
+      <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd-->
+      <!--</param>-->
+      <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>-->
+      <!--<param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>-->
+      <!--<param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>-->
+      <!--</schemaLocations>-->
+      <!--</configuration>-->
+      <!--</plugin>-->
+
+
+
+
+      <!-- SHARP PLUGINS -->
+
+      <plugin>
+        <artifactId>skos-to-T-plugin</artifactId>
+        <groupId>sharpc2b</groupId>
+        <version>0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate-skos-abox-to-tbox</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/icd9-pub.ofn</inputOntologyFile>
+          <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/icd9-T.ofn</outputOntologyFile>
+          <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
+          <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
+        </configuration>
+      </plugin>
+
+      <!--plugin>
+        <artifactId>T-to-A-plugin</artifactId>
+        <groupId>sharpc2b</groupId>
+        <version>0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate-tbox-to-abox</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/ontologies/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+          <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
+          <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/vmr-clean-A.ofn</outputOntologyFile>
+          <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
+          <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
+        </configuration>
+      </plugin-->
+
+      <!--plugin>
+        <artifactId>define-operators-plugin</artifactId>
+        <groupId>sharpc2b</groupId>
+        <version>0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>define-operators</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+          <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/vmr-clean.xsd.ttl</inputOntologyFile>
+          <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A.ofn</outputOntologyFile>
+          <outputOntologyIriString>http://asu.edu/sharpc2b/test/vmr-clean-A</outputOntologyIriString>
+        </configuration>
+      </plugin-->
+
+    </plugins>
+  </build>
+
+</project>

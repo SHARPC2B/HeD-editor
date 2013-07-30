@@ -17,6 +17,7 @@
 
   <modules>
     <module>arden-model</module>
+    <module>generated-models</module>
     <module>hed-model</module>
   </modules>
 
