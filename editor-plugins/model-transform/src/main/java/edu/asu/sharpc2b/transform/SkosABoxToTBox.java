@@ -165,6 +165,8 @@ public class SkosABoxToTBox
 
         Set<OWLAxiom> axioms = new TreeSet<OWLAxiom>();
         axioms.add( odf.getOWLSubObjectPropertyOfAxiom( skosBroaderTransitive, refinesProp ) );
+        axioms.add( odf.getOWLTransitiveObjectPropertyAxiom( refinesProp ) );
+        axioms.add( odf.getOWLReflexiveObjectPropertyAxiom( refinesProp ) );
         oom.addAxioms( ontT, axioms );
     }
 

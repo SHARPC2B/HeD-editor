@@ -53,7 +53,7 @@
 
     <plugins>
 
-      <!--plugin>
+      <plugin>
         <groupId>org.drools</groupId>
         <artifactId>drools-shapes-xsd-processor-plugin</artifactId>
         <version>${chance.version}</version>
@@ -73,7 +73,7 @@
             <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>
           </schemaLocations>
         </configuration>
-      </plugin-->
+      </plugin>
 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -146,7 +146,7 @@
         </configuration>
       </plugin>
 
-      <!--plugin>
+      <plugin>
         <artifactId>T-to-A-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -159,15 +159,14 @@
           </execution>
         </executions>
         <configuration>
-          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/ontologies/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-          <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/vmr-clean.xsd.ttl</inputOntologyFile>
+          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+          <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr-clean.xsd.ttl</inputOntologyFile>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/vmr-clean-A.ofn</outputOntologyFile>
           <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
-          <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
         </configuration>
-      </plugin-->
+      </plugin>
 
-      <!--plugin>
+      <plugin>
         <artifactId>define-operators-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -180,12 +179,11 @@
           </execution>
         </executions>
         <configuration>
-          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-          <inputOntologyFile>${pom.basedir}/src/main/resources/onts/in/vmr-clean.xsd.ttl</inputOntologyFile>
-          <outputOntologyFile>${pom.basedir}/target/generated-sources/onts/vmr-clean-A.ofn</outputOntologyFile>
-          <outputOntologyIriString>http://asu.edu/sharpc2b/test/vmr-clean-A</outputOntologyIriString>
+          <operatorDefinitionFile>${pom.basedir}/src/main/resources/SharpOperators.xlsx</operatorDefinitionFile>
+          <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/sharp_operators.ofn</outputOntologyFile>
+          <outputOntologyIriString>http://asu.edu/sharpc2b/ops</outputOntologyIriString>
         </configuration>
-      </plugin-->
+      </plugin>
 
     </plugins>
   </build>
