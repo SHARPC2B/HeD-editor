@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file allows organizations to extend the enumeration BehaviorType. 
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../enum/behaviortypecore.xsd"/>
+	<xs:simpleType name="GroupSelectionBehaviorTypeExt">
+		<xs:restriction base="GroupSelectionBehaviorTypeCore"/>
+	</xs:simpleType>
+	<xs:simpleType name="GroupOrganizationBehaviorTypeExt">
+		<xs:restriction base="GroupOrganizationBehaviorTypeCore"/>
+	</xs:simpleType>
+	<xs:simpleType name="RequiredBehaviorTypeExt">
+		<xs:restriction base="RequiredBehaviorTypeCore"/>
+	</xs:simpleType>
+	<xs:simpleType name="PrecheckBehaviorTypeExt">
+		<xs:restriction base="PrecheckBehaviorTypeCore"/>
+	</xs:simpleType>
+</xs:schema>

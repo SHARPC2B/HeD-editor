@@ -1,0 +1,564 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY base "http://www.ifomis.org/bfo/1.1">
+<!ENTITY bfo "&base;#">
+<!ENTITY dc "http://purl.org/dc/elements/1.1/">
+<!ENTITY w3 "http://www.w3.org">
+<!ENTITY owl "&w3;/2002/07/owl#">
+<!ENTITY rdf "&w3;/1999/02/22-rdf-syntax-ns#">
+<!ENTITY rdfs "&w3;/2000/01/rdf-schema#">
+<!ENTITY xsd "&w3;/2001/XMLSchema#">
+]>
+
+<rdf:RDF xmlns:bfo="&bfo;"
+		xmlns:dc="&dc;"
+		xmlns:owl="&owl;"
+		xmlns:rdf="&rdf;"
+		xmlns:rdfs="&rdfs;"
+		xmlns:xsd="&xsd;"
+		xml:base="&base;">
+	<owl:Ontology rdf:about="">
+		<dc:title rdf:datatype="&xsd;string">Basic Formal Ontology (BFO)</dc:title>
+		<dc:creator rdf:datatype="&xsd;string">Holger Stenzhorn</dc:creator>
+		<dc:contributor rdf:datatype="&xsd;string">Andrew Spear</dc:contributor>
+		<dc:contributor rdf:datatype="&xsd;string">Pierre Grenon</dc:contributor>
+		<dc:contributor rdf:datatype="&xsd;string">Alan Ruttenberg</dc:contributor>
+		<dc:publisher rdf:datatype="&xsd;string">Institute for Formal Ontology and Medical Information Science (IFOMIS)</dc:publisher>
+		<dc:rights>http://creativecommons.org/licenses/by/3.0</dc:rights>
+		<dc:identifier rdf:datatype="&xsd;string">&base;</dc:identifier>
+		<dc:format rdf:datatype="&xsd;string">application/rdf+xml</dc:format>
+		<dc:language rdf:datatype="&xsd;string">en</dc:language>
+		<dc:source rdf:datatype="&xsd;string">Barry Smith: "Against Fantology"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Barry Smith: "Beyond Concepts: Ontology as Reality Representation"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Pierre Grenon and Barry Smith: "bfo and bfo: Towards Geospatial Dynamics"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Pierre Grenon, Barry Smith and Louis Goldberg: "Biodynamic Ontology: Applying BFO in the Biomedical Domain"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Barry Smith and Pierre Grenon: "The Cornucopia of Formal Ontological Relations"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Barry Smith: "Basic Tools of Formal Ontology"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Pierre Grenon: "Spatio-temporality in Basic Formal Ontology: bfo and bfo, Upper-Level Ontology, and Framework for Formalization"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Pierre Grenon: "BFO in a Nutshell: A Bi-categorial Axiomatization of BFO and Comparison with DOLCE"</dc:source>
+		<dc:source rdf:datatype="&xsd;string">Pierre Grenon: "Nuts in BFO's Nutshell: Revisions to the Bi-categorial Axiomatization of BFO"</dc:source>
+		<owl:versionInfo rdf:datatype="&xsd;string">1.1.1</owl:versionInfo>
+	</owl:Ontology>
+
+
+
+	<!--     -->
+	<!-- BFO -->
+	<!--     -->
+
+
+
+	<owl:Class rdf:about="&bfo;Entity">
+		<rdfs:label rdf:datatype="&xsd;string">entity</rdfs:label>
+		<owl:unionOf rdf:parseType="Collection">
+			<owl:Class rdf:about="&bfo;Continuant"/>
+			<owl:Class rdf:about="&bfo;Occurrent"/>
+		</owl:unionOf>
+	</owl:Class>
+
+
+
+	<!--      -->
+	<!-- bfo -->
+	<!--      -->
+
+
+
+	<owl:Class rdf:about="&bfo;Continuant">
+		<rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;DependentContinuant"/>
+					<owl:Class rdf:about="&bfo;IndependentContinuant"/>
+					<owl:Class rdf:about="&bfo;SpatialRegion"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;Occurrent"/>
+		<rdfs:label rdf:datatype="&xsd;string">continuant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An entity [bfo:Entity] that exists in full at any time in which it exists at all, persists through time while maintaining its identity and has no temporal parts.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a heart, a person, the color of a tomato, the mass of a cloud, a symphony orchestra, the disposition of blood to coagulate, the lawn and atmosphere in front of our building</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: endurant</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;DependentContinuant">
+		<rdfs:subClassOf rdf:resource="&bfo;Continuant"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;GenericallyDependentContinuant"/>
+					<owl:Class rdf:about="&bfo;SpecificallyDependentContinuant"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;IndependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatialRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">dependent_continuant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A continuant [bfo:Continuant] that is either dependent on one or other independent continuant [bfo:IndependentContinuant] bearers or inheres in or is borne by other entities.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Disposition">
+		<rdfs:subClassOf rdf:resource="&bfo;RealizableEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;Function"/>
+		<owl:disjointWith rdf:resource="&bfo;Role"/>
+		<rdfs:label rdf:datatype="&xsd;string">disposition</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A realizable entity [bfo:RealizableEntity] that essentially causes a specific process or transformation in the object [bfo:Object] in which it inheres, under specific circumstances and in conjunction with the laws of nature. A general formula for dispositions is: X (object [bfo:Object] has the disposition D to (transform, initiate a process) R under conditions C.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the disposition of vegetables to decay when not refrigerated, the disposition of a vase to brake if dropped, the disposition of blood to coagulate, the disposition of a patient with a weakened immune system to contract disease, the disposition of metal to conduct electricity.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;FiatObjectPart">
+		<rdfs:subClassOf rdf:resource="&bfo;MaterialEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;Object"/>
+		<owl:disjointWith rdf:resource="&bfo;ObjectAggregate"/>
+		<rdfs:label rdf:datatype="&xsd;string">fiat_object_part</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A material entity [bfo:MaterialEntity] that is part of an object [bfo:Object] but is not demarcated by any physical discontinuities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: upper and lower lobes of the left lung, the dorsal and ventral surfaces of the body, the east side of Saarbruecken, the lower right portion of a human torso</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: fiat substance part</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Function">
+		<rdfs:subClassOf rdf:resource="&bfo;RealizableEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;Disposition"/>
+		<owl:disjointWith rdf:resource="&bfo;Role"/>
+		<rdfs:label rdf:datatype="&xsd;string">function</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A realizable entity [bfo:RealizableEntity] the manifestation of which is an essentially end-directed activity of a continuant [bfo:Continuant] entity in virtue of that continuant [bfo:Continuant] entity being a specific kind of entity in the kind or kinds of contexts that it is made for.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the function of a birth canal to enable transport, the function of the heart in the body: to pump blood, to receive de-oxygenated and oxygenated blood, etc., the function of reproduction in the transmission of genetic material, the digestive function of the stomach to nutriate the body, the function of a hammer to drive in nails, the function of a computer program to compute mathematical equations, the function of an automobile to provide transportation, the function of a judge in a court of law</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;GenericallyDependentContinuant">
+		<rdfs:subClassOf rdf:resource="&bfo;DependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;SpecificallyDependentContinuant"/>
+		<rdfs:label rdf:datatype="&xsd;string">generically_dependent_continuant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A continuant [bfo:Continuant] that is dependent on one or other independent continuant [bfo:IndependentContinuant] bearers. For every instance of A requires some instance of (an independent continuant [bfo:IndependentContinuant] type) B but which instance of B serves can change from time to time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a certain PDF file that exists in different and in several hard drives</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;IndependentContinuant">
+		<rdfs:subClassOf rdf:resource="&bfo;Continuant"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;MaterialEntity"/>
+					<owl:Class rdf:about="&bfo;ObjectBoundary"/>
+					<owl:Class rdf:about="&bfo;Site"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;DependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatialRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">independent_continuant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A continuant [bfo:Continuant] that is a bearer of quality [bfo:Quality] and realizable entity [bfo:RealizableEntity] entities, in which other entities inhere and which itself cannot inhere in anything.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: an organism, a heart, a leg, a person, a symphony orchestra, a chair, the bottom right portion of a human torso, the lawn and atmosphere in front of our building</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: substantial entity</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;MaterialEntity">
+		<rdfs:subClassOf rdf:resource="&bfo;IndependentContinuant"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;FiatObjectPart"/>
+					<owl:Class rdf:about="&bfo;Object"/>
+					<owl:Class rdf:about="&bfo;ObjectAggregate"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;ObjectBoundary"/>
+		<owl:disjointWith rdf:resource="&bfo;Site"/>
+		<rdfs:label rdf:datatype="&xsd;string">material_entity</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An independent continuant [bfo:IndependentContinuant] that is spatially extended whose identity is independent of that of other entities and can be maintained through time. Note: Material entity [bfo:MaterialEntity] subsumes object [bfo:Object], fiat object part [bfo:FiatObjectPart], and object aggregate [bfo:ObjectAggregate], which assume a three level theory of granularity, which is inadequate for some domains, such as biology.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: collection of random bacteria, a chair, dorsal surface of the body</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Object">
+		<rdfs:subClassOf rdf:resource="&bfo;MaterialEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatObjectPart"/>
+		<owl:disjointWith rdf:resource="&bfo;ObjectAggregate"/>
+		<rdfs:label rdf:datatype="&xsd;string">object</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A material entity [bfo:MaterialEntity] that is spatially extended, maximally self-connected and self-contained (the parts of a substance are not separated from each other by spatial gaps) and possesses an internal unity. The identity of substantial object [bfo:Object] entities is independent of that of other entities and can be maintained through time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: an organism, a heart, a chair, a lung, an apple</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: substance</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ObjectAggregate">
+		<rdfs:subClassOf rdf:resource="&bfo;MaterialEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatObjectPart"/>
+		<owl:disjointWith rdf:resource="&bfo;Object"/>
+		<rdfs:label rdf:datatype="&xsd;string">object_aggregate</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A material entity [bfo:MaterialEntity] that is a mereological sum of separate object [bfo:Object] entities and possesses non-connected boundaries.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a heap of stones, a group of commuters on the subway, a collection of random bacteria, a flock of geese, the patients in a hospital</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: substance aggregate</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ObjectBoundary">
+		<rdfs:subClassOf rdf:resource="&bfo;IndependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatObjectPart"/>
+		<owl:disjointWith rdf:resource="&bfo;ObjectAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;Object"/>
+		<owl:disjointWith rdf:resource="&bfo;Site"/>
+		<rdfs:label rdf:datatype="&xsd;string">object_boundary</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An independent continuant [bfo:IndependentContinuant] that is a lower dimensional part of a spatial entity, normally a closed two-dimensional surface. Boundaries are those privileged parts of object [bfo:Object] entities that exist at exactly the point where the object [bfo:Object] is separated off from the rest of the existing entities in the world.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the surface of the skin, the surface of the earth, the surface of the interior of the stomach, the outer surface of a cell or cell wall</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: substance boundary</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: Boundaries are theoretically difficult entities to account for, however the intuitive notion of a physical boundary as a surface of some sort (whether inside or outside of a thing) will generally serve as a good guide for the use of this universal.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;OneDimensionalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatialRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ThreeDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;TwoDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ZeroDimensionalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">one_dimensional_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatial region [bfo:SpatialRegion] with one dimension.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the part of space that is a line stretching from one end of absolute space to the other, an edge of a cube-shaped part of space</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Quality">
+		<rdfs:subClassOf rdf:resource="&bfo;SpecificallyDependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;RealizableEntity"/>
+		<rdfs:label rdf:datatype="&xsd;string">quality</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A specifically dependent continuant [bfo:SpecificallyDependentContinuant] that is exhibited if it inheres in an entity or entities at all (a categorical property).</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the color of a tomato, the ambient temperature of air, the circumference of a waist, the shape of a nose, the mass of a piece of gold, the weight of a chimpanzee</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;RealizableEntity">
+		<rdfs:subClassOf rdf:resource="&bfo;SpecificallyDependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;Quality"/>
+		<rdfs:label rdf:datatype="&xsd;string">realizable_entity</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A specifically dependent continuant [bfo:SpecificallyDependentContinuant] that inheres in continuant [bfo:Continuant] entities and are not exhibited in full at every time in which it inheres in an entity or group of entities. The exhibition or actualization of a realizable entity is a particular manifestation, functioning or process that occurs under certain circumstances.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the role of being a doctor, the function of the reproductive organs, the disposition of blood to coagulate, the disposition of metal to conduct electricity</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: If a realizable entity [bfo:RealizableEntity] inheres in a continuant [bfo:Continuant], this does not imply that it is actually realized.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Role">
+		<rdfs:subClassOf rdf:resource="&bfo;RealizableEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;Disposition"/>
+		<owl:disjointWith rdf:resource="&bfo;Function"/>
+		<rdfs:label rdf:datatype="&xsd;string">role</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A realizable entity [bfo:RealizableEntity] the manifestation of which brings about some result or end that is not essential to a continuant [bfo:Continuant] in virtue of the kind of thing that it is but that can be served or participated in by that kind of continuant [bfo:Continuant] in some kinds of natural, social or institutional contexts.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the role of a person as a surgeon, the role of a chemical compound in an experiment, the role of a patient relative as defined by a hospital administrative form, the role of a woman as a legal mother in the context of system of laws, the role of a biological grandfather as legal guardian in the context of a system of laws, the role of ingested matter in digestion, the role of a student in a university</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Site">
+		<rdfs:subClassOf rdf:resource="&bfo;IndependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatObjectPart"/>
+		<owl:disjointWith rdf:resource="&bfo;Object"/>
+		<owl:disjointWith rdf:resource="&bfo;ObjectAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;ObjectBoundary"/>
+		<rdfs:label rdf:datatype="&xsd;string">site</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An independent continuant [bfo:IndependentContinuant] consisting of a characteristic spatial shape in relation to some arrangement of other continuant [bfo:Continuant] entities and of the medium which is enclosed in whole or in part by this characteristic spatial shape. Site [bfo:Site] entities are entities that can be occupied by other continuant [bfo:Continuant] entities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a particular room in a particular hospital, Maria's nostril or her intestines for a variety of bacteria.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: An instance of Site [bfo:Site] is a mixture of independent continuant [bfo:IndependentContinuant] entities which act as surrounding environments for other independent continuant [bfo:IndependentContinuant] entities, most importantly for instances of object [bfo:Object]. A site [bfo:Site] is typically made of object [bfo:Object] or fiat object part [bfo:FiatObjectPart] entities and a surrounding medium in which is found an object [bfo:Object] occupying the site [bfo:Site]. Independent continuant [bfo:IndependentContinuant] entities may be associated with others (which, then, are site [bfo:Site] entities) through a relation of "occupation". That relation is connected to, but distinct from, the relation of spatial location. Site [bfo:Site] entities are not to be confused with spatial region [bfo:SpatialRegion] entities. In BFO, site [bfo:Site] allows for a so-called relational view of space which is different from the view corresponding to the class spatial region [bfo:SpatialRegion] (see the comment on this class).</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;SpatialRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;Continuant"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;OneDimensionalRegion"/>
+					<owl:Class rdf:about="&bfo;ThreeDimensionalRegion"/>
+					<owl:Class rdf:about="&bfo;TwoDimensionalRegion"/>
+					<owl:Class rdf:about="&bfo;ZeroDimensionalRegion"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;DependentContinuant"/>
+		<owl:disjointWith rdf:resource="&bfo;IndependentContinuant"/>
+		<rdfs:label rdf:datatype="&xsd;string">spatial_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A continuant [bfo:Continuant] that is neither bearer of quality [bfo:Quality] entities nor inheres in any other entities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the sum total of all space in the universe, parts of the sum total of all space in the universe</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: An instance of spatial region [bfo:SpatialRegion] is a part of space. All parts of space are spatial region [bfo:SpatialRegion] entities and only spatial region [bfo:SpatialRegion] entities are parts of space. Space is the entire extent of the spatial universe, a designated individual, which is thus itself a spatial region [bfo:SpatialRegion].</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: All instances of continuant [bfo:Continuant] are spatial entities, that is, they enter in the relation of (spatial) location with spatial region [bfo:SpatialRegion] entities. As a particular case, the exact spatial location of a spatial region [bfo:SpatialRegion] is this region itself.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: Space and spatial region [bfo:SpatialRegion] entities are entities in their own rights which exist independently of any entities which can be located at them. This view of space is sometimes called "absolutist" or "the container view". In BFO, the class site [bfo:Site] allows for a so-called relational view of space, that is to say, a view according to which spatiality is a matter of relative location between entities and not a matter of being tied to space. The bridge between these two views is secured through the fact that while instances of site [bfo:Site] are not spatial region [bfo:SpatialRegion] entities, they are nevertheless spatial entities.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;SpecificallyDependentContinuant">
+		<rdfs:subClassOf rdf:resource="&bfo;DependentContinuant"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;Quality"/>
+					<owl:Class rdf:about="&bfo;RealizableEntity"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;GenericallyDependentContinuant"/>
+		<rdfs:label rdf:datatype="&xsd;string">specifically_dependent_continuant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A continuant [bfo:Continuant] that inheres in or is borne by other entities. Every instance of A requires some specific instance of B which must always be the same.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the mass of a cloud, the smell of mozzarella, the liquidity of blood, the color of a tomato, the disposition of fish to decay, the role of being a doctor, the function of the heart in the body: to pump blood, to receive de-oxygenated and oxygenated blood, etc.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: property, trope, mode</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ThreeDimensionalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatialRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;OneDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;TwoDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ZeroDimensionalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">three_dimensional_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatial region [bfo:SpatialRegion] with three dimensions.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a cube-shaped part of space, a sphere-shaped part of space</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;TwoDimensionalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatialRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;OneDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ThreeDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ZeroDimensionalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">two_dimensional_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatial region [bfo:SpatialRegion] with two dimensions.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the surface of a cube-shaped part of space, the surface of a sphere-shaped part of space, the surface of a rectilinear planar figure-shaped part of space</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ZeroDimensionalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatialRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;OneDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ThreeDimensionalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;TwoDimensionalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">zero_dimensional_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatial region [bfo:SpatialRegion] with no dimensions.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: a point</rdfs:comment>
+	</owl:Class>
+
+
+
+	<!--      -->
+	<!-- bfo -->
+	<!--      -->
+
+
+
+	<owl:Class rdf:about="&bfo;ConnectedSpatiotemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatiotemporalRegion"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;SpatiotemporalInstant"/>
+					<owl:Class rdf:about="&bfo;SpatiotemporalInterval"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;ScatteredSpatiotemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">connected_spatiotemporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatiotemporal region [bfo:SpatiotemporalRegion] that has temporal and spatial dimensions such that all points within the spatiotemporal region are mediately or immediately connected to all other points within the same spatiotemporal region [bfo:SpatiotemporalRegion].</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the spatial and temporal location of an individual organism's life, the spatial and temporal location of the development of a fetus</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ConnectedTemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;TemporalRegion"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;TemporalInstant"/>
+					<owl:Class rdf:about="&bfo;TemporalInterval"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;ScatteredTemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">connected_temporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A temporal region [bfo:TemporalRegion] every point of which is mediately or immediately connected with every other point of which.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the 1970s years, the time from the beginning to the end of a heart attack, the time taken up by cellular meiosis</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;FiatProcessPart">
+		<rdfs:subClassOf rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;Process"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessBoundary"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualContext"/>
+		<rdfs:label rdf:datatype="&xsd;string">fiat_process_part</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A processual entity [bfo:ProcessualEntity] that is part of a process but that does not have bona fide beginnings and endings corresponding to real discontinuities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: chewing during a meal, the middle part of a rainstorm, the worst part of a heart-attack, the most interesting part of Van Gogh's life</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Occurrent">
+		<rdfs:subClassOf rdf:resource="&bfo;Entity"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;ProcessualEntity"/>
+					<owl:Class rdf:about="&bfo;SpatiotemporalRegion"/>
+					<owl:Class rdf:about="&bfo;TemporalRegion"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;Continuant"/>
+		<rdfs:label rdf:datatype="&xsd;string">occurrent</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An entity [bfo:Entity] that has temporal parts and that happens, unfolds or develops through time. Sometimes also called perdurants.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the life of an organism, a surgical operation as processual context for a nosocomical infection, the spatiotemporal context occupied by a process of cellular meiosis, the most interesting part of Van Gogh's life, the spatiotemporal region occupied by the development of a cancer tumor</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Synonyms: perdurant</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;Process">
+		<rdfs:subClassOf rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatProcessPart"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessBoundary"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualContext"/>
+		<rdfs:label rdf:datatype="&xsd;string">process</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A processual entity [bfo:ProcessualEntity] that is a maximally connected spatiotemporal whole and has bona fide beginnings and endings corresponding to real discontinuities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the life of an organism, the process of sleeping, the process of cell-division</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ProcessAggregate">
+		<rdfs:subClassOf rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatProcessPart"/>
+		<owl:disjointWith rdf:resource="&bfo;Process"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessBoundary"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualContext"/>
+		<rdfs:label rdf:datatype="&xsd;string">process_aggregate</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A processual entity [bfo:ProcessualEntity] that is a mereological sum of process [bfo:Process] entities and possesses non-connected boundaries.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the beating of the hearts of each of seven individuals in the room, the playing of each of the members of an orchestra, a process of digestion and a process of thinking taken together</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ProcessBoundary">
+		<rdfs:subClassOf rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatProcessPart"/>
+		<owl:disjointWith rdf:resource="&bfo;Process"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualContext"/>
+		<rdfs:label rdf:datatype="&xsd;string">process_boundary</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A processual entity [bfo:ProcessualEntity] that is the fiat or bona fide instantaneous temporal process boundary.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: birth, death, the forming of a synapse, the onset of REM sleep, the detaching of a finger in an industrial accident, the final separation of two cells at the end of cell-division, the incision at the beginning of a surgery</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ProcessualContext">
+		<rdfs:subClassOf rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;FiatProcessPart"/>
+		<owl:disjointWith rdf:resource="&bfo;Process"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessAggregate"/>
+		<owl:disjointWith rdf:resource="&bfo;ProcessBoundary"/>
+		<rdfs:label rdf:datatype="&xsd;string">processual_context</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An occurrent [bfo:Occurrent] consisting of a characteristic spatial shape inhering in some arrangement of other occurrent [bfo:Occurrent] entities. Processual context [bfo:ProcessualContext] entities are characteristically entities at or in which other occurrent [bfo:Occurrent] entities can be located or occur.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: The processual context for a given manipulation occurring as part of an experiment is made of processual entities which occur in parallel, are not necessarily all parts of the experiment themselves and may involve continuant [bfo:Continuant] entities which are in the spatial vicinity of the participants in the experiment.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: An instance of a processual context [bfo:ProcessualContext] is a mixture of processual entity [bfo:ProcessualEntity] which stand as surrounding environments for other processual entity [bfo:ProcessualEntity] entities. The class processual context [bfo:ProcessualContext] is the analogous among occurrent [bfo:Occurrent] entities to the class site [bfo:Site] among continuant [bfo:Continuant] entities.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ProcessualEntity">
+		<rdfs:subClassOf rdf:resource="&bfo;Occurrent"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;FiatProcessPart"/>
+					<owl:Class rdf:about="&bfo;Process"/>
+					<owl:Class rdf:about="&bfo;ProcessAggregate"/>
+					<owl:Class rdf:about="&bfo;ProcessBoundary"/>						
+					<owl:Class rdf:about="&bfo;ProcessualContext"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;TemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatiotemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">processual_entity</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An occurrent [bfo:Occurrent] that exists in time by occurring or happening, has temporal parts and always involves and depends on some entity.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the life of an organism, the process of meiosis, the course of a disease, the flight of a bird</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ScatteredSpatiotemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;SpatiotemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ConnectedSpatiotemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">scattered_spatiotemporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A spatiotemporal region [bfo:SpatiotemporalRegion] that has spatial and temporal dimensions and every spatial and temporal point of which is not connected with every other spatial and temporal point of which.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the space and time occupied by the individual games of the World Cup, the space and time occupied by the individual liaisons in a romantic affair</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;ScatteredTemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;TemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;ConnectedTemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">scattered_temporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A temporal region [bfo:TemporalRegion] every point of which is not mediately or immediately connected with every other point of which.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the time occupied by the individual games of the World Cup, the time occupied by the individual liaisons in a romantic affair</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;SpatiotemporalInstant">
+		<rdfs:subClassOf rdf:resource="&bfo;ConnectedSpatiotemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatiotemporalInterval"/>
+		<rdfs:label rdf:datatype="&xsd;string">spatiotemporal_instant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A connected spatiotemporal region [bfo:ConnectedSpatiotemporalRegion] at a specific moment.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the spatiotemporal region occupied by a single instantaneous temporal slice (part) of a process</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;SpatiotemporalInterval">
+		<rdfs:subClassOf rdf:resource="&bfo;ConnectedSpatiotemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatiotemporalInstant"/>
+		<rdfs:label rdf:datatype="&xsd;string">spatiotemporal_interval</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A connected spatiotemporal region [bfo:ConnectedSpatiotemporalRegion] that endures for more than a single moment of time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the spatiotemporal region occupied by a process or by a fiat processual part</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;SpatiotemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;Occurrent"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;ConnectedSpatiotemporalRegion"/>
+					<owl:Class rdf:about="&bfo;ScatteredSpatiotemporalRegion"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;TemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">spatiotemporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An occurrent [bfo:Occurrent] at or in which processual entity [bfo:ProcessualEntity] entities can be located.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the spatiotemporal region occupied by a human life, the spatiotemporal region occupied by the development of a cancer tumor, the spatiotemporal context occupied by a process of cellular meiosis</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: An instance of the spatiotemporal region [bfo:SpatiotemporalRegion] is a part of spacetime. All parts of spacetime are spatiotemporal region [bfo:SpatiotemporalRegion] entities and only spatiotemporal region [bfo:SpatiotemporalRegion] entities are parts of spacetime. In particular, neither spatial region [bfo:SpatialRegion] entities nor temporal region [bfo:TemporalRegion] entities are in BFO parts of spacetime. Spacetime is the entire extent of the spatiotemporal universe, a designated individual, which is thus itself a spatiotemporal region [bfo:SpatiotemporalRegion]. Spacetime is among occurrents the analogous of space among continuant [bfo:Continuant] entities.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: All instances of occurrent [bfo:Occurrent] are spatiotemporal entities, that is, they enter in the relation of (spatiotemporal) location with spatiotemporal region [bfo:SpatiotemporalRegion] entities. As a particular case, the exact spatiotemporal location of a spatiotemporal region [bfo:SpatiotemporalRegion] is this region itself.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: Spacetime and spatiotemporal region [bfo:SpatiotemporalRegion] entities are entities in their own rights which exist independently of any entities which can be located at them. This view of spacetime can be called "absolutist" or "the container view". In BFO, the class processual context [bfo:ProcessualContext] allows for a so-called relational view of spacetime, that is to say, a view according to which spatiotemporality is a matter of relative location between entities and not a matter of being tied to spacetime. In BFO, the bridge between these two views is secured through the fact that instances of processual context [bfo:ProcessualContext] are too spatiotemporal entities.</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;TemporalInstant">
+		<rdfs:subClassOf rdf:resource="&bfo;ConnectedTemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;TemporalInterval"/>
+		<rdfs:label rdf:datatype="&xsd;string">temporal_instant</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A connected temporal region [bfo:ConnectedTemporalRegion] comprising a single moment of time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: right now, the moment at which a finger is detached in an industrial accident, the moment at which a child is born, the moment of death</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;TemporalInterval">
+		<rdfs:subClassOf rdf:resource="&bfo;ConnectedTemporalRegion"/>
+		<owl:disjointWith rdf:resource="&bfo;TemporalInstant"/>
+		<rdfs:label rdf:datatype="&xsd;string">temporal_interval</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: A connected temporal region [bfo:ConnectedTemporalRegion] lasting for more than a single moment of time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: any continuous temporal duration during which a process occurs</rdfs:comment>
+	</owl:Class>
+
+	<owl:Class rdf:about="&bfo;TemporalRegion">
+		<rdfs:subClassOf rdf:resource="&bfo;Occurrent"/>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Class rdf:about="&bfo;ConnectedTemporalRegion"/>
+					<owl:Class rdf:about="&bfo;ScatteredTemporalRegion"/>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<owl:disjointWith rdf:resource="&bfo;ProcessualEntity"/>
+		<owl:disjointWith rdf:resource="&bfo;SpatiotemporalRegion"/>
+		<rdfs:label rdf:datatype="&xsd;string">temporal_region</rdfs:label>
+		<rdfs:comment rdf:datatype="&xsd;string">Definition: An occurrent [bfo:Occurrent] that is part of time.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Examples: the time it takes to run a marathon, the duration of a surgical procedure, the moment of death</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: An instance of temporal region [bfo:TemporalRegion] is a part of time. All parts of time are temporal region [bfo:TemporalRegion] entities and only temporal region [bfo:TemporalRegion] entities are parts of time. Time is the entire extent of the temporal universe, a designated individual, which is thus a temporal region itself.</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: All instances of occurrent [bfo:Occurrent] are temporal entities, that is, they enter in the relation of (temporal) location with temporal region [bfo:TemporalRegion] entities. As a particular case, the exact spatiotemporal location of a temporal region [bfo:TemporalRegion] is this region itself. Continuant [bfo:Continuant] entities are not temporal entities in the technical sense just explained; they are related to time in a different way, not through temporal location but through a relation of existence at a time or during a period of time (see continuant [bfo:Continuant].</rdfs:comment>
+		<rdfs:comment rdf:datatype="&xsd;string">Comment: Time and temporal region [bfo:TemporalRegion] entities are entities in their own rights which exist independently of any entities which can be located at them. This view of time can be called "absolutist" or "the container view" in analogy to what is traditionally the case with space (see spatial region [bfo:SpatialRegion].</rdfs:comment>
+	</owl:Class>
+
+
+
+	<!--                       -->
+	<!-- Annotation Properties -->
+	<!--                       -->
+
+
+
+	<owl:AnnotationProperty rdf:about="&dc;contributor"/>
+	<owl:AnnotationProperty rdf:about="&dc;creator"/>
+	<owl:AnnotationProperty rdf:about="&dc;format"/>
+	<owl:AnnotationProperty rdf:about="&dc;identifier"/>
+	<owl:AnnotationProperty rdf:about="&dc;language"/>
+	<owl:AnnotationProperty rdf:about="&dc;publisher"/>
+	<owl:AnnotationProperty rdf:about="&dc;source"/>
+	<owl:AnnotationProperty rdf:about="&dc;title"/>
+	<owl:AnnotationProperty rdf:about="&dc;rights"/>
+</rdf:RDF>

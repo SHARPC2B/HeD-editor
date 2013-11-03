@@ -12,7 +12,7 @@
   <artifactId>arden-model</artifactId>
   <version>${editor.version}</version>
 
-  <name>Arden Syntax Semantic Model</name>
+  <name>SHARPC-2B : Arden Syntax Semantic Model</name>
 
   <dependencies>
     <dependency>

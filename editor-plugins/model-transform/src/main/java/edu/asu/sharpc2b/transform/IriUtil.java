@@ -17,14 +17,15 @@ public final class IriUtil
 
     public static final IRI skosIRI = IRI.create( skos );
 
-    public static final IRI skosIRI (String name)
-    {
-        return IRI.create( skos + "#" + name );
-    }
-
     public static String skosNamespace = skosIRI.toString() + "#";
 
     public static final String sharpOntBase = "http://asu.edu/sharpc2b/";
+
+    static final String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
+
+    static final String skosExtBaseIRI = IriUtil.sharpEditorIRI( "skos-ext" ).toString() + "#";
+
+    static final String skosBaseIRI = "http://www.w3.org/2004/02/skos/core#";
 
     public static final String sharpIRIString (String name)
     {
@@ -34,6 +35,21 @@ public final class IriUtil
     public static final IRI sharpEditorIRI (String name)
     {
         return IRI.create( sharpIRIString( name ) );
+    }
+
+    static IRI opsIRI (final String name)
+    {
+        return IRI.create( opsCoreBaseIRI + name );
+    }
+
+    static IRI skosExtIRI (final String name)
+    {
+        return IRI.create( skosExtBaseIRI + name );
+    }
+
+    static IRI skosIRI (final String name)
+    {
+        return IRI.create( skosBaseIRI + name );
     }
 
 

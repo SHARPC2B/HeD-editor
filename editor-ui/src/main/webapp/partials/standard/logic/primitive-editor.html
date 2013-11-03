@@ -1,0 +1,22 @@
+<div class="modal-header">
+	<h5 class="text-center">You have selected: <span class="borderedBox" style="padding: 8px; background-color: lightcyan; border-radius: 20px;">{{clause.name}}</span></h5>
+</div>
+<div class="modal-body">
+	<h5 class="text-center">Short Name</h5>
+	<p class="text-center">Assign this clause a nickname. This is the name that will be displayed in the logic editor. It should be easy to remember what the clause means based on the name you give it. A default has been assigned.</p>
+	<form class="form-inline text-center">
+  		<label class="control-label">Nickname:</label>
+    	<input type="text" style="margin-left: 110px; width: 82%;">
+  	</form>
+	<h5 class="text-center">Settings</h5>
+	<div class="borderedBox container-fluid" style="padding: 10px;">
+		<div class="borderedBox row-fluid" ng-repeat="parameter in detail.parameters" ng-include="'partials/standard/logic/primitive-form.html'" style="margin-bottom: 10px;"></div>
+	</div>
+	<h5 class="text-center">Preview</h5>
+	<div class="borderedBox" style="height: 180px;">{{clause.description}}</div>
+</div>
+<div class="modal-footer">
+	<a  href="" class="span4" ng-click="verify(detail)"><i class="icon-ok icon-3x"></i> Verify</a>
+	<a  href="" class="span4"><i class="icon-save icon-3x"></i> Confirm and Save</a>
+	<a  href="" class="span3" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
+</div>

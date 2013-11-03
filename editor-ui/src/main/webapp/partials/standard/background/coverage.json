@@ -1,0 +1,14 @@
+[
+	{
+		"Type":"PatientGender",
+		"Code":"M",
+		"CodeSet":"Administrative Gender (HL7 V3)",
+		"Description":"Males Only"
+	},
+	{
+		"Type":"PatientAgeGroup",
+		"Code":"D000328",
+		"CodeSet":"MeSH",
+		"Description":"adult, 19-44 years"
+	}
+]

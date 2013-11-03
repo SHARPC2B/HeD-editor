@@ -1,0 +1,12 @@
+<label class="control-label" for="{{element.name}}">{{element.label}}</label>
+<div class="controls" ng-switch on="element.widgetType">
+	<input ng-switch-when="TextBox" type="text" id="{{element.name}}">
+	<span ng-switch-when="Choice">
+		<label class="radio inline" ng-repeat="choice in element.selectionChoices">
+  			<input type="radio" ng-model="element.value" value="{{choice}}">{{choice}}
+		</label>
+	</span>
+	<select ng-switch-when="Dropdown" ng-model="element.value" ng-options="sc for sc in element.selectionChoices"></select>
+	<input ng-switch-when="SearchChoice" type="text" ng-model="element.value" typeahead="suggestion.designation for suggestion in cts2search($viewValue)">
+	<span class="help-inline">{{element.errors[0]}}</span>
+</div>

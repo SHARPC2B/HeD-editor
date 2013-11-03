@@ -54,10 +54,10 @@ public class FileUtil
         URL referenceURL = System.class.getResource( knownRootResourcePath );
 
 //        System.out.println( "referenceURL = " + referenceURL );
-        System.out.println( "Failed to find Resource in classpath: " + resourcePath );
 
         if (referenceURL == null)
         {
+//            System.out.println( "Failed to find Resource in classpath: " + resourcePath + " trying alternatives... " );
             File altFile = getAlternateResourceFile( resourcePath );
             if (altFile != null)
             {

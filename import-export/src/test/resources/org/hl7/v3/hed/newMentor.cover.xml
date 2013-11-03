@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?schematron-schema href="../main/schematron/knowledgeartifact.sch"?>
+<?schematron-schema href="../main/schematron/ecarules.sch"?>
+<knowledgeDocument xmlns="urn:hl7-org:v3/hed"
+	xmlns:dt="urn:hl7-org:v3/cdsdt" xmlns:p1="http://www.w3.org/1999/xhtml"
+	xmlns:vmr="urn:hl7-org:v3/vmr"
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:hl7-org:v3/hed ../../../../xsd/HeD/knowledgedocument.xsd ">
+
+
+
+
+
+
+
+  <actionGroup>
+		<behaviors>
+			<behavior xsi:type="GroupSelectionBehavior" value="All"/>
+		</behaviors>
+
+
+		<subElements>
+			<actionGroup>
+				<title
+					value="Aspirin or other antithrombotic for ischemic vascular disease" />
+				<description
+					value="Reminder to prescribe aspirin or other antithrombotic for ischemic vascular disease" />
+				<subElements>
+
+
+
+
+					<simpleAction xsi:type="MessageAction">
+						<actionId root="2.16.840.1.113883.3.866" extension="9.999" />
+						<textEquivalent
+							value="Patient was identified as having ischemic vascular disease, AMI, or related procedure. No aspirin or other antithrombotic was found on the patient's active medications" />
+
+						<!-- NOTE: The message here is constructed based on the actual data present 
+						for the patient, so that the message is tailored to the relevant data. -->
+						<message xsi:type="Concat">
+							<operand xsi:type="StringLiteral" value="Patient was identified as having " />
+							<operand xsi:type="Coalesce">
+								<operand xsi:type="Concat">
+									<operand xsi:type="StringLiteral" value="AMI (" />
+									<operand xsi:type="Property" path="problemCode.displayName">
+										<source xsi:type="Last" orderBy="diagnosticEventTime">
+											<source xsi:type="ExpressionRef" name="AMI_Diagnosis" />
+										</source>
+									</operand>
+									<operand xsi:type="StringLiteral" value=")" />
+								</operand>
+								<operand xsi:type="Concat">
+									<operand xsi:type="StringLiteral" value="ischemic vascular disease (" />
+									<operand xsi:type="Property" path="problemCode.displayName">
+										<source xsi:type="Last" orderBy="diagnosticEventTime">
+											<source xsi:type="ExpressionRef" name="IVD_Diagnosis" />
+										</source>
+									</operand>
+									<operand xsi:type="StringLiteral" value=")" />
+								</operand>
+								<operand xsi:type="Concat">
+									<operand xsi:type="StringLiteral"
+										value="AMI or ischemic vascular disease related procedure (" />
+									<operand xsi:type="Property" path="procedureCode.displayName">
+										<source xsi:type="Last" orderBy="diagnosticEventTime">
+											<source xsi:type="Union">
+												<operand xsi:type="ExpressionRef" name="CABG_Procedures" />
+												<operand xsi:type="ExpressionRef" name="PCI_Procedures" />
+											</source>
+										</source>
+									</operand>
+									<operand xsi:type="StringLiteral" value=")" />
+								</operand>
+							</operand>
+							<operand xsi:type="StringLiteral" value="." />
+						</message>
+					</simpleAction>
+				</subElements>
+			</actionGroup>
+
+
+			<actionGroup>
+				<behaviors>
+					<behavior xsi:type="GroupSelectionBehavior" value="AtMostOne"/>
+				</behaviors>
+				<title value="Treatment and documentation options" />
+				<description
+					value="Treatment or documentation a clinician may order or perform for an IVD patient with no prescribed antithrombotic in the patient record" />
+				<subElements>
+					<simpleAction xsi:type="CreateAction">
+						<textEquivalent value="Prescribe aspirin or other antithrombotic"/>
+						<actionSentence xsi:type="ObjectExpression"
+							objectType="vmr:SubstanceAdministrationProposal">
+							<description>Prescribe aspirin or other antithrombotic</description>
+							<property name="substance.substanceCode">
+								<!-- NOTE: The code specified here is the identifier for a value set. 
+								The intended semantics are that the target system would allow selection 
+								by the provider of a medication from this value set. Note also that
+								contraindications would need to be resolved on selection of a specific
+								medication, potentially with another call to a separate artifact. -->
+								<value xsi:type="CodeLiteral" code="2.16.840.1.113883.3.464.1003.196.12.1211" codeSystem="National Committee for Quality Assurance" displayName="Select a medication from this value set." />
+							</property>
+						</actionSentence>
+					</simpleAction>
+					<simpleAction xsi:type="CreateAction">
+						<textEquivalent value="Update the patient's active medication list"/>
+						<actionSentence xsi:type="ObjectExpression"
+							objectType="vmr:SubstanceAdministrationEvent">
+							<description>Document antithrombotic prescription in the
+								patient's active medication list</description>
+							<property name="substance.substanceCode">
+								<!-- NOTE: The code specified here is the identifier for a value set. 
+								The intended semantics are that the target system would allow selection 
+								by the provider of a medication from this value set. Note also that
+								contraindications would need to be resolved on selection of a specific
+								medication, potentially with another call to a separate artifact. -->
+								<value xsi:type="CodeLiteral" code="2.16.840.1.113883.3.464.1003.196.12.1211" codeSystem="National Committee for Quality Assurance" displayName="Select a medication from this value set." />
+							</property>
+						</actionSentence>
+					</simpleAction>
+					<!-- Rob McClure - There is a QDM based mechanism for capturing this, should this align with that approach/representation? (Negation Rationale is the term)-->
+					<simpleAction xsi:type="CollectInformationAction">
+						<textEquivalent
+							value="Document reason for not prescribing aspirin or other antithrombotic" />
+						<documentationConcept>
+							<displayText value="Reason for not prescribing an antithrombotic" />
+							<itemCodes>
+								<itemCode code="G8697" codeSystem="2.16.840.1.113883.6.12"
+									codeSystemName="CPT-4"
+									displayName="Documentation of reason for not prescribing aspirin or other antithrombotic" />
+							</itemCodes>
+							<responseDataType value="String"/>
+							<responseCardinality value="Single"/>
+						</documentationConcept>
+					</simpleAction>
+				</subElements>
+			</actionGroup>
+		</subElements>
+	</actionGroup>
+</knowledgeDocument>

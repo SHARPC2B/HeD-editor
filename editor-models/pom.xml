@@ -24,6 +24,7 @@
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>drools-shapes-generator-plugin</artifactId>

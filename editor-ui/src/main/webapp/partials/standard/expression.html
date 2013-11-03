@@ -1,0 +1,27 @@
+<div class="row-fluid">
+	<div class="borderedBox span4" style="padding: 10px;">
+		<p class="text-center">Expressions:</p>
+		<div class="search-prepend">
+			<div class="icon-search icon-white"></div>
+			<input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
+		</div><br>
+		<ul class="nav nav-list borderedBox" style="height: 788px;">
+			<li x-ng-repeat="expression in expressions | filter:search" x-ng-class="{active: currentExpression.name==expression.name}"><a href="" x-ng-click="open(expression)">{{expression.expressionIRI}}</a></li>
+		</ul>
+		<div x-ng-include="'partials/standard/expression/palette.xml'" x-onload="loadPalette()"></div>
+	</div>
+	<div class="span8" id="blocklyDiv" style="height: 900px;"></div>
+</div>
+<div class="row-fluid">
+	<a href="#/standard/background" class="span1 text-center">
+		<i class="icon-caret-left icon-5x"></i><br>Return to previous step
+	</a>
+	<div class="span10" style="padding: 26px;">
+		<p class="offset2 span3" style="padding: 9px;">Name: <input class="span10" type="text" style="margin: 0px;" x-ng-model="currentExpression.name"></p>
+		<button class="btn btn-link btn-large span2" x-ng-click="save()" x-ng-disabled="currentExpression.name==''"><i class="icon-save icon-3x"></i> Save</button>
+		<button class="btn btn-link btn-large span2" x-ng-click="clear()"><i class="icon-trash icon-3x"></i> Clear</button>
+	</div>
+	<a href="#/standard/trigger" class="span1 text-center">
+		<i class="icon-caret-right icon-5x"></i><br>I'm done creating expressions
+	</a>
+</div>

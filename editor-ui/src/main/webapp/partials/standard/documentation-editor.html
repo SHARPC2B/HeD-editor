@@ -1,0 +1,187 @@
+<div class="modal-header" style="width: 1200px">
+    <h5 class="text-center">Documentation</h5>
+</div>
+<div class="modal-body" style="width: 1200px">
+
+    <accordion close-others="false">
+        <accordion-group heading="Basic Information:" isOpen="true" is-open="true">
+            <form class="form-horizontal" name="form">
+
+                <div class="control-group">
+                    <label class="control-label">Name</label>
+                    <div class="controls">
+                        <input type="text" placeholder="Name" >
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Description</label>
+                    <div class="controls">
+                        <textarea rows="7" style="width:80%" ></textarea>
+                    </div>
+                </div>
+            </form>
+        </accordion-group>
+
+        <accordion-group heading="Related Resources:">
+            <div class="row-fluid">
+                <div class="span2">
+                    <select>
+                        <option>AdaptedFrom</option>
+                        <option>AssociatedResource</option>
+                        <option>DependsOn</option>
+                        <option>DerivedFrom</option>
+                        <option>SimilarTo</option>
+                        <option>VersionOf</option>
+                    </select>
+                </div>
+
+            </div>
+            <br>
+            <div class="row-fluid">
+                <div class="span12 borderedBox">
+                <p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+
+                <div class="row-fluid" style="margin-left: -10px;">
+                    <form class="form-horizontal span6">
+                        <div class="control-group">
+                            <label class="control-label" for="inputTitle">Title:</label>
+
+                            <div class="controls">
+                                <input type="text"  class="span12" ng-model="resource.Title">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >Citation:</label>
+
+                            <div class="controls">
+                                <textarea rows="3" class="span12" ng-model="resource.Citation"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="form-horizontal span6">
+                        <div class="control-group">
+                            <label class="control-label" for="inputLocation">Location:</label>
+
+                            <div class="controls">
+                                <input type="url" class="span12" ng-model="resource.Location">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Description:</label>
+
+                            <div class="controls">
+                                <textarea rows="3" class="span12" ng-model="resource.Description"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+            <br>
+
+            <div class="row-fluid">
+                <a href="" class="text-center span6" ng-click="saveResource()"><i class="icon-save icon-3x"></i> Save</a>
+                <a href="" class="text-center span6" x-ng-click="resource=''"><i class="icon-trash icon-3x"></i> Clear</a>
+            </div>
+            <br>
+
+            <div class="row-fluid">
+                <div class="borderedBox span12" ng-grid="gridResource"></div>
+            </div>
+        </accordion-group>
+        <accordion-group heading="Supporting Evidence:">
+            <div class="row-fluid">
+                <div class="span6 borderedBox">
+                    <p style="margin-top: -12px; margin-left: 10px; background:white; width: 130px;">Quality of Evidence:</p>
+
+                    <div class="row-fluid">
+                        <div class="span2 offset1">
+                            <select class="span12">
+                                <option>Code Set</option>
+                            </select>
+                        </div>
+                        <div class="search-prepend span8">
+                            <div class="icon-search icon-white"></div>
+                            <input type="text" class="search-query span12" placeholder="code" ng-model="evidence.Quality">
+                        </div>
+                    </div>
+                </div>
+                <div class="span6 borderedBox">
+                    <p style="margin-top: -12px; margin-left: 10px; background:white; width: 191px;">Strength of
+                        Recommendation:</p>
+
+                    <div class="row-fluid">
+                        <div class="span2 offset1">
+                            <select class="span12">
+                                <option>Code Set</option>
+                            </select>
+                        </div>
+                        <div class="search-prepend span8">
+                            <div class="icon-search icon-white"></div>
+                            <input type="text" class="search-query span12" placeholder="code" ng-model="evidence.Strength">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="row-fluid">
+                <div class="span12 borderedBox">
+                    <p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+
+                    <div class="row-fluid" style="margin-left: -10px;">
+                        <form class="form-horizontal span6">
+                            <div class="control-group">
+                                <label class="control-label" for="inputTitle">Title:</label>
+
+                                <div class="controls">
+                                    <input type="text" id="inputTitle" class="span12" ng-model="evidence.Title">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" >Citation:</label>
+
+                                <div class="controls">
+                                    <textarea rows="3" class="span12" ng-model="evidence.Citation"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <form class="form-horizontal span6">
+                            <div class="control-group">
+                                <label class="control-label" >Location:</label>
+
+                                <div class="controls">
+                                    <input type="url" id="inputLocation" class="span12" ng-model="evidence.Location">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" >Description:</label>
+
+                                <div class="controls">
+                                    <textarea rows="3" class="span12" ng-model="evidence.Description"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="row-fluid">
+                <a href="" class="text-center span6" ng-click="saveEvidence()"><i class="icon-save icon-3x"></i> Save</a>
+                <a href="" class="text-center span6" x-ng-click="evidence={}"><i class="icon-trash icon-3x"></i> Clear</a>
+            </div>
+            <br>
+
+            <div class="row-fluid">
+                <div class="borderedBox span12" ng-grid="gridEvidence"></div>
+            </div>
+        </accordion-group>
+
+</accordion>
+</div>
+<div class="modal-footer" style="width: 1200px;text-align: center">
+    <a href="" ><i class="icon-save icon-3x" ></i> Confirm and Save</a>
+    <a style="margin-left: 150px" href="" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
+</div>

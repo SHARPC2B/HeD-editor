@@ -21,7 +21,7 @@ import sharpc2b.transform.test.TestFileUtil
 class SharpOperatorsTest extends GroovyTestCase {
 
     static File excelFile = FileUtil.getExistingResourceAsFile(
-            "/ontologies/import-operators/SharpOperators.xlsx" );
+            "/ontologies/import-operators/SharpOperatorsTest.xlsx" );
 
     static IRI outputOntIRI = IriUtil.sharpEditorIRI( "shops" );
     static File outputOntFile = TestFileUtil.getFileForTestOutput( "/ontologies/out/shops.ofn" );

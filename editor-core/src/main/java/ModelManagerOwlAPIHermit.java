@@ -90,8 +90,6 @@ public class ModelManagerOwlAPIHermit
 
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntologyLoaderConfiguration config = new OWLOntologyLoaderConfiguration();
-        config.setMissingOntologyHeaderStrategy(
-                OWLOntologyLoaderConfiguration.MissingOntologyHeaderStrategy.IMPORT_GRAPH );
 
         for ( org.drools.io.Resource res : resources ) {
 

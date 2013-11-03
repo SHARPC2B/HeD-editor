@@ -33,7 +33,7 @@ extends GroovyTestCase {
 
 //    static File ontFile = FileUtil.getFileInProjectDir(
 //            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
-    static File ontFile = FileUtil.getExistingResourceAsFile( "/ontologies/editor-models/demos/expr-core-coupled.owl" );
+    static File ontFile = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/demos/expr-core-coupled.owl" );
 
 
     OWLOntologyManager oom;

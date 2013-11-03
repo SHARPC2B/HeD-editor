@@ -1,0 +1,31 @@
+<div class="row-fluid">
+	<div class="span4">
+		<p class="text-center">Begin by choosing an action type from the list below.</p>
+		<div class="search-prepend row-fluid">
+			<div class="icon-search icon-white"></div>
+			<input type="text" class="search-query span12" placeholder="search" x-ng-model="actionFilter">
+		</div>
+		<br>
+		<ul class="nav nav-list borderedBox">
+			<li x-ng-repeat="action in actions"><a href="" class="nav-header" x-ng-click="action.show = !action.show" x-ng-show="(action.templates | filter:actionFilter).length > 0"><i class="icon-folder-open-alt" x-ng-show="!action.show"></i><i class="icon-folder-close-alt" x-ng-show="action.show"></i>{{action.label}}</a>
+				<ul class="nav nav-list" x-ng-show="!action.show">
+					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
+				</ul>
+			</li>
+		</ul>
+		<br>
+		<p class="text-center">Available actions on the grey area may be dragged in to the canvas on the right</p>
+		<xml id="toolbox" style="display: none">
+			<block type="action_group"></block>
+			<block type="logic_ternary"></block>
+			<block type="action_documentation"></block>
+			<block type="action_boolean"></block>
+			<block type="text"></block>
+		</xml>
+	</div>
+	<div class="borderedBox span8" id="blocklyDiv" style="height: 900px;"></div>
+</div>
+<div class="row-fluid">
+	<a href="#/standard/logic" class="span1 text-center"><i class="icon-caret-left icon-5x"></i><br>Return to previous step</a>
+	<a href="#/standard/save" class="span1 offset10 text-center"><i class="icon-caret-right icon-5x"></i><br>I'm done choosing actions</a>
+</div>

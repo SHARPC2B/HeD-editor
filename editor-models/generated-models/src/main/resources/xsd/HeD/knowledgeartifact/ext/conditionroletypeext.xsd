@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file allows organizations to extend the enumeration ConditionRoleType. 
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../enum/conditionroletypecore.xsd"/>
+	<xs:simpleType name="ConditionRoleTypeExt">
+		<xs:restriction base="ConditionRoleTypeCore"/>
+	</xs:simpleType>
+</xs:schema>

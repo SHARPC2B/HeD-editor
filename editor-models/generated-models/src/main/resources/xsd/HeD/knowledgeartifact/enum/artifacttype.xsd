@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file defines the ArtifactType enumeration.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../ext/artifacttypeext.xsd"/>
+	<xs:include schemaLocation="artifacttypecore.xsd"/>
+	<xs:simpleType name="ArtifactType">
+		<xs:annotation>
+			<xs:documentation>Three types of artifacts are in scope for Health eDecisions Use Case #1:  Event-condition-action rules, order sets and documentation templates.</xs:documentation>
+			<!-- BTR-> There was a comment within the documentation here:   In addition, a CDS artifact may also be a value set.  !!! Get more info from Aziz about this ...  !!! -->
+		</xs:annotation>
+		<xs:union memberTypes="ArtifactTypeCore ArtifactTypeExt"/>
+	</xs:simpleType>
+</xs:schema>

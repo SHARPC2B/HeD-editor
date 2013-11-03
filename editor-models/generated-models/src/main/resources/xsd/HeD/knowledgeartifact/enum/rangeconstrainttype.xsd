@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file defines the RangeConstraintType enumeration.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../ext/rangeconstrainttypeext.xsd"/>
+	<xs:include schemaLocation="rangeconstrainttypecore.xsd"/>
+	<xs:simpleType name="RangeConstraintType">
+		<xs:annotation>
+			<xs:documentation>The enumeration of different types of range constraints on values. </xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="RangeConstraintTypeCore RangeConstraintTypeExt"/>
+	</xs:simpleType>
+</xs:schema>

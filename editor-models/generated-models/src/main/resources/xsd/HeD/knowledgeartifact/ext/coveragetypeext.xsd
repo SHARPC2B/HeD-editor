@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file allows organizations to extend the enumeration CoverageType. 
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../enum/coveragetypecore.xsd"/>
+	<xs:simpleType name="CoverageTypeExt">
+		<xs:restriction base="CoverageTypeCore"/>
+	</xs:simpleType>
+</xs:schema>

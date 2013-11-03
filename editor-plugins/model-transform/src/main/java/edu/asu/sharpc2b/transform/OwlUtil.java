@@ -19,19 +19,19 @@ public class OwlUtil
 {
 
     static final String sharpEditorOntologiesDirInProject
-            = "/editor-models/hed-model/src/main/resources/ontologies/";
+            = "/editor_models/hed-model/src/main/resources/ontologies/";
 
     /**
      * Need a resource path (location in classpath) for a core Sharp ontology file.  This is used to find
      * other ontology files in the folder for code Sharp ontologies.
      */
-    private static String knownSharpOntologyResourcePath = "/ontologies/editor-models/shops3.ofn";
+    private static String knownSharpOntologyResourcePath = "/ontologies/editor_models";
 
     public static File getSharpEditorOntologyDir ()
     {
         File knownFile = FileUtil.getExistingResourceAsFile( knownSharpOntologyResourcePath );
         assert knownFile.exists();
-        return knownFile.getParentFile();
+        return knownFile;
     }
 
     public static File getSharpEditorOntologyFile (final String filename)
@@ -60,7 +60,7 @@ public class OwlUtil
      * OWLAPI to resolve and load ontologies based on the logical/name ontology IRI, especially ontologies
      * referenced by an owl:imports.
      */
-    private static void addSharpEditorIriMappings (OWLOntologyManager oom)
+    public static void addSharpEditorIriMappings (OWLOntologyManager oom)
     {
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr-sharp", "prr-sharp.owl" );
         addSharpIriMapping( oom, "http://asu.edu/sharpc2b/prr", "prr-core.owl" );
@@ -84,7 +84,7 @@ public class OwlUtil
 
     /**
      * Add a single IRI mapping, that maps an ontology IRI to a document location IRI, relative to the File
-     * folder where ontologies are stored in the "editor-models" project.
+     * folder where ontologies are stored in the "editor_models" project.
      *
      * @param oom               The OWLOntologyManager the mapping is added to.
      * @param ontologyIriString IRI has a String

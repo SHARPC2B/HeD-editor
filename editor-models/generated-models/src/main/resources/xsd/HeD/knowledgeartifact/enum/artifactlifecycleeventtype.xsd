@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file defines the ArtifactLifeCycleEventType enumeration.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../ext/artifactlifecycleeventtypeext.xsd"/>
+	<xs:include schemaLocation="artifactlifecycleeventtypecore.xsd"/>
+	<xs:simpleType name="ArtifactLifeCycleEventType">
+		<xs:annotation>
+			<xs:documentation>A version of an artifact may have different actions performed on it during the course of its life cycle.  Each action is considered an artifact life cycle event, and may be recorded in the history of that version of the artifact.
+
+See the Implementation Guide for a state-transition diagram showing the legal transitions from each state; each transition is equivalent to an event.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="ArtifactLifeCycleEventTypeCore ArtifactLifeCycleEventTypeExt"/>
+	</xs:simpleType>
+</xs:schema>

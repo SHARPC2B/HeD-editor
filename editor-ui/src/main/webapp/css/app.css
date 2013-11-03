@@ -35,7 +35,7 @@ ng-view {
 	display: -webkit-flex;
 	-webkit-align-items: center;
 	width: 330px;
-	height: 170px;
+	/*height: 170px;*/
 	margin: 0 auto;
 }
 
@@ -61,10 +61,6 @@ ng-view {
 	display: -webkit-flex;
 }
 
-.standardBackground {
-	width: 100%
-}
-
 .search-prepend {
 	position: relative;
 }
@@ -79,29 +75,66 @@ ng-view {
 	left: 11px;
 }
 
-.leftBox {
-	border-right: 3px solid #e5e5e5;
-	padding: 10px;
-	-webkit-flex:3;
-}
-
-.rightBox {
-	-webkit-flex:2;
-	padding: 10px;
-}
-
-.rightBox div {
-	padding: 10px;
-}
-
-textarea {
-	width: 100%;
-}
-
 .gridStyle {
 	height: 100px;
 }
 
 .radio {
 	vertical-align: top;
+}
+
+legend {
+	border-style: none;
+    border-width: 0;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    width: auto;
+}
+
+li.tiny a {
+	font-size: 0.9em;
+	font-weight: 100;
+	color: black;
+}
+
+li.small a {
+	font-size: 1.1em;
+	font-weight: 300;
+	color: black;
+}
+
+li.medium a {
+	font-size: 1.5em;
+	font-weight: 500;
+	color: black;
+}
+
+li.big a {
+	font-size: 1.9em;
+	font-weight: 700;
+	color: red;
+}
+
+li.huge a {
+	font-size: 2.4em;
+	font-weight: 900;
+	color: black;
+}
+
+.labeled-border {
+	margin-top: -12px;
+	margin-left: 10px;
+	background: white;
+	width: auto;
+	display: table;
+}
+
+.modal {
+	width: auto;
+	left: 30%;
+}
+
+.icon-3x {
+	vertical-align: middle;
 }

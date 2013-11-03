@@ -1,0 +1,163 @@
+################################################################################################################
+#### ROOT
+################################################################################################################
+
+/knowledgeDocument, prr:contains(prr-sharp:HeDKnowledgeDocument, prr:ProductionRule)
+
+################################################################################################################
+#### METADATA
+################################################################################################################
+
+
+# The Metadata section is mapped directly through its elements :
+#TODO : root+extension in VersionedIdentifiers are collapsed, difficult to invert
+#TODO : addresses should be managed better?
+
+/knowledgeDocument/metadata/identifiers/identifier, meta:artifactVersion(prr-sharp:HeDKnowledgeDocument,meta:VersionedIdentifier)	
+/knowledgeDocument/metadata/identifiers/identifier/@root, dcterms:identifier(meta:VersionedIdentifier,xsd:string)
+/knowledgeDocument/metadata/identifiers/identifier/@extension, dcterms:identifier(meta:VersionedIdentifier,xsd:string)
+/knowledgeDocument/metadata/identifiers/identifier/@identifierName, dcterms:title(meta:VersionedIdentifier,xsd:string)
+/knowledgeDocument/metadata/identifiers/identifier/@version, meta:versionId(meta:VersionedIdentifier,xsd:string)
+
+/knowledgeDocument/metadata/artifactType/@value --> Determined by actual HedKnowledgeDocument subclass
+
+/knowledgeDocument/metadata/schemaIdentifier, meta:schemaVersion(prr-sharp:HeDKnowledgeDocument,meta:VersionedIdentifier)
+#VersionedIdentifier as above
+
+/knowledgeDocument/metadata/templateIds/templateId, meta:template(prr-sharp:HeDKnowledgeDocument,meta:VersionedIdentifier)
+#VersionedIdentifier as above
+
+/knowledgeDocument/metadata/dataModels/modelReference, dcterms:references(prr-sharp:HeDKnowledgeDocument, meta:DataModelRealization)
+/knowledgeDocument/metadata/dataModels/modelReference/description/@value, dcterms:description(meta:DataModelRealization, xsd:string)
+/knowledgeDocument/metadata/dataModels/modelReference/referencedModel, meta:realizesInformation(meta:DataModelRealization, DUL:InformationObject)
+/knowledgeDocument/metadata/dataModels/modelReference/referencedModel/@value, dcterms:identifier(DUL:InformationObject,xsd:string)
+
+/knowledgeDocument/metadata/title/@value, dcterms:title(prr-sharp:HeDKnowledgeDocument, xsd:string)
+
+/knowledgeDocument/metadata/description/@value, dcterms:description(prr-sharp:HeDKnowledgeDocument, xsd:string)
+
+/knowledgeDocument/metadata/documentation, meta:documentation(prr-sharp:HeDKnowledgeDocument, meta:InlineResource) #InlineResource inherits other attributes such as identifiers and citations, resolved in the same way as the main document
+/knowledgeDocument/metadata/documentation/content, meta:content(meta:InlineResource,xsd:string)
+
+# specific relations are modelling the enumeration
+/knowledgeDocument/metadata/relatedResources/relatedResource/relationship/@value 
+/knowledgeDocument/metadata/relatedResources/relatedResource/resources/resource, meta:@value(prr-sharp:HeDKnowledgeDocument, meta:KnowledgeResource) #KnowledgeResource inherits attributes as above
+
+/knowledgeDocument/metadata/supportingEvidence/evidence, meta:@value(prr-sharp:HeDKnowledgeDocument, meta:Evidence)
+/knowledgeDocument/metadata/supportingEvidence/evidence/qualityOfEvidence, meta:qualityOfEvidence(meta:Evidence, skos-ext:ConceptCode)
+/knowledgeDocument/metadata/supportingEvidence/evidence/strengthOfRecommendation, meta:strengthOfRecommendation(meta:Evidence, skos-ext:ConceptCode)
+/knowledgeDocument/metadata/supportingEvidence/evidence/resources/resource, meta:supportingEvidence(meta:Evidence, meta:KnowledgeResource)
+
+/knowledgeDocument/metadata/applicability/coverage, meta:applicability(prr-sharp:HeDKnowledgeDocument, meta:ClinicalCoverage)
+/knowledgeDocument/metadata/applicability/coverage/focus/@value + 
+/knowledgeDocument/metadata/applicability/coverage/value, meta:@value(meta:ClinicalCoverage, skos-ext:ConceptCode)
+/knowledgeDocument/metadata/applicability/coverage/description/@value, dcterms:description(meta:ClinicalCoverage, xsd:string)
+
+/knowledgeDocument/metadata/keyTerms/term, meta:keyTerm(prr-sharp:HeDKnowledgeDocument, skos-ext:ConceptCode)
+
+/knowledgeDocument/metadata/categories/category, meta:category(prr-sharp:HeDKnowledgeDocument, skos-ext:ConceptCode)
+
+/knowledgeDocument/metadata/language, meta:languageCode(prr-sharp:HeDKnowledgeDocument, skos-ext:ConceptCode)
+
+/knowledgeDocument/metadata/status/@value, meta:status(prr-sharp:HeDKnowledgeDocument, xsd:string)
+
+/knowledgeDocument/metadata/eventHistory/artifactLifeCycleEvent/eventType/@value +
+/knowledgeDocument/metadata/eventHistory/artifactLifeCycleEvent/eventDateTime/@value, meta:@value(prr-sharp:HeDKnowledgeDocument, xsd:dateTime)
+
+#DUL:Organization or #DUL:SocialPerson are admissible Agent
+/knowledgeDocument/metadata/contributions/contribution/contributor, dcterms:contributor(prr-sharp:HeDKnowledgeDocument, dcterms:Agent)
+/knowledgeDocument/metadata/contributions/contribution/role/@value, meta:agentRole(dcterms:Agent, xsd:string)
+/knowledgeDocument/metadata/contributions/contribution/contributor/addresses/address, meta:address(dcterms:Agent,xsd:string)
+/knowledgeDocument/metadata/contributions/contribution/contributor/name/@value, meta:agentName(dcterms:Agent,xsd:string)
+
+/knowledgeDocument/metadata/publishers/publisher, dc:publisher(prr-sharp:HeDKnowledgeDocument, dcterms:Agent)
+
+/knowledgeDocument/metadata/usageTerms/rightsDeclaration, meta:usageTerms(prr-sharp:HeDKnowledgeDocument, meta:RightsDeclaration)
+/knowledgeDocument/metadata/usageTerms/rightsDeclaration/assertedRights, dcterms:accessRights(meta:RightsDeclaration, dcterms:RigthsStatement)
+/knowledgeDocument/metadata/usageTerms/rightsDeclaration/rightsHolder, meta:rightsHolder(meta:RightsDeclaration, dcterms:Agent)
+/knowledgeDocument/metadata/usageTerms/rightsDeclaration/assertedRights/@value, meta:licenseTerms(dcterms:RigthsStatement, xsd:string)
+/knowledgeDocument/metadata/usageTerms/rightsDeclaration/permissions/permissions/@value, meta:permission(dcterms:RigthsStatement, xsd:string)
+
+
+################################################################################################################
+#### EXTERNAL DATA
+################################################################################################################
+
+
+# The ExternalData section is mapped directly through its elements:
+/knowledgeDocument/externalData/parameter, prr:parameter(prr:ComputerExecutableRuleset,prr:Parameter)
+					   prr:representedParameter(prr:Parameter,prr:Variable)
+/knowledgeDocument/externalData/parameter/@name, prr:name(prr:Parameter,xsd:string)
+						 prr:name(prr:Variable,xsd:string)
+/knowledgeDocument/externalData/parameter/@parameterType, prr-sharp:elementType(prr:TypedElement,ops:TypeConcept)
+/knowledgeDocument/externalData/parameter/default, prr:variableInitialExpression(prr:Variable,prr:Expression)
+
+
+
+# Basic expressions are bound as RuleVariables
+/knowledgeDocument/externalData/def, prr:productionRuleBoundRuleVariable(prr:ProductionRule,prr:RuleVariable)
+/knowledgeDocument/externalData/def/@name, prr:name(prr:RuleVariable,xsd:string)
+/knowledgeDocument/externalData/def/expression, prr:variableFilterExpression(prr:RuleVariable,prr:Expression)
+						bodyExpression := prr-sharp:bodyExpression(prr:Expression, ops:SharpExpression)
+
+
+
+### Clinical Requests add more information:
+/knowledgeDocument/externalData/def/expression[xsi:type="ClinicalRequest"]/@initial --> true ? make it a RuleSetVariable instead
+/knowledgeDocument/externalData/def, prr:rulesetVariable(prr:ProductionRule,prr:Variable)
+/knowledgeDocument/externalData/def/@name, prr:name(prr:Variable,xsd:string)
+/knowledgeDocument/externalData/def/expression, prr:variableInitialExpression(prr:Variable,prr:Expression)
+						
+						
+
+/knowledgeDocument/externalData/def/expression[xsi:type="ClinicalRequest"]/@cardinality --> single ? 
+										                   prr-sharp:bodyExpression(prr:Expression, ops:SingleIteratorExpression) : 
+                                                                                                   prr-sharp:bodyExpression(prr:Expression, ops:AggregateIteratorExpression)
+												innerFilterRoot := ops:AndExpression
+												ops:body( bodyExpression, innerFilter)
+
+/knowledgeDocument/externalData/def/expression[xsi:type="ClinicalRequest"]/@dataType, iter := prr:Variable 
+							  ops:iterator( bodyExpression, iter )
+					                  ops:exprType(iter, skos-ext:CodedConcept)
+#ops:source is implicitly the external context, so not added here
+
+/knowledgeDocument/externalData/def/expression/subject
+/knowledgeDocument/externalData/def/expression/@subjectProperty, in := ops:SharpExpression()
+								 ops:hasOperand(innerFilter, in)
+								 	left := ops:PropertyExpression()
+								 	ops:source( left, iter )
+								 	ops:propCode( left, skos-ext:CodedConcept )  
+								 ops:hasOperand( in, left )
+									right := ops:SharpExpression()
+								 ops:hasOperand( in, right )
+
+/knowledgeDocument/externalData/def/expression/dateRange
+/knowledgeDocument/externalData/def/expression/@dateProperty, in := ops:SharpExpression()
+								 ops:hasOperand(innerFilter, in)
+								 	left := ops:PropertyExpression()
+								 	ops:source( left, iter )
+								 	ops:propCode( left, skos-ext:CodedConcept )  
+								 ops:hasOperand( in, left )
+									right := ops:SharpExpression()
+								 ops:hasOperand( in, right )
+
+
+/knowledgeDocument/externalData/def/expression/codes
+/knowledgeDocument/externalData/def/expression/@codeProperty, in := ops:SharpExpression()
+								 ops:hasOperand(innerFilter, in)
+								 	left := ops:PropertyExpression()
+								 	ops:source( left, iter )
+								 	ops:propCode( left, skos-ext:CodedConcept )  
+								 ops:hasOperand( in, left )
+									right := ops:SharpExpression()
+								 ops:hasOperand( in, right )
+
+
+
+################################################################################################################
+#### METADATA
+################################################################################################################
+
+
+
+

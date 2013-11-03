@@ -5,8 +5,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.FileDocumentSource;
+import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -17,7 +22,9 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,17 +37,14 @@ import java.util.Set;
 /**
  * User: rk
  */
-public class SharpOperators
+    public class SharpOperators
 {
 
 //    static final File defaultExcelFile = FileUtil
 //            .getFileInProjectDir( "/model-transform/src/main/resources/SharpOperators.xlsx" );
 
-    static final String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
 
-    static final String skosExtBaseIRI = IriUtil.sharpEditorIRI( "skos-ext" ).toString() + "#";
-
-    static String typesBaseIRI = opsCoreBaseIRI;
+    static String typesBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
 
     static Map<String, IRI> typeNameIriMap = new HashMap<String, IRI>();
 
@@ -53,16 +57,6 @@ public class SharpOperators
         initTypeNameMap();
         initTypeNameIriMap();
         initTypeExpressionNameMap();
-    }
-
-    static IRI opsIRI (final String name)
-    {
-        return IRI.create( opsCoreBaseIRI + name );
-    }
-
-    static IRI skosExtIRI (final String name)
-    {
-        return IRI.create( skosExtBaseIRI + name );
     }
 
     static final int ARITY_NARY = -2;
@@ -179,7 +173,7 @@ public class SharpOperators
             }
             else if (numArgs.equals( "a" ))
             {
-                arity = 0;
+                arity = -1;
             }
             else if (numArgs.equals( "1.0" ))
             {
@@ -237,31 +231,43 @@ public class SharpOperators
     /* The OWL Individuals for the new Operator, and for the operand types and return type. */
 
         OWLNamedIndividual operator = odf.getOWLNamedIndividual( outputIRI( opName ) );
+        OWLNamedIndividual operatorRepresentation = odf.getOWLNamedIndividual( outputIRI( opName + "Code" ) );
         OWLNamedIndividual resultType = getOpsTypeIndividual( resultTypeName );
         OWLNamedIndividual operand1Type = getOpsTypeIndividual( op1TypeName );
         OWLNamedIndividual operand2Type = 2 <= arity ? getOpsTypeIndividual( op2TypeName ) : null;
         OWLNamedIndividual operand3Type = 3 <= arity ? getOpsTypeIndividual( op3TypeName ) : null;
 
+        addAxiom( odf.getOWLDeclarationAxiom( operator ) );
+        addAxiom( odf.getOWLDeclarationAxiom( operatorRepresentation ) );
+
             /* assert rdf:type */
         addOperatorType( operator, arity );
+        addAxiom( odf.getOWLClassAssertionAxiom( odf.getOWLClass( IriUtil.opsIRI( "OperatorConceptCode" ) ), operatorRepresentation ) );
 
             /* assert skos:notation */
         OWLDataProperty skosNotation = odf
                 .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+        OWLObjectProperty denotedBy = odf
+                .getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#conceptDenotedBy" ) );
+        OWLObjectProperty denotes = odf
+                .getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#denotesConcept" ) );
 
-        addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operator, opNameFromConfig ) );
+        addAxiom( odf.getOWLDataPropertyAssertionAxiom( skosNotation, operatorRepresentation, opNameFromConfig ) );
 
             /* assert ops:code */
-        OWLDataProperty conceptCode = odf.getOWLDataProperty( skosExtIRI( "code" ) );
+        OWLDataProperty conceptCode = odf.getOWLDataProperty( IriUtil.skosExtIRI( "code" ) );
 
-        addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operator, opNameFromConfig ) );
+        addAxiom( odf.getOWLObjectPropertyAssertionAxiom( denotedBy, operator, operatorRepresentation ) );
+        addAxiom( odf.getOWLObjectPropertyAssertionAxiom( denotes, operatorRepresentation, operator ) );
+        addAxiom( odf.getOWLDataPropertyAssertionAxiom( conceptCode, operatorRepresentation, opNameFromConfig ) );
 
             /* assert operator return Type */
         OWLObjectProperty resultTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "evaluatesAs" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "evaluatesAs" ) );
         addAxiom( odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType ) );
 
         assertOperandTypes( arity, operator, operand1Type, operand2Type, operand3Type );
+
     }
 
     /**
@@ -293,26 +299,47 @@ public class SharpOperators
         {
                 /* Collect the conditions to AND together into a Collection. */
 
-            final Set<OWLClassExpression> requirements;
-            requirements = new HashSet<OWLClassExpression>();
+            final Set<OWLClassExpression> requirements = new HashSet<OWLClassExpression>();
+            final Set<OWLClassExpression> closures = new HashSet<OWLClassExpression>();
+            final Set<OWLClassExpression> disjoints = new HashSet<OWLClassExpression>();
 
-            OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) );
-            OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
-            OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( opsIRI( "firstOperand" ) );
-            OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( opsIRI( "secondOperand" ) );
-            OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( opsIRI( "thirdOperand" ) );
+            disjoints.add( odf.getOWLClass( IriUtil.skosIRI( "Collection" ) ) );
+            disjoints.add( odf.getOWLClass( IriUtil.skosIRI( "ConceptScheme" ) ) );
+            disjoints.add( odf.getOWLClass( IriUtil.skosIRI( "Concept" ) ) );
+            disjoints.add( odf.getOWLClass( IriUtil.opsIRI( "Variable" ) ) );
+            disjoints.add( exprClass );
+
+            addAxiom( odf.getOWLDisjointClassesAxiom( disjoints ) );
+
+            OWLObjectProperty hasOperator = odf.getOWLObjectProperty( IriUtil.opsIRI( "hasOperator" ) );
+            OWLObjectProperty hasOperand = odf.getOWLObjectProperty( IriUtil.opsIRI( "hasOperand" ) );
+            OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( IriUtil.opsIRI( "firstOperand" ) );
+            OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( IriUtil.opsIRI( "secondOperand" ) );
+            OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( IriUtil.opsIRI( "thirdOperand" ) );
+
+            OWLClass masterParent = odf.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) );
+
+            addAxiom( odf.getOWLSubClassOfAxiom( exprClass, masterParent ) );
 
                 /* it is an Expression */
-            requirements.add( odf.getOWLClass( opsIRI( "SharpExpression" ) ) );
+            requirements.add( masterParent );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
                 /* AND has operator with the specified skos:notation */
             OWLDataProperty skosNotation = odf
                     .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
-            requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperator,
-                                                              odf.getOWLDataHasValue( skosNotation,
-                                                                                      odf.getOWLLiteral(
-                                                                                              opNameFromConfig ) ) ) );
+            OWLObjectProperty denotedBy = odf
+                    .getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#conceptDenotedBy" ) );
+            OWLObjectProperty opCode = odf
+                    .getOWLObjectProperty(  IriUtil.opsIRI( "opCode" ) );
+
+            OWLObjectIntersectionOf operatorCodeRestr = odf.getOWLObjectIntersectionOf( odf.getOWLClass( IriUtil.opsIRI( "OperatorConceptCode" ) ),
+                                                                                        odf.getOWLDataHasValue( skosNotation,
+                                                                                                                odf.getOWLLiteral( opName ) ) );
+
+            requirements.add( odf.getOWLObjectSomeValuesFrom( opCode, operatorCodeRestr ) );
+
+            closures.add( odf.getOWLObjectAllValuesFrom( opCode, operatorCodeRestr ) );
 
                 /* AND if n-Ary, all operands are of a particular type, and at least one. */
 
@@ -334,29 +361,64 @@ public class SharpOperators
                 OWLClass listExpr = getExpressionTypeClass( "List" );
                 requirements.add( odf.getOWLObjectExactCardinality( 1, hasOperand ) );
                 requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, listExpr ) );
-            }
+                closures.add( odf.getOWLObjectAllValuesFrom( hasOperand,
+                                                             listExpr ) );
+
+            } else {
                 /* AND if Arity type, add requirement for first operand */
-            if (hasArity)
-            {
-                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1,
-                                                                  getExpressionTypeClass( op1TypeName ) ) );
-            }
+                if (hasArity)
+                {
+                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1,
+                                                                      getExpressionTypeClass( op1TypeName ) ) );
+                    closures.add( odf.getOWLObjectAllValuesFrom( hasOperand1,
+                                                                 getExpressionTypeClass( op1TypeName ) ) );
+                }
                 /* AND if Binary or Ternary, add requirement for second operand */
-            if (2 <= arity)
-            {
-                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2,
-                                                                  getExpressionTypeClass( op2TypeName ) ) );
-            }
+                if (2 <= arity)
+                {
+                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2,
+                                                                      getExpressionTypeClass( op2TypeName ) ) );
+                    closures.add( odf.getOWLObjectAllValuesFrom( hasOperand2,
+                                                                 getExpressionTypeClass( op2TypeName ) ) );
+
+                }
                 /* AND if Ternary, add requirement for third operand */
-            if (3 <= arity)
-            {
-                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3,
-                                                                  getExpressionTypeClass( op3TypeName ) ) );
+                if (3 <= arity)
+                {
+                    requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3,
+                                                                      getExpressionTypeClass( op3TypeName ) ) );
+                    closures.add( odf.getOWLObjectAllValuesFrom( hasOperand3,
+                                                                 getExpressionTypeClass( op3TypeName ) ) );
+
+                }
+            }
+
+            switch ( arity ) {
+                case 0:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "NullaryExpression" ) ) );
+                    break;
+                case 1:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "UnaryExpression" ) ) );
+                    break;
+                case 2:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "BinaryExpression" ) ) );
+                    break;
+                case 3:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "TernaryExpression" ) ) );
+                    break;
+                default:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "NAryExpression" ) ) );
+                    break;
             }
 
             OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
 
             addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
+
+            for ( OWLClassExpression closure : closures ) {
+                addAxiom( odf.getOWLSubClassOfAxiom( exprClass, closure ) );
+            }
+//            addAxiom( odf.getOWLDeclarationAxiom( exprClass ) );
         }
     }
 
@@ -367,44 +429,7 @@ public class SharpOperators
 
     private void addMissingCommonAxioms ()
     {
-//        OWLObjectProperty hasOperator = odf.getOWLObjectProperty( opsIRI( "hasOperator" ) );
-        OWLObjectProperty hasOperand = odf.getOWLObjectProperty( opsIRI( "hasOperand" ) );
-        OWLObjectProperty hasOperand1 = odf.getOWLObjectProperty( opsIRI( "firstOperand" ) );
-        OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( opsIRI( "secondOperand" ) );
-        OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( opsIRI( "thirdOperand" ) );
 
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand1, hasOperand ) );
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand2, hasOperand ) );
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( hasOperand3, hasOperand ) );
-
-        OWLObjectProperty operandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasOperandType" ) );
-        OWLObjectProperty firstOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasFirstOperandType" ) );
-        OWLObjectProperty secondOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasSecondOperandType" ) );
-        OWLObjectProperty thirdOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasThirdOperandType" ) );
-
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( firstOperandTypeRelationship,
-                                                      operandTypeRelationship ) );
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( secondOperandTypeRelationship,
-                                                      operandTypeRelationship ) );
-        addAxiom( odf.getOWLSubObjectPropertyOfAxiom( thirdOperandTypeRelationship,
-                                                      operandTypeRelationship ) );
-
-        OWLClass topOperatorClass = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "Operator" ) );
-        OWLClass unaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "UnaryOperator" ) );
-        OWLClass binaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "BinaryOperator" ) );
-        OWLClass ternaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "TernaryOperator" ) );
-        OWLClass naryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "NAryOperator" ) );
-        OWLClass aggregateOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "AggregateOperator" ) );
-
-        addAxiom( odf.getOWLSubClassOfAxiom( unaryOperator, topOperatorClass ) );
-        addAxiom( odf.getOWLSubClassOfAxiom( binaryOperator, topOperatorClass ) );
-        addAxiom( odf.getOWLSubClassOfAxiom( ternaryOperator, topOperatorClass ) );
-        addAxiom( odf.getOWLSubClassOfAxiom( naryOperator, topOperatorClass ) );
-        addAxiom( odf.getOWLSubClassOfAxiom( aggregateOperator, topOperatorClass ) );
     }
 
     private void assertOperandTypes (final int arity,
@@ -414,13 +439,13 @@ public class SharpOperators
                                      final OWLNamedIndividual operand3Type)
     {
         OWLObjectProperty operandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "hasOperandType" ) );
         OWLObjectProperty firstOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasFirstOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "hasFirstOperandType" ) );
         OWLObjectProperty secondOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasSecondOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "hasSecondOperandType" ) );
         OWLObjectProperty thirdOperandTypeRelationship = odf
-                .getOWLObjectProperty( IRI.create( opsCoreBaseIRI + "hasThirdOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "hasThirdOperandType" ) );
 
             /* first operand type */
         OWLObjectProperty opRelationship = 0 < arity
@@ -446,11 +471,11 @@ public class SharpOperators
     private void addOperatorType (final OWLNamedIndividual operator,
                                   int arity)
     {
-        OWLClass unaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "UnaryOperator" ) );
-        OWLClass binaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "BinaryOperator" ) );
-        OWLClass ternaryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "TernaryOperator" ) );
-        OWLClass naryOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "NAryOperator" ) );
-        OWLClass aggregateOperator = odf.getOWLClass( IRI.create( opsCoreBaseIRI + "AggregateOperator" ) );
+        OWLClass unaryOperator = odf.getOWLClass(  IriUtil.opsIRI( "UnaryOperatorConcept" ) );
+        OWLClass binaryOperator = odf.getOWLClass(  IriUtil.opsIRI( "BinaryOperatorConcept" ) );
+        OWLClass ternaryOperator = odf.getOWLClass(  IriUtil.opsIRI( "TernaryOperatorConcept" ) );
+        OWLClass naryOperator = odf.getOWLClass(  IriUtil.opsIRI( "NAryOperatorConcept" ) );
+        OWLClass aggregateOperator = odf.getOWLClass(  IriUtil.opsIRI( "AggregateOperatorConcept" ) );
 
         if (arity == -1)
         {
@@ -609,7 +634,7 @@ public class SharpOperators
         typeNameIriMap.put( "Time/Duration", IRI.create( typesBaseIRI + "timeDurationType" ) );
         typeNameIriMap.put( "Timestamp", IRI.create( typesBaseIRI + "timestampType" ) );
         typeNameIriMap.put( "DateGranularity", IRI.create( typesBaseIRI + "dateGranularityType" ) );
-        typeNameIriMap.put( "Integer", IRI.create( typesBaseIRI + "integerType" ) );
+        typeNameIriMap.put( "Integer", IRI.create( typesBaseIRI + "intType" ) );
         typeNameIriMap.put( "Interval<T>", IRI.create( typesBaseIRI + "intervalType" ) );
         typeNameIriMap.put( "Collection<T>", IRI.create( typesBaseIRI + "collectionType" ) );
         typeNameIriMap.put( "List", IRI.create( typesBaseIRI + "listType" ) );
@@ -617,17 +642,17 @@ public class SharpOperators
         typeNameIriMap.put( "List<S>", IRI.create( typesBaseIRI + "listType" ) );
         typeNameIriMap.put( "List<String>", IRI.create( typesBaseIRI + "listType" ) );
         typeNameIriMap.put( "List<Boolean>", IRI.create( typesBaseIRI + "listType" ) );
-        typeNameIriMap.put( "Ordered", IRI.create( typesBaseIRI + "orderedType" ) );
-        typeNameIriMap.put( "Ordered Type", IRI.create( typesBaseIRI + "orderedType" ) );
+        typeNameIriMap.put( "Ordered", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "Ordered Type", IRI.create( typesBaseIRI + "listType" ) );
         typeNameIriMap.put( "Scalar", IRI.create( typesBaseIRI + "scalarType" ) );
-        typeNameIriMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "expressionType" ) );
+        typeNameIriMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "anyType" ) );
     }
 
     static void initTypeExpressionNameMap ()
     {
-        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "Sharp" ) );
-        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "Sharp" ) );
-        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "Sharp" ) );
+        typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "Operator" ) );
+        typeExpressionNameMap.put( "T", IRI.create( typesBaseIRI + "Operator" ) );
+        typeExpressionNameMap.put( "C", IRI.create( typesBaseIRI + "Operator" ) );
         typeExpressionNameMap.put( "Object", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Object<T>", IRI.create( typesBaseIRI + "Object" ) );
         typeExpressionNameMap.put( "Number", IRI.create( typesBaseIRI + "Number" ) );
@@ -645,10 +670,10 @@ public class SharpOperators
         typeExpressionNameMap.put( "List<S>", IRI.create( typesBaseIRI + "List" ) );
         typeExpressionNameMap.put( "List<String>", IRI.create( typesBaseIRI + "List" ) );
         typeExpressionNameMap.put( "List<Boolean>", IRI.create( typesBaseIRI + "List" ) );
-        typeExpressionNameMap.put( "Ordered", IRI.create( typesBaseIRI + "Ordered" ) );
-        typeExpressionNameMap.put( "Ordered Type", IRI.create( typesBaseIRI + "Ordered" ) );
+        typeExpressionNameMap.put( "Ordered", IRI.create( typesBaseIRI + "List" ) );
+        typeExpressionNameMap.put( "Ordered Type", IRI.create( typesBaseIRI + "List" ) );
         typeExpressionNameMap.put( "Scalar", IRI.create( typesBaseIRI + "Scalar" ) );
-        typeExpressionNameMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "Expression" ) );
+        typeExpressionNameMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "Operator" ) );
     }
 
     static void initTypeNameMap ()
@@ -673,11 +698,12 @@ public class SharpOperators
         typeNameMap.put( "List<S>", "List" );
         typeNameMap.put( "List<String>", "List" );
         typeNameMap.put( "List<Boolean>", "List" );
-        typeNameMap.put( "Ordered", "Ordered" );
-        typeNameMap.put( "Ordered Type", "Ordered" );
+        typeNameMap.put( "Ordered", "List" );
+        typeNameMap.put( "Ordered Type", "List" );
         typeNameMap.put( "Scalar", "Scalar" );
-        typeNameMap.put( "Expression<T:S>", "Expression" );
+        typeNameMap.put( "Expression<T:S>", "Any" );
     }
+
 
 
 }

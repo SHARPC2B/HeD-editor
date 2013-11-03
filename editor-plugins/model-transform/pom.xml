@@ -19,6 +19,12 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>hed-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.drools</groupId>

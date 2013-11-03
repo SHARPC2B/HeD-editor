@@ -1,0 +1,37 @@
+<div class="span12" style="padding-right: 10px; padding-left: 10px;">
+	<p class="labeled-border">{{parameter.label}}</p>
+	<div class="offset9">
+		<label class="radio inline">
+			<input type="radio" ng-model="parameter.useLiteral" ng-value="true">Literal
+		</label>
+		<label class="radio inline">
+			<input type="radio" ng-model="parameter.useLiteral" ng-value="false">Expression
+		</label>
+	</div>
+	<div class="row-fluid">
+		<form class="form-horizontal span6">
+			<fieldset class="borderedBox" style="min-height: 163px;" ng-disabled="!parameter.useLiteral">
+			    <legend>Literal</legend>
+				<div class="control-group" ng-repeat="element in parameter.elements" ng-include="'partials/standard/logic/primitive-widget.html'" ng-class="{error: element.errors.length > 0}"></div>
+				<div class="control-group error" ng-if="parameter.errors">
+				    <label class="control-label" for="error">Error</label>
+				    <div class="controls">
+						<p class="text-error" ng-repeat="error in parameter.errors">{{error.error}}</p>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		<form class="form-horizontal span6">
+			<fieldset class="borderedBox" style="height: 163px;" ng-disabled="parameter.useLiteral">
+			    <legend>Expression</legend>
+			    <div class="control-group">
+				    <label class="control-label" for="expression"></label>
+				    <div class="controls">
+				    	<select ng-model="parameter.selectedCannedExpression" ng-options="ce for ce in parameter.cannedExpressions"></select>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<br>

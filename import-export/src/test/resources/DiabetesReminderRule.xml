@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledgeDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../../../../editor-models/generated-models/src/main/resources/xsd/HeD/knowledgeartifact/knowledgedocument.xsd
+                                       urn:hl7-org:vmr:r2 ../../../../editor-models/generated-models/src/main/resources/xsd/vmr/vmr-clean.xsd
+                                       urn:hl7-org:cdsdt:r2 ../../../../editor-models/generated-models/src/main/resources/xsd/HeD/common/datatypes.xsd"
+                   xmlns="urn:hl7-org:knowledgeartifact:r1"
+                   xmlns:vmr="urn:hl7-org:vmr:r2"
+                   xmlns:dt="urn:hl7-org:cdsdt:r2">
+  <metadata>
+
+    <identifiers>
+      <identifier root="www.usd.edu" version="1.0"/>
+    </identifiers>
+    <artifactType value="Rule"/>
+    <schemaIdentifier root="www.hed.org/knowledgedocument" version="1.0"/>
+
+    <dataModels>
+      <modelReference>
+        <description value="HL7 VMR"/>
+        <referencedModel value="HL7 Virtual Medical Record version 1.0"/>
+      </modelReference>
+    </dataModels>
+
+    <title value="Hemoglobin A1c reminder for patients with poorly-controlled diabetes"/>
+
+    <relatedResources>
+      <relatedResource>
+        <relationship value="AdaptedFrom"/>
+        <resources>
+          <resource>
+            <title value="Recommendation 1: Order HgbA1c Now (Overdue HgbA1c)"/>
+            <location
+                value="http://cdsportal.partners.org/transformXML.aspx?xmlFileName=CDSC-Diabetes-L3-PHS-2011-L3-7.0-090221fe8003f004.xml"/>
+            <description value="CDSC L3 Diabetes Mellitus Assessment Rule"/>
+          </resource>
+        </resources>
+      </relatedResource>
+    </relatedResources>
+
+    <applicability>
+      <coverage xsi:type="Coverage">
+        <focus value="ClinicalFocus"/>
+        <description value="Diabetes Mellitus"/>
+        <value code="73211009" codeSystem="2.16.840.1.113883.6.96"/>
+      </coverage>
+    </applicability>
+
+    <status value="Draft"/>
+
+    <contributions>
+      <contribution>
+        <contributor xsi:type="Person">
+          <contacts>
+            <contact value="mailto:aziz.boxwala@meliorix.com"/>
+          </contacts>
+          <name use="C">
+            <dt:part value="Aziz" type="GIV"/>
+            <dt:part value="Boxwala" type="FAM"/>
+          </name>
+          <affiliation>
+            <name value="Meliorix Inc."/>
+          </affiliation>
+        </contributor>
+        <role value="Author"/>
+      </contribution>
+    </contributions>
+
+  </metadata>
+
+  <externalData>
+    <def name="HemoglobinA1cResultsFromLast12Months">
+      <expression xsi:type="ClinicalRequest" cardinality="Multiple"
+                  dataType="vmr:ObservationResult" codeProperty="observation.focus"
+                  dateProperty="eventTime">
+        <description>
+          Obtain Hemoglobin A1c results from the last 12 months
+        </description>
+        <codes xsi:type="List">
+          <element xsi:type="CodeLiteral" code="17856-6"
+                   codeSystem="2.16.840.1.113883.6.1"/>
+          <element xsi:type="CodeLiteral" code="4548-4"
+                   codeSystem="2.16.840.1.113883.6.1"/>
+          <element xsi:type="CodeLiteral" code="4549-2"
+                   codeSystem="2.16.840.1.113883.6.1"/>
+        </codes>
+        <dateRange xsi:type="Interval">
+          <begin xsi:type="DateAdd">
+            <date xsi:type="Today"/>
+            <granularity xsi:type="PeriodLiteral">
+              <period value="1" unit="month"/>
+            </granularity>
+            <numberOfPeriods xsi:type="IntegerLiteral" value="-12"/>
+          </begin>
+          <end xsi:type="Today"/>
+        </dateRange>
+      </expression>
+    </def>
+    <def name="Patient">
+      <expression xsi:type="ClinicalRequest" cardinality="Single"
+                  dataType="vmr:Patient" isInitial="true"/>
+    </def>
+  </externalData>
+
+  <expressions>
+    <def name="NonGestationalDiabetesMellitus">
+      <expression xsi:type="ClinicalRequest" cardinality="Multiple"
+                  codeProperty="problem.code" dataType="vmr:Problem" dateProperty="eventTime">
+        <description>DiabetesProblem</description>
+        <codes xsi:type="ValueSet" id="NonGestationalDMValueSet"/>
+      </expression>
+    </def>
+    <def name="PatientAge">
+      <expression xsi:type="Property" path="demographics.age">
+        <source xsi:type="ExpressionRef" name="Patient"/>
+      </expression>
+    </def>
+  </expressions>
+
+  <conditions>
+    <condition>
+      <logic xsi:type="And">
+        <description>Patient is adult and has diabetes and no HbA1c in the last year</description>
+        <operand xsi:type="GreaterOrEqual">
+          <description>Patient is adult - age is 18 years or more</description>
+          <operand xsi:type="ExpressionRef" name="PatientAge"></operand>
+          <operand xsi:type="PhysicalQuantityLiteral" value="18" unit="a"/>
+        </operand>
+        <operand xsi:type="IsNotEmpty">
+          <description>Patient has a problem list entry of diabetes</description>
+          <operand xsi:type="ExpressionRef" name="NonGestationalDiabetesMellitus"/>
+        </operand>
+        <operand xsi:type="IsNotEmpty">
+          <description>No hemoglobinA1c in the last 3 months</description>
+          <!-- This may not be correct. Depends on whether externalData is done
+            correctly -->
+          <operand xsi:type="Filter">
+            <source xsi:type="ExpressionRef" name="HemoglobinA1cResultsFromLast12Months"/>
+            <condition xsi:type="Greater">
+              <operand xsi:type="Property" path="observationEventTime"/>
+              <operand xsi:type="DateAdd">
+                <date xsi:type="Today"/>
+                <granularity xsi:type="Literal" valueType="DateGranularity"
+                             value="Month"/>
+                <numberOfPeriods xsi:type="IntegerLiteral" value="-3"/>
+              </operand>
+            </condition>
+          </operand>
+        </operand>
+        <operand xsi:type="Greater">
+          <description>Last Hemoglobin A1c result was elevated, i.e., more than 7</description>
+          <operand xsi:type="Property" path="value">
+            <source xsi:type="Last" orderBy="observationEventTime">
+              <source xsi:type="ExpressionRef" name="HemoglobinA1cResultsFromLast12Months"/>
+            </source>
+          </operand>
+          <operand xsi:type="PhysicalQuantityLiteral" unit="mg/dL" value="7"/>
+        </operand>
+      </logic>
+      <conditionRole value="ApplicableScenario"/>
+    </condition>
+  </conditions>
+
+  <actionGroup>
+    <subElements>
+      <actionGroup>
+        <behaviors>
+          <behavior xsi:type="GroupSelectionBehavior" value="All"/>
+        </behaviors>
+        <title value="Hemoglobin A1c Overdue"/>
+        <subElements>
+
+
+          <simpleAction xsi:type="CreateAction">
+            <supportingEvidence>
+              <!-- We do not need the qualityOfEvidenceScheme element - the score
+                can include a codeSystemName -->
+              <evidence>
+                <qualityOfEvidence code="E" codeSystemName="ADA evidence grading system"/>
+                <resources>
+                  <resource xsi:type="KnowledgeResource">
+                    <identifiers>
+                      <identifier root="10.2337/dc12-s011"/>
+                    </identifiers>
+                    <title value="Standards of Medical Care in Diabetes - 2012"/>
+                    <location value="http://care.diabetesjournals.org/content/35/Supplement_1/S11.full.pdf+html"/>
+                    <citation value="Diabetes Care January 2012 vol. 35 no. Supplement 1 S11-S63."/>
+                  </resource>
+                </resources>
+              </evidence>
+            </supportingEvidence>
+            <textEquivalent value="Order Hemoglobin A1c within the next 3 days"/>
+
+            <!--
+            The time constraint of 3 days is there for illustration purposes only. The guideline does not require this constraint
+             -->
+            <actionSentence xsi:type="ObjectExpression"
+                            objectType="ObservationProposal">
+              <property name="proposedObservationTime">
+                <value xsi:type="DateAdd">
+                  <date xsi:type="Today"/>
+                  <granularity xsi:type="PeriodLiteral">
+                    <period value="1" unit="day"/>
+                  </granularity>
+                  <numberOfPeriods xsi:type="IntegerLiteral" value="3"/>
+                </value>
+              </property>
+              <property name="observationFocus">
+                <value xsi:type="CodeLiteral" code="4548-4" codeSystem="2.16.840.1.113883.6.1"/>
+              </property>
+            </actionSentence>
+          </simpleAction>
+        </subElements>
+      </actionGroup>
+    </subElements>
+  </actionGroup>
+
+</knowledgeDocument>

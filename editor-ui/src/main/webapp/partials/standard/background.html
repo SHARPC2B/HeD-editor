@@ -1,31 +1,360 @@
-<div class="standardBackground">
-	<br>
-	<p>Rule Name: <input type="text"></p>
-	<p>What is this rule about? (Choose as many as you like from the list or use the search feature below)</p>
-	<div class="flexibleBox borderedBox">
-		<div class="leftBox">
-			<div class="search-prepend">
-  				<div class="icon-search icon-white"></div>
-  				<input type="text" class="search-query" placeholder="search">
-			</div><br>
-			hypertension heart failure <b style="font-size: 20px; color: red;">diabetes</b> pediatrics <b style="font-size: 20px">laboratory tests</b><br>
-			<b style="font-size: 20px">kidney failure</b> national guidelines <b style="font-size: 20px">drug dosing polypharmacy</b><br>
-			<b style="font-size: 20px">pharmacogenomics</b> <b style="font-size: 16px">genetic screening</b> pregnancy <b style="font-size: 20px">diagnosis</b> <b style="font-size: 16px">preventative care</b><br>
-			<b style="font-size: 20px">inpatient</b> outpatient acute care
-		</div>
-		<div class="rightBox">
-			Selected topics (click a topic to remove it)
-			<div class="borderedBox">
-				 <p><button class="btn" type="button">kidney failure</button></p>
-				 <p><button class="btn" type="button">diabetes</button></p>
-				 <p><button class="btn" type="button">diagnosis</button></p>
+<br>
+<div class="row-fluid">
+	<form class="form-inline span4">
+		<label>Rule Name:</label>
+  		<input class="input-xlarge" type="text">
+  	</form>
+  	<form class="form-inline span4">
+  		<label>Language:</label>
+  		<select x-ng-model="isoLang" x-ng-options="il.name for il in isoLangs" class="input-xlarge"></select>
+  	</form>
+  	<form class="form-inline span4">
+  		<label>Artifact Type:</label>
+  		<select class="input-xlarge" >
+  			<option>Rule</option>
+  			<option>Order Set</option>
+  			<option>Documentation Template</option>
+  		</select>
+  	</form>
+</div>
+<div class="row-fluid">
+	<p>Describe this rule in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
+	<textarea rows="5" class="span12"></textarea>
+</div>
+<accordion close-others="false">
+	<accordion-group heading="Key Terms:">
+		<div class="row-fluid">
+			<div class="span7" style="padding: 20px;">
+				<div class="search-prepend" style="margin-left: 200px;">
+					<div class="icon-search icon-white"></div>
+					<input type="text" class="search-query input-xxlarge" x-ng-model="filterTerms" placeholder="search">
+				</div>
+				<br>
+				<ul class="inline">
+					<li x-ng-repeat="term in keyTerms | orderBy: 'tagName' | filter:filterTerms" x-ng-class="{tiny:term.percent<=2,small:term.percent>2&&term.percent<=4,medium:term.percent>4&&term.percent<=9,big:term.percent>9&&term.percent<=11,huge:term.percent>11}"><a href="" x-ng-click="selectTerm(term)">{{term.tagName}}</a></li>
+				</ul>
+			</div>
+			<div class="span5" style="padding: 20px; border-left: 1px solid #e5e5e5;">
+				<p class="text-center">Selected terms (click a term to remove it)</p>
+				<div class="borderedBox" style="padding: 10px; min-height: 81px;">
+					<p x-ng-repeat="selected in selectedTerms"><button class="btn" type="button" x-ng-click="deselectTerm(selected)">{{selected.tagName}}</button></p>
+				</div>
 			</div>
 		</div>
-	</div><br>
-	<p>Describe this rule in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
-	<div class="flexibleBox">
-		<textarea rows="5"></textarea>
-	</div><br>
-	<p>References&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a><i class="icon-expand-alt"></i> Add reference</a></p>
-	<div class="borderedBox gridStyle" ng-grid="gridOptions"></div>
-</div>
+	</accordion-group>
+    <accordion-group heading="Categories:">
+    	<div class="row-fluid">
+    		<div class="span7" style="padding: 20px;">
+    			<div class="search-prepend" style="margin-left: 200px;">
+    				<div class="icon-search icon-white"></div>
+    				<input type="text" class="search-query input-xxlarge" x-ng-model="filterCategories" placeholder="search">
+    			</div>
+    			<br>
+    			<ul class="inline">
+    				<li x-ng-repeat="category in Categories | orderBy: 'tagName' | filter:filterCategories" x-ng-class="{tiny:category.percent<=2,small:category.percent>2&&category.percent<=4,medium:category.percent>4&&category.percent<=9,big:category.percent>9&&category.percent<=11,huge:category.percent>11}"><a href="" x-ng-click="selectCategory(category)">{{category.tagName}}</a></li>
+    			</ul>
+    		</div>
+    		<div class="span5" style="padding: 20px; border-left: 1px solid #e5e5e5;">
+    			<p class="text-center">Selected categories (click a category to remove it)</p>
+    			<div class="borderedBox" style="padding: 10px; min-height: 81px;">
+    				<p x-ng-repeat="selected in selectedCategories"><button class="btn" type="button" x-ng-click="deselectCategory(selected)">{{selected.tagName}}</button></p>
+    			</div>
+    		</div>
+    	</div>
+    </accordion-group>
+    <accordion-group heading="Coverage:">
+    	<div class="row-fluid">
+			<div class="span2">
+				<select x-ng-model="coverage.Type">
+					<option>PatientAgeGroup</option>
+					<option>ClinicalFocus</option>
+					<option>TargetUser</option>
+					<option>WorkflowSetting</option>
+					<option>WorkflowTask</option>
+					<option>ClinicalVenue</option>
+				</select>
+			</div>
+			<div class="search-prepend span5">
+		  		<div class="icon-search icon-white"></div>
+			  	<input type="text" class="search-query span12" placeholder="drop-down autocomple or other code picker" x-ng-model="coverage.Code">
+			</div>
+			<div class="span5">
+				<p>Description:</p>	
+				<textarea rows="5" class="span12" x-ng-model="coverage.Description"></textarea>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<a href="" class="text-center span6" x-ng-click="saveCoverage(coverage)"><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="coverage=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+		<div class="row-fluid">
+			<div class="borderedBox span12" x-ng-grid="gridCoverage"></div>
+		</div>
+    </accordion-group>
+    <accordion-group heading="Contributors:">
+    	<div class="row-fluid">
+    		<form class="form-inline span3">
+				<label>Role:</label>
+		  		<select x-ng-model="contributor.Role">
+	    			<option>Author</option>
+					<option>Editor</option>
+					<option>Endorser</option>
+					<option>Reviewer</option>
+				</select>
+		  	</form>
+			<div class="span3">
+				<label class="radio">
+					<input type="radio" style="display: none;">
+					Type
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="contributor.Type" value="Person">
+					Person
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="contributor.Type" value="Company">
+					Company
+				</label>
+			</div>
+			<form class="form-inline span6">
+				<label>Name:</label>
+				<select x-ng-model="contributor.Name" class="input-xxlarge">
+					<option>Mayo Clinic</option>
+				</select>
+			</form>
+    	</div>
+    	<div class="row-fluid">
+			<a href="" class="text-center span6" x-ng-click="saveContributor(contributor)"><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="contributor=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+		<div class="row-fluid">
+			<div class="borderedBox span12" x-ng-grid="gridContributor"></div>
+		</div>
+    </accordion-group>
+    <accordion-group heading="Publishers:">
+    	<div class="row-fluid">
+    		<form class="form-inline span3">
+				<label>Role:</label>
+		  		<select x-ng-model="publisher.Role">
+	    			<option>Author</option>
+					<option>Editor</option>
+					<option>Endorser</option>
+					<option>Reviewer</option>
+				</select>
+		  	</form>
+			<div class="span3">
+				<label class="radio">
+					<input type="radio" style="display: none;">
+					Type
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="publisher.Type" value="Person">
+					Person
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="publisher.Type" value="Company">
+					Company
+				</label>
+			</div>
+			<form class="form-inline span6">
+				<label>Name:</label>
+				<select x-ng-model="publisher.Name" class="input-xxlarge">
+					<option>Mayo Clinic</option>
+				</select>
+			</form>
+    	</div>
+    	<div class="row-fluid">
+			<a href="" class="text-center span6" x-ng-click="savePublisher(publisher)"><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="publisher=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+		<div class="row-fluid">
+			<div class="borderedBox span12" ng-grid="gridPublisher"></div>
+		</div>
+    </accordion-group>
+    <accordion-group heading="Rights and Usage:">
+    	<div class="row-fluid borderedBox">
+    		<p style="margin-top: -12px; margin-left: 10px; background:white; width: 165px;">Rights holder information:</p>
+    		<div class="span1">
+				<label class="radio">
+					<input type="radio" style="display: none;">
+					Type
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="right.Type" value="Person">
+					Person
+				</label>
+				<label class="radio">
+					<input type="radio" x-ng-model="right.Type" value="Company">
+					Company
+				</label>
+			</div>
+			<form class="form-inline span6">
+				<label>Name:</label>
+				<select x-ng-model="right.Name" class="input-xxlarge">
+					<option>Mayo Clinic</option>
+				</select>
+			</form>
+    	</div>
+    	<br>
+    	<div class="row-fluid">
+    		<div class="span1" style="margin-top: 44px;">
+    			Asserted rights:
+    		</div>
+    		<div class="span11 borderedBox">
+    			<br><br><br><br><br>
+    		</div>
+    	</div>
+    	<br>
+    	<div class="row-fluid">
+    		<div class="span1" style="margin-top: 44px;">
+    			Permissions:
+    		</div>
+    		<div class="span11 borderedBox">
+    			<br><br><br><br><br>
+    		</div>
+    	</div>
+    </accordion-group>
+    <accordion-group heading="Related Resources:">
+    	<div class="row-fluid">
+    		<div class="span2">
+    			<select>
+    				<option>AdaptedFrom</option>
+    				<option>AssociatedResource</option>
+    				<option>DependsOn</option>
+    				<option>DerivedFrom</option>
+    				<option>SimilarTo</option>
+    				<option>VersionOf</option>
+    			</select>
+    		</div>
+    		<div class="span10">
+    			<div class="span12 borderedBox">
+    				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+    				<div class="row-fluid" style="margin-left: -10px;">
+    					<form class="form-horizontal span6">
+    						<div class="control-group">
+    							<label class="control-label" for="inputTitle">Title:</label>
+    							<div class="controls">
+    								<input type="text" id="inputTitle" class="span12">
+    							</div>
+    						</div>
+    						<div class="control-group">
+    							<label class="control-label" for="inputCitation">Citation:</label>
+    							<div class="controls">
+    								<textarea rows="3" class="span12"></textarea>
+    							</div>
+    						</div>
+    					</form>
+    					<form class="form-horizontal span6">
+    						<div class="control-group">
+    							<label class="control-label" for="inputLocation">Location:</label>
+    							<div class="controls">
+    								<input type="url" id="inputLocation" class="span12">
+    							</div>
+    						</div>
+    						<div class="control-group">
+    							<label class="control-label" for="inputDescription">Description:</label>
+    							<div class="controls">
+    								<textarea rows="3" class="span12"></textarea>
+    							</div>
+    						</div>
+    					</form>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    	<br>
+    	<div class="row-fluid">
+			<a href="" class="text-center span6" ><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="resource=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+		<br>
+		<div class="row-fluid">
+			<div class="borderedBox span12" ng-grid="gridResource"></div>
+		</div>
+    </accordion-group>
+    <accordion-group heading="Supporting Evidence:">
+    	<div class="row-fluid">
+    		<div class="span6 borderedBox">
+				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 130px;">Qualitiy of Evidence:</p>
+				<div class="row-fluid">
+					<div class="span2 offset1">
+						<select class="span12">
+							<option>Code Set</option>
+						</select>
+					</div>
+					<div class="search-prepend span8">
+						<div class="icon-search icon-white"></div>
+						<input type="text" class="search-query span12" placeholder="code">
+					</div>
+				</div>	
+    		</div>
+    		<div class="span6 borderedBox">
+				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 191px;">Strength of Recommendation:</p>
+				<div class="row-fluid">
+					<div class="span2 offset1">
+						<select class="span12">
+							<option>Code Set</option>
+						</select>
+					</div>
+					<div class="search-prepend span8">
+						<div class="icon-search icon-white"></div>
+						<input type="text" class="search-query span12" placeholder="code">
+					</div>
+				</div>	
+    		</div>
+    	</div>
+    	<br>
+    	<div class="row-fluid">
+   			<div class="span12 borderedBox">
+   				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+   				<div class="row-fluid" style="margin-left: -10px;">
+   					<form class="form-horizontal span6">
+   						<div class="control-group">
+   							<label class="control-label" for="inputTitle">Title:</label>
+   							<div class="controls">
+   								<input type="text" id="inputTitle" class="span12">
+   							</div>
+   						</div>
+   						<div class="control-group">
+   							<label class="control-label" for="inputCitation">Citation:</label>
+   							<div class="controls">
+   								<textarea rows="3" class="span12"></textarea>
+   							</div>
+   						</div>
+   					</form>
+   					<form class="form-horizontal span6">
+   						<div class="control-group">
+   							<label class="control-label" for="inputLocation">Location:</label>
+   							<div class="controls">
+   								<input type="url" id="inputLocation" class="span12">
+   							</div>
+   						</div>
+   						<div class="control-group">
+   							<label class="control-label" for="inputDescription">Description:</label>
+   							<div class="controls">
+   								<textarea rows="3" class="span12"></textarea>
+   							</div>
+   						</div>
+   					</form>
+   				</div>
+   			</div>
+    	</div>
+    	<br>
+    	<div class="row-fluid">
+			<a href="" class="text-center span6" ><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="evidence=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+		<br>
+		<div class="row-fluid">
+			<div class="borderedBox span12" ng-grid="gridEvidence"></div>
+		</div>
+    </accordion-group>
+    <accordion-group heading="Documentation:">
+    	<textarea x-ui-tinymce="tinymceOptions" x-ng-model="tinymceModel" rows="15"></textarea>
+    	<br>
+    	<div class="row-fluid">
+			<a href="" class="text-center span6" ><i class="icon-save icon-3x"></i> Save</a>
+			<a href="" class="text-center span6" x-ng-click="tinymceModel=''"><i class="icon-trash icon-3x"></i> Clear</a>
+		</div>
+    </accordion-group>
+</accordion>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xhtml="http://www.w3.org/1999/xhtml" targetNamespace="urn:hl7-org:knowledgeartifact:r1" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+			This file allows organizations to extend the enumeration ArtifactLifeCycleEventType. 
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="../enum/artifactlifecycleeventtypecore.xsd"/>
+	<xs:simpleType name="ArtifactLifeCycleEventTypeExt">
+		<xs:annotation>
+			<xs:documentation>
+			To add new items to the enumeration ArtifactLifeCycleEvent, comment out or delete the restriction on ArtifactLifeCycleEventTypeCore.(Optionally, also remove
+			the directive above to include the artifactlifecycleeventtypecore.xsd).
+			Now, add a new restriction such as on string and define new enumerated types. See the commented out example below
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ArtifactLifeCycleEventTypeCore"/>
+		<!--
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="Erased"/>
+				<xs:enumeration value="Restored"/>
+			</xs:restriction>
+	 -->
+	</xs:simpleType>
+</xs:schema>
