@@ -2,6 +2,7 @@
 
 var serviceUrl = 'http://localhost:9000';
 
+
 angular.module('ruleApp.controllers', [])
 
 	.controller('HomeCtrl', [ '$http', '$scope', function($http, $scope) {
@@ -203,7 +204,7 @@ angular.module('ruleApp.controllers', [])
 	.controller('ExpressionCtrl', [ '$http', '$scope', function($http, $scope) {
 		$scope.$parent.title = 'Create Expressions';
 		$scope.$parent.menuItems = standardMenuItems(1);
-        $http.get(serviceUrl + '/expressions/list').success(function(data) {
+        $http.get(serviceUrl + '/rule/expressions/list').success(function(data) {
             $scope.expressions = data;
         });
 		$scope.currentExpression = {};
@@ -214,16 +215,38 @@ angular.module('ruleApp.controllers', [])
 		};
 		$scope.save = function() {
 			var expressionIndex = null;
+            var exprID =
 			$scope.currentExpression.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-			for (var int = 0; int < $scope.expressions.length; int++)
-				if ($scope.expressions[int].name == $scope.currentExpression.name)
+
+            for (var int = 0; int < $scope.expressions.length; int++) {
+				if ($scope.expressions[int].name == $scope.currentExpression.name) {
 					expressionIndex = int;
-			if (expressionIndex === null)
-				$scope.expressions.push(angular.copy($scope.currentExpression));
-			else
-				if (confirm("Want to override the already stored expression?"))
+                }
+            }
+			if (expressionIndex === null) {
+                $scope.currentExpression.expressionIRI = 'TODO' + $scope.currentExpression.name;
+            } else {
+				if (confirm("Want to override the already stored expression?")) {
 					$scope.expressions[expressionIndex] = angular.copy($scope.currentExpression);
-		};
+                }
+            }
+
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/rule/expressions/' + $scope.currentExpression.expressionIRI + '/' + $scope.currentExpression.name,
+                data : $scope.currentExpression.xml,
+                headers : { 'Content-Type':'application/xml' }
+            }).success( function( data ) {
+                if (expressionIndex === null) {
+                    $scope.expressions.push(angular.copy($scope.currentExpression));
+                } else {
+                   if (confirm("Want to override the already stored expression?")) {
+                        $scope.expressions[expressionIndex] = angular.copy($scope.currentExpression);
+                    }
+                }
+                });
+        };
+
 		$scope.open = function(expression) {
 			if (confirm("Want to clean current expression?")) {
 				$scope.currentExpression = angular.copy(expression);
@@ -247,7 +270,7 @@ angular.module('ruleApp.controllers', [])
 	.controller('LogicCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
 		$scope.$parent.title = 'Define Rule Logic';
 		$scope.$parent.menuItems = standardMenuItems(3);
-        $http.get(serviceUrl + '/expressions/list').success(function(data) {
+        $http.get(serviceUrl + '/rule/expressions/list').success(function(data) {
             $scope.expressions = data;
         });
         $scope.gridOptions = {
@@ -605,7 +628,7 @@ angular.module('ruleApp.controllers', [])
 			$scope.detail = data;
 		});
 		$scope.cts2search = function(matchValue) {
-			return $http.jsonp("http://sharpc2b.ranker.cloudbees.net/fwd/cts2/valueset/RXNORM/resolution?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response){
+			return $http.jsonp( serviceUrl + "/fwd/cts2/valueset/RXNORM/resolution?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response) {
 				return response.data.iteratableResolvedValueSet.entryList;
 		    });
 		};
@@ -632,7 +655,7 @@ function standardMenuItems(position) {
 
 function availableExpressions( httpContext ) {
     var map = [ ["(Choose Expression...)", "" ] ];
-    httpContext.get(serviceUrl + '/expressions/list').success(function(data) {
+    httpContext.get(serviceUrl + '/rule/expressions/list').success(function(data) {
         var expressions = data;
         for ( var j = 0; j < expressions.length; j++ ) {
             var expr = expressions[ j ];

@@ -47,15 +47,19 @@
   </pluginRepositories>
 
   <repositories>
+
     <repository>
-      <id>Jenabean</id>
-      <url>http://jenabean.googlecode.com/svn/repo</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>scalasbt</id>
+      <name>libs-releases</name>
+      <url>http://scalasbt.artifactoryonline.com/scalasbt/libs-releases</url>
     </repository>
 
     <repository>
-      <id>typesafe</id>
-      <name>typesafe-releases</name>
-      <url>http://repo.typesafe.com/typesafe/repo</url>
+      <id>Jenabean</id>
+      <url>http://jenabean.googlecode.com/svn/repo</url>
     </repository>
 
     <repository>
@@ -67,7 +71,7 @@
 
     <repository>
       <id>mayo</id>
-      <url>http://informatics.mayo.edu/maven/content/groups/public</url>
+      <url>http://informatics.mayo.edu/maven/content/repositories/releases</url>
     </repository>
 
     <repository>
@@ -322,20 +326,31 @@
       </dependency>
 
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-core-asl</artifactId>
-        <version>1.9.5</version>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.2.0</version>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>1.9.5</version>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.2.0</version>
       </dependency>
 
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>3.1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>edu.mayo.cts2.framework</groupId>
+        <artifactId>model</artifactId>
+        <version>0.8.4</version>
+      </dependency>
+      <dependency>
+        <groupId>edu.mayo.cts2.framework</groupId>
+        <artifactId>core</artifactId>
+        <version>0.8.4</version>
       </dependency>
 
     </dependencies>
