@@ -235,7 +235,7 @@ angular.module('ruleApp.controllers', [])
                 method : 'POST',
                 url : serviceUrl + '/rule/expressions/' + $scope.currentExpression.expressionIRI + '/' + $scope.currentExpression.name,
                 data : $scope.currentExpression.xml,
-                headers : { 'Content-Type':'application/xml' }
+                headers : { 'Content-Type':'application/html' }
             }).success( function( data ) {
                 if (expressionIndex === null) {
                     $scope.expressions.push(angular.copy($scope.currentExpression));
@@ -260,6 +260,38 @@ angular.module('ruleApp.controllers', [])
 				Blockly.mainWorkspace.clear();
 			}
 		};
+
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops#VariableExpression'] = {
+            helpUrl: 'http://www.example.com/',
+            init: function() {
+                this.setColour(160);
+                this.appendDummyInput()
+                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http ) ), "Variables");
+                this.setOutput(true, null);
+                this.setTooltip('');
+            }
+        };
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops#DomainClassExpression'] = {
+            helpUrl: 'http://www.example.com/',
+            init: function() {
+                this.setColour(40);
+                this.appendDummyInput()
+                    .appendTitle(new Blockly.FieldDropdown( availableClasses( $http ) ), "DomaninClass");
+                this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainClass']);
+                this.setTooltip('');
+            }
+        };
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops#DomainPropertyExpression'] = {
+            helpUrl: 'http://www.example.com/',
+            init: function() {
+                this.setColour(40);
+                this.appendDummyInput()
+                    .appendTitle(new Blockly.FieldDropdown( availableProperties( $http ) ), "DomaninProperty");
+                this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainProperty']);
+                this.setTooltip('');
+            }
+        };
+
 	}])
 
 	.controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
@@ -270,8 +302,8 @@ angular.module('ruleApp.controllers', [])
 	.controller('LogicCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
 		$scope.$parent.title = 'Define Rule Logic';
 		$scope.$parent.menuItems = standardMenuItems(3);
-        $http.get(serviceUrl + '/rule/expressions/list').success(function(data) {
-            $scope.expressions = data;
+        $http.get(serviceUrl + '/template/list/Condition').success(function(data) {
+            $scope.primitives = data;
         });
         $scope.gridOptions = {
 				data: 'primitives',
@@ -459,10 +491,9 @@ angular.module('ruleApp.controllers', [])
 	.controller('ActionCtrl', [ '$http', '$scope', '$modal','$log', function($http, $scope, $modal,$log) {
 		$scope.$parent.title = 'Choose Actions to be Executed';
 		$scope.$parent.menuItems = standardMenuItems(4);
-		$http.get(serviceUrl + '/template/list').success(function(data) {
+		$http.get(serviceUrl + '/template/list/Action').success(function(data) {
 			$scope.actions = data;
 		});
-
 
 
 		$scope.openClauseEditor = function(clause) {
@@ -663,4 +694,28 @@ function availableExpressions( httpContext ) {
         }
     });
     return map;
+}
+
+function availableClasses( httpContext ) {
+    var kmap = [ ["(Choose Class...)", "" ] ];
+    httpContext.get(serviceUrl + '/domain/classes').success(function(data) {
+        var klasses = data;
+        for ( var j = 0; j < klasses.length; j++ ) {
+            var klass = klasses[ j ];
+            kmap[ j ] = [ klass.name , klass.id ];
+        }
+    });
+    return kmap;
+}
+
+function availableProperties( httpContext ) {
+    var pmap = [ ["(Choose Property...)", "" ] ];
+    httpContext.get(serviceUrl + '/domain/properties').success(function(data) {
+        var properties = data;
+        for ( var j = 0; j < properties.length; j++ ) {
+            var prop = properties[ j ];
+            pmap[ j ] = [ prop.name , prop.id ];
+        }
+    });
+    return pmap;
 }

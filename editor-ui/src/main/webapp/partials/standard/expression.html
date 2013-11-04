@@ -6,7 +6,7 @@
 			<input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
 		</div><br>
 		<ul class="nav nav-list borderedBox" style="height: 788px;">
-			<li x-ng-repeat="expression in expressions | filter:search" x-ng-class="{active: currentExpression.name==expression.name}"><a href="" x-ng-click="open(expression)">{{expression.name}} -- {{expression.expressionIRI}}</a></li>
+			<li x-ng-repeat="expression in expressions | filter:search" x-ng-class="{active: currentExpression.name==expression.name}"><a href="" x-ng-click="open(expression)">{{expression.expressionIRI}} :: {{expression.name}}</a></li>
 		</ul>
 		<div x-ng-include="'partials/standard/expression/palette.xml'" x-onload="loadPalette()"></div>
 	</div>

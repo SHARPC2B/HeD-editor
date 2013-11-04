@@ -37,17 +37,17 @@ public final class IriUtil
         return IRI.create( sharpIRIString( name ) );
     }
 
-    static IRI opsIRI (final String name)
+    public static IRI opsIRI (final String name)
     {
         return IRI.create( opsCoreBaseIRI + name );
     }
 
-    static IRI skosExtIRI (final String name)
+    public static IRI skosExtIRI (final String name)
     {
         return IRI.create( skosExtBaseIRI + name );
     }
 
-    static IRI skosIRI (final String name)
+    public static IRI skosIRI (final String name)
     {
         return IRI.create( skosBaseIRI + name );
     }

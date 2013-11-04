@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.io.StreamDocumentSource;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -67,7 +68,7 @@ public class BlocklyGenerator {
 
 
 
-    private static Map<String,Set<String>> palette = new LinkedHashMap<String, Set<String>>();
+    private static Map<OWLClassExpression,Set<String>> palette = new LinkedHashMap<OWLClassExpression, Set<String>>();
 
     {
         try {
@@ -108,36 +109,63 @@ public class BlocklyGenerator {
         }
 
         StringBuilder builder = new StringBuilder( );
-        Set<OWLSubClassOfAxiom> subs = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) ) );
-        for ( OWLSubClassOfAxiom sub : subs ) {
-            try {
-                visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
-            } catch ( Exception e ) {
-                e.printStackTrace();
-            }
-        }
-        Set<OWLSubClassOfAxiom> subs2 = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) ) );
         Set<String> primitiveTypes = new HashSet<String>();
-        for ( OWLSubClassOfAxiom sub : subs2 ) {
-            try {
-                List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
-                primitiveTypes.addAll( types );
-            } catch ( Exception e ) {
-                e.printStackTrace();
-            }
-        }
+
+//        Set<OWLSubClassOfAxiom> subs = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) ) );
+//        for ( OWLSubClassOfAxiom sub : subs ) {
+//            try {
+//                visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+//            } catch ( Exception e ) {
+//                e.printStackTrace();
+//            }
+//        }
+//        Set<OWLSubClassOfAxiom> subs2 = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) ) );
+
+//        for ( OWLSubClassOfAxiom sub : subs2 ) {
+//            try {
+//                List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+//                primitiveTypes.addAll( types );
+//            } catch ( Exception e ) {
+//                e.printStackTrace();
+//            }
+//        }
 
         Set<OWLSubClassOfAxiom> allSubs = operatorOntology.getAxioms( AxiomType.SUBCLASS_OF, true );
-
         for ( OWLSubClassOfAxiom sub : allSubs ) {
             try {
                 if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "RequestExpression" ) ) ) ) {
-                    visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+                    List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+                    primitiveTypes.addAll( types );
+                }
+                if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) ) ) ) {
+                    visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+                }
+                if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) ) ) ) {
+                    List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+                    primitiveTypes.addAll( types );
                 }
             } catch ( Exception e ) {
                 e.printStackTrace();
             }
         }
+
+
+        OWLClass variableExpr = factory.getOWLClass( IriUtil.opsIRI( "VariableExpression" ) );
+        getPaletteGroup( variableExpr ).add( variableExpr.getIRI().toString() );
+
+        OWLClass domainConceptExpr = factory.getOWLClass( IriUtil.opsIRI( "DomainClassExpression" ) );
+        getPaletteGroup( domainConceptExpr ).add( domainConceptExpr.getIRI().toString() );
+        OWLClass domainPropertyExpr = factory.getOWLClass( IriUtil.opsIRI( "DomainPropertyExpression" ) );
+        getPaletteGroup( domainPropertyExpr ).add( domainPropertyExpr.getIRI().toString() );
+
+
+        OWLClass propertyAccessorExpr = factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) );
+        try {
+            visitExpressionDefinition( propertyAccessorExpr, operatorOntology, manager, factory, builder );
+        } catch ( Exception e ) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
 
         String basicBlocks = (String) TemplateRuntime.execute( registry.getNamedTemplate( "basicBlocks" ), null, Collections.emptyMap(), registry );
         builder.append( basicBlocks );
@@ -158,7 +186,7 @@ public class BlocklyGenerator {
 
         File paletteOputput = new File( outputBlocklyDir.getPath() + File.separator + "palette.xml" );
         try {
-            createPalette( paletteOputput, primitiveTypes );
+            createPalette( paletteOputput, primitiveTypes, operatorOntology, factory );
         } catch ( Exception e ) {
             e.printStackTrace();
         }
@@ -198,6 +226,11 @@ public class BlocklyGenerator {
             }
         }
 
+        if ( retType == null ) {
+            OWLClass klass = factory.getOWLClass( IriUtil.opsIRI( name + "Type" ) );
+            retType = klass;
+        }
+
         if ( ! name.isEmpty() ) {
             Map<String,Object> context = new HashMap<String,Object>();
             context.put( "iri", id.toString() );
@@ -216,10 +249,10 @@ public class BlocklyGenerator {
 
             builder.append( js );
 
-            getPaletteGroup( "Literals" ).add( id.toString() );
-            if ( retType != null ) {
-                String iri = retType.asOWLClass().getIRI().toString();
-                getPaletteGroup( getGroupName( iri.substring( iri.indexOf( "#" ) + 1 ) ) ).add( id.toString() );
+            for ( OWLClassExpression superType : subs ) {
+                if ( ! superType.isAnonymous() ) {
+                    getPaletteGroup( superType ).add( id.toString() );
+                }
             }
 
         }
@@ -321,8 +354,10 @@ public class BlocklyGenerator {
 
         builder.append( js );
 
-        for ( String retType : returnTypes ) {
-            getPaletteGroup( getGroupName( retType.substring( retType.indexOf( "#" ) + 1 ) ) ).add( id );
+        for ( OWLClassExpression superType : supers ) {
+            if ( ! superType.isAnonymous() ) {
+                getPaletteGroup( superType ).add( id );
+            }
         }
 
     }
@@ -405,7 +440,8 @@ public class BlocklyGenerator {
         return type;
     }
 
-    private void createPalette( File operatorsOutput, Set<String> primitiveTypes ) throws ParserConfigurationException, TransformerException {
+
+    private void createPalette( File operatorsOutput, Set<String> primitiveTypes, OWLOntology ontology, OWLDataFactory factory ) throws ParserConfigurationException, TransformerException {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document dox = builder.newDocument();
 
@@ -414,17 +450,12 @@ public class BlocklyGenerator {
         root.setAttribute( "style", "display: none" );
         dox.appendChild( root );
 
+        OWLClassExpression expressionRoot = factory.getOWLClass( IriUtil.opsIRI( "SharpExpression" ) );
+        OWLOntology exprCore = ontology.getOWLOntologyManager().getOntology( IRI.create( IriUtil.opsCoreBaseIRI.replace( "#", "" ) ) );
 
-        for ( String grp : palette.keySet() ) {
-            Element cat = dox.createElement( "category" );
-            cat.setAttribute( "name", grp );
-            for ( String type : palette.get( grp ) ) {
-                Element block = dox.createElement( "block" );
-                block.setAttribute( "type", type );
-                cat.appendChild( block );
-            }
-            dox.getDocumentElement().appendChild( cat );
-        }
+        Map<OWLClassExpression, Element> paletteTree = new HashMap<OWLClassExpression, Element>();
+        visitExpressionTypes( expressionRoot, root, exprCore, dox, factory, paletteTree );
+
 
         Element cat = dox.createElement( "category" );
         cat.setAttribute( "name", "Datatypes" );
@@ -434,14 +465,6 @@ public class BlocklyGenerator {
             cat.appendChild( block );
         }
         dox.getDocumentElement().appendChild( cat );
-
-        Element varCat = dox.createElement( "category" );
-        varCat.setAttribute( "name", "Variables" );
-        Element block = dox.createElement( "block" );
-        block.setAttribute( "type", IriUtil.opsIRI( "VariableExpression" ).toString() );
-        varCat.appendChild( block );
-        dox.getDocumentElement().appendChild( varCat );
-
 
         prettyPrint( dox.getDocumentElement(), System.out );
 
@@ -458,6 +481,41 @@ public class BlocklyGenerator {
         }
 
 
+    }
+
+    private void visitExpressionTypes( OWLClassExpression expressionRoot, Element root, OWLOntology ontology, Document dox, OWLDataFactory factory, Map<OWLClassExpression, Element> paletteTree ) {
+        paletteTree.put( expressionRoot, root );
+        Set<OWLSubClassOfAxiom> children = ontology.getSubClassAxiomsForSuperClass( expressionRoot.asOWLClass() );
+        for ( OWLSubClassOfAxiom sub : children ) {
+            OWLClassExpression child = sub.getSubClass();
+            if ( ! child.isAnonymous() && palette.containsKey( child ) ) {
+                Element cat = dox.createElement( "category" );
+                cat.setAttribute( "name", child.asOWLClass().getIRI().getFragment().replace( "Expression", "" ) );
+                root.appendChild( cat );
+
+                for ( String id : palette.get( child ) ) {
+                    // check that the operator is not subsumed
+                    Set<OWLSubClassOfAxiom> grandChildren = ontology.getSubClassAxiomsForSuperClass( child.asOWLClass() );
+                    boolean subsumed = false;
+                    for ( OWLSubClassOfAxiom gc : grandChildren ) {
+                        if ( palette.containsKey( gc.getSubClass() ) && palette.get( gc.getSubClass() ).contains( id ) ) {
+                            subsumed = true;
+                            break;
+                        }
+                    }
+                    if ( ! subsumed ) {
+                        Element block = dox.createElement( "block" );
+                        block.setAttribute( "type", id );
+                        cat.appendChild( block );
+                    }
+
+                }
+
+                visitExpressionTypes( child, cat, ontology, dox, factory, paletteTree );
+            } else {
+                System.err.println( "Skipping  " + child );
+            }
+        }
     }
 
 
@@ -490,7 +548,7 @@ public class BlocklyGenerator {
     }
 
 
-    private static Set<String> getPaletteGroup( String grp ) {
+    private static Set<String> getPaletteGroup( OWLClassExpression grp ) {
         if ( ! palette.containsKey( grp ) ) {
             palette.put( grp, new HashSet<String>() );
         }

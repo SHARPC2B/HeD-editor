@@ -1,0 +1,23 @@
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(data:=<http://asu.edu/sharpc2b/templates/data#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+Prefix(templates:=<http://asu.edu/sharpc2b/templates#>)
+
+
+Ontology(<http://asu.edu/sharpc2b/templates/data>
+Import(<http://asu.edu/sharpc2b/templates>)
+
+Declaration(NamedIndividual(data:t3Msg))
+ClassAssertion(templates:Parameter data:t3Msg)
+Declaration(NamedIndividual(data:template3))
+ClassAssertion(templates:Template data:template3)
+ObjectPropertyAssertion(templates:hasParameter data:template3 data:t3Msg)
+DataPropertyAssertion(templates:category data:template3 "Action"^^xsd:string)
+DataPropertyAssertion(templates:description data:template3 "Send REMINDER to Patient"^^xsd:string)
+DataPropertyAssertion(templates:name data:template3 "Send REMINDER to Patient"^^xsd:string)
+DataPropertyAssertion(templates:example data:template3 "Remind the patient to come for a test"^^xsd:string)
+DataPropertyAssertion(templates:group data:template3 "Alerts"^^xsd:string)
+)

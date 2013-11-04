@@ -104,7 +104,7 @@ Blockly.Blocks['@{iri}'] = {
 @declare{"mutatorCode"}
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'mutation' );
+    var container = document.createElement( '@{name}_mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -150,8 +150,8 @@ Blockly.Blocks['@{iri}'] = {
          var input = this.appendValueInput('ARG_' + this.itemCount_)
                                           .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
                                           .setAlign( Blockly.ALIGN_RIGHT );
-          if (this.itemCount_ == 0)
-        	  input.appendTitle( '@{name}' );          // Reconnect any child blocks.
+
+         // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
           input.connection.connect(itemBlock.valueConnection_);
          }
@@ -234,17 +234,6 @@ Blockly.Blocks['xsd:double'] = {
     this.setOutput( true, 'xsd:double' );
   }
 };
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#VariableExpression'] = {
-  init: function() {
-    this.setColour(340);
-    var dropdown = new Blockly.FieldDropdown([['expr1', 'http://expr1'], ['expr2', 'http://expr2']]);
-    this.appendDummyInput().appendTitle( 'Variable' ).appendTitle( dropdown, "VARS");
-    this.setOutput( true, null );
-  }
-};
-
 
 
 @end{}

@@ -60,17 +60,6 @@
             <target>1.7</target>
           </configuration>
         </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.2</version>
-          <configuration>
-            <!--<goalPrefix>plugin</goalPrefix>-->
-            <!--<outputDirectory>target/dir</outputDirectory>-->
-          </configuration>
-        </plugin>
-
       </plugins>
     </pluginManagement>
   </build>
