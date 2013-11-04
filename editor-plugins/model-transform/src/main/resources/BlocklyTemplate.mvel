@@ -8,12 +8,12 @@ Blockly.Blocks['@{iri}'] = {
     this.appendDummyInput().appendTitle('@{name}')
 
 
-    @if{ isUnary } @includeNamed{ "unary"; arg1=argTypes[0]; argName1=argTypeNames[0] }
-    @elseif{ isBinary } @includeNamed{ "binary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1] }
-    @elseif{ isTernary } @includeNamed{ "ternary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1]; arg3=argTypes[2]; argName3=argTypeNames[2];  }
-    @else{ isNary } @includeNamed{ "nary"; iri=iri; args=argTypes[0]; argsName=argTypeNames[0] } @end{}
+    @if{ isUnary } @includeNamed{ "unary"; arg1=argTypes[0]; argName1=argTypeNames[0] } @end{}
+    @if{ isBinary } @includeNamed{ "binary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1] } @end{}
+    @if{ isTernary } @includeNamed{ "ternary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1]; arg3=argTypes[2]; argName3=argTypeNames[2];  } @end{}
+    @if{ isNary } @includeNamed{ "nary"; iri=iri; args=argTypes[3]; argsName=argTypeNames[3] } @end{}
 
-    this.setOutput( true, [@foreach{ret : returnType}'@{ret}'@end{','}] );
+    this.setOutput( true, @if{returnType == null || returnType.empty}null@else{}[@foreach{ret : returnType}'@{ret}'@end{','}]@end{} );
 
     this.setInputsInline( false );
 
@@ -89,11 +89,11 @@ Blockly.Blocks['@{iri}'] = {
 
 
 @declare{"nary"}
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '@{argsName}' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '@{argsName}' );
@@ -111,11 +111,11 @@ Blockly.Blocks['@{iri}'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '@{argsName}' );
@@ -141,13 +141,13 @@ Blockly.Blocks['@{iri}'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -166,7 +166,7 @@ Blockly.Blocks['@{iri}'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&

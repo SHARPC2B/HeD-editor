@@ -27,8 +27,8 @@
 <block type="http://asu.edu/sharpc2b/ops-set#EndExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#BeforeExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#ProperContainsIntervalExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#RoundExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#RoundExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#VarianceExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#DivideIntegerExpression"/>
@@ -68,7 +68,6 @@
 <block type="http://asu.edu/sharpc2b/ops-set#WithinIntervalExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#GreaterExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#InListExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#PropertyExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TrimLeftExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#NegateIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TanIntegerExpression"/>
@@ -187,55 +186,53 @@
 </category>
 </category>
 <category name="Unary">
-<block type="http://asu.edu/sharpc2b/ops-set#AbsIntegerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#ToStringExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#ExpIntegerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops#CreateExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#SqrtIntegerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#LowerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#BeginExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#LastExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#NegateRealExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#UpperExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#LengthIntervalExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#IsNullExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#ConvertExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#EndExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#CosRealExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#AbsRealExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#SuccExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#StringExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#SinIntegerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#PredExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#SinRealExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#LengthStringExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#AcosIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TanRealExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#ToStringExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#AbsIntegerExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#ExpIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#FloorExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#SqrtIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#IsEmptyCollectionExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AsinIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#CeilingExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TrimExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#LowerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#SqrtRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#SortExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#LastExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#BeginExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#NegateRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#ExpRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#CosIntegerExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#UpperExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#LengthIntervalExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#IsNullExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#RoundRealExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#ConvertExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#EndExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#IsNotEmptyExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AtanIntegerExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#PropertyExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#CosRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TrimLeftExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#AbsRealExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#SuccExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#NegateIntegerExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#StringExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AsinRealExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#TrimRightExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#FirstExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#TanIntegerExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#FirstExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#TrimRightExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#IsEmptyListExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#SinIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#LnExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AcosRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AtanRealExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#PredExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#LengthStringExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#SinRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#NotExpression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#AcosIntegerExpression"/>
 </category>
 <category name="NAry">
 <block type="http://asu.edu/sharpc2b/ops-set#XorExpression"/>
@@ -243,6 +240,7 @@
 <block type="http://asu.edu/sharpc2b/ops-set#IndexMaxExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#SumRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#IndexMinExpression"/>
+<block type="http://asu.edu/sharpc2b/ops#CreateExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AndExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#EarliestExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression"/>
@@ -300,6 +298,7 @@
 <block type="http://asu.edu/sharpc2b/ops-set#ProperContainsIntervalExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#RoundExpression"/>
+<block type="http://asu.edu/sharpc2b/ops#PropertySetExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#DivideIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#SeqToExpression"/>
@@ -316,6 +315,7 @@
 <block type="http://asu.edu/sharpc2b/ops-set#MaxIntegerExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#CombineExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#MultiplyIntegerExpression"/>
+<block type="http://asu.edu/sharpc2b/ops#PropertyGetExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#AfterExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#EqualStringExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#IntersectIntervalExpression"/>
@@ -328,8 +328,8 @@
 <block type="http://asu.edu/sharpc2b/ops-set#NotEqualExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#GreaterExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#InListExpression"/>
-<block type="http://asu.edu/sharpc2b/ops-set#ContainsIntervalExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#Log10Expression"/>
+<block type="http://asu.edu/sharpc2b/ops-set#ContainsIntervalExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#MaxRealExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#ProperContainsListExpression"/>
 <block type="http://asu.edu/sharpc2b/ops-set#MinIntegerExpression"/>
@@ -499,6 +499,10 @@
 <block type="http://asu.edu/sharpc2b/ops-set#StringExpression"/>
 </category>
 </category>
+</category>
+<category name="Property">
+<block type="http://asu.edu/sharpc2b/ops#PropertyGetExpression"/>
+<block type="http://asu.edu/sharpc2b/ops#PropertySetExpression"/>
 </category>
 <category name="Literal">
 <category name="Primitive">

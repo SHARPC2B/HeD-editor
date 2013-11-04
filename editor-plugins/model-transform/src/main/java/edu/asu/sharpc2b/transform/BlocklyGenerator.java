@@ -111,24 +111,6 @@ public class BlocklyGenerator {
         StringBuilder builder = new StringBuilder( );
         Set<String> primitiveTypes = new HashSet<String>();
 
-//        Set<OWLSubClassOfAxiom> subs = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) ) );
-//        for ( OWLSubClassOfAxiom sub : subs ) {
-//            try {
-//                visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
-//            } catch ( Exception e ) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Set<OWLSubClassOfAxiom> subs2 = operatorOntology.getSubClassAxiomsForSuperClass( factory.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) ) );
-
-//        for ( OWLSubClassOfAxiom sub : subs2 ) {
-//            try {
-//                List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
-//                primitiveTypes.addAll( types );
-//            } catch ( Exception e ) {
-//                e.printStackTrace();
-//            }
-//        }
 
         Set<OWLSubClassOfAxiom> allSubs = operatorOntology.getAxioms( AxiomType.SUBCLASS_OF, true );
         for ( OWLSubClassOfAxiom sub : allSubs ) {
@@ -143,6 +125,9 @@ public class BlocklyGenerator {
                 if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) ) ) ) {
                     List<String> types = visitLiteralDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
                     primitiveTypes.addAll( types );
+                }
+                if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) ) ) ) {
+                    visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
                 }
             } catch ( Exception e ) {
                 e.printStackTrace();
@@ -159,12 +144,6 @@ public class BlocklyGenerator {
         getPaletteGroup( domainPropertyExpr ).add( domainPropertyExpr.getIRI().toString() );
 
 
-        OWLClass propertyAccessorExpr = factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) );
-        try {
-            visitExpressionDefinition( propertyAccessorExpr, operatorOntology, manager, factory, builder );
-        } catch ( Exception e ) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
 
 
         String basicBlocks = (String) TemplateRuntime.execute( registry.getNamedTemplate( "basicBlocks" ), null, Collections.emptyMap(), registry );
@@ -269,9 +248,9 @@ public class BlocklyGenerator {
 
         int arity = getArity( expression, supers, ontology, manager, factory, pManager );
 
-        List<String>[] argTypes = new List[3];
-        List<String>[] argTypeNames = new List[3];
-        for ( int j = 0; j < 3; j++ ) {
+        List<String>[] argTypes = new List[4];
+        List<String>[] argTypeNames = new List[4];
+        for ( int j = 0; j < 4; j++ ) {
             argTypes[ j ] = new ArrayList<String>();
             argTypeNames[ j ] = new ArrayList<String>();
         }
@@ -286,7 +265,7 @@ public class BlocklyGenerator {
         String id = expression.asOWLClass().getIRI().toString();
         String code = "BUG";
 
-        boolean isUnary = arity == 1;
+        boolean isUnary = arity == 1 || "http://asu.edu/sharpc2b/ops#CreateExpression".equals( id );
         boolean isBinary = arity == 2;
         boolean isTernary = arity == 3;
         boolean isNary = arity == -1;
@@ -309,10 +288,13 @@ public class BlocklyGenerator {
                     argTypes[2] = extractTypes( fil );
                     argTypeNames[2] = extractTypeNames( fil );
                 }
-                if ( ( (OWLObjectAllValuesFrom) expr ).getProperty().asOWLObjectProperty().getIRI().equals( IriUtil.opsIRI( "hasOperand" ) ) ) {
+                if (
+                        ( (OWLObjectAllValuesFrom) expr ).getProperty().asOWLObjectProperty().getIRI().equals( IriUtil.opsIRI( "hasOperand" ) )
+                        || ( (OWLObjectAllValuesFrom) expr ).getProperty().asOWLObjectProperty().getIRI().equals( IriUtil.opsIRI( "extraOperand" ) )
+                   ) {
                     Set<OWLClassExpression> fil = lookupReturnType( ( (OWLObjectAllValuesFrom) expr ).getFiller(), ontology );
-                    argTypes[0] = extractTypes( fil );
-                    argTypeNames[0] = extractTypeNames( fil );
+                    argTypes[3] = extractTypes( fil );
+                    argTypeNames[3] = extractTypeNames( fil );
                 }
 
                 if ( ( (OWLObjectAllValuesFrom) expr ).getProperty().asOWLObjectProperty().getIRI().equals( IriUtil.opsIRI( "opCode" ) ) ) {
@@ -527,7 +509,7 @@ public class BlocklyGenerator {
         tf.transform( new DOMSource( xml ), new StreamResult(out));
     }
 
-    private static int getArity( OWLClassExpression expression, Set<OWLClassExpression> supers, OWLOntology ontology, OWLOntologyManager manager, OWLDataFactory factory, PrefixManager pManager ) {
+    private static int  getArity( OWLClassExpression expression, Set<OWLClassExpression> supers, OWLOntology ontology, OWLOntologyManager manager, OWLDataFactory factory, PrefixManager pManager ) {
         if ( supers.contains( factory.getOWLClass( IriUtil.opsIRI( "NAryExpression" ) ) ) ) {
             return -1;
         }

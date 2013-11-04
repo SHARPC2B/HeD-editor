@@ -7,6 +7,8 @@ import edu.emory.mathcs.backport.java.util.Collections;
 import org.dom4j.DocumentFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -15,13 +17,21 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.ElementTraversal;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FilenameFilter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -208,10 +218,25 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
         try {
             templates = manager.createOntology( IRI.create( "http://asu.edu/sharpc2b/templates/data" ) );
             manager = templates.getOWLOntologyManager();
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
             manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/template_schema.owl" ) );
             File dataDir = new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/data" );
-            for ( File tempFile : dataDir.listFiles() ) {
+            for ( File tempFile : dataDir.listFiles( new FilenameFilter() {
+                @Override
+                public boolean accept( File dir, String name ) {
+                    return name.endsWith( ".owl" );
+                }
+            }) ) {
                 OWLOntologyManager subManager = OWLManager.createOWLOntologyManager();
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
                 subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/template_schema.owl" ) );
                 OWLOntology temp = subManager.loadOntologyFromOntologyDocument( tempFile );
                 manager.addAxioms( templates, temp.getAxioms() );
@@ -274,7 +299,26 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
         info.put( "group", getDataPropertyValue( ind, "group", odf ) );
         info.put( "description", getDataPropertyValue( ind, "description", odf ) );
         info.put( "example", getDataPropertyValue( ind, "example", odf ) );
-        info.put( "parameterIds", getObjectPropertyValues( ind, "hasParameter", odf ) );
+
+        List<String> params = getObjectPropertyValues( ind, "hasParameter", odf );
+        info.put( "parameterIds", params );
+
+        LinkedHashMap<String,Map<String,Object>> paramData = new LinkedHashMap<String,Map<String,Object>>();
+        for ( String pid : params ) {
+            Map<String,Object> details = new HashMap<String,Object>();
+            OWLNamedIndividual param = odf.getOWLNamedIndividual( IRI.create( pid ) );
+
+            details.put( "key", pid );
+            String name = getDataPropertyValue( param, "name", odf );
+            details.put( "name", name );
+            details.put( "label", name );
+            details.put( "description", getDataPropertyValue( param, "description", odf ) );
+            details.put( "typeName", getDataPropertyValue( param, "typeName", odf ) );
+            details.put( "expressions", new ArrayList( getExpressions().keySet() ) );
+
+            paramData.put( pid, details );
+        }
+        info.put( "parameterData", paramData );
 
         System.out.println( "Retrieved info " + info );
         return info;
@@ -316,8 +360,62 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
     }
 
 
+    public String instantiateTemplate( String tId, String name, Map<String,Map<String,Object>> parameterValues ) {
+        System.out.println( "Core init " + tId + " with name " + name + " using " + parameterValues );
+        if ( templates == null ) {
+            loadTemplateOntology();
+        }
+
+        OWLDataFactory odf = templates.getOWLOntologyManager().getOWLDataFactory();
+        OWLNamedIndividual root = odf.getOWLNamedIndividual( templateDataIRI( tId ) );
+
+        List<String> exprRoots = getObjectPropertyValues( root, "hasIncarnation", odf );
+        for ( String exprName : exprRoots ) {
+            String expression = buildExpression( exprName, odf );
+            this.getCurrentArtifact().updateNamedExpression( exprName, exprName, expression.getBytes() );
+        }
+
+        return null;
+    }
+
+    private String buildExpression( String exprName, OWLDataFactory odf ) {
+        try {
+            OWLNamedIndividual root = odf.getOWLNamedIndividual( IRI.create( exprName ) );
+            Document dox = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element rootElem = dox.createElement( "xml" );
+            dox.appendChild( rootElem );
+            visitNode( root, rootElem, dox, odf );
+
+//
+//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//            transformer.setOutputProperty( OutputKeys.INDENT, "yes");
+//            StreamResult result = new StreamResult(new StringWriter());
+//            DOMSource source = new DOMSource(dox);
+//            transformer.transform(source, result);
+//            String xmlString = result.getWriter().toString();
+//            System.out.println(xmlString);
+
+            return "";
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void visitNode( OWLIndividual root, Element rootElem, Document dox, OWLDataFactory odf ) {
+        OWLClassExpression type = root.getTypes( templates ).iterator().next();
+        Element block = dox.createElement( "block" );
+            block.setAttribute( "type", type.asOWLClass().toStringID() );
+            visitLinks( root, rootElem, dox, odf );
+        rootElem.appendChild( block );
+    }
+
+    private void visitLinks( OWLIndividual root, Element rootElem, Document dox, OWLDataFactory odf ) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
     public static void main( String... args ) {
-        System.out.println( new EditorCoreImpl().getTemplateIds( "Condition" ) );
+        System.out.println( new EditorCoreImpl().instantiateTemplate( "template3", "foo", Collections.emptyMap() ) );
     }
 
 }

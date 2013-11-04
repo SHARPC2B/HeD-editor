@@ -4,7 +4,7 @@
 <div class="modal-body">
 	<h5 class="text-center">Short Name</h5>
 	<p class="text-center">Assign this clause a nickname. This is the name that will be displayed in the logic editor. It should be easy to remember what the clause means based on the name you give it. A default has been assigned.</p>
-	<form class="form-inline text-center">
+	<form class="form-inline text-center" name="expressionName">
   		<label class="control-label">Nickname:</label>
     	<input type="text" style="margin-left: 110px; width: 82%;">
   	</form>
@@ -17,6 +17,6 @@
 </div>
 <div class="modal-footer">
 	<a  href="" class="span4" ng-click="verify(detail)"><i class="icon-ok icon-3x"></i> Verify</a>
-	<a  href="" class="span4"><i class="icon-save icon-3x"></i> Confirm and Save</a>
+	<a  href="" class="span4" ng-click="submit(detail)"><i class="icon-save icon-3x"></i> Confirm and Save</a>
 	<a  href="" class="span3" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
 </div>

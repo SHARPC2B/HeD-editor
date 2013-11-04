@@ -10,4 +10,6 @@ public interface TemplateStore {
 
     public Map<String,Object> getTemplateInfo( String templateId );
 
+    public String instantiateTemplate( String templateId, String name, Map<String,Map<String,Object>> parameterValues );
+
 }

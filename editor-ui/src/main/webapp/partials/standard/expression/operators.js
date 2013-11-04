@@ -13,7 +13,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AtanIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -33,12 +35,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
     this.appendDummyInput().appendTitle('AvgReal')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -62,11 +67,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -92,13 +97,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -117,7 +122,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -138,12 +143,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
     this.appendDummyInput().appendTitle('Max')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -151,7 +159,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -167,11 +175,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -197,13 +205,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -222,7 +230,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -293,12 +301,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
     this.appendDummyInput().appendTitle('Earliest')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -306,7 +317,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -322,11 +333,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -352,13 +363,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -377,7 +388,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -398,12 +409,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
     this.appendDummyInput().appendTitle('IndexMax')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -427,11 +441,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -457,13 +471,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -482,7 +496,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -503,6 +517,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualScalarExpression'] = {
     this.appendDummyInput().appendTitle('EqualScalar')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -512,7 +527,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualScalarExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -520,6 +536,37 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualScalarExpression'] = {
     this.setInputsInline( false );
 
     this.setTooltip( 'HeD expression : EqualScalar' );
+  } 
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertyGetExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendTitle('Get')
+
+
+    
+     
+    this.appendValueInput( 'ARG_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[Obj]' );
+    this.appendValueInput( 'ARG_1' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[Dom]' );
+ 
+    
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( 'HeD expression : Get' );
   } 
 };
 
@@ -532,6 +579,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessExpression'] = {
     this.appendDummyInput().appendTitle('Less')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -541,7 +589,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -566,7 +615,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SortExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -586,12 +637,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
     this.appendDummyInput().appendTitle('Variance')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -615,11 +669,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -645,13 +699,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -670,7 +724,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -740,7 +794,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -760,12 +816,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
     this.appendDummyInput().appendTitle('AllTrue')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -789,11 +848,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -819,13 +878,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -844,7 +903,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -865,6 +924,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualListExpression'] = {
     this.appendDummyInput().appendTitle('EqualList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -874,7 +934,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType','http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -894,12 +955,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
     this.appendDummyInput().appendTitle('Coalesce')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -907,7 +971,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -923,11 +987,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -953,13 +1017,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -978,7 +1042,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -999,12 +1063,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
     this.appendDummyInput().appendTitle('And')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1028,11 +1095,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1058,13 +1125,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -1083,7 +1150,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1104,6 +1171,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsListExpression'] = {
     this.appendDummyInput().appendTitle('ContainsList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -1113,7 +1181,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1133,6 +1202,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerRealExpression'] = {
     this.appendDummyInput().appendTitle('PowerReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -1142,7 +1212,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -1162,6 +1233,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AfterExpression'] = {
     this.appendDummyInput().appendTitle('After')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -1171,7 +1243,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AfterExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1196,7 +1269,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CeilingExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -1216,12 +1291,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
     this.appendDummyInput().appendTitle('StdDev')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1245,11 +1323,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1275,13 +1353,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -1300,7 +1378,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1321,12 +1399,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
     this.appendDummyInput().appendTitle('SumReal')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1350,11 +1431,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1380,13 +1461,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -1405,7 +1486,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1426,6 +1507,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OverlapsExpression'] = {
     this.appendDummyInput().appendTitle('Overlaps')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -1435,7 +1517,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OverlapsExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1460,7 +1543,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -1480,12 +1565,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
     this.appendDummyInput().appendTitle('SumInteger')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1509,11 +1597,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1539,13 +1627,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -1564,7 +1652,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1590,7 +1678,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SinRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -1615,7 +1705,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PredExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -1640,7 +1732,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsinIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -1660,6 +1754,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntervalExpression'] = {
     this.appendDummyInput().appendTitle('Interval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -1669,10 +1764,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -1689,6 +1785,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInIntervalExpression'] = {
     this.appendDummyInput().appendTitle('ProperInInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -1698,7 +1795,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInIntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1718,6 +1816,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
     this.appendDummyInput().appendTitle('GreaterOrEqual')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -1727,7 +1826,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1790,7 +1890,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -1810,12 +1912,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
     this.appendDummyInput().appendTitle('IndexLatest')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1839,11 +1944,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1869,13 +1974,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -1894,7 +1999,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1920,7 +2025,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SqrtRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -1940,12 +2047,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
     this.appendDummyInput().appendTitle('Or')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -1969,11 +2079,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -1999,13 +2109,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -2024,7 +2134,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2045,12 +2155,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
     this.appendDummyInput().appendTitle('UnionInterval')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -2058,7 +2171,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -2074,11 +2187,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -2104,13 +2217,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -2129,7 +2242,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2150,12 +2263,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
     this.appendDummyInput().appendTitle('Exist')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -2179,11 +2295,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -2209,13 +2325,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -2234,7 +2350,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2280,7 +2396,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SinIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2300,6 +2418,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualBooleanExpression'] = {
     this.appendDummyInput().appendTitle('EqualBoolean')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
@@ -2309,7 +2428,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualBooleanExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Boo]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -2355,6 +2475,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsIntervalExpression'] = {
     this.appendDummyInput().appendTitle('ContainsInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -2364,7 +2485,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsIntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -2433,10 +2555,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LastExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -2453,12 +2577,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
     this.appendDummyInput().appendTitle('Count')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -2482,11 +2609,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -2512,13 +2639,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -2537,7 +2664,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2563,7 +2690,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2583,6 +2712,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
     this.appendDummyInput().appendTitle('LessOrEqual')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -2592,7 +2722,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -2612,6 +2743,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SeqToExpression'] = {
     this.appendDummyInput().appendTitle('SeqTo')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -2621,7 +2753,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SeqToExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -2629,6 +2762,37 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SeqToExpression'] = {
     this.setInputsInline( false );
 
     this.setTooltip( 'HeD expression : SeqTo' );
+  } 
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendTitle('Set')
+
+
+    
+     
+    this.appendValueInput( 'ARG_0' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[any]' );
+    this.appendValueInput( 'ARG_1' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[Dom]' );
+ 
+    
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#PropertyType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( 'HeD expression : Set' );
   } 
 };
 
@@ -2672,10 +2836,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeginExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -2692,6 +2858,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinIntervalExpression'] = {
     this.appendDummyInput().appendTitle('WithinInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -2701,7 +2868,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinIntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -2726,7 +2894,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AcosIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2751,7 +2921,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimRightExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -2776,7 +2948,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AtanRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2796,6 +2970,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinAnyExpression'] = {
     this.appendDummyInput().appendTitle('WithinAny')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -2805,7 +2980,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinAnyExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -2830,7 +3006,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CosRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2855,7 +3033,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LowerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -2875,6 +3055,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyRealExpression'] = {
     this.appendDummyInput().appendTitle('MultiplyReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -2884,7 +3065,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2930,6 +3112,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloRealExpression'] = {
     this.appendDummyInput().appendTitle('ModuloReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -2939,7 +3122,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -2964,7 +3148,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimLeftExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -3047,7 +3233,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Obj]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
@@ -3067,6 +3255,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxIntegerExpression'] = {
     this.appendDummyInput().appendTitle('MaxInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -3076,7 +3265,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -3096,6 +3286,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MeetsExpression'] = {
     this.appendDummyInput().appendTitle('Meets')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -3105,7 +3296,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MeetsExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -3130,7 +3322,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNotEmptyExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -3181,7 +3375,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthIntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -3201,6 +3397,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsListExpression'] =
     this.appendDummyInput().appendTitle('ProperContainsList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -3210,7 +3407,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsListExpression'] =
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -3230,6 +3428,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IfNullExpression'] = {
     this.appendDummyInput().appendTitle('IfNull')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -3239,10 +3438,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IfNullExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -3291,6 +3491,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectListExpression'] = {
     this.appendDummyInput().appendTitle('IntersectList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -3300,7 +3501,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -3325,7 +3527,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StringExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -3333,31 +3537,6 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StringExpression'] = {
     this.setInputsInline( false );
 
     this.setTooltip( 'HeD expression : String' );
-  } 
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PropertyExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendTitle('Property')
-
-
-     
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '[Obj]' );
-
-    
-
-    this.setOutput( true, [] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Property' );
   } 
 };
 
@@ -3370,6 +3549,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression'] = {
     this.appendDummyInput().appendTitle('TruncatedDivide')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -3379,7 +3559,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -3399,12 +3580,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
     this.appendDummyInput().appendTitle('Latest')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -3412,7 +3596,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -3428,11 +3612,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -3458,13 +3642,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -3483,7 +3667,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -3509,7 +3693,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -3529,6 +3715,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyIntegerExpression'] = {
     this.appendDummyInput().appendTitle('MultiplyInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -3538,7 +3725,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -3602,6 +3790,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceListExpression'] = {
     this.appendDummyInput().appendTitle('DifferenceList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -3611,7 +3800,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -3631,12 +3821,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
     this.appendDummyInput().appendTitle('List')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -3660,11 +3853,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -3690,13 +3883,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -3715,7 +3908,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -3736,6 +3929,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinRealExpression'] = {
     this.appendDummyInput().appendTitle('MinReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -3745,7 +3939,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -3809,12 +4004,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
     this.appendDummyInput().appendTitle('Median')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -3838,11 +4036,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -3868,13 +4066,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -3893,7 +4091,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -3919,7 +4117,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -3939,12 +4139,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = 
     this.appendDummyInput().appendTitle('ExtractCharacters')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -3968,11 +4171,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = 
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -3998,13 +4201,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = 
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -4023,7 +4226,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = 
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -4049,7 +4252,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TanRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -4071,18 +4276,106 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops#CreateExpression'] = {
 
      
     this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '[any]' );
-
+                         .appendTitle( '[Dom]' );
+ 
     
+    
+     
+    this.appendValueInput( 'ARGS_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[Pro]' );
+    this.appendValueInput( 'ARGS_1' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendTitle( '[Pro]' );
+    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+    this.itemCount_ = 2;
+ 
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
 
     this.setInputsInline( false );
 
     this.setTooltip( 'HeD expression : New' );
-  } 
+  } ,
+        
+
+  mutationToDom: function(workspace) {
+    var container = document.createElement( 'New_mutation' );
+    container.setAttribute( 'items', this.itemCount_ );
+    return container;
+  },
+
+  domToMutation: function(container) {
+    for (var x = 0; x < this.itemCount_; x++) {
+      this.removeInput('ARGS_' + x);
+    }
+    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
+    for (var x = 0; x < this.itemCount_; x++) {
+      var input = this.appendValueInput('ARGS_' + x)
+                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                                       .setAlign( Blockly.ALIGN_RIGHT )
+                                       .appendTitle( '[Pro]' );
+    }
+    if (this.itemCount_ == 0) {
+        this.appendDummyInput('EMPTY');
+    }
+  },
+
+  decompose: function(workspace) {
+      var containerBlock = new Blockly.Block(workspace,
+                                             'argument_group_container');
+      containerBlock.initSvg();
+      var connection = containerBlock.getInput('STACK').connection;
+      for (var x = 0; x < this.itemCount_; x++) {
+        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+      return containerBlock;
+    },
+
+  compose: function(containerBlock) {
+      for (var x = this.itemCount_ - 1; x >= 0; x--) {
+           this.removeInput('ARGS_' + x);
+         }
+       this.itemCount_ = 0;
+       // Rebuild the block's inputs.
+       var itemBlock = containerBlock.getInputTargetBlock('STACK');
+       while (itemBlock) {
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
+                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                                          .setAlign( Blockly.ALIGN_RIGHT );
+
+         // Reconnect any child blocks.
+         if (itemBlock.valueConnection_) {
+          input.connection.connect(itemBlock.valueConnection_);
+         }
+         this.itemCount_++;
+         itemBlock = itemBlock.nextConnection &&
+             itemBlock.nextConnection.targetBlock();
+       }
+
+    },
+    
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var x = 0;
+    while (itemBlock) {
+      var input = this.getInput('ARGS_' + x);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      x++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  }
+
+
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerIntegerExpression'] = {
@@ -4094,6 +4387,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerIntegerExpression'] = {
     this.appendDummyInput().appendTitle('PowerInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -4103,7 +4397,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -4123,6 +4418,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateDiffExpression'] = {
     this.appendDummyInput().appendTitle('DateDiff')
 
 
+    
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
@@ -4136,7 +4433,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateDiffExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -4156,12 +4453,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
     this.appendDummyInput().appendTitle('Reverse')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -4185,11 +4485,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -4215,13 +4515,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -4240,7 +4540,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -4261,6 +4561,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogExpression'] = {
     this.appendDummyInput().appendTitle('Log')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -4270,7 +4571,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -4295,10 +4597,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FirstExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -4315,6 +4619,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualStringExpression'] = {
     this.appendDummyInput().appendTitle('EqualString')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
@@ -4324,7 +4629,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualStringExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -4349,10 +4655,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EndExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -4457,6 +4765,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FilterExpression'] = {
     this.appendDummyInput().appendTitle('Filter')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -4466,7 +4775,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FilterExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Boo]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -4486,6 +4796,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualObjectExpression'] = {
     this.appendDummyInput().appendTitle('EqualObject')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
@@ -4495,7 +4806,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualObjectExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Obj]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -4520,7 +4832,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -4584,6 +4898,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotEqualExpression'] = {
     this.appendDummyInput().appendTitle('NotEqual')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -4593,7 +4908,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotEqualExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -4613,12 +4929,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
     this.appendDummyInput().appendTitle('UnionList')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -4642,11 +4961,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -4672,13 +4991,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -4697,7 +5016,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -4718,6 +5037,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloIntegerExpression'] = {
     this.appendDummyInput().appendTitle('ModuloInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -4727,7 +5047,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -4747,12 +5068,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
     this.appendDummyInput().appendTitle('IndexMin')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -4776,11 +5100,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -4806,13 +5130,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -4831,7 +5155,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -4857,7 +5181,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyCollectionExpression'] = 
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -4903,12 +5229,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
     this.appendDummyInput().appendTitle('Concat')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -4932,11 +5261,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -4962,13 +5291,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -4987,7 +5316,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -5008,6 +5337,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InListExpression'] = {
     this.appendDummyInput().appendTitle('InList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -5017,7 +5347,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -5074,7 +5405,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UpperExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -5094,6 +5427,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexOfExpression'] = {
     this.appendDummyInput().appendTitle('IndexOf')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -5103,7 +5437,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexOfExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -5123,12 +5458,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
     this.appendDummyInput().appendTitle('Flatten')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -5152,11 +5490,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -5182,13 +5520,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -5207,7 +5545,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -5228,6 +5566,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundExpression'] = {
     this.appendDummyInput().appendTitle('Round')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -5237,7 +5576,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -5257,6 +5597,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InAnyExpression'] = {
     this.appendDummyInput().appendTitle('InAny')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -5266,7 +5607,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InAnyExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -5330,12 +5672,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
     this.appendDummyInput().appendTitle('Xor')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -5359,11 +5704,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -5389,13 +5734,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -5414,7 +5759,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -5435,6 +5780,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CombineExpression'] = {
     this.appendDummyInput().appendTitle('Combine')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -5444,7 +5790,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CombineExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -5469,7 +5816,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthStringExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -5490,8 +5839,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops#IteratorExpression'] = {
 
 
     
+    
+    
+    
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -5513,7 +5865,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FloorExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -5533,6 +5887,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PosExpression'] = {
     this.appendDummyInput().appendTitle('Pos')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
@@ -5542,7 +5897,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PosExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -5594,6 +5950,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractIntegerExpression'] = {
     this.appendDummyInput().appendTitle('SubtractInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -5603,7 +5960,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -5623,6 +5981,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SplitExpression'] = {
     this.appendDummyInput().appendTitle('Split')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
@@ -5632,7 +5991,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SplitExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -5652,6 +6012,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeforeExpression'] = {
     this.appendDummyInput().appendTitle('Before')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -5661,7 +6022,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeforeExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -5686,7 +6048,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AcosRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -5706,6 +6070,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualIntervalExpression'] = {
     this.appendDummyInput().appendTitle('EqualInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -5715,7 +6080,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualIntervalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -5735,6 +6101,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideRealExpression'] = {
     this.appendDummyInput().appendTitle('DivideReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -5744,7 +6111,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -5769,7 +6137,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsinRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -5789,12 +6159,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
     this.appendDummyInput().appendTitle('AvgInteger')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -5818,11 +6191,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -5848,13 +6221,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -5873,7 +6246,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -5894,6 +6267,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceIntervalExpression'] =
     this.appendDummyInput().appendTitle('DifferenceInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -5903,10 +6277,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceIntervalExpression'] =
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -5928,7 +6303,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ToStringExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -5948,12 +6325,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
     this.appendDummyInput().appendTitle('AnyTrue')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -5977,11 +6357,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -6007,13 +6387,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -6032,7 +6412,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -6053,12 +6433,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
     this.appendDummyInput().appendTitle('AvgTimeDuration')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -6066,7 +6449,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -6082,11 +6465,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -6112,13 +6495,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -6137,7 +6520,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -6158,12 +6541,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
     this.appendDummyInput().appendTitle('IndexEarliest')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -6187,11 +6573,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -6217,13 +6603,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -6242,7 +6628,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -6263,6 +6649,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConditionalExpression'] = {
     this.appendDummyInput().appendTitle('Conditional')
 
 
+    
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
@@ -6276,10 +6664,10 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConditionalExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -6301,7 +6689,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CosIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6321,6 +6711,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddIntegerExpression'] = {
     this.appendDummyInput().appendTitle('AddInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -6330,7 +6721,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -6350,12 +6742,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
     this.appendDummyInput().appendTitle('Min')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -6363,7 +6758,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
     this.itemCount_ = 2;
  
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -6379,11 +6774,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -6409,13 +6804,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -6434,7 +6829,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -6460,7 +6855,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Boo]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -6480,6 +6877,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Log10Expression'] = {
     this.appendDummyInput().appendTitle('Log10')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -6489,7 +6887,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Log10Expression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6509,6 +6908,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubstringExpression'] = {
     this.appendDummyInput().appendTitle('Substring')
 
 
+    
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
@@ -6522,7 +6923,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubstringExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -6542,12 +6943,15 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
     this.appendDummyInput().appendTitle('AllFalse')
 
 
+    
+    
+    
      
-    this.appendValueInput( 'ARG_0' )
+    this.appendValueInput( 'ARGS_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    this.appendValueInput( 'ARGS_1' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
@@ -6571,11 +6975,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARG_' + x);
+      this.removeInput('ARGS_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARG_' + x)
+      var input = this.appendValueInput('ARGS_' + x)
                                        .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                        .setAlign( Blockly.ALIGN_RIGHT )
                                        .appendTitle( '[Col, Lis]' );
@@ -6601,13 +7005,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARG_' + x);
+           this.removeInput('ARGS_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARG_' + this.itemCount_)
+         var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                                           .setAlign( Blockly.ALIGN_RIGHT );
 
@@ -6626,7 +7030,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARG_' + x);
+      var input = this.getInput('ARGS_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -6647,6 +7051,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ForEachExpression'] = {
     this.appendDummyInput().appendTitle('ForEach')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -6656,7 +7061,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ForEachExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
@@ -6676,6 +7082,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsIntervalExpression
     this.appendDummyInput().appendTitle('ProperContainsInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -6685,7 +7092,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsIntervalExpression
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -6705,6 +7113,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddRealExpression'] = {
     this.appendDummyInput().appendTitle('AddReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -6714,7 +7123,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6734,6 +7144,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
     this.appendDummyInput().appendTitle('DatePart')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
@@ -6743,7 +7154,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6768,7 +7180,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -6788,6 +7202,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractRealExpression'] = {
     this.appendDummyInput().appendTitle('SubtractReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -6797,7 +7212,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6822,7 +7238,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TanIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -6847,7 +7265,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SuccExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -6893,6 +7313,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterExpression'] = {
     this.appendDummyInput().appendTitle('Greater')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -6902,7 +7323,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -6922,6 +7344,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerStringExpression'] = {
     this.appendDummyInput().appendTitle('IndexerString')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
@@ -6931,7 +7354,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerStringExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -6989,6 +7413,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
     this.appendDummyInput().appendTitle('DateAdd')
 
 
+    
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
@@ -7002,7 +7428,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#TimestampType'] );
@@ -7027,7 +7453,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Str]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
@@ -7047,6 +7475,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectIntervalExpression'] = 
     this.appendDummyInput().appendTitle('IntersectInterval')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( null )
@@ -7056,10 +7485,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectIntervalExpression'] = 
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -7076,6 +7506,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxRealExpression'] = {
     this.appendDummyInput().appendTitle('MaxReal')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -7085,7 +7516,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -7105,6 +7537,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerListExpression'] = {
     this.appendDummyInput().appendTitle('IndexerList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -7114,10 +7547,11 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
@@ -7139,7 +7573,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateRealExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -7159,6 +7595,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinIntegerExpression'] = {
     this.appendDummyInput().appendTitle('MinInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -7168,7 +7605,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -7188,6 +7626,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideIntegerExpression'] = {
     this.appendDummyInput().appendTitle('DivideInteger')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
@@ -7197,7 +7636,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
@@ -7222,7 +7662,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNullExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -7247,7 +7689,9 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SqrtIntegerExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Int, Num, Rea]' );
-
+ 
+    
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
@@ -7267,6 +7711,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInListExpression'] = {
     this.appendDummyInput().appendTitle('ProperInList')
 
 
+    
      
     this.appendValueInput( 'ARG_0' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
@@ -7276,7 +7721,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInListExpression'] = {
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[Col, Lis]' );
-
+ 
+    
     
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
@@ -7301,33 +7747,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConvertExpression'] = {
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendTitle( '[any]' );
-
+ 
+    
+    
     
 
-    this.setOutput( true, [] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
     this.setTooltip( 'HeD expression : Convert' );
-  } 
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertyExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendTitle('BUG')
-
-
-    
-
-    this.setOutput( true, [] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : BUG' );
   } 
 };
 

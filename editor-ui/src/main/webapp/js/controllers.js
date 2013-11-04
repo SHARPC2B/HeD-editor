@@ -266,7 +266,7 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http ) ), "Variables");
+                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Choose Expression...)" ) ), "Variables");
                 this.setOutput(true, null);
                 this.setTooltip('');
             }
@@ -285,8 +285,9 @@ angular.module('ruleApp.controllers', [])
             helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(40);
-                this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableProperties( $http ) ), "DomaninProperty");
+                this.appendValueInput()
+                    .appendTitle(new Blockly.FieldDropdown( availableProperties( $http ) ), "DomaninProperty")
+                    .setCheck('http://asu.edu/sharpc2b/ops#DomainProperty');
                 this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainProperty']);
                 this.setTooltip('');
             }
@@ -456,7 +457,7 @@ angular.module('ruleApp.controllers', [])
 	    		init: function() {
 	    			this.setColour(160);
 	    			this.appendDummyInput()
-	    			.appendTitle(new Blockly.FieldDropdown( availableExpressions( $http ) ), "Clauses");
+	    			.appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
 	    			this.setOutput(true, "Boolean");
 	    			this.setTooltip('');
 	    		}
@@ -467,6 +468,17 @@ angular.module('ruleApp.controllers', [])
 	    			this.setColour(210);
 	    			this.appendValueInput( 'NOT' )
                         .appendTitle( "Not" )
+                        .setAlign( Blockly.ALIGN_RIGHT );
+	    			this.setOutput(true, "Boolean");
+	    			this.setTooltip('');
+	    		}
+	    };
+	    Blockly.Blocks.logic_exists = {
+	    		helpUrl: 'http://www.example.com/',
+	    		init: function() {
+	    			this.setColour(210);
+	    			this.appendValueInput( 'EXISTS' )
+                        .appendTitle( "Exists" )
                         .setAlign( Blockly.ALIGN_RIGHT );
 	    			this.setOutput(true, "Boolean");
 	    			this.setTooltip('');
@@ -517,7 +529,7 @@ angular.module('ruleApp.controllers', [])
                           .setCheck("Documentation")
                           .appendTitle("Documentation");
                       this.appendValueInput("Condition")
-                          .setCheck("Condition")
+                          .setCheck("Boolean")
                           .appendTitle("Condition");
                       this.appendStatementInput( ["NestedAction"] )
                           .setCheck( ["AtomicAction", "ActionGroup" ] );
@@ -526,24 +538,27 @@ angular.module('ruleApp.controllers', [])
 				    this.setTooltip('');
 				  }
 		};
-		Blockly.Blocks.logic_ternary = {
-				  helpUrl: 'http://www.example.com/',
-				  init: function() {
-				    this.setColour(120);
-				    this.appendValueInput("Documentation")
-				        .setCheck("Documentation")
-				        .appendTitle("Documentation");
-				    this.appendValueInput("Condition")
-				        .setCheck("Boolean")
-				        .appendTitle("Condition");
-				    this.appendValueInput("ActionSentence")
-				        .setCheck("ActionSentence")
-				        .appendTitle("Action Sentence");
-				    this.setPreviousStatement(true);
-				    this.setNextStatement(true);
-				    this.setTooltip('');
-				  }
-		};
+        Blockly.Blocks.atomic_action = {
+            helpUrl: 'http://www.example.com/',
+            init: function() {
+                this.setColour(99);
+                this.appendDummyInput()
+                    .appendTitle(new Blockly.FieldDropdown([["Create", "CreateAction"], ["Update", "UpdateAction"], ["Remove", "RemoveAction"], ["Fire Event", "FireEventAction"], ["Declare", "DeclareResponseAction"], ["Collect", "CollectInformationAction"]]), "NAME");
+                this.appendValueInput("Documentation")
+                    .setCheck("Documentation")
+                    .appendTitle("Documentation");
+                this.appendValueInput("Condition")
+                    .setCheck("Boolean")
+                    .appendTitle("Condition");
+                this.appendValueInput("ActionSentence")
+                    .setCheck("ActionSentence")
+                    .appendTitle("Action Sentence");
+                this.setPreviousStatement(true, ["ActionGroup","AtomicAction"]);
+                this.setNextStatement(true, ["ActionGroup","AtomicAction"]);
+                this.setTooltip('');
+            }
+        };
+
 		Blockly.Blocks.action_documentation = {
 				init : function() {
 					this.setColour(160);
@@ -567,21 +582,21 @@ angular.module('ruleApp.controllers', [])
 					options.push(option);
 				}
 		};
-        Blockly.Blocks.action_boolean = {
+        Blockly.Blocks.action_condition = {
             helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http ) ), "Clauses");
+                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
             }
         };
-		Blockly.Blocks.text = {
+		Blockly.Blocks.action_sentence = {
 				init: function() {
 					this.setColour(290);
 				    this.appendDummyInput()
-				        .appendTitle(new Blockly.FieldTextInput("Action Sentence"), "AS");
+				        .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)" ) ), "AS");
 				    this.setOutput(true, "ActionSentence");
 				    this.setTooltip('');
 				  }
@@ -652,10 +667,19 @@ angular.module('ruleApp.controllers', [])
 
 	.controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', function($scope, $modalInstance, clause, $http){
 		$scope.clause = clause;
-		$scope.submit = function(){
-			$modalInstance.close('ok');
+		$scope.submit = function(data) {
+
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/primitive/create/' + data.key,
+                data : $scope.expressionName
+
+            }).success( function( answer ) {
+                $modalInstance.dismiss('ok');
+            });
+
 		};
-		$http.get(serviceUrl + '/template/' + clause.id).success(function(data) {
+		$http.get(serviceUrl + '/template/' + clause.key).success(function(data) {
 			$scope.detail = data;
 		});
 		$scope.cts2search = function(matchValue) {
@@ -684,8 +708,8 @@ function standardMenuItems(position) {
 	return menuItems;
 };
 
-function availableExpressions( httpContext ) {
-    var map = [ ["(Choose Expression...)", "" ] ];
+function availableExpressions( httpContext, initMessage ) {
+    var map = [ [initMessage, "" ] ];
     httpContext.get(serviceUrl + '/rule/expressions/list').success(function(data) {
         var expressions = data;
         for ( var j = 0; j < expressions.length; j++ ) {
