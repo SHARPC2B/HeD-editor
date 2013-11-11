@@ -1,0 +1,104 @@
+{
+    "mtype": "PrimitiveTemplate", "errors": [],
+    "id": "1A",
+    "category": "Condition",
+    "group": "Medications",
+    "name": "Patient on MEDICATION with DOSAGE",
+    "description": "...Description...",
+    "example": "Patient on Aspirin 75mg Daily",
+    "parameterIds": ["Medication", "Dosage"],
+    "parameters": [
+        {
+            "mtype": "ParameterType",
+            "errors": [],
+            "id": "Medication",
+            "name": "MEDICATION",
+            "label": "Medication Name",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "elements": [
+                {
+                    "mtype": "StringElementType",
+                    "errors": [],
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm",
+                        "NDC"],
+                    "value": "RxNorm",
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null
+                },
+                {
+                    "mtype": "StringElementType",
+                    "errors": [],
+                    "name": "code",
+                    "label": "Medication Name",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "selectionChoices": null,
+                    "value": null,
+                    "searchService": "CTS2",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null
+                }
+            ],
+            "useLiteral": true,
+            "cannedExpressions": ["inferFromPrescriptionHistory()",
+                "fillInBasedOnPatientConditions"],
+            "useExpression": null
+        },
+        {
+            "mtype": "ParameterType",
+            "errors": [],
+            "id": "Dosage",
+            "name": "DOSAGE",
+            "label": "Dosage of Medication",
+            "description": "...Description...",
+            "hedType": "PhysicalQuantityLiteral",
+            "elements": [
+                {
+                    "mtype": "DecimalElementType",
+                    "errors": [],
+                    "name": "value",
+                    "label": "Amount of Medication per Dose",
+                    "description": null,
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "selectionChoices": null,
+                    "value": 0.0,
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": 0.0
+                },
+                {
+                    "mtype": "StringElementType",
+                    "errors": [],
+                    "name": "unit",
+                    "label": "Units",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg",
+                        "ml",
+                        "count"],
+                    "value": "mg",
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null
+                }
+            ],
+            "useLiteral": true,
+            "cannedExpressions": ["inferFromPatientRecords()"],
+            "useExpression": null
+        }
+    ]
+}

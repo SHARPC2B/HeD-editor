@@ -1,0 +1,19 @@
+{
+    "rules": [
+        {
+            "ruleId": "1",
+            "typeName": "Rule",
+            "primitives": []
+        },
+        {
+            "ruleId": "2",
+            "typeName": "Rule",
+            "primitives": []
+        },
+        {
+            "ruleId": "3",
+            "typeName": "Rule",
+            "primitives": []
+        }
+    ]
+}

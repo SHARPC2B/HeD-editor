@@ -1,0 +1,43 @@
+{
+    "mtype": "PrimitiveTemplate",
+    "id": "1",
+    "name": "Patient on MEDICATION",
+    "example": "Patient on Metformin",
+    "description": "...Description...",
+    "parameters": [
+        {
+            "id": "medication",
+            "mtype": "ParameterType",
+            "name": "MEDICATION",
+            "label": "Medication Name",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "value": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "useLiteral": true,
+                    "cannedExpressions":[]
+                },
+                {
+                    "name": "code",
+                    "label": "Medication Name",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "value": "",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "useLiteral": true,
+                    "cannedExpressions":[]
+                }
+            ]
+        }
+    ]
+}

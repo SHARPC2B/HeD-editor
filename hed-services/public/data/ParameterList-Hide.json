@@ -1,0 +1,301 @@
+{
+    "mtype": "ParameterList",
+    "parameters": [
+        {
+            "id": "Medication",
+            "mtype": "ParameterType",
+            "name": "MEDICATION",
+            "label": "Medication Name",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "useLiteral": true,
+            "cannedExpressions": ["inferFromPrescriptionHistory()", "fillInBasedOnPatientConditions"],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "initialValue": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                },
+                {
+                    "name": "code",
+                    "label": "Medication Name",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "id": "Dosage",
+            "mtype": "ParameterType",
+            "name": "DOSAGE",
+            "label": "Dosage of Medication",
+            "description": "...Description...",
+            "hedType": "PhysicalQuantityLiteral",
+            "useLiteral": true,
+            "cannedExpressions": ["inferFromPatientRecords()"],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Amount of Medication per Dose",
+                    "mtype": "DecimalElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "initialValue": 0.0,
+                    "minValue": 0.0,
+                    "errors": []
+                },
+                {
+                    "name": "unit",
+                    "label": "Units",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count"],
+                    "initialValue": "mg",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "id": "Route",
+            "mtype": "ParameterType",
+            "name": "ROUTE",
+            "label": "Via what route does the medication enter the body?",
+            "description": "...Description...",
+            "hedType": "SimpleCodeLiteral",
+            "useLiteral": true,
+            "cannedExpressions": ["inferFromGuidelines()"],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "code",
+                    "label": "Route of Intake",
+                    "mtype": "DecimalElementType",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["Pill", "Liquid", "Injection", "Ointment"],
+                    "initialValue": "Pill",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "id": "DosageFrequency",
+            "mtype": "ParameterType",
+            "name": "FREQUENCY",
+            "label": "Times Patient takes medication per period.",
+            "description": "...Description...",
+            "hedType": "PeriodLiteral",
+            "useLiteral": true,
+            "cannedExpressions": ["useMaxFrequencyForMedication()"],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "count",
+                    "label": "Number of doses",
+                    "mtype": "StringElementType",
+                    "valueType": "Integer",
+                    "widgetType": "Dropdown",
+                    "selectionChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "initialValue": 0,
+                    "minValue": 0,
+                    "errors": []
+                },
+                {
+                    "name": "period",
+                    "mtype": "DecimalElementType",
+                    "label": "Per Time Period",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["Daily", "Weekly", "Monthly", "Annually", "As Needed"],
+                    "initialValue": "Daily",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "id": "LabTest",
+            "mtype": "ParameterType",
+            "name": "LabTest",
+            "label": "Lab Test",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "Problem",
+            "mtype": "ParameterType",
+            "name": "Problem",
+            "label": "Problem",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "LabResult",
+            "mtype": "ParameterType",
+            "name": "LabResult",
+            "label": "Lab Result",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "TimeValue",
+            "mtype": "ParameterType",
+            "name": "TimeValue",
+            "label": "Time Value",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "TimeRange",
+            "mtype": "ParameterType",
+            "name": "TimeRange",
+            "label": "Time Range",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "RefValue",
+            "mtype": "ParameterType",
+            "name": "RefValue",
+            "label": "Ref Value",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "ResultValue",
+            "mtype": "ParameterType",
+            "name": "ResultValue",
+            "label": "Result Value",
+            "hedType": "TBD",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+            ]
+        },
+        {
+            "id": "PersonName",
+            "mtype": "ParameterType",
+            "name": "PersonName",
+            "label": "Person Name",
+            "description": "...Description...",
+            "hedType": "StringLiteral",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Name",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "id": "PersonRole",
+            "mtype": "ParameterType",
+            "name": "PersonRole",
+            "label": "Person Role",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "useLiteral": true,
+            "cannedExpressions": [],
+            "useExpression": null,
+            "errors": [],
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC", "RoleCodes"],
+                    "initialValue": "RoleCodes",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                },
+                {
+                    "name": "code",
+                    "label": "Medication Name",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        }
+    ]
+}

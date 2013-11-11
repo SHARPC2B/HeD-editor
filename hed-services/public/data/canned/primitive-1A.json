@@ -1,0 +1,70 @@
+{
+    "type": "widget-spec",
+    "primitiveID": "1A",
+    "widgets": [
+        {
+            "parameterName": "MEDICATION",
+            "label": "Medication Name",
+            "widgetType": "TextBox",
+            "useLiteral": true,
+            "cannedExpressions":[]
+        },
+        {
+            "parameterName": "MedForm",
+            "label": "Medication Form",
+            "widgetType": "Choice",
+            "selectionChoices": ["Pill", "Liquid", "Injection", "Ointment"],
+            "value": "Pill",
+            "minSelectionCount": 1,
+            "maxSelectionCount": 1,
+            "useLiteral": true,
+            "cannedExpressions":[]
+        },
+        {
+            "parameterName": "Units",
+            "label": "Units",
+            "widgetType": "Choice",
+            "selectionChoices": ["mg", "ml", "count"],
+            "value": "mg",
+            "minSelectionCount": 1,
+            "maxSelectionCount": 1,
+            "useLiteral": true,
+            "cannedExpressions":[]
+        },
+        {
+            "parameterName": "Dose",
+            "label": "Dose Amount",
+            "widgetType": "TextBox",
+            "valueType": "PositiveNumber",
+            "value": 0.0,
+            "minSelectionCount": 1,
+            "maxSelectionCount": 1,
+            "useLiteral": true,
+            "cannedExpressions":[]
+        },
+        {
+            "parameterName": "Schedule",
+            "label": "Medication Schedule",
+            "widgetType": "Choice",
+            "selectionChoices": ["TID", "TIW", "TIM", "As Needed"],
+            "valueType": "PositiveInteger",
+            "value": 0,
+            "minSelectionCount": 1,
+            "maxSelectionCount": 1,
+            "useLiteral": true,
+            "cannedExpressions":[]
+        },
+        {
+            "parameterName": "ScheduleCount",
+            "label": "Number of Doses",
+            "widgetType": "Dropdown",
+            "selectionChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "valueType": "PositiveInteger",
+            "value": 0,
+            "minSelectionCount": 0,
+            "maxSelectionCount": 1,
+            "useLiteral": true,
+            "cannedExpressions":[]
+        }
+    ]
+}

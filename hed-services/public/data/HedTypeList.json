@@ -1,0 +1,84 @@
+{
+    "mtype": "HedTypeList",
+    "hedTypes": [
+        {
+            "mtype": "HedType",
+            "name": "CodeLiteral",
+            "label": "Code Literal",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "codeSystem",
+                    "label": "Coding System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "initialValue": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "code",
+                    "label": "Code Value",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "PhysicalQuantityLiteral",
+            "label": "Physical Quantity",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "value",
+                    "label": "Quantity / Amount",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": 0.0,
+                    "initialValue": 0.0
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "unit",
+                    "label": "Physical Units of Measure",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count", "m", "in", "mm", "kg", "oz"],
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "initialValue": "mg"
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "StringLiteral",
+            "label": "Text Value",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        }
+    ]
+}

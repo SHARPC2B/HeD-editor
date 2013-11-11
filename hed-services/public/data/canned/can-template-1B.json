@@ -1,0 +1,115 @@
+{
+    "mtype": "PrimitiveTemplate",
+    "id": "1B",
+    "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
+    "example": "Patient on Aspirin 75mg 2x Daily",
+    "description": "This condition verifies whether the patient is taking some medication with exactly the specified dosage. For example : Patient is on Amoxicillin, oral, 500 mg 2/day.",
+    "parameters": [
+        {
+            "id": "medication",
+            "mtype": "ParameterType",
+            "name": "MEDICATION",
+            "label": "Medication Name",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "value": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "name": "code",
+                    "label": "Medication Name",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "value": "",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "id": "dosage",
+            "mtype": "ParameterType",
+            "name": "DOSAGE",
+            "label": "Dosage of Medication",
+            "description": "...Description...",
+            "hedType": "PhysicalQuantityLiteral",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Amount of Medication per Dose",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "value": 0.0,
+                    "minValue": 0.0
+                },
+                {
+                    "name": "unit",
+                    "label": "Units",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count"],
+                    "value": "mg",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "id": "route",
+            "mtype": "ParameterType",
+            "name": "ROUTE",
+            "label": "Via what route does the medication enter the body?",
+            "description": "...Description...",
+            "hedType": "SimpleCodeLiteral",
+            "elements": [
+                {
+                    "name": "code",
+                    "label": "Route of Intake",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["Pill", "Liquid", "Injection", "Ointment"],
+                    "value": "Pill",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "id": "dosage.frequency",
+            "mtype": "ParameterType",
+            "name": "FREQUENCY",
+            "label": "Times Patient takes medication per period.",
+            "description": "...Description...",
+            "hedType": "PeriodLiteral",
+            "elements": [
+                {
+                    "name": "count",
+                    "label": "Number of doses",
+                    "valueType": "Integer",
+                    "widgetType": "Dropdown",
+                    "selectionChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "value": 0
+                },
+                {
+                    "name": "period",
+                    "label": "Per Time Period",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["Daily", "Weekly", "Monthly", "Annually", "As Needed"],
+                    "value": "Daily",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        }
+    ]
+}

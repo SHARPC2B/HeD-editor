@@ -1,0 +1,70 @@
+[
+    {
+        "id": "1",
+        "template": "Patient on MEDICATION",
+        "description": "Description of 1",
+        "uris": ["http://example.com/1/1", "http://example.com/1/2"]
+    },
+    {
+        "id": "1A",
+        "template": "Patient on MEDICATION with DOSAGE",
+        "description": "Description of 1A",
+        "uris": ["http://example.com/1A/1", "http://example.com/1A/2"]
+    },
+    {
+        "id": "7",
+        "template": "Prior LAB result within last M days is OP VALUE",
+        "description": "Description of 7",
+        "uris": ["http://example.com/7/1",
+            "http://example.com/7/2"]
+    },
+    {
+        "id": "13",
+        "template": "Patient had LAB ordered over last M days",
+        "description": "Description of 13",
+        "uris": ["http://example.com/13/1",
+            "http://example.com/13/2"]
+    },
+    {
+        "id": "16",
+        "template": "PATIENT has PROBLEMS on problem list",
+        "description": "Description of 16",
+        "uris": ["http://example.com/16/1",
+            "http://example.com/16/2"]
+    },
+    {
+        "id": "21",
+        "template": "never had MED-VACCINE",
+        "description": "Description of 21",
+        "uris": ["http://example.com/21/1",
+            "http://example.com/21/2"]
+    },
+    {
+        "id": "22",
+        "template": "most recent LABTEST OP OP-VALUE",
+        "description": "Description of 22",
+        "uris": ["http://example.com/22/1",
+            "http://example.com/22/2"]
+    },
+    {
+        "id": "23",
+        "template": "last/most recent LABTEST OP TIME-UNITS",
+        "description": "Description of 23",
+        "uris": ["http://example.com/23/1",
+            "http://example.com/23/2"]
+    },
+    {
+        "id": "24",
+        "template": "no LABTEST for OP TIME-UNITS",
+        "description": "Description of 24",
+        "uris": ["http://example.com/24/1",
+            "http://example.com/24/2"]
+    },
+    {
+        "id": "28",
+        "template": "last VACCINATION prior to TIME-DATE",
+        "description": "Description of 28",
+        "uris": ["http://example.com/28/1",
+            "http://example.com/28/2"]
+    }
+]

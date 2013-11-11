@@ -1,0 +1,126 @@
+[
+        {
+            "mtype": "TemplateGroup",
+            "label": "Medications",
+            "templates": [
+                {
+                    "id": "1",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "Patient on MEDICATION",
+                    "example": "Patient on Metformin",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["medication"]
+                },
+                {
+                    "id": "1A",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "Patient on MEDICATION with DOSAGE",
+                    "example": "Patient on Aspirin 75mg Daily",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["medication", "dosage"]
+                },
+                {
+                    "id": "1B",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
+                    "example": "Patient on Aspirin 75mg 2x Daily",
+                    "description": "This condition verifies whether the patient is taking some medication with exactly the specified dosage. For example : Patient is on Amoxicillin, oral, 500 mg 2/day.",
+                    "errors": [],
+                    "parameterIds": ["medication", "dosage", "route", "dosage.frequency"]
+                }
+            ]
+        },
+        {
+            "mtype": "TemplateGroup",
+            "label": "Labs",
+            "templates": [
+                {
+                    "id": "7",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "Prior LAB result within last M days is OP VALUE",
+                    "example": "Prior Potassium result within last 7 days is > 5.2 mEq/L",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["LabResult", "TimeRange", "RefValue"]
+                },
+                {
+                    "id": "13",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "Patient had LAB ordered over last M days",
+                    "example": "Patient had Hemoglobin A1c ordered over last 7 days",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["LabTest", "TimeRange"]
+                },
+                {
+                    "id": "22",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "most recent LABTEST OP OP-VALUE",
+                    "example": "Most recent Hemoglobin A1c > 7%",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["LabTest", "ResultValue"]
+                },
+                {
+                    "id": "23",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "last/most recent LABTEST OP TIME-UNITS",
+                    "example": "Most recent Hemoglobin A1c before 6 months ago",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["LabTest", "TimeRange"]
+                },
+                {
+                    "id": "24",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "no LABTEST for OP TIME-UNITS",
+                    "example": "No Hemoglobin A1c for > 6 months",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["LabTest", "TimeRange"]
+                }
+            ]
+        },
+        {
+            "mtype": "TemplateGroup",
+            "label": "Problems",
+            "templates": [
+                {
+                    "id": "16",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "PATIENT has PROBLEMS on problem list",
+                    "example": "Patient has Type 2 DM on problem list",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["Problems"]
+                }
+            ]
+        },
+        {
+            "mtype": "TemplateGroup",
+            "label": "Vaccination",
+            "templates": [
+                {
+                    "id": "21",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "never had MED-VACCINE",
+                    "example": "Never had Rotavirus-Vaccine",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["Medications"]
+                },
+                {
+                    "id": "28",
+                    "mtype": "PrimitiveTemplate",
+                    "name": "last VACCINATION prior to TIME-DATE",
+                    "example": "Last Tetanus-Vaccine prior to 10 years ago",
+                    "description": "...Description...",
+                    "errors": [],
+                    "parameterIds": ["Medication", "TimeValue"]
+                }
+            ]
+        }
+    ]
+

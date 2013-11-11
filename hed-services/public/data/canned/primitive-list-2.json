@@ -1,0 +1,70 @@
+[
+    {
+        "id": "1",
+        "template": "Patient on MEDICATION",
+        "description": "Patient on Metformin",
+        "uris": ["http://example.com/1/1", "http://example.com/1/2"]
+    },
+    {
+        "id": "1A",
+        "template": "Patient on MEDICATION with DOSAGE",
+        "description": "Patient on Aspirin 75mg Daily",
+        "uris": ["http://example.com/1A/1", "http://example.com/1A/2"]
+    },
+    {
+        "id": "7",
+        "template": "Prior LAB result within last M days is OP VALUE",
+        "description": "Prior Potassium result within last 7 days is > 5.2 mEq/L",
+        "uris": ["http://example.com/7/1",
+            "http://example.com/7/2"]
+    },
+    {
+        "id": "13",
+        "template": "Patient had LAB ordered over last M days",
+        "description": "Patient had Hemoglobin A1c ordered over last 7 days",
+        "uris": ["http://example.com/13/1",
+            "http://example.com/13/2"]
+    },
+    {
+        "id": "16",
+        "template": "PATIENT has PROBLEMS on problem list",
+        "description": "Patient has Type 2 DM on problem list",
+        "uris": ["http://example.com/16/1",
+            "http://example.com/16/2"]
+    },
+    {
+        "id": "21",
+        "template": "never had MED-VACCINE",
+        "description": "Never had Rotavirus-Vaccine",
+        "uris": ["http://example.com/21/1",
+            "http://example.com/21/2"]
+    },
+    {
+        "id": "22",
+        "template": "most recent LABTEST OP OP-VALUE",
+        "description": "Most recent Hemoglobin A1c > 7%",
+        "uris": ["http://example.com/22/1",
+            "http://example.com/22/2"]
+    },
+    {
+        "id": "23",
+        "template": "last/most recent LABTEST OP TIME-UNITS",
+        "description": "Most recent Hemoglobin A1c before 6 months ago",
+        "uris": ["http://example.com/23/1",
+            "http://example.com/23/2"]
+    },
+    {
+        "id": "24",
+        "template": "no LABTEST for OP TIME-UNITS",
+        "description": "No Hemoglobin A1c for > 6 months",
+        "uris": ["http://example.com/24/1",
+            "http://example.com/24/2"]
+    },
+    {
+        "id": "28",
+        "template": "last VACCINATION prior to TIME-DATE",
+        "description": "Last Tetanus-Vaccine prior to 10 years ago",
+        "uris": ["http://example.com/28/1",
+            "http://example.com/28/2"]
+    }
+]

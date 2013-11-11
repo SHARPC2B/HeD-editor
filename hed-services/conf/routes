@@ -1,0 +1,71 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET            /                                          controllers.Application.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET            /assets/*file                              controllers.Assets.at(path="/public", file)
+
+OPTIONS        /*ignore                                   controllers.SharpController.checkPreFlight(ignore:String)
+
+GET            /cts2/hello                                controllers.CtsActions.helloWorld()
+GET            /cts2/hello2                               controllers.CtsActions.unMarshallandPrintFromJson()
+
+########################################################
+
+GET            /cts2/codematch/:cs/:matchvalue            controllers.CtsActions.searchInCodeSystem(cs,matchvalue)
+
+GET            /template/list/:category                   controllers.ArtifactActions.getTemplateListByGroupJson(category)
+GET            /template/list                             controllers.ArtifactActions.getTemplateListJson()
+PUT            /template/inst                             controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true,save:Boolean = false)
+GET            /template/:id                              controllers.ArtifactActions.getConstructedTemplateForID(id:String)
+#GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
+
+GET            /rule                                      controllers.RuleActions.list()
+POST           /rule                                      controllers.RuleActions.create()
+GET            /rule/:id                                  controllers.RuleActions.get(id)
+#PUT            /rule/:id                              controllers.RuleActions.save(id)
+POST           /rule/:id/template/create/:tid             controllers.RuleActions.createPrimitive(id,tid)
+POST           /primitive/create/:tid                     controllers.RuleActions.createPrimitive2(tid)
+PUT            /primitive                                 controllers.RuleActions.savePrimitive2(verify:Boolean = true,save:Boolean = false)
+
+GET            /fwd/cts2/*path                            controllers.CtsActions.forwardToCts(path)
+
+########################################################
+
+GET            /rule/expressions/list                     controllers.ExpressionActions.getExpressions()
+POST           /rule/expressions/:exprId/:exprName        controllers.ExpressionActions.updateExpression(exprId:String, exprName:String)
+
+OPTIONS        /rule/expressions/*path                    controllers.ExpressionActions.configExpressionsAccess(path)
+
+GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()
+GET            /domain/properties                         controllers.DomainModelActions.getAvailableProperties()
+
+# GET  /template                  List of template types
+# GET  /template/1B               get template type 1B.  Does not create an instance
+# POST /template/1B               Create a new instance of 1B, return it with it's ID+URI (/template/1B/xyz123)
+# PUT  /template/1B/xyz123        Set new def of xyz123
+
+# Hello action
+# GET     /hello                      controllers.ApplicationScl.sayHello
+
+#GET            /zero                             controllers.graph.Arithmetic.zero()
+#GET            /add/:x/:y                        controllers.graph.Arithmetic.add(x: Long, y:Long)
+#GET            /mult/:x/:y                       controllers.graph.Arithmetic.mult(x: Long, y:Long)
+
+#GET            /graph                            controllers.graph.GraphActions.index()
+#GET            /graph/list                       controllers.graph.GraphActions.list()
+#GET            /graph/first                      controllers.graph.GraphActions.first()
+#GET            /graph/forSubject/:subject        controllers.graph.GraphActions.forSubject(subject:String)
+#
+#POST           /graph/input                      controllers.graph.GraphActions.addJsonGraph()
+#POST           /triple/input                     controllers.graph.GraphActions.addJsonTriple()
+
+#GET            /artifact/:id                          controllers.old.TestActions.getArtifactJson(id:String)
+
+#GET            /primitive/list        controllers.ArtifactActions.getPrimitiveListJson()
+
+#GET            /primitive/:id         controllers.ArtifactActions.getPrimitiveByID(id:String)
+#GET            /template/:id          controllers.ArtifactActions.getCannedTemplateForID(id:String)

@@ -1,0 +1,98 @@
+{
+    "id": "3dd03e38-df2b-4278-a84c-6b53ce12a22e",
+    "templateId": "1A",
+    "category": "Condition",
+    "group": "Medications",
+    "name": "Patient on MEDICATION with DOSAGE",
+    "description": "...Description...",
+    "example": "Patient on Aspirin 75mg Daily",
+    "errors": [],
+    "parameters": [
+        {
+            "key": "MEDICATION",
+            "name": "Medication",
+            "label": "Medication Name",
+            "description": null,
+            "hedTypeName": "CodeLiteral",
+            "useLiteral": true,
+            "expressionChoices": ["inferFromPrescriptionHistory()", "fillInBasedOnPatientConditions"],
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Coding System",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "initialValue": "RxNorm",
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null,
+                    "errors": [],
+                    "value": "RxNorm"
+                },
+                {
+                    "name": "code",
+                    "label": "Code Value",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "selectionChoices": null,
+                    "initialValue": null,
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null,
+                    "errors": [],
+                    "value": null
+                }
+            ],
+            "selectedExpression": null,
+            "errors": []
+        },
+        {
+            "key": "DOSAGE",
+            "name": "Dosage",
+            "label": "Dosage of Medication",
+            "description": null,
+            "hedTypeName": "PhysicalQuantityLiteral",
+            "useLiteral": true,
+            "expressionChoices": ["inferFromPatientRecords()"],
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Quantity / Amount",
+                    "description": null,
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "selectionChoices": null,
+                    "initialValue": 0.0,
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": 0.0,
+                    "errors": [],
+                    "value": 0.0
+                },
+                {
+                    "name": "unit",
+                    "label": "Physical Units of Measure",
+                    "description": null,
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count", "m", "in", "mm", "kg", "oz"],
+                    "initialValue": "mg",
+                    "searchService": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": null,
+                    "errors": [],
+                    "value": "mg"
+                }
+            ],
+            "selectedExpression": null,
+            "errors": []
+        }
+    ]
+}

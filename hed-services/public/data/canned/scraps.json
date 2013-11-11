@@ -1,0 +1,19 @@
+{
+    "paramType": "PhysicalQuantityLiteral",
+    "elements": [
+        {
+            "id": "e122",
+            "name": "value",
+            "type": "Real",
+            "uiType": "NumericScroller",
+            "uiParams": {
+                "minValue": "0.0",
+                "defaultValue": 0.0
+            }
+        }
+    ]
+}
+"codeLiteral": {
+"codeSystem": "String: xx",
+"codeValue": "icd9-3994.0.11"
+},

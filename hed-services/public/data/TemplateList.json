@@ -1,0 +1,96 @@
+{
+    "mtype": "TemplateParameterList",
+    "templates": [
+        {
+            "templateId": "1",
+            "mtype": "PrimitiveTemplate",
+            "category": "Action",
+            "group": "Medications",
+            "name": "Patient on MEDICATION",
+            "example": "Patient on Metformin",
+            "description": "...Description...",
+            "parameters": [
+                {
+                    "key": "MEDICATION",
+                    "name": "Medication",
+                    "label": "Medication Name",
+                    "hedTypeName": "CodeLiteral",
+                    "expressionChoices": ["inferFromPrescriptionHistory()", "fillInBasedOnPatientConditions"],
+                    "<-selectedExpression": null,
+                    "<-useLiteral": true,
+                    "-errors": [],
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "templateId": "1A",
+            "mtype": "PrimitiveTemplate",
+            "category": "Condition",
+            "group": "Medications",
+            "name": "Patient on MEDICATION with DOSAGE",
+            "example": "Patient on Aspirin 75mg Daily",
+            "description": "...Description...",
+            "parameterIds": ["Medication", "Dosage"],
+            "parameters": [
+                {
+                    "key": "MEDICATION",
+                    "name": "Medication",
+                    "label": "Medication Name",
+                    "hedTypeName": "CodeLiteral",
+                    "expressionChoices": ["inferFromPrescriptionHistory()", "fillInBasedOnPatientConditions"],
+                    "selectedExpression": null,
+                    "useLiteral": true,
+                    "errors": [],
+                    "elements": []
+                },
+                {
+                    "key": "DOSAGE",
+                    "name": "Dosage",
+                    "label": "Dosage of Medication",
+                    "hedTypeName": "PhysicalQuantityLiteral",
+                    "expressionChoices": ["inferFromPatientRecords()"],
+                    "selectedExpression": null,
+                    "useLiteral": true,
+                    "errors": [],
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "templateId": "99",
+            "mtype": "PrimitiveTemplate",
+            "category": "Condition",
+            "group": "Roles",
+            "name": "Contributor NAME with ROLE",
+            "example": "Dr. Smock, prescriber",
+            "description": "...Description...",
+            "parameters": [
+                {
+                    "key": "PersonName",
+                    "name": "PersonName",
+                    "label": "Person Name",
+                    "description": "...Description...",
+                    "hedTypeName": "StringLiteral",
+                    "useLiteral": true,
+                    "cannedExpressions": [],
+                    "useExpression": null,
+                    "errors": [],
+                    "elements": []
+                },
+                {
+                    "key": "PersonRole",
+                    "name": "PersonRole",
+                    "label": "Person Role",
+                    "description": "...Description...",
+                    "hedTypeName": "CodeLiteral",
+                    "useLiteral": true,
+                    "cannedExpressions": [],
+                    "useExpression": null,
+                    "errors": [],
+                    "elements": []
+                }
+            ]
+        }
+    ]
+}

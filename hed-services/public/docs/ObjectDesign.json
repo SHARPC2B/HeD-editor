@@ -1,0 +1,208 @@
+{
+    "templates": [
+        {
+            "<-templateInstId": "cd59826f-3533-4f84-a7d7-e8d46d51e9bc",
+            "-errors": [],
+            "<templateTypeId": "1A",
+            "mtype": "PrimitiveTemplate",
+            "category": "Condition",
+            "group": "Medications",
+            "name": "Patient on MEDICATION with DOSAGE",
+            "example": "Patient on Aspirin 75mg Daily",
+            "description": "...Description...",
+            "parameters": [
+                {
+                    "name": "Medication",
+                    "<key": "MEDICATION",
+                    "label": "Medication Name",
+                    "hedType": "CodeLiteral",
+                    "expressionChoices": ["inferFromPrescriptionHistory()", "fillInBasedOnPatientConditions"],
+                    "<-selectedExpression": null,
+                    "<-useLiteral": true,
+                    "-errors": [],
+                    "elements": [
+                        {
+                            "<name": "codeSystem",
+                            "label": "Code System",
+                            "selectionChoices": ["RxNorm", "NDC"],
+                            "initialValue": "RxNorm",
+                            "<-value": null,
+                            "-errors": []
+                        },
+                        {
+                            "name": "code",
+                            "label": "Medication Name",
+                            "searchService": "CTS2",
+                            "-value": null,
+                            "-errors": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Dosage",
+                    "key": "DOSAGE",
+                    "label": "Dosage of Medication",
+                    "hedType": "PhysicalQuantityLiteral",
+                    "expressionChoices": ["inferFromPatientRecords()"],
+                    "-selectedExpression": null,
+                    "-useLiteral": true,
+                    "-errors": [],
+                    "elements": [
+                        {
+                            "name": "value",
+                            "label": "Amount of Medication per Dose",
+                            "-value": null,
+                            "-errors": []
+                        },
+                        {
+                            "name": "unit",
+                            "label": "Dosage Units",
+                            "selectionChoices": ["mg", "ml", "count"],
+                            "-value": null,
+                            "-errors": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "-templateInstId": "er33rlwjjr-2334-iemicfspp-skjfklskjff",
+            "-errors": [],
+            "templateTypeId": "99",
+            "category": "Condition",
+            "group": "Roles",
+            "name": "Contributor PERSON with ROLE",
+            "example": "Dr. Smock, prescriber",
+            "description": "...Description...",
+            "parameters": [
+                {
+                    "name": "PersonName",
+                    "key": "PERSON",
+                    "label": "Contributor Name",
+                    "description": "...Description...",
+                    "hedType": "StringLiteral",
+                    "expressionChoices": ["inferFromPatientRecords()"],
+                    "-selectedExpression": null,
+                    "-useLiteral": true,
+                    "-errors": [],
+                    "elements": [
+                        {
+                            "name": "value",
+                            "label": "Name",
+                            "-value": null,
+                            "-errors": []
+                        }
+                    ]
+                },
+                {
+                    "name": "PersonRole",
+                    "key": "ROLE",
+                    "label": "Person Role",
+                    "description": "...Description...",
+                    "hedType": "CodeLiteral",
+                    "expressionChoices": ["useMostCommon()"],
+                    "-selectedExpression": null,
+                    "-useLiteral": true,
+                    "-errors": [],
+                    "elements": [
+                        {
+                            "name": "codeSystem",
+                            "label": "Code System",
+                            "selectionChoices": ["RoleMax", "XYZ"],
+                            "-value": "RoleMax",
+                            "-errors": []
+                        },
+                        {
+                            "name": "code",
+                            "label": "Role Name",
+                            "-value": null,
+                            "-errors": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "hedTypes": [
+        {
+            "mtype": "HedType",
+            "hedType": "CodeLiteral",
+            "label": "Code Literal",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "codeSystem",
+                    "label": "Coding System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "initialValue": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "code",
+                    "label": "Code Value",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "hedType": "PhysicalQuantityLiteral",
+            "label": "Physical Quantity",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "value",
+                    "label": "Quantity / Amount",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "minValue": 0.0,
+                    "initialValue": 0.0
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "unit",
+                    "label": "Physical Units of Measure",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count", "m", "in", "mm", "kg", "oz"],
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "initialValue": "mg"
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "hedType": "StringLiteral",
+            "label": "Text Value",
+            "description": "...Description...",
+            "elements": [
+                {
+                    "name": "initialValue",
+                    "label": "Name",
+                    "mtype": "StringElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        }
+
+    ]
+}

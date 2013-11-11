@@ -1,0 +1,67 @@
+{
+    "mtype": "PrimitiveTemplate",
+    "id": "1A",
+    "name": "Patient on MEDICATION with DOSAGE",
+    "example": "Patient on Aspirin 75mg Daily",
+    "description": "...Description...",
+    "parameters": [
+        {
+            "id": "medication",
+            "mtype": "ParameterType",
+            "name": "MEDICATION",
+            "label": "Medication Name",
+            "description": "...Description...",
+            "hedType": "CodeLiteral",
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "value": "RxNorm",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "name": "code",
+                    "label": "Medication Name",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "value": "",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "id": "dosage",
+            "mtype": "ParameterType",
+            "name": "DOSAGE",
+            "label": "Dosage of Medication",
+            "description": "...Description...",
+            "hedType": "PhysicalQuantityLiteral",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Amount of Medication per Dose",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "value": "0.0",
+                    "minValue": 0.0
+                },
+                {
+                    "name": "unit",
+                    "label": "Units",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count"],
+                    "value": "mg",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        }
+    ]
+}

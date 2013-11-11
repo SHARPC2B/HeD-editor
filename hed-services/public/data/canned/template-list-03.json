@@ -1,0 +1,90 @@
+[
+    {
+        "id": "1",
+        "mtype": "PrimitiveTemplate",
+        "name": "Patient on MEDICATION",
+        "example": "Patient on Metformin",
+        "description": "...Description...",
+        "parameterIds": ["medication"]
+    },
+    {
+        "id": "1A",
+        "mtype": "PrimitiveTemplate",
+        "name": "Patient on MEDICATION with DOSAGE",
+        "example": "Patient on Aspirin 75mg Daily",
+        "description": "...Description...",
+        "parameterIds": ["medication", "dosage"]
+    },
+    {
+        "id": "1B",
+        "mtype": "PrimitiveTemplate",
+        "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
+        "example": "Patient on Aspirin 75mg 2x Daily",
+        "description": "This condition verifies whether the patient is taking some medication with exactly the specified dosage. For example : Patient is on Amoxicillin, oral, 500 mg 2/day.",
+        "parameterIds": ["medication", "dosage", "route", "dosage.frequency"]
+    },
+    {
+        "id": "7",
+        "mtype": "PrimitiveTemplate",
+        "name": "Prior LAB result within last M days is OP VALUE",
+        "example": "Prior Potassium result within last 7 days is > 5.2 mEq/L",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "13",
+        "mtype": "PrimitiveTemplate",
+        "name": "Patient had LAB ordered over last M days",
+        "example": "Patient had Hemoglobin A1c ordered over last 7 days",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "16",
+        "mtype": "PrimitiveTemplate",
+        "name": "PATIENT has PROBLEMS on problem list",
+        "example": "Patient has Type 2 DM on problem list",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "21",
+        "mtype": "PrimitiveTemplate",
+        "name": "never had MED-VACCINE",
+        "example": "Never had Rotavirus-Vaccine",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "22",
+        "mtype": "PrimitiveTemplate",
+        "name": "most recent LABTEST OP OP-VALUE",
+        "example": "Most recent Hemoglobin A1c > 7%",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "23",
+        "mtype": "PrimitiveTemplate",
+        "name": "last/most recent LABTEST OP TIME-UNITS",
+        "example": "Most recent Hemoglobin A1c before 6 months ago",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "24",
+        "mtype": "PrimitiveTemplate",
+        "name": "no LABTEST for OP TIME-UNITS",
+        "example": "No Hemoglobin A1c for > 6 months",
+        "description": "...Description...",
+        "parameterIds": []
+    },
+    {
+        "id": "28",
+        "mtype": "PrimitiveTemplate",
+        "name": "last VACCINATION prior to TIME-DATE",
+        "example": "Last Tetanus-Vaccine prior to 10 years ago",
+        "description": "...Description...",
+        "parameterIds": []
+    }
+]

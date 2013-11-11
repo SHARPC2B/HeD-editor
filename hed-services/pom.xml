@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>sharpc2b</groupId>
+  <artifactId>hed-services</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <parent>
+    <groupId>sharpc2b</groupId>
+    <artifactId>sharp-editor</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <name>SHARPC-2B :: HeD Editor Services</name>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>editor-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>edu.mayo.cts2.framework</groupId>
+      <artifactId>model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>edu.mayo.cts2.framework</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.typesafe.play</groupId>
+      <artifactId>play_2.10</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.play</groupId>
+      <artifactId>play-json_2.10</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.play</groupId>
+      <artifactId>play-java-ebean_2.10</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>app</sourceDirectory>
+    <scriptSourceDirectory>public/javascripts</scriptSourceDirectory>
+    <outputDirectory>${basedir}/target/classes</outputDirectory>
+    <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
+    <resources>
+      <resource>
+        <directory>public</directory>
+      </resource>
+    </resources>
+  </build>
+
+</project>
+

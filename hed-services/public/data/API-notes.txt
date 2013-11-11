@@ -1,0 +1,32 @@
+template/list
+template/1A
+template/list/conditions
+template/conditions/list
+template/actions/list
+templates/triggers/list
+templates/metadata/list
+Action template : send NOTIFICATION to patient with MESSAGE
+NOTIFICATION --> Code from valueset
+MESSAGE --> StringLiteral
+Document APIs
+import HeD
+new
+open
+save
+delete
+export HeD
+Expression APIs
+list
+open
+save
+delete
+Template APIs
+list(category)
+getDetails
+validate
+instantiate
+Rule APIs
+list(category)
+edit
+delete
+Document mean "whole rule".
