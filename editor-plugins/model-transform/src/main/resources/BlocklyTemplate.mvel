@@ -149,7 +149,8 @@ Blockly.Blocks['@{iri}'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '@{argsName}' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -237,3 +238,27 @@ Blockly.Blocks['xsd:double'] = {
 
 
 @end{}
+
+@declare{"blockyCommon"}
+Blockly.Blocks.argument_group_container = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendTitle('Add arguments');
+        this.appendStatementInput('STACK');
+        this.setTooltip('Add, or remove arguments');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.argument_group_item = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendTitle('Argument');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Add a new argument');
+        this.contextMenu = false;
+    }
+};
+@end{}
+

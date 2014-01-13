@@ -20,7 +20,7 @@ extends GroovyTestCase {
     static File inputOntFile = TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" );
 
     static IRI outputOntIRI = IRI.create( "http://asu.edu/sharpc2b/test/ClinicalDomainConceptsA" );
-    static File outputOntFile = TestFileUtil.getResourceAsFile( "/ontologies/out/ClinicalDomainConcepts.ofn" );
+    static String outputOntFile = "/out/ClinicalDomainConcepts.ofn" ;
 
     /**
      * Properties file to load to specify the meta-model entity IRIs to use for the output ontology.
@@ -87,7 +87,8 @@ extends GroovyTestCase {
 
         assertEquals( 5, axioms.size() )
 
-        oom.saveOntology( aboxModel, oFormat, IRI.create( outputOntFile ) );
+        String path = inputOntFile.getParentFile().getParentFile().getPath() + outputOntFile;
+        oom.saveOntology( aboxModel, oFormat, IRI.create( new File( path ) ) );
 
 //        println "END Test"
     }

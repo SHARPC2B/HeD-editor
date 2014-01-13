@@ -203,7 +203,7 @@ extends GroovyTestCase {
         oFormat = new OWLFunctionalSyntaxOntologyFormat()
         oFormat.copyPrefixesFrom( oFormat )
 
-        File outFile = TestFileUtil.getResourceAsFile( "/ontologies/out/" + ontFileName + ".ofn" )
+        File outFile = new File( TestFileUtil.getResourceAsFile( "/ontologies/out/" ).getPath() + "/" + ontFileName + ".ofn" );
         oom.saveOntology( ont, oFormat, IRI.create( outFile ) )
     }
 

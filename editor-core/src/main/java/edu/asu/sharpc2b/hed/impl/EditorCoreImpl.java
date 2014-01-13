@@ -1,13 +1,13 @@
 package edu.asu.sharpc2b.hed.impl;
 
+import edu.asu.sharpc2b.hed.ArtifactRepository;
+import edu.asu.sharpc2b.hed.RepositoryFactory;
+import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
-import edu.asu.sharpc2b.hed.api.ExpressionSource;
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.dom4j.DocumentFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -18,11 +18,9 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.ElementTraversal;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -31,9 +29,9 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -44,10 +42,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class EditorCoreImpl implements EditorCore, DomainModel {
+public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     private ConcurrentMap<String,HeDArtifactData> artifacts;
     private String currentArtifactId;
+
+    private ArtifactRepository knowledgeRepo = RepositoryFactory.getRepository( RepositoryFactory.REPOSITORY.STANBOL );
     
 
     private static EditorCoreImpl instance = new EditorCoreImpl();
@@ -59,7 +59,6 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
     protected EditorCoreImpl() {
         artifacts = new ConcurrentHashMap<String,HeDArtifactData>();
         
-        createNew();
     }
 
     
@@ -69,6 +68,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
     
     public HeDArtifactData getCurrentArtifact() {
         return artifacts.get( currentArtifactId ); 
+    }
+
+    void setCurrentArtifactId( String currentArtifactId ) {
+        this.currentArtifactId = currentArtifactId;
     }
 
 
@@ -88,14 +91,14 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
 
     @Override
     public boolean updateNamedExpression( String exprId, String exprName, byte[] doxBytes ) {
-//        Document dox = null;
-//        try {
-//            DocumentBuilder doxBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//            doxBuilder.parse( new ByteArrayInputStream( doxBytes ) );
-//        } catch ( Exception e ) {
-//            e.printStackTrace();
-//            return false;
-//        }
+        Document dox = null;
+        try {
+            DocumentBuilder doxBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doxBuilder.parse( new ByteArrayInputStream( doxBytes ) );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return false;
+        }
 
         return getCurrentArtifact().updateNamedExpression( exprId, exprName, doxBytes );
     }
@@ -104,30 +107,6 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
     
     
     
-    
-    @Override
-    public String createNew() {
-        currentArtifactId = UUID.randomUUID().toString();
-        artifacts.putIfAbsent( currentArtifactId, new HeDArtifactData( currentArtifactId ) );
-        return currentArtifactId;
-    }
-
-    @Override
-    public String open( String artifactId ) {
-        currentArtifactId = artifactId;
-        return currentArtifactId;
-    }
-
-    @Override
-    public boolean save( String artifactId ) {
-        return true;
-    }
-
-    @Override
-    public void delete( String artifactId ) {
-        artifacts.remove( artifactId );
-    }
-
 
 
     private Map<String,String> domKlasses;
@@ -386,14 +365,14 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
             dox.appendChild( rootElem );
             visitNode( root, rootElem, dox, odf );
 
-//
-//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//            transformer.setOutputProperty( OutputKeys.INDENT, "yes");
-//            StreamResult result = new StreamResult(new StringWriter());
-//            DOMSource source = new DOMSource(dox);
-//            transformer.transform(source, result);
-//            String xmlString = result.getWriter().toString();
-//            System.out.println(xmlString);
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty( OutputKeys.INDENT, "yes");
+            StreamResult result = new StreamResult(new StringWriter());
+            DOMSource source = new DOMSource(dox);
+            transformer.transform(source, result);
+            String xmlString = result.getWriter().toString();
+            System.out.println(xmlString);
 
             return "";
         } catch ( Exception e ) {
@@ -414,8 +393,65 @@ public class EditorCoreImpl implements EditorCore, DomainModel {
         //To change body of created methods use File | Settings | File Templates.
     }
 
-    public static void main( String... args ) {
-        System.out.println( new EditorCoreImpl().instantiateTemplate( "template3", "foo", Collections.emptyMap() ) );
+
+
+
+
+    @Override
+    public String createArtifact() {
+
+        HeDArtifactData artifact = new HeDArtifactData();
+
+        InputStream stream = new ByteArrayInputStream( "test".getBytes() );
+
+        return knowledgeRepo.createArtifact( artifact.getArtifactId(), artifact.getTitle(), stream );
     }
+
+
+    @Override
+    public List<String> getAvailableArtifacts() {
+        return knowledgeRepo.getAvailableArtifacts();
+    }
+
+    @Override
+    public String importFromStream( byte[] stream ) {
+        return "";
+    }
+
+    @Override
+    public String cloneArtifact( String id ) {
+        return knowledgeRepo.cloneArtifact( id );
+    }
+
+    @Override
+    public String openArtifact( String id ) {
+        return "";
+    }
+
+    @Override
+    public String snapshotArtifact( String id ) {
+        return knowledgeRepo.snapshotArtifact( id );
+    }
+
+    @Override
+    public String saveArtifact( String id ) {
+        return knowledgeRepo.saveArtifact( id );
+    }
+
+    @Override
+    public String exportArtifact( String id ) {
+        return "";
+    }
+
+    @Override
+    public String closeArtifact() {
+        return "";
+    }
+
+    @Override
+    public String deleteArtifact( String id ) {
+        return knowledgeRepo.deleteArtifact( id );
+    }
+
 
 }

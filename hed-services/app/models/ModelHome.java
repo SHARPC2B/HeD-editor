@@ -10,6 +10,7 @@ import models.ex.ModelDataFileNotFoundException;
 import play.libs.Json;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,57 @@ public class ModelHome
     private static Map<String, String> domainClasses;
 
 
+
+    public static List<String> getAvailableArtifacts() {
+        return core.getAvailableArtifacts();
+    }
+
+    public static Rule getArtifact( String id ) {
+        return null;
+    }
+
+    public static String importFromStream( byte[] stream ) {
+        return core.importFromStream( stream );
+    }
+
+    public static Rule createArtifact() {
+        String ruleId = core.createArtifact();
+        Rule rule = new Rule();
+        rule.ruleId = ruleId;
+        return rule;
+    }
+
+    public static String cloneArtifact( String id ) {
+        return core.cloneArtifact( id );
+    }
+
+    public static String openArtifact( String id ) {
+        return core.openArtifact( id );
+    }
+
+    public static String snapshotArtifact( String id ) {
+        return core.snapshotArtifact( id );
+    }
+
+    public static String saveArtifact( String id ) {
+        return core.saveArtifact( id );
+    }
+
+    public static String exportArtifact( String id ) {
+        return core.exportArtifact( id );
+    }
+
+    public static String closeArtifact() {
+        return core.closeArtifact();
+    }
+
+    public static String deleteArtifact( String id ) {
+        return core.deleteArtifact( id );
+    }
+
+
+
+
     public static Map<String,String> getNamedExpressions() {
         return core.getExpressions();
     }
@@ -42,50 +94,6 @@ public class ModelHome
 
 
 
-
-
-    public static List<Rule> getRules() {
-        return Collections.emptyList();
-    }
-
-    public static RuleList getRuleList() {
-        RuleList ruleList = ModelHome.createJavaInstanceFromJsonFile( RuleList.class );
-        return ruleList;
-    }
-
-    public static Rule createRule() {
-        lastKey++;
-        String key = String.valueOf( lastKey );
-        Rule rule = new Rule();
-        rule.ruleId = key;
-        getRules().add( rule );
-
-        System.out.println( "Rule ruleId = " + key );
-        return rule;
-    }
-
-    public static Rule getRule(String key)
-    {
-        for ( Rule r : getRules() )
-        {
-            if ( key.equals( r.ruleId ) )
-            {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    public static List<String> getRuleIds()
-    {
-        List<String> ids = new ArrayList<String>();
-        for ( Rule r : getRules() )
-        {
-            ids.add( r.ruleId );
-        }
-        return ids;
-    }
-
     static String createUUID()
     {
         return UUID.randomUUID().toString();
@@ -94,7 +102,7 @@ public class ModelHome
     public static PrimitiveInst createPrimitiveInst(String ruleId,
                                                     String templateId)
     {
-        Rule rule = ModelHome.getRule( ruleId );
+        Rule rule = ModelHome.getArtifact( ruleId );
 
         PrimitiveTemplate template = ModelHome.getPrimitiveTemplate( templateId );
 

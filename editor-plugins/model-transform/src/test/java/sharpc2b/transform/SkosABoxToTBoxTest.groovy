@@ -1,5 +1,6 @@
 package sharpc2b.transform
 
+import edu.asu.sharpc2b.transform.FileUtil
 import edu.asu.sharpc2b.transform.IriUtil
 import edu.asu.sharpc2b.transform.OwlUtil
 import edu.asu.sharpc2b.transform.SkosABoxToTBox
@@ -23,6 +24,9 @@ extends GroovyTestCase {
 
     static String sharpCodesOntsVersion = "03";
     static String sharpCodesOntsRelPath = "asu.edu/sharpc2b/codes/${sharpCodesOntsVersion}/";
+    static File core = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-core.owl" );
+    static File ext = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-ext.owl" );
+    static File expr = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_expr-core.owl" );
 
     /*
      * SKOS
@@ -79,6 +83,9 @@ extends GroovyTestCase {
 
 //        println "inFile = '" + inFile + "'"
 
+        oom.loadOntologyFromOntologyDocument( core );
+        oom.loadOntologyFromOntologyDocument( ext );
+        oom.loadOntologyFromOntologyDocument( expr );
         aboxModel = oom.loadOntologyFromOntologyDocument( inFile );
 
         SkosABoxToTBox tr = new SkosABoxToTBox();
@@ -129,6 +136,9 @@ extends GroovyTestCase {
 
         assertEquals( true, aFile.exists() )
 
+        oom.loadOntologyFromOntologyDocument( core );
+        oom.loadOntologyFromOntologyDocument( ext );
+        oom.loadOntologyFromOntologyDocument( expr );
         OWLOntology ont1 = oom.loadOntologyFromOntologyDocument( aFile );
 
         SkosABoxToTBox inst = new SkosABoxToTBox();

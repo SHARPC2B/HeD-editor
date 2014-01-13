@@ -14,5 +14,5 @@ dist
 /RUNNING_PID
 /.settings
 target
-lib
+lib/*-SNAPSHOT.jar
 

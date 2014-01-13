@@ -38,7 +38,7 @@ public class Icd9SkosABoxToTBoxTest extends GroovyTestCase {
      * SKOS
      */
 //    static File skosFile = TestFileUtil.getFileForTestOutput( "/ontologies/in/skos-core.rdfxml" );
-    static File skosFile = OwlUtil.getSharpEditorOntologyFile( "skos-core.owl" );
+    static File skosFile = OwlUtil.getSharpEditorOntologyFile( "mock_skos-core.owl" );
 
     /*
      * Published ICD9 Codes Ontology (A-Box, using SKOS Concept, broader, notation, prefLabel)

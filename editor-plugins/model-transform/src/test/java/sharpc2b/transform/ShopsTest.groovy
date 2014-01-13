@@ -28,6 +28,10 @@ class ShopsTest extends SharpGroovyTestCase {
     static String opsCoreBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
     static String operatorsBaseIRI = shopsOntIRI.toString() + "#";
 
+    static File core = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-core.owl" );
+    static File ext = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-ext.owl" );
+    static File expr = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_expr-core.owl" );
+
     void setUp () {
         super.setUp()
 
@@ -40,9 +44,13 @@ class ShopsTest extends SharpGroovyTestCase {
 
     }
 
+
     void testIntPlus () {
 
 
+        oom.loadOntologyFromOntologyDocument( core );
+        oom.loadOntologyFromOntologyDocument( ext );
+        oom.loadOntologyFromOntologyDocument( expr );
         ont = oom.loadOntologyFromOntologyDocument( IRI.create( shopsOntFile ) );
 
         reasoner = OwlUtil.getHermitReasoner( ont, false );

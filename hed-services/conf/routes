@@ -26,6 +26,7 @@ GET            /template/:id                              controllers.ArtifactAc
 GET            /rule                                      controllers.RuleActions.list()
 POST           /rule                                      controllers.RuleActions.create()
 GET            /rule/:id                                  controllers.RuleActions.get(id)
+
 #PUT            /rule/:id                              controllers.RuleActions.save(id)
 POST           /rule/:id/template/create/:tid             controllers.RuleActions.createPrimitive(id,tid)
 POST           /primitive/create/:tid                     controllers.RuleActions.createPrimitive2(tid)
@@ -42,6 +43,21 @@ OPTIONS        /rule/expressions/*path                    controllers.Expression
 
 GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()
 GET            /domain/properties                         controllers.DomainModelActions.getAvailableProperties()
+
+########################################################
+
+GET            /store/list                                controllers.StoreActions.getAvailableArtifacts()
+POST           /store                                     controllers.StoreActions.createNewArtifact()
+POST           /store/import                              controllers.StoreActions.importFromStream()
+POST           /store/:id                                 controllers.StoreActions.cloneArtifact(id)
+GET            /store/:id                                 controllers.StoreActions.openArtifact(id)
+POST           /store/snapshots/:id                       controllers.StoreActions.snapshotArtifact(id)
+PUT            /store/:id                                 controllers.StoreActions.saveArtifact(id)
+DELETE         /store/:id                                 controllers.StoreActions.deleteArtifact(id)
+DELETE         /store                                     controllers.StoreActions.closeArtifact()
+GET            /store/:id/:format                         controllers.StoreActions.exportArtifact(id,format)
+
+
 
 # GET  /template                  List of template types
 # GET  /template/1B               get template type 1B.  Does not create an instance

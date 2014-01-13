@@ -5,16 +5,102 @@ var serviceUrl = 'http://localhost:9000';
 
 angular.module('ruleApp.controllers', [])
 
-	.controller('HomeCtrl', [ '$http', '$scope', function($http, $scope) {
-		$scope.$parent.title = '&nbsp;';
+	.controller('HomeCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
+		$scope.$parent.title = 'Working in progress rule';
 		$scope.$parent.menuItems = [
 		                            {"text": "Standard Mode", "href": "#/standard/background"},
-		                            {"text": "Revise My Rules", "href": "#/revise"},
-		                            {"text": "Use Others' Rules", "href": "#/others"},
-		                            {"text": "Technical View", "href": "#/technical"},
-		                            {"text": "Help", "href": "#/help"}
+		                            {"text": "Technical View", "href": "#/technical"}
 		                           ];
-	}])
+		$scope.open = function(partial) {
+			$modal.open({
+				templateUrl: 'partials/home/' + partial.toLowerCase() +'.html',
+				controller: 'Home' + partial + 'Ctrl',
+				resolve: {
+					items: function() {
+						return $scope.$parent.title;
+					}
+				}
+			});
+		};
+
+        $scope.createNew = function() {
+            if ( ! $scope.hasOwnProperty( 'currentRuleId' ) || confirm( "Create New Artifact and Discard existing one?" ) ) {
+                $http({
+                    method : 'POST',
+                    url : serviceUrl + '/store',
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+                        $scope.currentRuleId = data.ruleId;
+                    });
+            }
+        };
+        $scope.open = function() {
+            if ( ! $scope.hasOwnProperty( 'currentRuleId' ) || confirm( "Open New Artifact and Discard existing one?" ) ) {
+                $http({
+                    method : 'GET',
+                    url : serviceUrl + '/store/list',
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+
+                    });
+            }
+        };
+        $scope.snapshot = function() {
+            if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
+                $http({
+                    method : 'POST',
+                    url : serviceUrl + '/store/snapshots/' + $scope.currentRuleId,
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+                        alert( 'Took snapshot of ' + $scope.currentRuleId );
+                    });
+            }
+        };
+        $scope.save = function() {
+            if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
+                $http({
+                    method : 'PUT',
+                    url : serviceUrl + '/store/' + $scope.currentRuleId,
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+                        alert( 'Saved new version of ' + $scope.currentRuleId );
+                    });
+            }
+        };
+        $scope.close = function() {
+            if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
+                $http({
+                    method : 'DELETE',
+                    url : serviceUrl + '/store',
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+                        alert( 'Closed ' + $scope.currentRuleId );
+                        $scope.currentRuleId = [];
+                    });
+            }
+        };
+        $scope.delete = function() {
+            if ( $scope.hasOwnProperty( 'currentRuleId' ) && confirm( "Delete Current Artifact : Are you sure?" ) ) {
+                $http({
+                    method : 'DELETE',
+                    url : serviceUrl + '/store/' + $scope.currentRuleId,
+                    data : [],
+                    headers : { 'Content-Type':'application/html' }
+                }).success( function( data ) {
+                        alert( 'Deleted ' + $scope.currentRuleId );
+                        $scope.currentRuleId = [];
+                    });
+            }
+        };
+
+
+
+    }])
 
 	.controller('BackgroundCtrl', [ '$http', '$scope', function($http, $scope) {
 		$scope.$parent.title = 'Background Information';
@@ -201,22 +287,34 @@ angular.module('ruleApp.controllers', [])
 		};
 	}])
 
-	.controller('ExpressionCtrl', [ '$http', '$scope', function($http, $scope) {
+	.controller('ExpressionCtrl', [ '$http', '$scope', '$sce', function($http, $scope, $sce) {
 		$scope.$parent.title = 'Create Expressions';
 		$scope.$parent.menuItems = standardMenuItems(1);
         $http.get(serviceUrl + '/rule/expressions/list').success(function(data) {
             $scope.expressions = data;
         });
+		$scope.expressions = [];
 		$scope.currentExpression = {};
-		$scope.currentExpression.name = '';
+
 		$scope.loadPalette = function() {
 			Blockly.inject(document.getElementById('blocklyDiv'),
 					{path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
+	        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'logic_root');
+	        rootBlock.initSvg();
+	        rootBlock.render();
+	        rootBlock.setMovable(false);
+	        rootBlock.setDeletable(false);
 		};
 		$scope.save = function() {
 			var expressionIndex = null;
-            var exprID =
 			$scope.currentExpression.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+			var  xmlDoc=new DOMParser().parseFromString($scope.currentExpression.xml,"text/xml");
+
+			var blocks=xmlDoc.getElementsByTagName('block');
+			angular.forEach(blocks, function(block) {
+				  if (block.getAttribute('type') == 'logic_root')
+					  $scope.currentExpression.name = block.getElementsByTagName("field")[0].childNodes[0].nodeValue;
+			});
 
             for (var int = 0; int < $scope.expressions.length; int++) {
 				if ($scope.expressions[int].name == $scope.currentExpression.name) {
@@ -225,13 +323,16 @@ angular.module('ruleApp.controllers', [])
             }
 			if (expressionIndex === null) {
                 $scope.currentExpression.expressionIRI = 'TODO' + $scope.currentExpression.name;
+				$scope.expressions.push(angular.copy($scope.currentExpression));
             } else {
 				if (confirm("Want to override the already stored expression?")) {
 					$scope.expressions[expressionIndex] = angular.copy($scope.currentExpression);
                 }
             }
+			if (Blockly.mainWorkspace.getTopBlocks().length > 1)
+				alert('This expression has more than one top level');
 
-            $http({
+           $http({
                 method : 'POST',
                 url : serviceUrl + '/rule/expressions/' + $scope.currentExpression.expressionIRI + '/' + $scope.currentExpression.name,
                 data : $scope.currentExpression.xml,
@@ -258,7 +359,37 @@ angular.module('ruleApp.controllers', [])
 			if (confirm("Want to clean current expression?")) {
 				$scope.currentExpression.name = '';
 				Blockly.mainWorkspace.clear();
+				var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'logic_root');
+		        rootBlock.initSvg();
+		        rootBlock.render();
+		        rootBlock.setMovable(false);
+		        rootBlock.setDeletable(false);
 			}
+		};
+		$scope.domainClasses = [];
+		$scope.addDomainClass = function(domainClass) {
+			$scope.domainClasses.push(domainClass);
+		    Blockly.Blocks[domainClass] = {
+		    		init: function() {
+		    			this.setColour(40);
+		                this.appendDummyInput().appendField(domainClass);
+		                this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainClass']);
+		    		}
+		    };
+		};
+
+		$scope.select2DomainClasses = {
+			data: [],
+			multiple: true,
+	        simple_tags: true
+		};
+		$scope.select2Options = {
+				data: { results: [], text: 'name' },
+				id: function(object) {
+					return object.name;
+				},
+				formatSelection: function(item) { return item.name; },
+			    formatResult: function(item) { return item.name; }
 		};
 
         Blockly.Blocks['http://asu.edu/sharpc2b/ops#VariableExpression'] = {
@@ -266,18 +397,8 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Choose Expression...)" ) ), "Variables");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Choose Expression...)" ) ), "Variables");
                 this.setOutput(true, null);
-                this.setTooltip('');
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops#DomainClassExpression'] = {
-            helpUrl: 'http://www.example.com/',
-            init: function() {
-                this.setColour(40);
-                this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableClasses( $http ) ), "DomaninClass");
-                this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainClass']);
                 this.setTooltip('');
             }
         };
@@ -286,18 +407,102 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(40);
                 this.appendValueInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableProperties( $http ) ), "DomaninProperty")
+                    .appendField(new Blockly.FieldDropdown( availableProperties( $http ) ), "DomaninProperty")
                     .setCheck('http://asu.edu/sharpc2b/ops#DomainProperty');
                 this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainProperty']);
                 this.setTooltip('');
             }
         };
+        Blockly.Blocks['logic_root'] = {
+	    		helpUrl: 'http://www.example.com/',
+	    		init: function() {
+	    		    this.setHelpUrl('http://www.example.com/');
+	    		    this.appendValueInput("NAME")
+	    		        .appendField(new Blockly.FieldTextInput("Name"), "NAME");
+	    		    this.setColour(46);
+	    		    this.setTooltip('');
+	    		  }
+	    };
 
+
+		var radius = 566,
+			x = d3.scale.linear().range([0, radius]),
+			y = d3.scale.linear().range([0, radius]),
+			node,
+			root;
+		var pack = d3.layout.pack()
+			.size([radius, radius])
+			.value(function(d) { return d.size; });
+		var vis = d3.select("#packLayout").insert("svg:svg")
+			.attr("width", radius)
+			.attr("height", radius)
+			.append("svg:g");
+		d3.json("VMR.json", function(data) {
+			node = root = data;
+
+			var nodes = pack.nodes(root);
+			angular.extend($scope.select2Options.data.results, nodes);
+
+
+
+          vis.selectAll("circle")
+              .data(nodes)
+            .enter().append("svg:circle")
+              .attr("class", function(d) { return d.children ? "parent" : "child"; })
+              .attr("cx", function(d) { return d.x; })
+              .attr("cy", function(d) { return d.y; })
+              .attr("r", function(d) { return d.r; })
+              .on("click", function(d) { return $scope.zoom(node == d ? root : d, d3.event); });
+
+          vis.selectAll("text")
+              .data(nodes)
+            .enter().append("svg:text")
+              .attr("class", function(d) { return d.children ? "parent" : "child"; })
+              .attr("x", function(d) { return d.x; })
+              .attr("y", function(d) { return d.y; })
+              .attr("dy", ".35em")
+              .attr("text-anchor", "middle")
+              .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
+              .text(function(d) {
+            	  if (d.children) {
+            		  if (d.children.length > 1)
+            			  return d.name;
+            	  } else
+            		  return d.name;
+              })
+              .on("click", function(d) { d.children ? $scope.zoom(d) : $scope.$apply($scope.addDomainClass(d.name)); });
+        });
+
+		$scope.zoom = function(d) {
+			if (d) {
+				if (typeof d === 'object') {
+					var k = radius / d.r / 2;
+			          x.domain([d.x - d.r, d.x + d.r]);
+			          y.domain([d.y - d.r, d.y + d.r]);
+
+			          var t = vis.transition().duration(750);
+
+
+			          t.selectAll("circle")
+			              .attr("cx", function(d) { return x(d.x); })
+			              .attr("cy", function(d) { return y(d.y); })
+			              .attr("r", function(d) { return k * d.r; });
+
+			          t.selectAll("text")
+			              .attr("x", function(d) { return x(d.x); })
+			              .attr("y", function(d) { return y(d.y); })
+			              .style("opacity", function(d) { return k * d.r > 20 ? 1 : 0; });
+
+			          node = d;
+				}
+			}
+		};
 	}])
 
 	.controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
 		$scope.$parent.title = 'Decide how the Rule will be Triggered';
 		$scope.$parent.menuItems = standardMenuItems(2);
+		Blockly.inject(document.getElementById('blocklyDiv'), {path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
 	}])
 
 	.controller('LogicCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
@@ -333,11 +538,11 @@ angular.module('ruleApp.controllers', [])
 				init : function() {
 					this.setColour(210);
 					this.appendDummyInput()
-						.appendTitle("               ")
-						.appendTitle(new Blockly.FieldTextInput(""), "NAME");
+						.appendField("               ")
+						.appendField(new Blockly.FieldTextInput(""), "NAME");
 					this.appendValueInput("CLAUSE0")
 						.setCheck("Boolean")
-                        .appendTitle(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+                        .appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
 					this.appendValueInput('CLAUSE1').setCheck(
 					'Boolean');
 					this.setOutput(true, 'Boolean');
@@ -364,7 +569,7 @@ angular.module('ruleApp.controllers', [])
 						var input = this.appendValueInput(
 								'CLAUSE' + x).setCheck('Boolean');
 						if (x == 0) {
-                            input.appendTitle(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+                            input.appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
 						}
 					}
 				},
@@ -399,7 +604,7 @@ angular.module('ruleApp.controllers', [])
 								'CLAUSE' + this.typeCount_)
 								.setCheck('Boolean');
 						if (this.typeCount_ == 0) {
-							input.appendTitle(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+							input.appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
 						}
 						// Reconnect any child blocks.
 						if (typeBlock.valueConnection_) {
@@ -434,7 +639,7 @@ angular.module('ruleApp.controllers', [])
 				init: function() {
 					this.setColour(210);
 					this.appendDummyInput()
-					.appendTitle('add clauses');
+					.appendField('add clauses');
 					this.appendStatementInput('STACK');
 					this.setTooltip('Add, or remove clauses.');
 					this.contextMenu = false;
@@ -445,7 +650,7 @@ angular.module('ruleApp.controllers', [])
 				init: function() {
 					this.setColour(210);
 					this.appendDummyInput()
-					.appendTitle('Clause');
+					.appendField('Clause');
 					this.setPreviousStatement(true);
 					this.setNextStatement(true);
 					this.setTooltip('Add a new clause.');
@@ -457,7 +662,7 @@ angular.module('ruleApp.controllers', [])
 	    		init: function() {
 	    			this.setColour(160);
 	    			this.appendDummyInput()
-	    			.appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
+	    			.appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
 	    			this.setOutput(true, "Boolean");
 	    			this.setTooltip('');
 	    		}
@@ -467,7 +672,7 @@ angular.module('ruleApp.controllers', [])
 	    		init: function() {
 	    			this.setColour(210);
 	    			this.appendValueInput( 'NOT' )
-                        .appendTitle( "Not" )
+                        .appendField( "Not" )
                         .setAlign( Blockly.ALIGN_RIGHT );
 	    			this.setOutput(true, "Boolean");
 	    			this.setTooltip('');
@@ -478,7 +683,7 @@ angular.module('ruleApp.controllers', [])
 	    		init: function() {
 	    			this.setColour(210);
 	    			this.appendValueInput( 'EXISTS' )
-                        .appendTitle( "Exists" )
+                        .appendField( "Exists" )
                         .setAlign( Blockly.ALIGN_RIGHT );
 	    			this.setOutput(true, "Boolean");
 	    			this.setTooltip('');
@@ -489,13 +694,13 @@ angular.module('ruleApp.controllers', [])
 	    		init: function() {
 	    			this.setColour(10);
 	    			this.appendValueInput( 'ROOT' )
-                        .appendTitle( "Conditions" )
+                        .appendField( "Conditions" )
                         .setAlign( Blockly.ALIGN_RIGHT );
 	    			this.setTooltip('');
 	    		}
 	    };
-	    Blockly.HSV_SATURATION = 0.35;
-		Blockly.HSV_VALUE=0.85;
+	    Blockly.HSV_SATURATION = 0.66;
+		Blockly.HSV_VALUE = 0.71;
 	    Blockly.inject(document.getElementById('blocklyDiv'),
 	            {path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
 	}])
@@ -524,13 +729,13 @@ angular.module('ruleApp.controllers', [])
 				  init: function() {
 				    this.setColour(20);
 				    this.appendDummyInput()
-				        .appendTitle(new Blockly.FieldDropdown([["Perform all", "all"], ["Perform none", "none"], ["Perform any", "any"], ["Perform exactly one", "one"]]), "NAME");
+				        .appendField(new Blockly.FieldDropdown([["Perform all", "all"], ["Perform none", "none"], ["Perform any", "any"], ["Perform exactly one", "one"]]), "NAME");
                       this.appendValueInput("Documentation")
                           .setCheck("Documentation")
-                          .appendTitle("Documentation");
+                          .appendField("Documentation");
                       this.appendValueInput("Condition")
                           .setCheck("Boolean")
-                          .appendTitle("Condition");
+                          .appendField("Condition");
                       this.appendStatementInput( ["NestedAction"] )
                           .setCheck( ["AtomicAction", "ActionGroup" ] );
                       this.setPreviousStatement(true, "ActionGroup");
@@ -543,16 +748,16 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(99);
                 this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown([["Create", "CreateAction"], ["Update", "UpdateAction"], ["Remove", "RemoveAction"], ["Fire Event", "FireEventAction"], ["Declare", "DeclareResponseAction"], ["Collect", "CollectInformationAction"]]), "NAME");
+                    .appendField(new Blockly.FieldDropdown([["Create", "CreateAction"], ["Update", "UpdateAction"], ["Remove", "RemoveAction"], ["Fire Event", "FireEventAction"], ["Declare", "DeclareResponseAction"], ["Collect", "CollectInformationAction"]]), "NAME");
                 this.appendValueInput("Documentation")
                     .setCheck("Documentation")
-                    .appendTitle("Documentation");
+                    .appendField("Documentation");
                 this.appendValueInput("Condition")
                     .setCheck("Boolean")
-                    .appendTitle("Condition");
+                    .appendField("Condition");
                 this.appendValueInput("ActionSentence")
                     .setCheck("ActionSentence")
-                    .appendTitle("Action Sentence");
+                    .appendField("Action Sentence");
                 this.setPreviousStatement(true, ["ActionGroup","AtomicAction"]);
                 this.setNextStatement(true, ["ActionGroup","AtomicAction"]);
                 this.setTooltip('');
@@ -562,7 +767,7 @@ angular.module('ruleApp.controllers', [])
 		Blockly.Blocks.action_documentation = {
 				init : function() {
 					this.setColour(160);
-					this.appendDummyInput().appendTitle(new Blockly.FieldTextInput("Documentation"), "Doc");
+					this.appendDummyInput().appendField(new Blockly.FieldTextInput("Documentation"), "Doc");
 					this.setOutput(true, "Documentation");
 					this.setTooltip('');
 				},
@@ -587,7 +792,7 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
             }
@@ -596,7 +801,7 @@ angular.module('ruleApp.controllers', [])
 				init: function() {
 					this.setColour(290);
 				    this.appendDummyInput()
-				        .appendTitle(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)" ) ), "AS");
+				        .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)" ) ), "AS");
 				    this.setOutput(true, "ActionSentence");
 				    this.setTooltip('');
 				  }
@@ -665,7 +870,7 @@ angular.module('ruleApp.controllers', [])
 		});
 	}])
 
-	.controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', function($scope, $modalInstance, clause, $http){
+	.controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal){
 		$scope.clause = clause;
 		$scope.submit = function(data) {
 
@@ -681,6 +886,10 @@ angular.module('ruleApp.controllers', [])
 		};
 		$http.get(serviceUrl + '/template/' + clause.key).success(function(data) {
 			$scope.detail = data;
+			$scope.template = clause.name;
+			angular.forEach(data.parameters, function(parameter, key) {
+				$scope.template = $scope.template.replace(parameter.name, '<a ng-click="openOther(detail.parameters[' + key + '])">' + parameter.name + '</a>');
+			});
 		});
 		$scope.cts2search = function(matchValue) {
 			return $http.jsonp( serviceUrl + "/fwd/cts2/valueset/RXNORM/resolution?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response) {
@@ -694,6 +903,65 @@ angular.module('ruleApp.controllers', [])
 		};
 		$scope.cancel = function() {
 			$modalInstance.dismiss('cancel');
+		};
+		$scope.openOther = function(parameter) {
+			 var d = $modal.open({
+				 templateUrl: 'partials/standard/logic/primitive-form.html',
+				 controller: 'ParameterController',
+				 resolve : {
+					 parameter : function() {
+						 return angular.copy(parameter);
+					 }
+				 }
+			 });
+		};
+
+	}])
+
+	.controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', '$modal', function($scope, $modalInstance, parameter, $http, $modal){
+		$scope.parameter = parameter;
+		$scope.cts2search = function(matchValue) {
+			return $http.jsonp("http://sharpc2b.ranker.cloudbees.net/fwd/cts2/valueset/RXNORM/resolution?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response){
+				return response.data.iteratableResolvedValueSet.entryList;
+		    });
+		};
+	}])
+
+	.controller('HomeImportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance){
+		$scope.import = function() {
+			//TODO code to import a rule
+		};
+		$scope.close = function() {
+			$modalInstance.dismiss();
+		};
+	}])
+
+	.controller('HomeExportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance) {
+		$http.get('partials/home/rules.json').success(function(data) {
+			$scope.rules = data;
+		});
+		$scope.export = function() {
+			$scope.status = 'Creating file ...';
+		};
+		$scope.close = function() {
+			$modalInstance.dismiss();
+		};
+		$scope.select = function(template) {
+			$scope.selectedRule = template.name;
+		};
+	}])
+	.controller('HomeOpenCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance) {
+		$http.get('partials/home/rules.json').success(function(data) {
+			$scope.rules = data;
+		});
+		$scope.open = function(rule) {
+			//TODO code to open a rule
+		};
+		$scope.cancel = function() {
+			$modalInstance.dismiss();
+		};
+		$scope.select = function(template) {
+			$scope.selectedRule = template.name;
 		};
 	}]);
 
@@ -718,18 +986,6 @@ function availableExpressions( httpContext, initMessage ) {
         }
     });
     return map;
-}
-
-function availableClasses( httpContext ) {
-    var kmap = [ ["(Choose Class...)", "" ] ];
-    httpContext.get(serviceUrl + '/domain/classes').success(function(data) {
-        var klasses = data;
-        for ( var j = 0; j < klasses.length; j++ ) {
-            var klass = klasses[ j ];
-            kmap[ j ] = [ klass.name , klass.id ];
-        }
-    });
-    return kmap;
 }
 
 function availableProperties( httpContext ) {

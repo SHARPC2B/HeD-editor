@@ -126,7 +126,7 @@ class SlotFillerTest extends GroovyTestCase {
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDrug, aspirin ) )
         oom.addAxiom( ont, odf.getOWLClassAssertionAxiom( cDisorder, hangover ) )
 
-        oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirinT" ) ) )
+        oom.saveOntology( ont, oFormat, IRI.create( ontFile( "JoeHasAspirin" ) ) )
 
 //        pellet = PelletReasonerFactory.getInstance().createReasoner( ont )
 //        pellet = PelletReasonerFactory.getInstance().createNonBufferingReasoner( ont )

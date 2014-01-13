@@ -22,47 +22,40 @@ public class RuleActions
         extends Controller
 {
 
-    public static Result create()
-    {
-        Rule rule = ModelHome.createRule();
+    public static Result create() {
+        Rule rule = ModelHome.createArtifact();
 
         System.out.println( "new rule ruleId = " + rule.ruleId );
         JsonNode jsonOut = Json.toJson( rule );
         System.out.println( "created Rule = " + jsonOut );
 
         setHeaderCORS();
-
-//        return created( jsonOut );
         return created( jsonOut );
     }
 
-    public static Result list()
-    {
-        List<String> ids = ModelHome.getRuleIds();
+    public static Result list() {
+        List<String> ids = ModelHome.getAvailableArtifacts();
 
-//        System.out.println( "new rule ruleId = " + rule.ruleId );
         JsonNode jsonOut = Json.toJson( ids );
         System.out.println( "created Rule = " + jsonOut );
 
         setHeaderCORS();
-
-//        return created( jsonOut );
         return ok( jsonOut );
     }
 
-    public static Result get(String id)
-    {
-        Rule rule = ModelHome.getRule( id );
+    public static Result get(String id) {
+        Rule rule = ModelHome.getArtifact( id );
 
         System.out.println( "new rule ruleId = " + rule.ruleId );
         JsonNode jsonOut = Json.toJson( rule );
         System.out.println( "created Rule = " + jsonOut );
 
         setHeaderCORS();
-
-//        return created( jsonOut );
         return ok( jsonOut );
     }
+
+
+
 
     public static Result createPrimitive(String id,
                                          String pId)

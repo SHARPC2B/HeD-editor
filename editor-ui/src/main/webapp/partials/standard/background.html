@@ -1,4 +1,16 @@
-<br>
+<div class="navbar navbar-inverse">
+	<div class="navbar-inner">
+		<ul class="nav">
+			<li x-ng-class="{active: contributorsForm}"><a href="" x-ng-click="contributorsForm = !contributorsForm"><i class="icon-group"></i><br>Contributors</a></li>
+			<li x-ng-class="{active: coverageForm}"><a href="" x-ng-click="coverageForm = !coverageForm"><i class="icon-suitcase"></i><br>Coverage</a></li>
+			<li x-ng-class="{active: publishersForm}"><a href="" x-ng-click="publishersForm = !publishersForm"><i class="icon-book"></i><br>Publishers</a></li>
+			<li x-ng-class="{active: rightsForm}"><a href="" x-ng-click="rightsForm = !rightsForm"><i class="icon-lock"></i><br>Rights &amp; Usage</a></li>
+			<li x-ng-class="{active: relatedResourcesForm}"><a href="" x-ng-click="relatedResourcesForm = !relatedResourcesForm"><i class="icon-copy"></i><br>Related Resources</a></li>
+			<li x-ng-class="{active: supportingEvidenceForm}"><a href="" x-ng-click="supportingEvidenceForm = !supportingEvidenceForm"><i class="icon-folder-open"></i><br>Supporting Evidence</a></li>
+			<li x-ng-class="{active: documentationForm}"><a href="" x-ng-click="documentationForm = !documentationForm"><i class="icon-file-alt"></i><br>Documentation</a></li>
+		</ul>
+	</div>
+</div>
 <div class="row-fluid">
 	<form class="form-inline span4">
 		<label>Rule Name:</label>
@@ -21,48 +33,45 @@
 	<p>Describe this rule in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
 	<textarea rows="5" class="span12"></textarea>
 </div>
-<accordion close-others="false">
-	<accordion-group heading="Key Terms:">
-		<div class="row-fluid">
-			<div class="span7" style="padding: 20px;">
-				<div class="search-prepend" style="margin-left: 200px;">
-					<div class="icon-search icon-white"></div>
-					<input type="text" class="search-query input-xxlarge" x-ng-model="filterTerms" placeholder="search">
-				</div>
-				<br>
-				<ul class="inline">
-					<li x-ng-repeat="term in keyTerms | orderBy: 'tagName' | filter:filterTerms" x-ng-class="{tiny:term.percent<=2,small:term.percent>2&&term.percent<=4,medium:term.percent>4&&term.percent<=9,big:term.percent>9&&term.percent<=11,huge:term.percent>11}"><a href="" x-ng-click="selectTerm(term)">{{term.tagName}}</a></li>
-				</ul>
-			</div>
-			<div class="span5" style="padding: 20px; border-left: 1px solid #e5e5e5;">
-				<p class="text-center">Selected terms (click a term to remove it)</p>
-				<div class="borderedBox" style="padding: 10px; min-height: 81px;">
-					<p x-ng-repeat="selected in selectedTerms"><button class="btn" type="button" x-ng-click="deselectTerm(selected)">{{selected.tagName}}</button></p>
-				</div>
-			</div>
+<p>Key Terms:</p>
+<div class="row-fluid borderedBox">
+	<div class="span6" style="padding: 20px; border-right: 3px solid #e5e5e5;">
+		<div class="search-prepend">
+			<div class="icon-search icon-white"></div>
+				<input type="text" class="search-query input-xxlarge" x-ng-model="filterTerms" placeholder="search">
+		</div><br>
+		<ul class="inline">
+			<li x-ng-repeat="term in keyTerms | orderBy: 'tagName' | filter:filterTerms" x-ng-class="{tiny:term.percent<=2,small:term.percent>2&&term.percent<=4,medium:term.percent>4&&term.percent<=9,big:term.percent>9&&term.percent<=11,huge:term.percent>11}"><a href="" x-ng-click="selectTerm(term)">{{term.tagName}}</a></li>
+		</ul>
+	</div>
+	<div class="span6" style="padding: 20px;">
+		<p class="text-center">Selected terms (click a term to remove it)</p>
+		<div class="borderedBox" style="min-height: 104px;">
+			<button x-ng-repeat="selected in selectedTerms" class="btn" type="button" x-ng-click="deselectTerm(selected)" style="margin: 10px">{{selected.tagName}}</button>
 		</div>
-	</accordion-group>
-    <accordion-group heading="Categories:">
-    	<div class="row-fluid">
-    		<div class="span7" style="padding: 20px;">
-    			<div class="search-prepend" style="margin-left: 200px;">
-    				<div class="icon-search icon-white"></div>
-    				<input type="text" class="search-query input-xxlarge" x-ng-model="filterCategories" placeholder="search">
-    			</div>
-    			<br>
-    			<ul class="inline">
-    				<li x-ng-repeat="category in Categories | orderBy: 'tagName' | filter:filterCategories" x-ng-class="{tiny:category.percent<=2,small:category.percent>2&&category.percent<=4,medium:category.percent>4&&category.percent<=9,big:category.percent>9&&category.percent<=11,huge:category.percent>11}"><a href="" x-ng-click="selectCategory(category)">{{category.tagName}}</a></li>
-    			</ul>
-    		</div>
-    		<div class="span5" style="padding: 20px; border-left: 1px solid #e5e5e5;">
-    			<p class="text-center">Selected categories (click a category to remove it)</p>
-    			<div class="borderedBox" style="padding: 10px; min-height: 81px;">
-    				<p x-ng-repeat="selected in selectedCategories"><button class="btn" type="button" x-ng-click="deselectCategory(selected)">{{selected.tagName}}</button></p>
-    			</div>
-    		</div>
-    	</div>
-    </accordion-group>
-    <accordion-group heading="Coverage:">
+	</div>
+</div><br>
+<p>Categories:</p>
+<div class="row-fluid borderedBox">
+	<div class="span6" style="padding: 20px; border-right: 3px solid #e5e5e5;">
+		<div class="search-prepend">
+			<div class="icon-search icon-white"></div>
+				<input type="text" class="search-query input-xxlarge" x-ng-model="filterCategories" placeholder="search">
+			</div><br>
+			<ul class="inline">
+    			<li x-ng-repeat="category in Categories | orderBy: 'tagName' | filter:filterCategories" x-ng-class="{tiny:category.percent<=2,small:category.percent>2&&category.percent<=4,medium:category.percent>4&&category.percent<=9,big:category.percent>9&&category.percent<=11,huge:category.percent>11}"><a href="" x-ng-click="selectCategory(category)">{{category.tagName}}</a></li>
+    		</ul>
+   		</div>
+   		<div class="span6" style="padding: 20px;">
+    		<p class="text-center">Selected categories (click a category to remove it)</p>
+    		<div class="borderedBox" style="min-height: 104px;">
+    			<button x-ng-repeat="selected in selectedCategories" class="btn" type="button" x-ng-click="deselectCategory(selected)" style="margin: 10px">{{selected.tagName}}</button>
+   			</div>
+   		</div>
+    </div>
+<br>
+<accordion close-others="false">
+    <accordion-group heading="Coverage:" x-ng-show="coverageForm">
     	<div class="row-fluid">
 			<div class="span2">
 				<select x-ng-model="coverage.Type">
@@ -79,7 +88,7 @@
 			  	<input type="text" class="search-query span12" placeholder="drop-down autocomple or other code picker" x-ng-model="coverage.Code">
 			</div>
 			<div class="span5">
-				<p>Description:</p>	
+				<p>Description:</p>
 				<textarea rows="5" class="span12" x-ng-model="coverage.Description"></textarea>
 			</div>
 		</div>
@@ -91,7 +100,7 @@
 			<div class="borderedBox span12" x-ng-grid="gridCoverage"></div>
 		</div>
     </accordion-group>
-    <accordion-group heading="Contributors:">
+    <accordion-group heading="Contributors:" x-ng-show="contributorsForm">
     	<div class="row-fluid">
     		<form class="form-inline span3">
 				<label>Role:</label>
@@ -131,7 +140,7 @@
 			<div class="borderedBox span12" x-ng-grid="gridContributor"></div>
 		</div>
     </accordion-group>
-    <accordion-group heading="Publishers:">
+    <accordion-group heading="Publishers:" x-ng-show="publishersForm">
     	<div class="row-fluid">
     		<form class="form-inline span3">
 				<label>Role:</label>
@@ -171,7 +180,7 @@
 			<div class="borderedBox span12" ng-grid="gridPublisher"></div>
 		</div>
     </accordion-group>
-    <accordion-group heading="Rights and Usage:">
+    <accordion-group heading="Rights and Usage:" x-ng-show="rightsForm">
     	<div class="row-fluid borderedBox">
     		<p style="margin-top: -12px; margin-left: 10px; background:white; width: 165px;">Rights holder information:</p>
     		<div class="span1">
@@ -214,7 +223,7 @@
     		</div>
     	</div>
     </accordion-group>
-    <accordion-group heading="Related Resources:">
+    <accordion-group heading="Related Resources:" x-ng-show="relatedResourcesForm">
     	<div class="row-fluid">
     		<div class="span2">
     			<select>
@@ -272,7 +281,7 @@
 			<div class="borderedBox span12" ng-grid="gridResource"></div>
 		</div>
     </accordion-group>
-    <accordion-group heading="Supporting Evidence:">
+    <accordion-group heading="Supporting Evidence:" x-ng-show="supportingEvidenceForm">
     	<div class="row-fluid">
     		<div class="span6 borderedBox">
 				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 130px;">Qualitiy of Evidence:</p>
@@ -286,7 +295,7 @@
 						<div class="icon-search icon-white"></div>
 						<input type="text" class="search-query span12" placeholder="code">
 					</div>
-				</div>	
+				</div>
     		</div>
     		<div class="span6 borderedBox">
 				<p style="margin-top: -12px; margin-left: 10px; background:white; width: 191px;">Strength of Recommendation:</p>
@@ -300,7 +309,7 @@
 						<div class="icon-search icon-white"></div>
 						<input type="text" class="search-query span12" placeholder="code">
 					</div>
-				</div>	
+				</div>
     		</div>
     	</div>
     	<br>
@@ -349,7 +358,7 @@
 			<div class="borderedBox span12" ng-grid="gridEvidence"></div>
 		</div>
     </accordion-group>
-    <accordion-group heading="Documentation:">
+    <accordion-group heading="Documentation:" x-ng-show="documentationForm">
     	<textarea x-ui-tinymce="tinymceOptions" x-ng-model="tinymceModel" rows="15"></textarea>
     	<br>
     	<div class="row-fluid">

@@ -23,6 +23,9 @@ import edu.asu.sharpc2b.transform.OwlUtil;
 import edu.asu.sharpc2b.transform.SharpOperators;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * Goal
@@ -160,9 +163,16 @@ public class DefineOperatorsPlugin
 
         oom = OwlUtil.createSharpOWLOntologyManager();
 
-        OWLOntologyDocumentSource s0 = new StreamDocumentSource( SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" ) );
-        OWLOntologyDocumentSource s1 = new StreamDocumentSource( SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" ) );
-        OWLOntologyDocumentSource s2 = new StreamDocumentSource( SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" ) );
+        InputStream stream0 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" );
+        InputStream stream1 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" );
+        InputStream stream2 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" );
+        System.out.println( stream0 );
+        System.out.println( stream1 );
+        System.out.println( stream2 );
+
+        OWLOntologyDocumentSource s0 = new StreamDocumentSource( stream0 );
+        OWLOntologyDocumentSource s1 = new StreamDocumentSource( stream1 );
+        OWLOntologyDocumentSource s2 = new StreamDocumentSource( stream2 );
         OWLOntologyLoaderConfiguration config = new OWLOntologyLoaderConfiguration();
         config.setMissingOntologyHeaderStrategy(
                 OWLOntologyLoaderConfiguration.MissingOntologyHeaderStrategy.IMPORT_GRAPH );
@@ -225,7 +235,7 @@ public class DefineOperatorsPlugin
     public static void main( String... args ) throws MojoFailureException, MojoExecutionException {
         DefineOperatorsPlugin def = new DefineOperatorsPlugin();
 
-        def.setHedSourceOntologyPath( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/src/main/resources/knowledgedocument.xsd.ttl" );
+        def.setHedSourceOntologyPath( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/knowledgedocument.xsd.ttl" );
         def.setOperatorDefinitionFile( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/src/main/resources/SharpOperators.xlsx" ) );
         def.setOutputOntologyIriString( "http://asu.edu/sharpc2b/ops-set" );
         def.setOutputBlocklyDir( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/blockly" ) );

@@ -6,6 +6,8 @@ import com.clarkparsia.empire.sesametwo.OpenRdfEmpireModule;
 import com.clarkparsia.empire.sesametwo.RepositoryDataSourceFactory;
 //import edu.asu.sharpc2b.prr.ExecutableRuleSet;
 //import edu.asu.sharpc2b.prr.ExecutableRuleSetImpl;
+import edu.asu.sharpc2b.hed.api.EditorCore;
+import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -28,6 +30,18 @@ public class ModelManagerTest {
 //        mm.loadModel();
 //
 //    }
+
+
+    @Test
+    public void testPesx() throws Exception {
+
+        EditorCore core = EditorCoreImpl.getInstance();
+
+        core.createArtifact();
+        System.out.println( core.getAvailableArtifacts() );
+
+
+    }
 
 
     @Test

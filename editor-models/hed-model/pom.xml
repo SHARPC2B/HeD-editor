@@ -10,13 +10,18 @@
 
   <groupId>sharpc2b</groupId>
   <artifactId>hed-model</artifactId>
-  <version>${editor.version}</version>
+  <version>0.1-SNAPSHOT</version>
 
 
   <name>SHARPC-2B :: Smart Editor Core Models</name>
 
   <dependencies>
 
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>hed-ontologies</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.drools</groupId>
@@ -180,50 +185,57 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>sharpc2b</groupId>
+            <artifactId>hed-ontologies</artifactId>
+            <version>0.1-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <outputDirectory>${pom.basedir}</outputDirectory>
 
 
-          <!--ontology>${pom.basedir}/src/main/resources/ontologies/editor_models/DUL.owl</ontology-->
-          <ontology>${pom.basedir}/src/main/resources/ontologies/editor_models/sharp.owl</ontology>
+          <!--ontology>ontologies/editor_models/DUL.owl</ontology-->
+          <ontology>ontologies/editor_models/sharp.owl</ontology>
           <ontologyImports>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/DUL.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/IOLite.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/LMM_L1.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos-core.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos-ext.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos_lmm.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/dc_owl2dl.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/dc2dul.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/metadata.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/expr-core.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/prr-core.owl</import>
+            <import>ontologies/editor_models/DUL.owl</import>
+            <import>ontologies/editor_models/IOLite.owl</import>
+            <import>ontologies/editor_models/LMM_L1.owl</import>
+            <import>ontologies/editor_models/skos-core.owl</import>
+            <import>ontologies/editor_models/skos-ext.owl</import>
+            <import>ontologies/editor_models/skos_lmm.owl</import>
+            <import>ontologies/editor_models/dc_owl2dl.owl</import>
+            <import>ontologies/editor_models/dc2dul.owl</import>
+            <import>ontologies/editor_models/metadata.owl</import>
+            <import>ontologies/editor_models/expr-core.owl</import>
+            <import>ontologies/editor_models/prr-core.owl</import>
 
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/bfo-1.1.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/sharp-time.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/event.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/actions.owl</import>
-            <!--import>${pom.basedir}/src/main/resources/ontologies/editor_models/sharp_operators.ofn</import-->
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/prr-sharp.owl</import>
+            <import>ontologies/editor_models/bfo-1.1.owl</import>
+            <import>ontologies/editor_models/sharp-time.owl</import>
+            <import>ontologies/editor_models/event.owl</import>
+            <import>ontologies/editor_models/actions.owl</import>
+            <!--import>/ontologies/editor_models/sharp_operators.ofn</import-->
+            <import>ontologies/editor_models/prr-sharp.owl</import>
           </ontologyImports>
 
 
-          <!--ontology>${pom.basedir}/src/main/resources/ontologies/editor_models/prr-sharp.owl</ontology>
+          <!--ontology>/ontologies/editor_models/prr-sharp.owl</ontology>
           <ontologyImports>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/DUL.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/IOLite.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/LMM_L1.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos-core.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos-ext.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/skos_lmm.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/dc_owl2dl.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/dc2dul.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/metadata.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/expr-core.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/actions.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/events.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/domain.owl</import>
-            <import>${pom.basedir}/src/main/resources/ontologies/editor_models/prr-core.owl</import>
+            <import>/ontologies/editor_models/DUL.owl</import>
+            <import>/ontologies/editor_models/IOLite.owl</import>
+            <import>/ontologies/editor_models/LMM_L1.owl</import>
+            <import>/ontologies/editor_models/skos-core.owl</import>
+            <import>/ontologies/editor_models/skos-ext.owl</import>
+            <import>/ontologies/editor_models/skos_lmm.owl</import>
+            <import>/ontologies/editor_models/dc_owl2dl.owl</import>
+            <import>/ontologies/editor_models/dc2dul.owl</import>
+            <import>/ontologies/editor_models/metadata.owl</import>
+            <import>/ontologies/editor_models/expr-core.owl</import>
+            <import>/ontologies/editor_models/actions.owl</import>
+            <import>/ontologies/editor_models/events.owl</import>
+            <import>/ontologies/editor_models/domain.owl</import>
+            <import>/ontologies/editor_models/prr-core.owl</import>
           </ontologyImports-->
 
           <modelName>HeD</modelName>

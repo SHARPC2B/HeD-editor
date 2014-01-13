@@ -105,7 +105,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -213,7 +214,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -371,7 +373,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -479,7 +482,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -707,7 +711,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -886,7 +891,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1025,7 +1031,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1133,7 +1140,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1361,7 +1369,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1469,7 +1478,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1635,7 +1645,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1982,7 +1993,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2117,7 +2129,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2225,7 +2238,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2333,7 +2347,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2647,7 +2662,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -3650,7 +3666,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -3891,7 +3908,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -4074,7 +4092,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -4209,7 +4228,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = 
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -4349,7 +4369,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops#CreateExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Pro]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -4523,7 +4544,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -4999,7 +5021,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -5138,7 +5161,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -5299,7 +5323,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -5528,7 +5553,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -5742,7 +5768,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -6229,7 +6256,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -6395,7 +6423,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -6503,7 +6532,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -6611,7 +6641,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -6812,7 +6843,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -7013,7 +7045,8 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
        while (itemBlock) {
          var input = this.appendValueInput('ARGS_' + this.itemCount_)
                                           .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+                                          .setAlign( Blockly.ALIGN_RIGHT )
+                                          .appendTitle( '[Col, Lis]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -7758,6 +7791,27 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConvertExpression'] = {
 
     this.setTooltip( 'HeD expression : Convert' );
   } 
+};
+
+Blockly.Blocks.argument_group_container = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendTitle('Add arguments');
+        this.appendStatementInput('STACK');
+        this.setTooltip('Add, or remove arguments');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.argument_group_item = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendTitle('Argument');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Add a new argument');
+        this.contextMenu = false;
+    }
 };
 
 

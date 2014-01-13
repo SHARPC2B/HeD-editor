@@ -21,6 +21,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-shapes-generator-plugin</artifactId>
+      <version>${chance.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>net.sourceforge.owlapi</groupId>
       <artifactId>owlapi-api</artifactId>
     </dependency>
@@ -105,7 +111,7 @@
 
 
 
-      <plugin>
+      <!--plugin>
         <artifactId>skos-to-T-plugin</artifactId>
         <groupId>sharpc2b</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -123,7 +129,7 @@
           <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
           <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
         </configuration>
-      </plugin>
+      </plugin-->
 
       <plugin>
         <artifactId>T-to-A-plugin</artifactId>
@@ -145,6 +151,7 @@
         </configuration>
       </plugin>
 
+
       <plugin>
         <artifactId>define-operators-plugin</artifactId>
         <groupId>sharpc2b</groupId>
@@ -159,8 +166,7 @@
         </executions>
         <configuration>
           <operatorDefinitionFile>${pom.basedir}/src/main/resources/SharpOperators.xlsx</operatorDefinitionFile>
-          <!--hedSourceOntologyPath>${pom.basedir}/target/generated-sources/knowledgedocument.xsd.ttl</hedSourceOntologyPath-->
-          <hedSourceOntologyPath>/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/src/main/resources/knowledgedocument.xsd.ttl</hedSourceOntologyPath>
+          <hedSourceOntologyPath>${pom.basedir}/target/generated-sources/knowledgedocument.xsd.ttl</hedSourceOntologyPath>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/sharp_operators.ofn</outputOntologyFile>
           <outputBlocklyDir>${pom.basedir}/target/generated-sources/blockly</outputBlocklyDir>
           <outputOntologyIriString>http://asu.edu/sharpc2b/ops-set</outputOntologyIriString>

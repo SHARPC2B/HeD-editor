@@ -3,10 +3,10 @@ body {
 }
 
 header {
-	border: 3px solid #e5e5e5;
 	display: -webkit-flex;
 	-webkit-align-items: center;
 	padding: 0 20px;
+	background-color: #ffda5c
 }
 
 .mainMenu {
@@ -64,7 +64,7 @@ ng-view {
 .search-prepend {
 	position: relative;
 }
-  
+
 .search-prepend .search-query {
 	padding-left: 29px;
 }
@@ -83,14 +83,6 @@ ng-view {
 	vertical-align: top;
 }
 
-legend {
-	border-style: none;
-    border-width: 0;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 0;
-    width: auto;
-}
 
 li.tiny a {
 	font-size: 0.9em;
@@ -132,9 +124,46 @@ li.huge a {
 
 .modal {
 	width: auto;
-	left: 30%;
+}
+
+.modal-body {
+	max-height: none;
 }
 
 .icon-3x {
 	vertical-align: middle;
+}
+
+.modal-body{
+	overflow:visible;
+}
+
+text {
+  font-size: 11px;
+  cursor: pointer;
+}
+
+text.parent {
+  fill: #1f77b4;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #999;
+  pointer-events: all;
+}
+
+circle.parent {
+  fill: #1f77b4;
+  fill-opacity: .1;
+  stroke: steelblue;
+}
+
+circle.parent:hover {
+  stroke: #ff7f0e;
+  stroke-width: .5px;
+}
+
+circle.child {
+  pointer-events: none;
 }

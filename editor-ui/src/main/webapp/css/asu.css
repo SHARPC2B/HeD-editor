@@ -1,0 +1,21 @@
+.navbar-inverse .navbar-inner {
+	background-image: none;
+	border-color: #B43F3D;
+	background-color: #B43F3D;
+	text-align: center;
+}
+
+.navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover {
+	color: #FFDA5C;
+	background-color: #B43F3D;
+	box-shadow: inherit;
+}
+
+.navbar .nav {
+	display: inline-block;
+	float: none;
+}
+
+.navbar-inverse .nav>li>a {
+	color: #FFFFFF;
+}

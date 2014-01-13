@@ -18,6 +18,11 @@
 
     <dependency>
       <groupId>sharpc2b</groupId>
+      <artifactId>hed-ontologies</artifactId>
+      <version>${editor.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sharpc2b</groupId>
       <artifactId>model-transform</artifactId>
       <version>${editor.version}</version>
     </dependency>

@@ -48,7 +48,7 @@ class TADomainModelTest extends GroovyTestCase {
     static File mmaOutFile = TestFileUtil.getResourceAsFile( "/ontologies/out/SharpOwlABoxMetaModel.ofn" );
 
     static IRI outputOntIRI = TestUtil.testIRI( "ClinicalDomainInsts" );
-    static File outputOntFile = TestFileUtil.getResourceAsFile( "/ontologies/out/ClinicalDomainA.ofn" );
+    static String outputOntFile = "/out/ClinicalDomainA.ofn";
 
 
     OWLOntologyManager oom;
@@ -310,7 +310,8 @@ class TADomainModelTest extends GroovyTestCase {
         OWLOntologyFormat oFormat = new OWLFunctionalSyntaxOntologyFormat();
         oFormat.copyPrefixesFrom( pm );
         oom.setOntologyFormat( ontA, oFormat );
-        IRI docIRI = IRI.create( outputOntFile );
+        File path = new File( inputOntFile.getParentFile().getParent() + outputOntFile );
+        IRI docIRI = IRI.create( path );
 
         oom.saveOntology( ontA, oFormat, docIRI );
     }

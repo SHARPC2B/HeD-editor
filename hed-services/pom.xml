@@ -41,6 +41,11 @@
       <artifactId>core</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
+    </dependency>
+
 
     <dependency>
       <groupId>com.typesafe.play</groupId>

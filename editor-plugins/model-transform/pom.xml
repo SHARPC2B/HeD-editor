@@ -57,33 +57,8 @@
     </dependency>
 
     <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-jena</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-rules</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-datatypes</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-el</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pellet</groupId>
-      <artifactId>pellet-owlapiv3</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.semanticweb</groupId>
-      <artifactId>HermiT</artifactId>
+      <groupId>com.hermit-reasoner</groupId>
+      <artifactId>org.semanticweb.hermit</artifactId>
     </dependency>
 
 

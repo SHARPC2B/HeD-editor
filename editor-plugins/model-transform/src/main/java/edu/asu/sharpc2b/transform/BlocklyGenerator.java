@@ -146,6 +146,8 @@ public class BlocklyGenerator {
 
 
 
+        String common = (String) TemplateRuntime.execute( registry.getNamedTemplate( "blockyCommon" ), null, Collections.emptyMap(), registry );
+        builder.append( common );
         String basicBlocks = (String) TemplateRuntime.execute( registry.getNamedTemplate( "basicBlocks" ), null, Collections.emptyMap(), registry );
         builder.append( basicBlocks );
 

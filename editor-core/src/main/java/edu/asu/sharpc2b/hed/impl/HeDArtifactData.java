@@ -1,20 +1,45 @@
 package edu.asu.sharpc2b.hed.impl;
 
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class HeDArtifactData {
 
-    private String artifactId;
+    private HeDKnowledgeDocument knowledgeDocument;
+
+    public HeDArtifactData() {
+        String uuid = UUID.randomUUID().toString();
+        String artifactId = "http://asu.bmi.edu/Rule_" + System.identityHashCode( uuid );
+        String title =  "HeD Artifact " + System.identityHashCode( uuid );
+
+        knowledgeDocument = new HeDKnowledgeDocumentImpl();
+        knowledgeDocument.addIdentifier( artifactId );
+        knowledgeDocument.addTitle( title );
+    }
+
+
+    public String getArtifactId() {
+        return knowledgeDocument.getArtifactId().get( 0 );
+    }
+
+    public String getTitle() {
+        return knowledgeDocument.getTitle().get( 0 );
+    }
+
+
+
+
+
+
+
 
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
 
-
-    public HeDArtifactData( String artifactId ) {
-        this.artifactId = artifactId;
-    }
 
     public Map<String,String> getNamedExpressions() {
         HashMap<String,String> expressions = new HashMap<String,String>( blocklyExpressions.size() );

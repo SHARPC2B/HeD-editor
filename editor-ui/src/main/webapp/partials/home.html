@@ -4,14 +4,14 @@
 		<div class="homeBox borderedBox">
 			<i class="icon-hand-up icon-4x"></i>
 			<div>
-				<a href="#/standard/background">Create New Rule</a>
+				<a href="" x-ng-click="createNew()">Create New Rule</a>
 				<p>Use an enhanced interface to guide you through the process of creating a new rule.</p>
 			</div>
 		</div><br>
         <div class="homeBox borderedBox">
             <i class="icon-external-link icon-4x"></i>
             <div>
-                <a href="#/standard/background">Import Rule</a>
+                <a href="" x-ng-click="open('Import')">Import Rule</a>
                 <p>Import a rule and begin editing the rule in Standard Mode.</p>
             </div>
         </div><br>
@@ -29,14 +29,14 @@
 		<div class="homeBox borderedBox">
 			<i class="icon-edit icon-4x"></i>
 			<div>
-				<a href="#/revise">Open and Edit Rule</a>
+				<a href="" x-ng-click="open('Open')">Open and Edit Rule</a>
 				<p>Allows you to browser/edit all of your institution's rules for which you have editing privileges.</p>
 			</div>
 		</div><br>
 		<div class="homeBox borderedBox">
 			<i class="icon-file-text-alt icon-4x"></i>
 			<div>
-				<a href="#/others">View Others' Rules</a>
+				<a href="" x-ng-click="open( false )">View Others' Rules</a>
 				<p>Open editor in 'Read Only' mode.</p>
 			</div>
 		</div>
@@ -46,35 +46,35 @@
         <div class="homeBox borderedBox">
             <i class="icon-camera icon-4x"></i>
             <div>
-                <a href="#/revise">Snapshot Rule</a>
+                <a href="" x-ng-click="snapshot()">Snapshot Rule</a>
                 <p>Take a snapshot of the current rule and store it in the rule repository.</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-copy icon-4x"></i>
             <div>
-                <a href="#/others">Save As...</a>
+                <a href="" x-ng-click="save()">Save As...</a>
                 <p>Save a copy of the current rule to the rule repository.</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-circle-arrow-right icon-4x"></i>
             <div>
-                <a href="#/others">Export...</a>
+                <a href="" x-ng-click="open('Export')">Export...</a>
                 <p>Export the current rule in a standard format (HeD, Arden, etc.)</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-eject icon-4x"></i>
             <div>
-                <a href="#/others">Close</a>
+                <a href="" x-ng-click="close()">Close</a>
                 <p>Close the current rule. (Rule will remain in the rule repository)</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-remove-circle icon-4x"></i>
             <div>
-                <a href="#/others">Delete</a>
+                <a href="" x-ng-click="delete()">Delete</a>
                 <p>Remove the current rule from the rule repository.</p>
             </div>
         </div><br>

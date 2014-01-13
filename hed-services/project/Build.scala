@@ -7,14 +7,20 @@ object ApplicationBuild extends Build {
   val appName = "hed-editor-services"
   val appVersion = "1.0"
 
+  val dependencyOverrides = Seq(
+    "xml-apis" % "xml-apis" % "1.3.04"
+  )
+
   val appDependencies = Seq(
     // Add your project dependencies here,
-    "xml-apis" % "xml-apis" % "1.4.01",
-    "xml-apis" % "xml-apis" % "1.3.04",
+
+//    "xml-apis" % "xml-apis" % "1.4.01" force(),
+    "com.hermit-reasoner" % "org.semanticweb.hermit" % "1.3.8.2" force(),
+    "org.apache.jena" % "jena-core" % "2.11.0" force(),
 
     javaCore,
-    javaEbean
-    ,
+    javaEbean,
+
     // "com.google.gdata" % "core" % "1.47.1" exclude("xml-apis","xml-apis"),
 
     "edu.mayo.cts2.framework" % "model" % "0.8.4" withSources() withJavadoc() exclude("org.slf4j","slf4j-log4j12"),

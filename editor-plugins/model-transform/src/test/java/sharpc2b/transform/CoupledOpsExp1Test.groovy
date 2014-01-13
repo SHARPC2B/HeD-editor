@@ -34,6 +34,9 @@ extends GroovyTestCase {
 //    static File ontFile = FileUtil.getFileInProjectDir(
 //            OwlUtil.sharpEditorOntologiesDirInProject + "demos/expr-core-coupled.owl" )
     static File ontFile = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/demos/expr-core-coupled.owl" );
+    static File core = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-core.owl" );
+    static File ext = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_skos-ext.owl" );
+    static File expr = FileUtil.getExistingResourceAsFile( "/ontologies/editor_models/mock_expr-core.owl" );
 
 
     OWLOntologyManager oom;
@@ -70,6 +73,9 @@ extends GroovyTestCase {
 
         // imports skos-ext and skos-core
         assertTrue ontFile.exists()
+        oom.loadOntologyFromOntologyDocument( core );
+        oom.loadOntologyFromOntologyDocument( ext );
+        oom.loadOntologyFromOntologyDocument( expr );
         ont = oom.loadOntologyFromOntologyDocument( ontFile )
 
         onts.add( ont );
@@ -174,6 +180,9 @@ extends GroovyTestCase {
 
     void testOperationPartsOK () {
 
+        oom.loadOntologyFromOntologyDocument( core );
+        oom.loadOntologyFromOntologyDocument( ext );
+        oom.loadOntologyFromOntologyDocument( expr );
         ont = oom.loadOntologyFromOntologyDocument( ontFile )
 
         onts.add( ont );

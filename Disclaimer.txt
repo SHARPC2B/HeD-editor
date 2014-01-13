@@ -1,0 +1,8 @@
+DISCLAIMER
+
+This code is still experimental and subject to variations.
+
+Neither the editor nor any artifact generated using the editor should be used in a clinical setting without going
+through an appropriate quality assurance process, including reviews by subject matter experts and software testing.
+Arizona State University and Intermountain Healthcare decline any responsibility for any consequence due to the
+misuse of this software. See the LICENSE file for additional information.
