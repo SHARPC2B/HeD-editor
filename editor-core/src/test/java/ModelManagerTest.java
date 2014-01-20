@@ -8,6 +8,7 @@ import com.clarkparsia.empire.sesametwo.RepositoryDataSourceFactory;
 //import edu.asu.sharpc2b.prr.ExecutableRuleSetImpl;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
+import edu.asu.sharpc2b.hed.impl.ModelManagerOwlAPIHermit;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -33,25 +34,13 @@ public class ModelManagerTest {
 
 
     @Test
+    @Ignore
     public void testPesx() throws Exception {
 
         EditorCore core = EditorCoreImpl.getInstance();
 
         core.createArtifact();
         System.out.println( core.getAvailableArtifacts() );
-
-
-    }
-
-
-    @Test
-    @Ignore
-    public void testExampleLoad() throws Exception {
-
-        ModelManagerOwlAPIHermit mm = new ModelManagerOwlAPIHermit();
-
-        mm.processExample();
-
     }
 
     @Test

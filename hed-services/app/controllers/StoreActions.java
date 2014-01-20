@@ -2,15 +2,19 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Artifact;
 import models.ModelHome;
 import models.PrimitiveInst;
 import models.Rule;
+import models.RuleGroup;
+import models.TemplateList;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static controllers.SharpController.setHeaderCORS;
@@ -23,10 +27,27 @@ public class StoreActions
         List<String> ruleIds = ModelHome.getAvailableArtifacts();
 
         System.out.println( "found rules = " + ruleIds );
-        JsonNode jsonOut = Json.toJson( ruleIds );
+
+        List<RuleGroup> groups = new ArrayList<RuleGroup>();
+
+        RuleGroup ruleGroup = new RuleGroup();
+        ruleGroup.label = "HeD rules";
+        ruleGroup.templates = new ArrayList<Artifact>( ruleIds.size() );
+
+        for ( String id : ruleIds ) {
+            Artifact artifact = new Artifact();
+            artifact.name = id;
+            ruleGroup.templates.add( artifact );
+        }
+
+        groups.add( ruleGroup );
+
+        JsonNode jsonOut = Json.toJson( groups );
+
+        System.out.println( jsonOut );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result createNewArtifact() {
@@ -67,14 +88,14 @@ public class StoreActions
     }
 
     public static Result openArtifact( String id ) {
-
+        System.out.println( "Loading " + id  );
         String result = ModelHome.openArtifact( id );
 
         System.out.println( "Loaded " + id + " := " + result );
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result snapshotArtifact( String id ) {
@@ -96,7 +117,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result exportArtifact( String id, String format ) {
@@ -107,7 +128,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result closeArtifact( ) {
@@ -118,7 +139,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result deleteArtifact( String id ) {
@@ -129,7 +150,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
 

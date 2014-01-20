@@ -195,14 +195,14 @@
                   </includes>
                 </resource>
                 <resource>
-                  <targetPath>${basedir}/../hed-model/src/main/resources/ontologies/editor_models</targetPath>
+                  <targetPath>${basedir}/../hed-ontologies/src/main/resources/ontologies/editor_models</targetPath>
                   <directory>${project.build.outputDirectory}/../generated-sources/ontologies/editor_models</directory>
                   <includes>
                     <include>sharp_operators.ofn</include>
                   </includes>
                 </resource>
                 <resource>
-                  <targetPath>${basedir}/../hed-model/src/main/resources/ontologies/domain_models</targetPath>
+                  <targetPath>${basedir}/../hed-ontologies/src/main/resources/ontologies/domain_models</targetPath>
                   <directory>${project.build.outputDirectory}/../generated-sources/ontologies/editor_models</directory>
                   <includes>
                     <include>domain-vmr.ofn</include>

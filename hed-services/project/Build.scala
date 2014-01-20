@@ -17,6 +17,11 @@ object ApplicationBuild extends Build {
 //    "xml-apis" % "xml-apis" % "1.4.01" force(),
     "com.hermit-reasoner" % "org.semanticweb.hermit" % "1.3.8.2" force(),
     "org.apache.jena" % "jena-core" % "2.11.0" force(),
+    "com.hp.hpl.jena" % "arq" % "2.8.5" force(),
+    "org.apache.stanbol" % "org.apache.stanbol.client" % "0.20.0-SNAPSHOT" force(),
+    "org.drools" % "drools-core" % "5.6.0-SNAPSHOT" force(),
+    "org.drools" % "drools-shapes-utilities" % "0.5.6.Final" exclude("com.hp.hpl.jena", "jena") exclude("com.hp.hpl.jena", "arq"),
+
 
     javaCore,
     javaEbean,
@@ -27,6 +32,7 @@ object ApplicationBuild extends Build {
     "edu.mayo.cts2.framework" % "core" % "0.8.4" withSources() withJavadoc() exclude("org.slf4j","slf4j-log4j12"),
 
     "sharpc2b" % "sharp-editor" % "0.1-SNAPSHOT",
+    "sharpc2b" % "import-export" % "0.1-SNAPSHOT",
     "sharpc2b" % "editor-core" % "0.1-SNAPSHOT"
     //    ,
 

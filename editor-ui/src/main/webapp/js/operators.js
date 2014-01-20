@@ -1858,40 +1858,64 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
 
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops#ClinicalRequestExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+    init: function() {
+        this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
-    this.setColour( 42 );
+        this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'ClinicalRequestExpression' );
+        this.appendDummyInput().appendTitle( 'ClinicalRequestExpression' );
 
 
 
         this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:anyURI' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'datatype [anyURI]' );
+            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainClass' )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'datatype [Cls]' );
 
 
         this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:anyURI' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'dateProperty [anyURI]' );
+            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainClass' )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'dateProperty [Pro]' );
 
 
         this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'singleCardinality [boolean]' );
+            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainProperty' )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'codeProperty [Pro]' );
+
+
+        this.appendValueInput( 'ARG_3' )
+            .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'codes [Col, Lis]' );
+
+
+        this.appendValueInput( 'ARG_4' )
+            .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'dateRange [Col, Lis]' );
+
+
+        this.appendValueInput( 'ARG_5' )
+            .setCheck( 'xsd:boolean' )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'singleCardinality [boolean]' );
+
+
+        this.appendValueInput( 'ARG_6' )
+            .setCheck( 'xsd:boolean' )
+            .setAlign( Blockly.ALIGN_RIGHT )
+            .appendTitle( 'initial [boolean]' );
 
 
 
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#CollectionType' );
+        this.setOutput( true, 'http://asu.edu/sharpc2b/ops#CollectionType' );
 
-    this.setInputsInline( false );
+        this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : ClinicalRequestExpression' );
-  }
+        this.setTooltip( 'HeD literal : ClinicalRequestExpression' );
+    }
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyListExpression'] = {

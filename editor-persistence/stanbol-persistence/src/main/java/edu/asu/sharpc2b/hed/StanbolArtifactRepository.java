@@ -45,7 +45,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
     public List<String> getAvailableArtifacts() {
         try {
             SolrQuery sQuery = new SolrQuery();
-            sQuery.setQuery( "HeD" );
+            sQuery.setQuery( "*" );
             StanbolSearchResult searchResult = client.solrSearch().search(
                     StanbolContenthubStoreService.STANBOL_DEFAULT_INDEX, sQuery );
 
@@ -55,6 +55,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
             for ( DocumentResult dox : docs ) {
                 ids.add( dox.getLocalId() );
             }
+            System.out.println( "Artifact IDs found in stanbol repository " + ids );
             return ids;
         } catch ( StanbolServiceException e ) {
             e.printStackTrace();

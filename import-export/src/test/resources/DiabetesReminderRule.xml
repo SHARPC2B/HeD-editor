@@ -9,15 +9,15 @@
   <metadata>
 
     <identifiers>
-      <identifier root="www.usd.edu" version="1.0"/>
+      <identifier root="urn:www.usd.edu" version="1.0"/>
     </identifiers>
     <artifactType value="Rule"/>
-    <schemaIdentifier root="www.hed.org/knowledgedocument" version="1.0"/>
+    <schemaIdentifier root="urn:www.hed.org/knowledgedocument" version="1.0"/>
 
     <dataModels>
       <modelReference>
-        <description value="HL7 VMR"/>
-        <referencedModel value="HL7 Virtual Medical Record version 1.0"/>
+        <description value="HL7 Virtual Medical Record version 1.0"/>
+        <referencedModel value="urn:hl7-org:vmr:r2"/>
       </modelReference>
     </dataModels>
 

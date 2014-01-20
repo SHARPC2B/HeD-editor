@@ -1,6 +1,7 @@
 import edu.asu.sharpc2b.hed.ArtifactRepository;
 import edu.asu.sharpc2b.hed.RepositoryFactory;
 import edu.asu.sharpc2b.hed.StanbolArtifactRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -25,5 +26,16 @@ public class RepoTest {
 
 
     }
+
+
+    @Test
+    public void testAvailableArtifacts() throws Exception {
+
+        ArtifactRepository knowledgeRepo = RepositoryFactory.getRepository( RepositoryFactory.REPOSITORY.STANBOL );
+
+        System.out.println( knowledgeRepo.getAvailableArtifacts() );
+
+    }
+
 
 }

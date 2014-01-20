@@ -23,6 +23,7 @@ public class TestOntologyCompilation {
 
 
     @Test
+    @Ignore
     public void testDUL() {
         DLFactory factory = DLFactoryImpl.getInstance();
         InputStream source = TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/DUL.owl" );
@@ -34,7 +35,7 @@ public class TestOntologyCompilation {
     }
 
     @Test
-//    @Ignore("Takes too much time")
+    @Ignore("Takes too much time")
     public void testSkosLMMIntegration() {
         DLFactory factory = DLFactoryImpl.getInstance();
 

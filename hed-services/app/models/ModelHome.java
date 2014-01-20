@@ -5,6 +5,11 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
+import edu.mayo.cts2.framework.core.client.Cts2RestClient;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryList;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import models.ex.ConvertJsonToJavaException;
 import models.ex.ModelDataFileNotFoundException;
 import play.libs.Json;
@@ -85,7 +90,19 @@ public class ModelHome
 
 
     public static Map<String,String> getNamedExpressions() {
-        return core.getExpressions();
+        return core.getNamedExpressions();
+    }
+
+    public static byte[] getNamedExpression( String expressionIri ) {
+        return core.getNamedExpression( expressionIri );
+    }
+
+    public static boolean deleteNamedExpression( String expressionIri ) {
+        return core.deleteNamedExpression( expressionIri );
+    }
+
+    public static String cloneNamedExpression( String expressionIri ) {
+        return core.cloneNamedExpression( expressionIri );
     }
 
     public static void updateNamedExpression( String expressionIRI, String exprName, byte[] doxBytes ) {
@@ -326,7 +343,30 @@ public class ModelHome
     }
 
 
-    static HedTypeList hedTypeList = createJavaInstanceFromJsonFile( HedTypeList.class );
+
+    static HedTypeList hedTypeList = initHeDTypeList();
+
+    private static HedTypeList initHeDTypeList() {
+        HedTypeList typeList = createJavaInstanceFromJsonFile( HedTypeList.class );
+
+        for ( HedType type : typeList.hedTypes ) {
+            if ( "CodeLiteral".equals( type.name ) ) {
+                ElementType codeSystem = type.getElement( "codeSystem" );
+                codeSystem.selectionChoices = lookupCodeSystems();
+            }
+        }
+
+        return typeList;
+    }
+
+    private static List<String> lookupCodeSystems() {
+        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( "http://localhost:8080/cts2framework/codesystems", CodeSystemCatalogEntryDirectory.class );
+        List<String> codeSystemNames = new ArrayList<>( codesSystems.getEntryCount() );
+        for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
+            codeSystemNames.add( entry.getCodeSystemName() );
+        }
+        return codeSystemNames;
+    }
 
 
     private static List<ParameterType> rebuildParameterInfo( Map<String, Map<String,Object>> parameterData ) {

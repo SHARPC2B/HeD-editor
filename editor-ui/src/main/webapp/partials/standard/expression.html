@@ -7,11 +7,11 @@
 		</div><br>
 		<ul class="nav nav-list borderedBox" style="height: 153px;">
 			<li x-ng-repeat="expression in expressions | filter:search" x-ng-class="{active: currentExpression.name==expression.name}">
-				<div class="span10 pull-left">{{expression.expressionIRI}} :: {{expression.name}}</div>
+				<div class="span10 pull-left">{{expression.name}}</div>
 				<div class="span2 pull-right">
 					<a href="" x-ng-click="open(expression)"><i class="icon-pencil" title="Edit"></i></a>
-					<i class="icon-trash" title="Delete"></i>
-					<i class="icon-copy" title="Clone"></i>
+                    <a href="" x-ng-click="delete(expression)"><i class="icon-trash" title="Delete"></i></a>
+                    <a href="" x-ng-click="clone(expression)"><i class="icon-copy" title="Clone"></i></a>
 				</div>
 			</li>
 		</ul>

@@ -15,16 +15,33 @@
   <name>SHARPC-2B :: Smart Editor Core</name>
 
   <dependencies>
+
     <dependency>
       <groupId>sharpc2b</groupId>
-      <artifactId>editor-models</artifactId>
+      <artifactId>hed-model</artifactId>
       <version>${editor.version}</version>
     </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
-      <artifactId>model-importer</artifactId>
+      <artifactId>hed-ontologies</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>import-export</artifactId>
       <version>${editor.version}</version>
     </dependency>
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>${editor.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>stanbol-persistence</artifactId>
+      <version>${editor.version}</version>
+    </dependency>
+
 
 
     <dependency>
@@ -100,17 +117,6 @@
     </dependency>
 
     <dependency>
-      <groupId>sharpc2b</groupId>
-      <artifactId>persistence-api</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>sharpc2b</groupId>
-      <artifactId>stanbol-persistence</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
@@ -120,7 +126,7 @@
   <build>
     <plugins>
 
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>1.3.1</version>
@@ -137,7 +143,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin-->
 
       <plugin>
         <groupId>com.github.goldin</groupId>

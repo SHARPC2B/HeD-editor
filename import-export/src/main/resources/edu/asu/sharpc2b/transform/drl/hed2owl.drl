@@ -6,7 +6,8 @@ import uk.ac.manchester.cs.owl.owlapi.*;
 
 import edu.asu.sharpc2b.transform.HeD2OwlHelper;
 
-import org.hl7.v3.hed.*;
+import org.hl7.knowledgeartifact.r1.*;
+import org.hl7.cdsdt.r2.*;
 
 import javax.xml.bind.*;
 import java.util.Set;
@@ -48,7 +49,7 @@ end
 /***********************************************************************************************/
 
 
-rule "KnowledgeDocument"
+rule "Process KnowledgeDocument"
 when
     $kd : KnowledgeDocument( $ext : externalData )
 then
@@ -155,7 +156,7 @@ end
 
 
 
-rule "ValueSet"
+rule "Process ValueSet"
 when
     $val : ValueSet( $id : id, $ver : version, $auth : authority )
 then
@@ -167,8 +168,8 @@ then
     insert( new Link( $val, val ) );
 end
 
-
-rule "Property"
+/*
+rule "Process Property"
 when
     $pro : Property( $path : path, $src : source )
     Link( $src, $semSrc ; )
@@ -177,9 +178,9 @@ then
     OWLNamedIndividual ind = helper.assertPropertyChain( drools, $path, $semSrc, "vmr:" );
     insert( new Link( $pro, ind ) );
 end
+*/
 
-
-rule "IsEmpty"
+rule "Process IsEmpty"
 when
     $ie : IsEmpty( $xp : operand )
     Link( $xp, $op ; )
@@ -200,7 +201,7 @@ then
 end
 
 
-rule "ExpressionRef"
+rule "Process ExpressionRef"
 when
     $ref : ExpressionRef( $name : name )
 then
@@ -248,7 +249,7 @@ then
 end
 
 
-rule "GreaterOrEqual"
+rule "Process GreaterOrEqual"
 when
     $geq : GreaterOrEqual( )
 then
@@ -274,7 +275,7 @@ then
     insert( new Link( $con, ind ) );
 end
 
-rule "Coalesce"
+rule "Process Coalesce"
 when
     $coa : Coalesce( )
 then
@@ -282,7 +283,7 @@ then
     insert( new Link( $coa, ind ) );
 end
 
-rule "StringLiteral"
+rule "Process StringLiteral"
 when
     $sl : StringLiteral( $val : value )
 then
@@ -493,7 +494,7 @@ end
 
 rule "KnowledgeDocument Supporting Evidence"
 when
-    $kd : KnowledgeDocument( $sup : metadata.supportingEvidence.evidences )
+    $kd : KnowledgeDocument( $sup : metadata!.supportingEvidence!.evidences )
     $ev : Evidence( this memberOf $sup, $qual : qualityOfEvidence, $str : strengthOfRecommendation )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
@@ -534,7 +535,7 @@ end
 
 rule "KnowledgeDocument KeyTerms"
 when
-    $kd : KnowledgeDocument( $keys : metadata.keyTerms.terms )
+    $kd : KnowledgeDocument( $keys : metadata!.keyTerms!.terms )
     $cd : CD( this memberOf $keys )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
@@ -574,7 +575,7 @@ end
 
 rule "KnowledgeDocument Publishers"
 when
-    $kd : KnowledgeDocument( $pubs : metadata.publishers.publishers )
+    $kd : KnowledgeDocument( $pubs : metadata!.publishers!.publishers )
     $ac : Party( this memberOf $pubs )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
@@ -584,7 +585,7 @@ end
 
 rule "KnowledgeDocument Rights"
 when
-    $kd : KnowledgeDocument( $rights : metadata.usageTerms.rightsDeclarations )
+    $kd : KnowledgeDocument( $rights : metadata!.usageTerms!.rightsDeclarations )
     $rd : RightsDeclaration( this memberOf $rights )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
@@ -595,7 +596,7 @@ end
 
 rule "Actor Contact"
 when
-    $ac : Party( $contacts : contacts.contacts )
+    $ac : Party( $contacts : contacts!.contacts )
           TEL( this memberOf $contacts, $contact : value != null )
 then
     OWLNamedIndividual ac = helper.asIndividual( $ac );
@@ -675,16 +676,6 @@ then
 
     insert( helper.assertObjectProperty( "act:memberAction", a1, a2  ) );
 end
-
-rule "MessageAction"
-when
-    $am : MessageAction( $msg : message )
-    Link( $msg, $mexpr ; )
-then
-    OWLNamedIndividual msg = helper.asIndividual( $am );
-    insert( helper.assertObjectProperty( "prr-sharp:actionSentence", msg, $mexpr  ) );
-end
-
 
 
 

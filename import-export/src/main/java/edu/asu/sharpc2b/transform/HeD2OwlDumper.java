@@ -12,7 +12,6 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.shapes.xsd.Jaxplorer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
-import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -45,7 +44,7 @@ public class HeD2OwlDumper {
 
 
     private static KnowledgeBase kBase;
-    private static final String HED = "org.hl7.v3.hed";
+    private static final String HED = "org.hl7.knowledgeartifact.r1";
 
 
     public HeD2OwlDumper() {
@@ -68,7 +67,18 @@ public class HeD2OwlDumper {
     public void compile( String inputFile, String targetFile ) throws FileNotFoundException {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream( inputFile );
 
-        Object hed = loadModel( HED, stream );
+        String path = targetFile.substring( 0, targetFile.lastIndexOf( File.separator ) );
+        File dir = new File( path );
+        if ( !dir.exists() ) {
+            dir.mkdirs();
+        }
+        FileOutputStream outputStream = new FileOutputStream( new File( targetFile ) );
+        compile( stream, outputStream );
+    }
+
+
+    public void compile( InputStream inStream, OutputStream outStream ) {
+        Object hed = loadModel( HED, inStream );
 
         Object vid = getIdentifiersList( hed ).iterator().next();
         String root = getRoot( vid );
@@ -78,26 +88,13 @@ public class HeD2OwlDumper {
 
         OWLOntology result = transform( hed, root, version, prefixManager );
 
-        String path = targetFile.substring( 0, targetFile.lastIndexOf( File.separator ) );
-        File dir = new File( path );
-        if ( !dir.exists() ) {
-            dir.mkdirs();
-        }
 
         PrefixOWLOntologyFormat format = new OWLFunctionalSyntaxOntologyFormat();
         format.copyPrefixesFrom( prefixManager );
         stream( result,
-                new FileOutputStream( new File( targetFile ) ),
+                outStream,
                 format
         );
-
-        PrefixOWLOntologyFormat format3 = new RDFXMLOntologyFormat();
-        format3.copyPrefixesFrom( prefixManager );
-        stream( result,
-                new FileOutputStream( new File( targetFile.replace( ".owl", ".rdf" ) ) ),
-                format3
-        );
-
 
         PrefixOWLOntologyFormat format2 = new ManchesterOWLSyntaxOntologyFormat();
         format2.copyPrefixesFrom( prefixManager );
@@ -119,6 +116,7 @@ public class HeD2OwlDumper {
         prefixManager.setPrefix( "skos:", "http://www.w3.org/2004/02/skos/core#" );
         prefixManager.setPrefix( "skos-ext:", "http://asu.edu/sharpc2b/skos-ext#" );
         prefixManager.setPrefix( "dcterms:", "http://purl.org/dc/terms/" );
+        prefixManager.setPrefix( "vmr:", "urn:hl7-org:vmr:r2" );
         if ( ! root.startsWith( "http://" ) ) {
             root = "http://" + root;
         }

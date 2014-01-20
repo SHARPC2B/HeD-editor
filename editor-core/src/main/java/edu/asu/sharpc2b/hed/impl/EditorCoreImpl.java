@@ -5,7 +5,9 @@ import edu.asu.sharpc2b.hed.RepositoryFactory;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
-import edu.emory.mathcs.backport.java.util.Collections;
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
+import edu.asu.sharpc2b.transform.HeD2OwlDumper;
+import org.drools.io.ResourceFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -27,11 +29,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -80,13 +85,33 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
 
     @Override
-    public Map<String,String> getExpressions() {
+    public Map<String,String> getNamedExpressions() {
         return getCurrentArtifact().getNamedExpressions();
     }
 
     @Override
-    public byte[] getExpression( String exprId ) {
+    public byte[] getNamedExpression( String exprId ) {
         return getCurrentArtifact().getNamedExpression( exprId ).getDoxBytes();
+    }
+
+    @Override
+    public boolean deleteNamedExpression( String exprId ) {
+        System.out.println( "Deleting .. " + exprId );
+        boolean hasExpr = getCurrentArtifact().getNamedExpressions().containsKey( exprId );
+        if ( hasExpr ) {
+            System.out.println( "Deleted .. " + exprId );
+            getCurrentArtifact().getNamedExpressions().remove( exprId );
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public String cloneNamedExpression( String exprId ) {
+        HeDNamedExpression expr = getCurrentArtifact().getNamedExpression( exprId );
+        String id = UUID.randomUUID().toString();
+        getCurrentArtifact().updateNamedExpression( id, expr.getName(), expr.getDoxBytes() );
+        return id;
     }
 
     @Override
@@ -118,10 +143,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             domKlasses = new HashMap<String,String>();
             try {
                 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
                 OWLDataFactory odf = domain.getOWLOntologyManager().getOWLDataFactory();
                 for ( OWLNamedIndividual ind : domain.getIndividualsInSignature() ) {
                     if ( ind.getTypes( domain ).contains( odf.getOWLClass( IRI.create( "http://asu.edu/sharpc2b/ops#DomainClass" ) ) ) )  {
@@ -157,17 +182,17 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             domProptis = new HashMap<String,String>();
             try {
                 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
                 OWLDataFactory odf = domain.getOWLOntologyManager().getOWLDataFactory();
                 for ( OWLNamedIndividual ind : domain.getIndividualsInSignature() ) {
                     if ( ind.getTypes( domain ).contains( odf.getOWLClass( IRI.create( "http://asu.edu/sharpc2b/ops#DomainProperty"  ) ) ) ) {
                         Set<OWLIndividual> values = ind.getObjectPropertyValues( odf.getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#partOf" ) ), domain );
                         for ( OWLIndividual val : values ) {
                             if ( val.isNamed() && getDomainClasses().containsKey( ((OWLNamedIndividual) val ).getIRI().toString()) ) {
-                                domProptis.put( ind.getIRI().toString(), ind.getIRI().getFragment() );
+                                domProptis.put( ind.getIRI().toString(), ( (OWLNamedIndividual) val ).getIRI().getFragment() + "::" + ind.getIRI().getFragment() );
                             }
                         }
                     }
@@ -197,13 +222,13 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         try {
             templates = manager.createOntology( IRI.create( "http://asu.edu/sharpc2b/templates/data" ) );
             manager = templates.getOWLOntologyManager();
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
-            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/template_schema.owl" ) );
-            File dataDir = new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/data" );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
+            manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/templates/template_schema.owl" ) );
+            File dataDir = new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/templates/data" );
             for ( File tempFile : dataDir.listFiles( new FilenameFilter() {
                 @Override
                 public boolean accept( File dir, String name ) {
@@ -211,12 +236,12 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
                 }
             }) ) {
                 OWLOntologyManager subManager = OWLManager.createOWLOntologyManager();
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
-                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-model/src/main/resources/ontologies/templates/template_schema.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/sharp_operators.ofn" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
+                subManager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/templates/template_schema.owl" ) );
                 OWLOntology temp = subManager.loadOntologyFromOntologyDocument( tempFile );
                 manager.addAxioms( templates, temp.getAxioms() );
             }
@@ -293,7 +318,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             details.put( "label", name );
             details.put( "description", getDataPropertyValue( param, "description", odf ) );
             details.put( "typeName", getDataPropertyValue( param, "typeName", odf ) );
-            details.put( "expressions", new ArrayList( getExpressions().keySet() ) );
+            details.put( "expressions", new ArrayList( getNamedExpressions().keySet() ) );
 
             paramData.put( pid, details );
         }
@@ -401,10 +426,15 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     public String createArtifact() {
 
         HeDArtifactData artifact = new HeDArtifactData();
+        currentArtifactId = artifact.getArtifactId();
 
         InputStream stream = new ByteArrayInputStream( "test".getBytes() );
 
-        return knowledgeRepo.createArtifact( artifact.getArtifactId(), artifact.getTitle(), stream );
+        artifacts.put( currentArtifactId, artifact );
+
+        knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), stream );
+
+        return currentArtifactId;
     }
 
 
@@ -414,8 +444,36 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     @Override
-    public String importFromStream( byte[] stream ) {
-        return "";
+    public String importFromStream( byte[] hedStream ) {
+        try {
+
+            org.drools.io.Resource file = ResourceFactory.newFileResource( "/home/davide/Projects/Git/HeD-editor/sharp-editor/import-export/src/test/resources/DiabetesReminderRule.xml" );
+            hedStream = new byte[ file.getInputStream().available() ];
+            file.getInputStream().read( hedStream );
+
+            System.out.println( "Received import message, bytes avai " + hedStream.length );
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ByteArrayInputStream bais = new ByteArrayInputStream( hedStream );
+            new HeD2OwlDumper().compile( bais, baos );
+            byte[] owlBytes = baos.toByteArray();
+
+            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( owlBytes );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument );
+
+            currentArtifactId = artifact.getArtifactId();
+
+            artifacts.put( currentArtifactId, artifact );
+
+            knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), new ByteArrayInputStream( owlBytes ) );
+
+            baos.close();
+
+            return currentArtifactId;
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -425,7 +483,29 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public String openArtifact( String id ) {
-        return "";
+        System.out.println( "Core opens artifact " + id );
+
+        try {
+            InputStream in = knowledgeRepo.loadArtifact( id );
+            byte[] data = new byte[ in.available() ];
+            in.read( data );
+
+            System.out.println( "Found bytes " + data.length );
+            System.out.println( "Found content " + new String( data ) );
+
+            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( data );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument );
+
+            currentArtifactId = artifact.getArtifactId();
+
+            artifacts.put( currentArtifactId, artifact );
+            in.close();
+            System.out.println( "Opened artifact with title " + knowledgeDocument.getTitle() );
+            return id;
+        } catch ( IOException ioe ) {
+            ioe.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -445,11 +525,16 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public String closeArtifact() {
-        return "";
+        String lastId = currentArtifactId;
+        this.artifacts.remove( lastId );
+        this.currentArtifactId = null;
+        return lastId;
     }
 
     @Override
     public String deleteArtifact( String id ) {
+        this.artifacts.remove( id );
+        this.currentArtifactId = null;
         return knowledgeRepo.deleteArtifact( id );
     }
 

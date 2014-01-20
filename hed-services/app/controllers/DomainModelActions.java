@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.ModelHome;
 import models.NamedConcept;
 import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.Map;
 import static controllers.SharpController.setHeaderCORS;
 import static play.mvc.Results.ok;
 
-public class DomainModelActions {
+public class DomainModelActions extends Controller {
 
     public static Result getAvailableClasses() {
         Map<String,String> domainClasses = ModelHome.getDomainClasses();
@@ -35,13 +37,18 @@ public class DomainModelActions {
     public static Result getAvailableProperties() {
         Map<String,String> domainClasses = ModelHome.getDomainProperties();
 
-        List<NamedConcept> expressions = new ArrayList<NamedConcept>();
+        final Http.Request request = request();
+        Http.RequestBody body = request.body();
+        System.out.println( "live classes " + body );
+
+
+        List<NamedConcept> properties = new ArrayList<NamedConcept>();
         for ( String propId : domainClasses.keySet() ) {
             NamedConcept prop = new NamedConcept( propId, domainClasses.get( propId ) );
-            expressions.add( prop );
+            properties.add( prop );
         }
 
-        JsonNode jsonOut = Json.toJson( expressions );
+        JsonNode jsonOut = Json.toJson( properties );
 
         setHeaderCORS();
 

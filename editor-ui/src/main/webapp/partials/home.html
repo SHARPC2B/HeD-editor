@@ -1,25 +1,25 @@
 <div class="flexibleBox">
 	<div class="mainMenu">
-		<h3>Create a New Rule</h3>
+		<h3>Create New</h3>
 		<div class="homeBox borderedBox">
 			<i class="icon-hand-up icon-4x"></i>
 			<div>
-				<a href="" x-ng-click="createNew()">Create New Rule</a>
-				<p>Use an enhanced interface to guide you through the process of creating a new rule.</p>
+				<a href="" x-ng-click="createNew()">Create New Artifact</a>
+				<p>Use an enhanced interface to guide you through the process of creating a new artifact.</p>
 			</div>
 		</div><br>
         <div class="homeBox borderedBox">
             <i class="icon-external-link icon-4x"></i>
             <div>
-                <a href="" x-ng-click="open('Import')">Import Rule</a>
-                <p>Import a rule and begin editing the rule in Standard Mode.</p>
+                <a href="" x-ng-click="openModal('Import')">Import Artifact</a>
+                <p>Import a rule and begin editing the artifact in Standard Mode.</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-paste icon-4x"></i>
             <div>
                 <a href="#/standard/background">Clone Existing Rule</a>
-                <p>Clone an existing rule and save it to the rule repository for editing.</p>
+                <p>Clone an existing artifact and save it to the artifact repository for editing.</p>
             </div>
         </div><br>
 
@@ -29,14 +29,14 @@
 		<div class="homeBox borderedBox">
 			<i class="icon-edit icon-4x"></i>
 			<div>
-				<a href="" x-ng-click="open('Open')">Open and Edit Rule</a>
-				<p>Allows you to browser/edit all of your institution's rules for which you have editing privileges.</p>
+				<a href="" x-ng-click="openModal('Open')">Open and Edit Artifact</a>
+				<p>Allows you to browser/edit all of your institution's artifact for which you have editing privileges.</p>
 			</div>
 		</div><br>
 		<div class="homeBox borderedBox">
 			<i class="icon-file-text-alt icon-4x"></i>
 			<div>
-				<a href="" x-ng-click="open( false )">View Others' Rules</a>
+				<a href="" x-ng-click="open( false )">View Others' Artifacts</a>
 				<p>Open editor in 'Read Only' mode.</p>
 			</div>
 		</div>
@@ -46,36 +46,36 @@
         <div class="homeBox borderedBox">
             <i class="icon-camera icon-4x"></i>
             <div>
-                <a href="" x-ng-click="snapshot()">Snapshot Rule</a>
-                <p>Take a snapshot of the current rule and store it in the rule repository.</p>
+                <a href="" x-ng-click="snapshot()">Snapshot Artifact</a>
+                <p>Take a snapshot of the current artifact and store it in the rule repository.</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-copy icon-4x"></i>
             <div>
                 <a href="" x-ng-click="save()">Save As...</a>
-                <p>Save a copy of the current rule to the rule repository.</p>
+                <p>Save a copy of the current artifact to the rule repository.</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-circle-arrow-right icon-4x"></i>
             <div>
-                <a href="" x-ng-click="open('Export')">Export...</a>
-                <p>Export the current rule in a standard format (HeD, Arden, etc.)</p>
+                <a href="" x-ng-click="openModal('Export')">Export...</a>
+                <p>Export the current artifact in a standard format (HeD, Arden, etc.)</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-eject icon-4x"></i>
             <div>
                 <a href="" x-ng-click="close()">Close</a>
-                <p>Close the current rule. (Rule will remain in the rule repository)</p>
+                <p>Close the current artifact. (Artifact will remain in the repository)</p>
             </div>
         </div><br>
         <div class="homeBox borderedBox">
             <i class="icon-remove-circle icon-4x"></i>
             <div>
                 <a href="" x-ng-click="delete()">Delete</a>
-                <p>Remove the current rule from the rule repository.</p>
+                <p>Remove the current artifact from the artifact repository.</p>
             </div>
         </div><br>
     </div>

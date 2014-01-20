@@ -37,6 +37,9 @@ GET            /fwd/cts2/*path                            controllers.CtsActions
 ########################################################
 
 GET            /rule/expressions/list                     controllers.ExpressionActions.getExpressions()
+GET            /rule/expressions/:exprId                  controllers.ExpressionActions.getExpression(exprId:String)
+DELETE         /rule/expressions/:exprId                  controllers.ExpressionActions.deleteExpression(exprId:String)
+POST           /rule/expressions/:exprId                  controllers.ExpressionActions.cloneExpression(exprId:String)
 POST           /rule/expressions/:exprId/:exprName        controllers.ExpressionActions.updateExpression(exprId:String, exprName:String)
 
 OPTIONS        /rule/expressions/*path                    controllers.ExpressionActions.configExpressionsAccess(path)
@@ -55,7 +58,7 @@ POST           /store/snapshots/:id                       controllers.StoreActio
 PUT            /store/:id                                 controllers.StoreActions.saveArtifact(id)
 DELETE         /store/:id                                 controllers.StoreActions.deleteArtifact(id)
 DELETE         /store                                     controllers.StoreActions.closeArtifact()
-GET            /store/:id/:format                         controllers.StoreActions.exportArtifact(id,format)
+GET            /store/export/:id/:format                  controllers.StoreActions.exportArtifact(id,format)
 
 
 

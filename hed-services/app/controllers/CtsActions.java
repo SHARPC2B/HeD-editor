@@ -4,6 +4,7 @@ import edu.mayo.cts2.framework.core.client.Cts2RestClient;
 import edu.mayo.cts2.framework.core.json.JsonConverter;
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryDirectory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -26,7 +27,8 @@ public class CtsActions
         extends Controller
 {
 
-    static String ctsTestURL = "";
+//    static String ctsURL = "http://informatics.mayo.edu/cts2/rest/";
+    static String ctsURL = "http://localhost:8080/cts2framework/";
 
     public static Result helloWorld ()
     {
@@ -34,7 +36,7 @@ public class CtsActions
         Cts2Marshaller marshaller = new DelegatingMarshaller();
         Cts2RestClient client = new Cts2RestClient( marshaller, true );
         ValueSetCatalogEntryDirectory result = client
-                .getCts2Resource( "http://informatics.mayo.edu/cts2/rest/valuesets",
+                .getCts2Resource( "codesystems",
                                   ValueSetCatalogEntryDirectory.class );
 
         System.out.println( result );
@@ -71,7 +73,7 @@ public class CtsActions
     {
 //        System.out.println( "\n" + "Unmarshalling and printing from json" + "\n" );
 
-        String uri = "http://informatics.mayo.edu/cts2/rest/valueset/" + cs + "/resolution" +
+        String uri = ctsURL + "codesystem/" + cs + "/resolution" +
                 "?" + "matchvalue=" + matchvalue +
                 "&format=json";
         URL url;
@@ -105,7 +107,7 @@ public class CtsActions
             throws IOException
     {
 //        System.out.println( "\nUnmarshalling and printing from json\n" );
-        String uri = "http://informatics.mayo.edu/cts2/rest/valuesets?matchvalue=Sequence&format=json";
+        String uri = ctsURL + "codesystems?matchvalue=Sequence&format=json";
         URL url;
         HttpURLConnection connection;
         url = new URL( uri );
@@ -125,8 +127,10 @@ public class CtsActions
             builder.append( output );
         }
         JsonConverter converter = new JsonConverter();
-        ValueSetCatalogEntryDirectory valuesetcat = converter
-                .fromJson( builder.toString(), ValueSetCatalogEntryDirectory.class );
+        CodeSystemCatalogEntryDirectory valuesetcat = converter
+                .fromJson( builder.toString(), CodeSystemCatalogEntryDirectory.class );
+
+
 
         String jsonText = converter.toJson( valuesetcat );
         setHeaderCORS();
@@ -177,7 +181,7 @@ public class CtsActions
         String formatIn = request().getQueryString( "format" );
 //        System.out.println( "formatIn = " + formatIn );
 
-        final String base = "http://informatics.mayo.edu/cts2/rest/";
+        final String base = ctsURL;
         URL url;
 //        uri = uri.concat( "/resolution" );
 //        if (!uri.endsWith( "?format=json" ))
@@ -215,6 +219,7 @@ public class CtsActions
 //                .fromJson( builder.toString(), ValueSetCatalogEntryDirectory.class );
 //
 //        String jsonText = converter.toJson( valuesetcat );
+        System.out.println( "Got CTS2 " + buffer.toString() );
         setHeaderCORS();
 //        return ok( jsonText );
         return ok( buffer.toString() );

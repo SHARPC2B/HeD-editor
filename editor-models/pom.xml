@@ -20,6 +20,7 @@
     <module>hed-ontologies</module>
     <module>generated-models</module>
     <module>hed-model</module>
+    <module>hed-model-expressions</module>
   </modules>
 
 

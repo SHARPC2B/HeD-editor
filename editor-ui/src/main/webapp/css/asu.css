@@ -19,3 +19,12 @@
 .navbar-inverse .nav>li>a {
 	color: #FFFFFF;
 }
+
+.accordion-heading {
+	background-color: #FFDA5C;
+}
+
+a {
+	color: #000000;
+	font-weight: bold;
+}

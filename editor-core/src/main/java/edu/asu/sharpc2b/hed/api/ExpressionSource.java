@@ -8,9 +8,13 @@ import java.util.Map;
 
 public interface ExpressionSource {
 
-    public Map<String,String> getExpressions();
+    public Map<String,String> getNamedExpressions();
 
-    public byte[] getExpression( String exprId );
+    public byte[] getNamedExpression( String exprId );
+
+    public boolean deleteNamedExpression( String exprId );
+
+    public String cloneNamedExpression( String exprId );
 
     public boolean updateNamedExpression( String exprId, String exprName, byte[] doxBytes );
 

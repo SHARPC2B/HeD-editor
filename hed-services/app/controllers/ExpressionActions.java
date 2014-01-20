@@ -19,13 +19,7 @@ public class ExpressionActions extends Controller {
 
     public static Result getExpressions() {
 
-        Map<String,String> namedExpressions = ModelHome.getNamedExpressions();
-
-        List<Expression> expressions = new ArrayList<Expression>();
-        for ( String exprIRI : namedExpressions.keySet() ) {
-            Expression expr = new Expression( exprIRI, namedExpressions.get( exprIRI ) );
-            expressions.add( expr );
-        }
+        List<Expression> expressions = retrieveExpressions();
 
         JsonNode jsonOut = Json.toJson( expressions );
 
@@ -35,6 +29,34 @@ public class ExpressionActions extends Controller {
         setHeaderCORS();
 
         return ok( jsonOut );
+    }
+
+    public static Result getExpression( String exprId ) {
+
+        byte[] namedExpression = ModelHome.getNamedExpression( exprId );
+
+        setHeaderCORS();
+
+        return ok( namedExpression );
+    }
+
+    public static Result deleteExpression( String exprId ) {
+        System.out.println(" Trying to delete exprid " + exprId );
+        ModelHome.deleteNamedExpression( exprId );
+
+        List<Expression> expressions = retrieveExpressions();
+
+        JsonNode jsonOut = Json.toJson( expressions );
+
+        setHeaderCORS();
+        return ok( jsonOut );
+    }
+
+    public static Result cloneExpression( String exprId ) {
+        String clonedExpr = ModelHome.cloneNamedExpression( exprId );
+
+        setHeaderCORS();
+        return ok( clonedExpr );
     }
 
 
@@ -50,6 +72,17 @@ public class ExpressionActions extends Controller {
         setHeaderCORS();
 
         return ok();
+    }
+
+    private static List<Expression> retrieveExpressions() {
+        Map<String,String> namedExpressions = ModelHome.getNamedExpressions();
+
+        List<Expression> expressions = new ArrayList<Expression>();
+        for ( String exprIRI : namedExpressions.keySet() ) {
+            Expression expr = new Expression( exprIRI, namedExpressions.get( exprIRI ) );
+            expressions.add( expr );
+        }
+        return expressions;
     }
 
 
