@@ -1,0 +1,42 @@
+[
+	{
+		"label":"Group 1",
+		"templates":[
+			{
+				"name":"Rule 1"
+			},
+			{
+				"name":"Rule 2"
+			},
+			{
+				"name":"Rule 3"
+			},
+			{
+				"name":"Rule 4"
+			},
+			{
+				"name":"Rule 5"
+			}
+		]
+	},
+	{
+		"label":"Group 2",
+		"templates":[
+			{
+				"name":"Rule 6"
+			},
+			{
+				"name":"Rule 7"
+			},
+			{
+				"name":"Rule 8"
+			},
+			{
+				"name":"Rule 9"
+			},
+			{
+				"name":"Rule 10"
+			}
+		]
+	}
+]

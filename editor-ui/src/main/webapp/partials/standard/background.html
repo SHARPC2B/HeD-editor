@@ -33,12 +33,10 @@
 	<p>Describe this artifact in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
 	<textarea rows="5" class="span12"></textarea>
 </div>
-
-
 <accordion close-others="false">
     <accordion-group is-open="false">
         <accordion-heading>Key Terms:</accordion-heading>
-        <div class="row-fluid borderedBox">
+        <div class="row-fluid">
             <div class="span6" style="padding: 20px; border-right: 1px solid #e5e5e5;">
                 <div class="search-prepend">
                     <div class="icon-search icon-white"></div>
@@ -54,31 +52,28 @@
                     <button x-ng-repeat="selected in selectedTerms" class="btn" type="button" x-ng-click="deselectTerm(selected)" style="margin: 10px">{{selected.tagName}}</button>
                 </div>
             </div>
-        </div><br>
+        </div>
     </accordion-group>
-
     <accordion-group  is-open="false">
         <accordion-heading>Categories:</accordion-heading>
-    <div class="row-fluid borderedBox">
-        <div class="span6" style="padding: 20px; border-right: 1px solid #e5e5e5;">
-            <div class="search-prepend">
-                <div class="icon-search icon-white"></div>
-                <input type="text" class="search-query input-xxlarge" x-ng-model="filterCategories" placeholder="search">
-            </div><br>
-            <ul class="inline">
-                <li x-ng-repeat="category in Categories | orderBy: 'tagName' | filter:filterCategories" x-ng-class="{tiny:category.percent<=2,small:category.percent>2&&category.percent<=4,medium:category.percent>4&&category.percent<=9,big:category.percent>9&&category.percent<=11,huge:category.percent>11}"><a href="" x-ng-click="selectCategory(category)">{{category.tagName}}</a></li>
-            </ul>
-        </div>
-        <div class="span6" style="padding: 20px;">
-            <p class="text-center">Selected categories (click a category to remove it)</p>
-            <div class="borderedBox" style="min-height: 104px;">
-                <button x-ng-repeat="selected in selectedCategories" class="btn" type="button" x-ng-click="deselectCategory(selected)" style="margin: 10px">{{selected.tagName}}</button>
-            </div>
-        </div>
-    </div>
-    <br>
+	    <div class="row-fluid">
+	        <div class="span6" style="padding: 20px; border-right: 1px solid #e5e5e5;">
+	            <div class="search-prepend">
+	                <div class="icon-search icon-white"></div>
+	                <input type="text" class="search-query input-xxlarge" x-ng-model="filterCategories" placeholder="search">
+	            </div><br>
+	            <ul class="inline">
+	                <li x-ng-repeat="category in Categories | orderBy: 'tagName' | filter:filterCategories" x-ng-class="{tiny:category.percent<=2,small:category.percent>2&&category.percent<=4,medium:category.percent>4&&category.percent<=9,big:category.percent>9&&category.percent<=11,huge:category.percent>11}"><a href="" x-ng-click="selectCategory(category)">{{category.tagName}}</a></li>
+	            </ul>
+	        </div>
+	        <div class="span6" style="padding: 20px;">
+	            <p class="text-center">Selected categories (click a category to remove it)</p>
+	            <div class="borderedBox" style="min-height: 104px;">
+	                <button x-ng-repeat="selected in selectedCategories" class="btn" type="button" x-ng-click="deselectCategory(selected)" style="margin: 10px">{{selected.tagName}}</button>
+	            </div>
+	        </div>
+	    </div>
     </accordion-group>
-
 	<accordion-group ng-if="contributorsForm" is-open="true">
 		<accordion-heading>
     		Contributors:<i class="pull-right icon-question-sign"></i>

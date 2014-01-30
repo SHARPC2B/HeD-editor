@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 import play.Project._
+import com.github.play2war.plugin._
 
 object ApplicationBuild extends Build {
 
@@ -66,4 +67,6 @@ object ApplicationBuild extends Build {
 
   )
   //  Resolvers.
+  .settings(Play2WarPlugin.play2WarSettings: _*)
+  .settings(Play2WarKeys.servletVersion := "3.0")
 }

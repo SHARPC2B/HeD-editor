@@ -1,0 +1,16 @@
+<div class="modal-header">
+	<h3>Row Details</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal">
+		<div class="control-group" x-ng-repeat="(key, value) in data">
+			<label class="control-label" for="input{{key}}">{{key}}</label>
+			<div class="controls">
+				<input type="text" id="input{{key}}" x-ng-model="value" readonly>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<a  href="" x-ng-click="close()"><i class="icon-remove-circle icon-3x"></i> Close</a>
+</div>

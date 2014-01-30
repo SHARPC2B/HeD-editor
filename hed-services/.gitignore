@@ -16,3 +16,4 @@ dist
 target
 lib/*-SNAPSHOT.jar
 
+/lib

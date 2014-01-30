@@ -9,8 +9,8 @@ angular.module('ruleApp.controllers', [])
         updateTitle( $scope );
 
         $scope.$parent.menuItems = [
-            {"text": "Standard Mode", "href": "#/standard/background"}
-//            ,{"text": "Technical View", "href": "#/technical"}
+            {"text": "Standard Mode", "href": "#/standard/background"},
+            {"text": "Technical View", "href": "#/technical"}
         ];
 
         $scope.openModal = function(partial) {
@@ -92,7 +92,7 @@ angular.module('ruleApp.controllers', [])
         };
     }])
 
-    .controller('BackgroundCtrl', [ '$http', '$scope', function($http, $scope) {
+    .controller('BackgroundCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
         $scope.$parent.title = 'Background Information';
         $scope.$parent.menuItems = standardMenuItems(0);
         $scope.selectedTerms = [];
@@ -129,7 +129,7 @@ angular.module('ruleApp.controllers', [])
                 { field: "Type"},
                 { field: "Code"},
                 { field: "CodeSet"},
-                { cellTemplate: '<a href="" ng-click="removeCoverage(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removeCoverage(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $scope.addCoverage = function(coverage) {
@@ -149,13 +149,13 @@ angular.module('ruleApp.controllers', [])
                 { field: "Name"},
                 { field: "Role"},
                 { field: "Type"},
-                { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removeContributor(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $scope.addContributor = function(contributor) {
             $scope.contributors.push(angular.copy(contributor));
         };
-        $scope.removePublisher = function(row) {
+        $scope.removeContributor = function(row) {
             $scope.contributors.splice(row.rowIndex, 1);
         };
         $scope.gridPublisher = {
@@ -222,8 +222,24 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></a>', width: 11}
             ]
         };
+        $scope.openRowDetail = function(row) {
+            $modal.open({
+                templateUrl: 'partials/standard/background/table-detail.html',
+                controller: 'RowDetailController',
+                resolve : {
+                    data : function() {
+                        return row.entity;
+                    }
+                }
+            });
+        };
     }])
-
+    .controller('RowDetailController', ['$scope', '$http', '$modalInstance', 'data', function($scope, $http, $modalInstance, data) {
+        $scope.data = data;
+        $scope.close = function() {
+            $modalInstance.dismiss();
+        };
+    }])
 
     .controller('DocumentationEditorController', ['$scope', '$modalInstance',  '$http', function($scope, $modalInstance,$http){
 
@@ -746,8 +762,15 @@ angular.module('ruleApp.controllers', [])
         };
         Blockly.HSV_SATURATION = 0.66;
         Blockly.HSV_VALUE = 0.71;
-        Blockly.inject(document.getElementById('blocklyDiv'),
-            {path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
+        Blockly.inject(document.getElementById('blocklyDiv'), {
+        	path: './lib/blockly/',
+        	toolbox: document.getElementById('toolbox')
+        });
+        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'logic_root');
+        rootBlock.initSvg();
+        rootBlock.render();
+        rootBlock.setMovable(false);
+        rootBlock.setDeletable(false);
 
     }])
 
@@ -784,8 +807,7 @@ angular.module('ruleApp.controllers', [])
                     .appendField("Condition");
                 this.appendStatementInput( ["NestedAction"] )
                     .setCheck( ["AtomicAction", "ActionGroup" ] );
-                this.setPreviousStatement(true, "ActionGroup");
-                this.setNextStatement(true, "ActionGroup");
+                this.setOutput(true, "ActionGroup");
                 this.setTooltip('');
             }
         };
@@ -852,10 +874,24 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
+        Blockly.Blocks.logic_root = {
+                init: function() {
+                    this.setColour(10);
+                    this.appendValueInput("ROOT")
+                    	.setCheck("ActionGroup")
+                    	.appendField("Action");
+                    this.setTooltip('');
+                }
+        };
         Blockly.HSV_SATURATION = 0.35;
         Blockly.HSV_VALUE=0.85;
         Blockly.inject(document.getElementById('blocklyDiv'),
             {path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
+        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'logic_root');
+        rootBlock.initSvg();
+        rootBlock.render();
+        rootBlock.setMovable(false);
+        rootBlock.setDeletable(false);
     }])
 
     .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
