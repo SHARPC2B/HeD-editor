@@ -807,8 +807,8 @@ angular.module('ruleApp.controllers', [])
                     .appendField("Condition");
                 this.appendStatementInput( ["NestedAction"] )
                     .setCheck( ["AtomicAction", "ActionGroup" ] );
-                this.setOutput(true, "ActionGroup");
-                this.setTooltip('');
+                this.setPreviousStatement(true, "ActionGroup");
+                this.setNextStatement(true, "ActionGroup");
             }
         };
         Blockly.Blocks.atomic_action = {
@@ -877,10 +877,9 @@ angular.module('ruleApp.controllers', [])
         Blockly.Blocks.logic_root = {
                 init: function() {
                     this.setColour(10);
-                    this.appendValueInput("ROOT")
+                    this.appendStatementInput("ROOT")
                     	.setCheck("ActionGroup")
                     	.appendField("Action");
-                    this.setTooltip('');
                 }
         };
         Blockly.HSV_SATURATION = 0.35;
