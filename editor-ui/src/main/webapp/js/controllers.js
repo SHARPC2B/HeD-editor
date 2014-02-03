@@ -165,7 +165,7 @@ angular.module('ruleApp.controllers', [])
                 { field: "Name"},
                 { field: "Role"},
                 { field: "Type"},
-                { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $scope.addPublisher = function(publisher) {
@@ -185,7 +185,7 @@ angular.module('ruleApp.controllers', [])
                 { field: "Location"},
                 { field: "Citation"},
                 { field: "Description"},
-                { cellTemplate: '<a href="" ng-click="removeResource(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removeResource(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $http.get('partials/standard/background/evidence.json').success(function(data) {
@@ -199,7 +199,7 @@ angular.module('ruleApp.controllers', [])
                 { field: "Quality"},
                 { field: "Strength"},
                 { field: "Location"},
-                { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $scope.tinymceOptions = {
@@ -219,7 +219,7 @@ angular.module('ruleApp.controllers', [])
                 { field: "Name"},
                 { field: "Type"},
                 { field: "Permissions"},
-                { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></a>', width: 11}
+                { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
         $scope.openRowDetail = function(row) {
