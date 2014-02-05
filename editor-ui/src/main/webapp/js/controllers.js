@@ -92,7 +92,7 @@ angular.module('ruleApp.controllers', [])
         };
     }])
 
-    .controller('BackgroundCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
+    .controller('BackgroundCtrl', [ '$http', '$scope', '$modal', '$rootScope', function($http, $scope, $modal, $rootScope) {
         $scope.$parent.title = 'Background Information';
         $scope.$parent.menuItems = standardMenuItems(0);
         $scope.selectedTerms = [];
@@ -138,7 +138,7 @@ angular.module('ruleApp.controllers', [])
         $scope.removeCoverage = function(row) {
             $scope.coverages.splice(row.rowIndex, 1);
         };
-        $http.get('partials/standard/background/contributor.json').success(function(data) {
+        $http.get(serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors').success(function(data) {
             $scope.contributors = data;
             $scope.publishers = angular.copy(data);
         });
@@ -152,11 +152,22 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeContributor(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-        $scope.addContributor = function(contributor) {
-            $scope.contributors.push(angular.copy(contributor));
-        };
+		$scope.addContributor = function(contributor) {
+			$http({
+				method: 'POST',
+				url: serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors',
+				data: contributor
+			}).success(function(data) {
+				$scope.contributors.push(data);
+			});
+		};
         $scope.removeContributor = function(row) {
-            $scope.contributors.splice(row.rowIndex, 1);
+			$http({
+				method: 'DELETE',
+				url: serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors' + row.rowIndex
+			}).success(function(data) {
+				$scope.contributors.splice(row.rowIndex, 1);
+			});
         };
         $scope.gridPublisher = {
             data: 'publishers',
