@@ -138,7 +138,7 @@ angular.module('ruleApp.controllers', [])
         $scope.removeCoverage = function(row) {
             $scope.coverages.splice(row.rowIndex, 1);
         };
-        $http.get(serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors').success(function(data) {
+        $http.get(serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors').success(function(data) {
             $scope.contributors = data;
             $scope.publishers = angular.copy(data);
         });
@@ -155,7 +155,7 @@ angular.module('ruleApp.controllers', [])
 		$scope.addContributor = function(contributor) {
 			$http({
 				method: 'POST',
-				url: serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors',
+				url: serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors',
 				data: contributor
 			}).success(function(data) {
 				$scope.contributors.push(data);
@@ -164,7 +164,7 @@ angular.module('ruleApp.controllers', [])
         $scope.removeContributor = function(row) {
 			$http({
 				method: 'DELETE',
-				url: serviceUrl + '/standard/background/' + $rootScope.artifact_id + '/contributors' + row.rowIndex
+				url: serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors' + row.rowIndex
 			}).success(function(data) {
 				$scope.contributors.splice(row.rowIndex, 1);
 			});
