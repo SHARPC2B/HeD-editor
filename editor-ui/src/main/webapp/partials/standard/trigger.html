@@ -21,111 +21,22 @@
 		CDS support team.</p>
 	</div>
 	<xml id="toolbox" style="display: none">
-		<block type="http://asu.edu/sharpc2b/ops-set#AtanIntegerExpression"></block>
+		<category name="When">
+			<block type="http://asu.edu/sharpc2b/ops-set#Immediately"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#WithDelay"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#Duration"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#Weekday"></block>
+		</category>
+    	<category name="Repeating">
+    		<block type="http://asu.edu/sharpc2b/ops-set#Once"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#Until"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#Times"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#DWMRepeat"></block>
+			<block type="http://asu.edu/sharpc2b/ops-set#Every"></block>
+		</category>
 	</xml>
 	<div class="span8" id="blocklyDiv" style="height: 900px;"></div>
-	<!--div class="borderedBox span9">
-		<div class="offset1">
-			<h5>Configure details for triggering event: "Lab Test Ordered"</h5>
-			<div class="row-fluid">
-				<p class="span5">Should the rule trigger immediately or after a delay?</p>
-				<div class="span2">
-					<label class="radio">
-						<input type="radio" name="delayRadios">Immediately
-					</label>
-					<label class="radio">
-					  <input type="radio" name="delayRadios" checked>With Delay
-					</label>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<p class="span2">What kind of delay?</p>
-				<div class="span10">
-					<label class="radio">
-						<input type="radio" name="delayOptionsRadios" checked>Delay for some duration:
-						<input type="text" class="input-mini">&nbsp;
-						<select class="input-small">
-							<option>Seconds</option>
-							<option>Minutes</option>
-						</select>
-					</label>
-					<label class="radio">
-					  <input type="radio" name="delayOptionsRadios">Delay until the following:
-					  <select class="input-small disabled">
-					  		<option>Monday</option>
-					  		<option>Tuesday</option>
-					  		<option>Wednesday</option>
-					  		<option>Thursday</option>
-					  		<option>Friday</option>
-					  		<option>Saturday</option>
-					  		<option>Sunday</option>
-					  </select>&nbsp;
-					  <input type="checkbox" style="vertical-align: top;"> At&nbsp;
-					  <input type="time" class="input-small" value="06:00">
-					</label>
-				</div>
-			</div>
-			<p>Should the rule be triggered just once per event, or should it repeat periodically?</p>
-			<div class="row-fluid">
-				<label class="radio span2 offset2">
-					<input type="radio" name="repeatRadios">Just once
-				</label>
-				<label class="radio span3">
-					<input type="radio" name="repeatRadios" checked>Repeat Periodically
-				</label>
-			</div>
-			<p class="offset1">Repeat how many times?</p>
-			<div class="row-fluid">
-				<label class="radio span2 offset2">
-					<input type="radio" name="repeatTimeRadios" checked>Unlimited
-				</label>
-				<label class="radio span2">
-					<input type="radio" name="repeatTimeRadios">
-					<input type="text" class="input-mini"> Times
-				</label>
-				<label class="radio span4">
-					<input type="radio" name="repeatTimeRadios">Util:
-					<input type="date">
-				</label>
-			</div>
-			<p class="offset1">Specify the repeat interval:</p>
-			<div class="row-fluid">
-				<div class="tabbable tabs-left span6 offset3">
-					<ul class="nav nav-tabs" style="margin-right: 0; height: 128px;">
-						<li class="active"><a href="">Quick Options</a></li>
-						<li><a href="">Custom</a></li>
-					</ul>
-					<div class="tab-content" style="border-top: 1px solid #ddd; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 6px 19px 0;">
-				    	<div class="tab-pane active">
-				    		<label class="radio">
-								<input type="radio" name="repeatQuickRadios" checked>Daily
-							</label>
-							<label class="radio">
-								<input type="radio" name="repeatQuickRadios">Weekly
-							</label>
-							<label class="radio">
-								<input type="radio" name="repeatQuickRadios">Monthly
-							</label>
-							<label class="radio">
-								<input type="radio" name="repeatQuickRadios">
-								<input type="text" class="input-mini">
-								<select class="input-small">
-									<option>Seconds</option>
-									<option>Minutes</option>
-								</select>
-							</label>
-				    	</div>
-					</div>
-				</div>
-			</div>
-			<p>
-				<a href="" class="span4"><i class="icon-plus-sign-alt icon-3x"></i> Save &amp; Add Another Trigger</a>
-				<a href="" class="span4"><i class="icon-chevron-sign-right icon-3x"></i> Save, I'm Done Adding Triggers</a>
-				<a href=""><i class="icon-trash icon-3x"></i> Delete this Trigger</a>
-			</p>
-		</div>
-	</div-->
-</div><br>
+</div>
 <div class="row-fluid">
 	<a href="#/standard/background" class="span1 text-center" >
 		<i class="icon-caret-left icon-5x"></i><br>Return to previous step
