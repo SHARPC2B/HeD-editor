@@ -579,8 +579,7 @@ angular.module('ruleApp.controllers', [])
         		init: function() {
         			this.setColour(20);
         			this.appendDummyInput()
-        				.appendField("Temporal Literal")
-        				.appendField(new Blockly.FieldTextInput("Name"), "NAME");
+        				.appendField("Temporal Literal");
         		    this.appendValueInput("when")
         		        .setCheck("when")
         		        .appendField("Should the rule trigger")
@@ -596,8 +595,7 @@ angular.module('ruleApp.controllers', [])
         		init: function() {
         			this.setColour(20);
         		    this.appendDummyInput()
-        		        .appendField("Temporal")
-        		        .appendField(new Blockly.FieldTextInput("Name"), "NAME");
+        		        .appendField("Temporal");
         		    this.appendDummyInput()
         		    	.appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Period Expression...)" ) ), "PeriodExpression");
         		    this.setPreviousStatement(true, "trigger");
@@ -608,8 +606,7 @@ angular.module('ruleApp.controllers', [])
         		init: function() {
         			this.setColour(20);
         		    this.appendDummyInput()
-        		        .appendField("Typed Trigger")
-        		        .appendField(new Blockly.FieldTextInput("Name"), "NAME");
+        		        .appendField("Typed Trigger");
         		    this.appendDummyInput()
         		    	.appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)" ) ), "TypedExpression");
         		    this.setPreviousStatement(true, "trigger");
