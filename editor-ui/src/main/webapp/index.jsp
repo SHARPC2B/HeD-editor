@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 		<link rel="stylesheet" href="lib/ng-grid/ng-grid.min.css">
 		<link rel="stylesheet" href="lib/select2/select2.css">
+		<link rel="stylesheet" href="lib/prettify/prettify.css">
 		<link rel="stylesheet" href="css/app.css"/>
 		<link rel="stylesheet" href="css/asu.css"/>
 	</head>
@@ -29,9 +30,9 @@
 
 	<ng-view class="container-fluid"></ng-view>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-sanitize.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.min.js"></script>
 	<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="lib/ng-grid/ng-grid-2.0.7.min.js"></script>
@@ -42,8 +43,11 @@
 	<script src="lib/ui-tinymce/tinymce.js"></script>
 	<script src="lib/select2/select2.min.js"></script>
 	<script src="lib/ui-select2/select2.js"></script>
+	<script src="lib/prettify/prettify.js"></script>
 	<script src="js/app.js"></script>
+	<script src="js/services.js"></script>
 	<script src="js/controllers.js"></script>
+	<script src="js/filters.js"></script>
 	<script src="js/directives.js"></script>
 	</body>
 </html>

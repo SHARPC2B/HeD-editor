@@ -719,6 +719,11 @@ angular.module('ruleApp.controllers', [])
         rootBlock.render();
         rootBlock.setMovable(false);
         rootBlock.setDeletable(false);
+
+        $scope.save = function() {
+        	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        	console.log(Blockly.Xml.domToText(xml));
+        };
     }])
 
     .controller('LogicCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
@@ -1048,9 +1053,13 @@ angular.module('ruleApp.controllers', [])
         rootBlock.setDeletable(false);
     }])
 
-    .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
+    .controller('SaveCtrl', [ '$scope', '$http', '$sce', function($scope, $http, $sce) {
         $scope.$parent.title = 'Guided Mode - Step 5: Review, Save, and Publish your Finished Rule';
         $scope.$parent.menuItems = standardMenuItems(5);
+
+        $http.get('partials/standard/save/DopamineComplexIVOrderWithComplexLiteral.xml').success(function(data) {
+        	$scope.xml = data;
+        });
     }])
 
     .controller('TechnicalCtrl', [ '$http', '$scope', function ($http, $scope) {
