@@ -313,7 +313,7 @@ angular.module('ruleApp.controllers', [])
         };
     }])
 
-    .controller('ExpressionCtrl', [ '$http', '$scope', '$sce', function($http, $scope, $sce) {
+    .controller('ExpressionCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
         $scope.$parent.title = 'Create Expressions';
         $scope.$parent.menuItems = standardMenuItems(1);
         $http.get(serviceUrl + '/rule/expressions/list').success(function(data) {
@@ -495,7 +495,28 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
-
+        Blockly.Blocks['xsd:text'] = {
+        	init : function() {
+        		this.setColour(152);
+        		this.appendDummyInput().appendField( '[text]' );
+        		this.setOutput( true, 'xsd:string' );
+        	},
+        	customContextMenu: function(options) {
+        		var option = {
+        			enabled: true,
+        			text: "Define Text..."
+        		};
+        		option.callback = function() {
+        			var d = $modal.open({
+        				templateUrl: 'partials/standard/expression/text-editor.html',
+        				controller: 'DocumentationEditorController'
+        			});
+        			if (!$scope.$$phase)
+        				$scope.$apply();
+                    };
+                    options.push(option);
+        	}
+        };
 
         var radius = 566,
             x = d3.scale.linear().range([0, radius]),
@@ -1053,7 +1074,7 @@ angular.module('ruleApp.controllers', [])
         rootBlock.setDeletable(false);
     }])
 
-    .controller('SaveCtrl', [ '$scope', '$http', '$sce', function($scope, $http, $sce) {
+    .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
         $scope.$parent.title = 'Guided Mode - Step 5: Review, Save, and Publish your Finished Rule';
         $scope.$parent.menuItems = standardMenuItems(5);
 
