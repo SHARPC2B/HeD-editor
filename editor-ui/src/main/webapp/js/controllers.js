@@ -496,7 +496,7 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
-        function openExternalTextInput(text, callback) {
+        function openExternalInput(text, callback) {
         	var modalInstance = $modal.open({
         		templateUrl: 'partials/standard/expression/text-input.html',
         		controller: 'TextInputCtrl',
@@ -514,7 +514,7 @@ angular.module('ruleApp.controllers', [])
         Blockly.Blocks['xsd:text'] = {
         	init : function() {
         		this.setColour(152);
-        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalTextInput("Click to edit the text", openExternalTextInput), "TEXT");
+        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
         		this.setOutput( true, 'xsd:string' );
         	}
         };
