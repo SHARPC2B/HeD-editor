@@ -2,9 +2,9 @@
 	<h5 class="text-center">Text</h5>
 </div>
 <div class="modal-body">
-	<textarea rows="5" style="width: 400px" ></textarea>
+	<textarea rows="5" style="width: 400px" ng-model="text"></textarea>
 </div>
 <div class="modal-footer">
-    <a href="" ><i class="icon-save icon-3x"></i> Confirm and Save</a>
+    <a href="" ng-click="save(text)"><i class="icon-save icon-3x"></i> Confirm and Save</a>
     <a href="" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
 </div>

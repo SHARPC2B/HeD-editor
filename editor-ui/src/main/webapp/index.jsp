@@ -38,6 +38,7 @@
 	<script src="lib/ng-grid/ng-grid-2.0.7.min.js"></script>
 	<script src="lib/blockly/blockly_compressed.js"></script>
 	<script src="lib/blockly/msg/js/en_us.js"></script>
+	<script src="lib/blockly/field_externaltextinput.js"></script>
 	<script src="js/operators.js"></script>
     <script src="lib/ui-bootstrap/ui-bootstrap-tpls-0.6.0.min.js"></script>
 	<script src="lib/ui-tinymce/tinymce.js"></script>

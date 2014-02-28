@@ -334,6 +334,7 @@ angular.module('ruleApp.controllers', [])
         $scope.save = function() {
             var expressionIndex = null;
             $scope.currentExpression.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+            console.log(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
             var  xmlDoc=new DOMParser().parseFromString($scope.currentExpression.xml,"text/xml");
 
             var blocks=xmlDoc.getElementsByTagName('block');
@@ -495,26 +496,26 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
+        function openExternalTextInput(text, callback) {
+        	var modalInstance = $modal.open({
+        		templateUrl: 'partials/standard/expression/text-input.html',
+        		controller: 'TextInputCtrl',
+        		resolve: {
+        			text: function() {
+        				return text;
+        			}
+        		}
+        	});
+        	modalInstance.result.then(function(text) {
+        		callback(text);
+        	});
+        };
+
         Blockly.Blocks['xsd:text'] = {
         	init : function() {
         		this.setColour(152);
-        		this.appendDummyInput().appendField( '[text]' );
+        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalTextInput("Click to edit the text", openExternalTextInput), "TEXT");
         		this.setOutput( true, 'xsd:string' );
-        	},
-        	customContextMenu: function(options) {
-        		var option = {
-        			enabled: true,
-        			text: "Define Text..."
-        		};
-        		option.callback = function() {
-        			var d = $modal.open({
-        				templateUrl: 'partials/standard/expression/text-editor.html',
-        				controller: 'DocumentationEditorController'
-        			});
-        			if (!$scope.$$phase)
-        				$scope.$apply();
-                    };
-                    options.push(option);
         	}
         };
 
@@ -590,6 +591,18 @@ angular.module('ruleApp.controllers', [])
                 }
             }
         };
+    }])
+
+    .controller('TextInputCtrl', ['$scope', '$http', '$modalInstance', 'text', function($scope, $http, $modalInstance, text) {
+    	$scope.text = text;
+
+    	$scope.save = function(text) {
+    		$modalInstance.close(text);
+    	};
+
+    	$scope.cancel = function() {
+    		$modalInstance.dismiss('cancel');
+    	};
     }])
 
     .controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
