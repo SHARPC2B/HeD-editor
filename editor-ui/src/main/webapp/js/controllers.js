@@ -252,16 +252,23 @@ angular.module('ruleApp.controllers', [])
         };
     }])
 
-    .controller('DocumentationEditorController', ['$scope', '$modalInstance',  '$http', function($scope, $modalInstance,$http){
+    .controller('InformationInputCtrl', ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+    	$scope.information=data;
 
-        $scope.evidence={};
-        $scope.resource={};
+        $scope.save = function(information) {
+    		$modalInstance.close(information);
+    	};
+
+    	$scope.cancel = function() {
+    		$modalInstance.dismiss('cancel');
+    	};
+    }])
+
+    .controller('ResourceInputCtrl', ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+    	$scope.resource={};
+
         $scope.removeResource = function(row) {
             $scope.resources.splice(row.rowIndex, 1);
-        };
-
-        $scope.removeEvidence = function(row) {
-            $scope.evidences.splice(row.rowIndex, 1);
         };
 
         $scope.saveResource = function() {
@@ -269,48 +276,62 @@ angular.module('ruleApp.controllers', [])
             $scope.resource={};
         };
 
-        $scope.saveEvidence = function() {
-            $scope.evidences.push($scope.evidence);
-            $scope.evidence={};
-        };
-
-
-        $http.get('partials/standard/background/resource.json').success(function(data) {
-            $scope.resources = data;
-        });
-
+        $scope.resources = data;
 
         $scope.gridResource = {
             data: 'resources',
             enableRowSelection: false,
             columnDefs: [
                 { field: "Title"},
-                { field: "Location"},
                 { field: "Citation"},
+                { field: "Location"},
                 { field: "Description"},
                 { cellTemplate: '<a href="" ng-click="removeResource(row)"><i class="icon-trash"></a>', width: 11}
             ]
         };
-        $http.get('partials/standard/background/evidence.json').success(function(data) {
-            $scope.evidences = data;
-        });
+
+        $scope.save = function(evidences) {
+    		$modalInstance.close(evidences);
+    	};
+
+    	$scope.cancel = function() {
+    		$modalInstance.dismiss('cancel');
+    	};
+    }])
+
+    .controller('EvidenceInputCtrl', ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+    	$scope.evidence={};
+
+    	$scope.removeEvidence = function(row) {
+    		$scope.evidences.splice(row.rowIndex, 1);
+        };
+
+        $scope.saveEvidence = function() {
+            $scope.evidences.push($scope.evidence);
+            $scope.evidence={};
+        };
+
+        $scope.evidences = data;
+
         $scope.gridEvidence = {
             data: 'evidences',
             enableRowSelection: false,
             columnDefs: [
                 { field: "Title"},
-                { field: "Quality"},
-                { field: "Strength"},
+                { field: "Citation"},
                 { field: "Location"},
+                { field: "Description"},
                 { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></a>', width: 11}
             ]
         };
-        $scope.submit = function(){
-            $modalInstance.close('ok');
-        };
-        $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
-        };
+
+        $scope.save = function(evidences) {
+    		$modalInstance.close(evidences);
+    	};
+
+    	$scope.cancel = function() {
+    		$modalInstance.dismiss('cancel');
+    	};
     }])
 
     .controller('ExpressionCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
@@ -1026,29 +1047,59 @@ angular.module('ruleApp.controllers', [])
             }
         };
 
-        Blockly.Blocks.action_documentation = {
-            init : function() {
-                this.setColour(160);
-                this.appendDummyInput().appendField(new Blockly.FieldTextInput("Documentation"), "Doc");
-                this.setOutput(true, "Documentation");
-                this.setTooltip('');
-            },
-            customContextMenu : function(options) {
-                var option = {
-                    enabled : true,
-                    text : "Define Documentation..."
-                };
-                option.callback = function() {
-                    var d = $modal.open({
-                        templateUrl : 'partials/standard/documentation-editor.html',
-                        controller : 'DocumentationEditorController'
-                    });
-                    if (!$scope.$$phase)
-                        $scope.$apply();
-                };
-                options.push(option);
-            }
+        function openExternalInformation(information, callback) {
+        	var modalInstance = $modal.open({
+        		templateUrl: 'partials/standard/action/information-input.html',
+        		controller: 'InformationInputCtrl',
+        		resolve: {
+        			data: function() {
+        				return JSON.parse(information);
+        			}
+        		}
+        	});
+        	modalInstance.result.then(function(information) {
+        		callback(JSON.stringify(information));
+        	});
         };
+        function openExternalResource(resources, callback) {
+        	var modalInstance = $modal.open({
+        		templateUrl: 'partials/standard/action/resource-input.html',
+        		controller: 'ResourceInputCtrl',
+        		resolve: {
+        			data: function() {
+        				return JSON.parse(resources);
+        			}
+        		}
+        	});
+        	modalInstance.result.then(function(resources) {
+        		callback(JSON.stringify(resources));
+        	});
+        };
+        function openExternalEvidence(evidences, callback) {
+        	var modalInstance = $modal.open({
+        		templateUrl: 'partials/standard/action/evidence-input.html',
+        		controller: 'EvidenceInputCtrl',
+        		resolve: {
+        			data: function() {
+        				return JSON.parse(evidences);
+        			}
+        		}
+        	});
+        	modalInstance.result.then(function(evidences) {
+        		callback(JSON.stringify(evidences));
+        	});
+        };
+
+        Blockly.Blocks['action_documentation'] = {
+        	init: function() {
+        		this.setColour(160);
+        		this.appendDummyInput().appendField('Basic Information').appendField(new Blockly.FieldExternalInput('{}', openExternalInformation), "INFORMATION");
+        		this.appendDummyInput().appendField('Related Resources').appendField(new Blockly.FieldExternalInput('[]', openExternalResource), "RESOURCE");
+        		this.appendDummyInput().appendField('Supporting Evidence').appendField(new Blockly.FieldExternalInput('[]', openExternalEvidence), "EVIDENCE");
+        		this.setOutput(true, "Documentation");
+        	}
+        };
+
         Blockly.Blocks.action_condition = {
             helpUrl: 'http://www.example.com/',
             init: function() {
@@ -1085,6 +1136,11 @@ angular.module('ruleApp.controllers', [])
         rootBlock.render();
         rootBlock.setMovable(false);
         rootBlock.setDeletable(false);
+
+        $scope.save = function() {
+        	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        	console.log(Blockly.Xml.domToText(xml));
+        };
     }])
 
     .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {

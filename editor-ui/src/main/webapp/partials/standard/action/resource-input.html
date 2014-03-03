@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h5 class="text-center">Related Resources</h5>
+</div>
+<div class="modal-body">
+	 <div class="row-fluid">
+	     <div class="span2">
+	         <select>
+	             <option>AdaptedFrom</option>
+	             <option>AssociatedResource</option>
+	             <option>DependsOn</option>
+	             <option>DerivedFrom</option>
+	             <option>SimilarTo</option>
+	             <option>VersionOf</option>
+	         </select>
+	     </div>
+	 </div>
+	 <br>
+	 <div class="row-fluid">
+	     <div class="span12 borderedBox">
+	     <p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+	     <div class="row-fluid" style="margin-left: -10px;">
+	         <form class="form-horizontal span6">
+	             <div class="control-group">
+	                 <label class="control-label" for="inputTitle">Title:</label>
+	                 <div class="controls">
+	                     <input type="text"  class="span12" ng-model="resource.Title">
+	                 </div>
+	             </div>
+	             <div class="control-group">
+	                 <label class="control-label" >Citation:</label>
+	                 <div class="controls">
+	                     <textarea rows="3" class="span12" ng-model="resource.Citation"></textarea>
+	                 </div>
+	             </div>
+	         </form>
+	         <form class="form-horizontal span6">
+	             <div class="control-group">
+	                 <label class="control-label" for="inputLocation">Location:</label>
+
+	                 <div class="controls">
+	                     <input type="url" class="span12" ng-model="resource.Location">
+	                 </div>
+	             </div>
+	             <div class="control-group">
+	                 <label class="control-label">Description:</label>
+
+	                 <div class="controls">
+	                     <textarea rows="3" class="span12" ng-model="resource.Description"></textarea>
+	                 </div>
+	             </div>
+	         </form>
+	     </div>
+	 </div>
+	 </div>
+	 <br>
+	 <div class="row-fluid">
+	     <a href="" class="text-center span6" ng-click="saveResource()"><i class="icon-save icon-3x"></i> Save</a>
+	     <a href="" class="text-center span6" x-ng-click="resource=''"><i class="icon-trash icon-3x"></i> Clear</a>
+	 </div>
+	 <br>
+	 <div class="row-fluid">
+	     <div class="borderedBox span12" ng-grid="gridResource"></div>
+	 </div>
+</div>
+<div class="modal-footer">
+    <a href="" ng-click="save(resources)"><i class="icon-save icon-3x"></i> Confirm and Save</a>
+    <a href="" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
+</div>

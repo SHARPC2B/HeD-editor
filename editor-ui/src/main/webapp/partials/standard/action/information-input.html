@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h5 class="text-center">Basic Information</h5>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name="form">
+	    <div class="control-group">
+	        <label class="control-label">Name</label>
+	        <div class="controls">
+	            <input type="text" placeholder="Name" ng-model="information.name">
+	        </div>
+	    </div>
+	    <div class="control-group">
+	        <label class="control-label">Description</label>
+	        <div class="controls">
+	            <textarea rows="7" class="spam12" ng-model="information.description"></textarea>
+	        </div>
+	    </div>
+	</form>
+</div>
+<div class="modal-footer">
+    <a href="" ng-click="save(information)"><i class="icon-save icon-3x"></i> Confirm and Save</a>
+    <a href="" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
+</div>

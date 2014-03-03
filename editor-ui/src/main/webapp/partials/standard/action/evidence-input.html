@@ -1,0 +1,88 @@
+<div class="modal-header">
+	<h5 class="text-center">Supporting Evidence</h5>
+</div>
+<div class="modal-body">
+	<div class="row-fluid">
+	    <div class="span6 borderedBox">
+	        <p style="margin-top: -12px; margin-left: 10px; background:white; width: 130px;">Quality of Evidence:</p>
+	        <div class="row-fluid">
+	            <div class="span2 offset1">
+	                <select class="span12">
+	                    <option>Code Set</option>
+	                </select>
+	            </div>
+	            <div class="search-prepend span8">
+	                <div class="icon-search icon-white"></div>
+	                <input type="text" class="search-query span12" placeholder="code" ng-model="evidence.Quality">
+	            </div>
+	        </div>
+	    </div>
+	    <div class="span6 borderedBox">
+	        <p style="margin-top: -12px; margin-left: 10px; background:white; width: 191px;">Strength of Recommendation:</p>
+
+	        <div class="row-fluid">
+	            <div class="span2 offset1">
+	                <select class="span12">
+	                    <option>Code Set</option>
+	                </select>
+	            </div>
+	            <div class="search-prepend span8">
+	                <div class="icon-search icon-white"></div>
+	                <input type="text" class="search-query span12" placeholder="code" ng-model="evidence.Strength">
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<br>
+	<div class="row-fluid">
+	    <div class="span12 borderedBox">
+	        <p style="margin-top: -12px; margin-left: 10px; background:white; width: 115px;">Resource Details:</p>
+	        <div class="row-fluid" style="margin-left: -10px;">
+	            <form class="form-horizontal span6">
+	                <div class="control-group">
+	                    <label class="control-label" for="inputTitle">Title:</label>
+
+	                    <div class="controls">
+	                        <input type="text" id="inputTitle" class="span12" ng-model="evidence.Title">
+	                    </div>
+	                </div>
+	                <div class="control-group">
+	                    <label class="control-label" >Citation:</label>
+
+	                    <div class="controls">
+	                        <textarea rows="3" class="span12" ng-model="evidence.Citation"></textarea>
+	                    </div>
+	                </div>
+	            </form>
+	            <form class="form-horizontal span6">
+	                <div class="control-group">
+	                    <label class="control-label" >Location:</label>
+	                    <div class="controls">
+	                        <input type="url" id="inputLocation" class="span12" ng-model="evidence.Location">
+	                    </div>
+	                </div>
+	                <div class="control-group">
+	                    <label class="control-label" >Description:</label>
+
+	                    <div class="controls">
+	                        <textarea rows="3" class="span12" ng-model="evidence.Description"></textarea>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	<br>
+	<div class="row-fluid">
+	    <a href="" class="text-center span6" ng-click="saveEvidence()"><i class="icon-save icon-3x"></i> Save</a>
+	    <a href="" class="text-center span6" x-ng-click="evidence={}"><i class="icon-trash icon-3x"></i> Clear</a>
+	</div>
+	<br>
+	<div class="row-fluid">
+	    <div class="borderedBox span12" ng-grid="gridEvidence"></div>
+	</div>
+</div>
+<div class="modal-footer">
+    <a href="" ng-click="save(evidences)"><i class="icon-save icon-3x"></i> Confirm and Save</a>
+    <a href="" ng-click="cancel()"><i class="icon-remove-circle icon-3x"></i> Cancel</a>
+</div>
