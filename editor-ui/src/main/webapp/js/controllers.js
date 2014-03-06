@@ -534,9 +534,14 @@ angular.module('ruleApp.controllers', [])
 
         Blockly.Blocks['xsd:text'] = {
         	init : function() {
+        		// Assign 'this' to a variable for use in the tooltip closure.
+        	    var thisBlock = this;
         		this.setColour(152);
         		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
-        		this.setOutput( true, 'xsd:string' );
+        		this.setOutput(true, 'xsd:string');
+        		this.setTooltip(function() {
+        			return thisBlock.getFieldValue('TEXT');
+        		});
         	}
         };
 
@@ -625,28 +630,29 @@ angular.module('ruleApp.controllers', [])
     		$modalInstance.dismiss('cancel');
     	};
 
+    	tinymce.PluginManager.add('variables', function(editor) {
+    		var listVariables = ['#[var1]', '#[var2]', '#[var3]', '#[varX]'];
+        	var menuItems = [];
+    	    tinymce.each(listVariables, function(variable) {
+    	    	menuItems.push({
+    	    		text: variable,
+    	    		onclick: function() {
+    	    			editor.insertContent(variable);
+    	    		}
+    	    	});
+    	    });
+    	    editor.addButton('variables', {
+    	    	type: 'menubutton',
+    	    	text: 'Variables',
+    	        menu: menuItems
+    	    });
+    	});
+
     	$scope.tinymceOptions = {
     			menubar: false,
-                plugins: ["image spellchecker emoticons"],
+                plugins: ["image spellchecker emoticons variables"],
                 toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons | variables",
-                statusbar: false,
-                setup: function(editor) {
-                	var listVariables = ['#[var1]', '#[var2]', '#[var3]', '#[varX]'];
-                	var menuItems = [];
-            	    tinymce.each(listVariables, function(variable) {
-            	    	menuItems.push({
-            	    		text: variable,
-            	    		onclick: function() {
-            	    			editor.insertContent(variable);
-            	    		}
-            	    	});
-            	    });
-            	    editor.addButton('variables', {
-            	    	type: 'menubutton',
-            	    	text: 'Variables',
-            	        menu: menuItems
-            	    });
-                }
+                statusbar: false
     	};
     }])
 
