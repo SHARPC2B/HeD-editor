@@ -32,25 +32,36 @@ goog.require('Blockly.Field');
  * Class for a text field using an external editor.
  *
  * @param {string} text The initial content of the field.
- * @param {Function} externalInputFunc a mandatory function which
+ * @param {Function} externalInputHandler a mandatory function which
  *   creates the external editor. The function receives two arguments:
  *   the current text and a callback function which must be called
  *   by the external editor to provide the new value.
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldExternalInput = function(text, externalInputFunc) {
-	Blockly.FieldExternalInput.superClass_.constructor.call(this, text);
-	this.externalInputFunc = externalInputFunc;
+Blockly.FieldExternalInput = function(content, externalInputHandler) {
+	Blockly.FieldExternalInput.superClass_.constructor.call(this, 'Click to edit the content');
+
+	this.externalInputHandler_ = externalInputHandler;
+	// Set the initial state.
+	this.setValue(content);
 };
 goog.inherits(Blockly.FieldExternalInput, Blockly.Field);
 
 /**
- * Set the text in this field.
- * @param {string} text New text.
+ * Set the content in this field.
+ * @param {string} content New content.
  */
-Blockly.FieldExternalInput.prototype.setText = function(text) {
-	Blockly.FieldExternalInput.superClass_.setText.call(this, text);
+Blockly.FieldExternalInput.prototype.setValue = function(content) {
+	this.content_ = content;
+};
+
+/**
+ * Return the content in this field.
+ * @return {string} Current content.
+ */
+Blockly.FieldExternalInput.prototype.getValue = function() {
+	return this.content_;
 };
 
 /**
@@ -75,11 +86,11 @@ Blockly.FieldExternalInput.prototype.showEditor_ = function() {
 		alert("your browser does not support ECMAScript 5");
 		return;
 	}
-	if (!this.externalInputFunc)
+	if (!this.externalInputHandler_)
 		return;
-	this.externalInputFunc(this.getText(),this.externalInputCallback_.bind(this));
+	this.externalInputHandler_(this.getValue(), this.externalInputCallback_.bind(this));
 };
 
 Blockly.FieldExternalInput.prototype.externalInputCallback_ = function(text) {
-	this.setText(text);
+	this.setValue(text);
 };

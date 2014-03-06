@@ -355,7 +355,7 @@ angular.module('ruleApp.controllers', [])
         $scope.save = function() {
             var expressionIndex = null;
             $scope.currentExpression.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-            console.log(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+            console.log($scope.currentExpression.xml);
             var  xmlDoc=new DOMParser().parseFromString($scope.currentExpression.xml,"text/xml");
 
             var blocks=xmlDoc.getElementsByTagName('block');
@@ -623,6 +623,30 @@ angular.module('ruleApp.controllers', [])
 
     	$scope.cancel = function() {
     		$modalInstance.dismiss('cancel');
+    	};
+
+    	$scope.tinymceOptions = {
+    			menubar: false,
+                plugins: ["image spellchecker emoticons"],
+                toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons | variables",
+                statusbar: false,
+                setup: function(editor) {
+                	var listVariables = ['#[var1]', '#[var2]', '#[var3]', '#[varX]'];
+                	var menuItems = [];
+            	    tinymce.each(listVariables, function(variable) {
+            	    	menuItems.push({
+            	    		text: variable,
+            	    		onclick: function() {
+            	    			editor.insertContent(variable);
+            	    		}
+            	    	});
+            	    });
+            	    editor.addButton('variables', {
+            	    	type: 'menubutton',
+            	    	text: 'Variables',
+            	        menu: menuItems
+            	    });
+                }
     	};
     }])
 
