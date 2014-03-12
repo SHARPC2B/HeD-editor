@@ -1,6 +1,6 @@
 'use strict';
 
-var serviceUrl = 'http://localhost:9000';
+var serviceUrl = 'provi';
 
 
 angular.module('ruleApp.controllers', [])
@@ -557,7 +557,7 @@ angular.module('ruleApp.controllers', [])
             .attr("width", radius)
             .attr("height", radius)
             .append("svg:g");
-        d3.json("VMR.json", function(data) {
+        d3.json(serviceUrl + "/VMR.json", function(data) {
             node = root = data;
 
             var nodes = pack.nodes(root);
@@ -1177,7 +1177,7 @@ angular.module('ruleApp.controllers', [])
         $scope.$parent.title = 'Guided Mode - Step 5: Review, Save, and Publish your Finished Rule';
         $scope.$parent.menuItems = standardMenuItems(5);
 
-        $http.get('partials/standard/save/DopamineComplexIVOrderWithComplexLiteral.xml').success(function(data) {
+        $http.get(serviceUrl + '/save/DopamineComplexIVOrderWithComplexLiteral.xml').success(function(data) {
         	$scope.xml = data;
         });
     }])
@@ -1189,7 +1189,7 @@ angular.module('ruleApp.controllers', [])
             .linkDistance(200)
             .size([800, 800]);
         var svg = d3.select("#force");
-        d3.json("newmentor.obj.json", function(json) {
+        d3.json(serviceUrl + "/newmentor.obj.json", function(json) {
             var nodes = {};
             json.vertices.forEach(function(vertice) {
                 nodes[vertice._id] = vertice;
@@ -1235,8 +1235,8 @@ angular.module('ruleApp.controllers', [])
         });
     }])
 
-    .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal){
-        $scope.clause = clause;
+    .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal) {
+    	$scope.clause = clause;
         $scope.submit = function(data) {
 
             $http({
@@ -1249,7 +1249,7 @@ angular.module('ruleApp.controllers', [])
                 });
 
         };
-        $http.get(serviceUrl + '/template/' + clause.key).success(function(data) {
+        $http.get(serviceUrl + '/template/' + clause.id).success(function(data) {
             $scope.detail = data;
             $scope.template = clause.name;
             angular.forEach(data.parameters, function(parameter, key) {
