@@ -34,16 +34,16 @@
         },
         {
             "mtype": "TemplateGroup",
-            "label": "Labs",
+            "label": "Tests",
             "templates": [
                 {
                     "id": "7",
                     "mtype": "PrimitiveTemplate",
-                    "name": "Prior LAB result within last M days is OP VALUE",
-                    "example": "Prior Potassium result within last 7 days is > 5.2 mEq/L",
+                    "name": "Template with TIMESTAMPINTERVALLITERAL plus DOSAGE plus TIMESTAMPLITERAL and FREQUENCY",
+                    "example": "...Example...",
                     "description": "...Description...",
                     "errors": [],
-                    "parameterIds": ["LabResult", "TimeRange", "RefValue"]
+                    "parameterIds": ["timestampIntervalLiteral", "dosage", "timestampLiteral", "dosage.frequency"]
                 },
                 {
                     "id": "13",

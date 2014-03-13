@@ -1,0 +1,112 @@
+{
+    "mtype": "PrimitiveTemplate",
+    "id": "7",
+    "name": "Template with TIMESTAMPINTERVALLITERAL plus DOSAGE plus TIMESTAMPLITERAL and FREQUENCY",
+    "example": "...Example...",
+    "description": "...Description...",
+    "parameters": [
+        {
+            "id": "timestamIntervalLiteral",
+            "mtype": "ParameterType",
+            "name": "TIMESTAMPINTERVALLITERAL",
+            "label": "Timestamp Interval Literal",
+            "description": "The TimestampIntervalLiteral expression returns a value of type IVL_TS with the given attributes.",
+            "hedType": "TimestampIntervalLiteral",
+            "useLiteral": true,
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Timestamp",
+                    "valueType": "dt:TS",
+                    "widgetType": "DateTimeLocal",
+                    "value": "2014-02-20T01:04",
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Timestamp",
+                    "valueType": "dt:TS",
+                    "widgetType": "DateTimeLocal",
+                    "value": "",
+                    "attributeName": "highClosed",
+                    "attributeValue": true
+                }
+            ]
+        },
+        {
+            "id": "dosage",
+            "mtype": "ParameterType",
+            "name": "DOSAGE",
+            "label": "Dosage of Medication",
+            "description": "...Description...",
+            "hedType": "PhysicalQuantityLiteral",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Amount of Medication per Dose",
+                    "valueType": "Decimal",
+                    "widgetType": "TextBox",
+                    "value": 0.0,
+                    "minValue": 0.0
+                },
+                {
+                    "name": "unit",
+                    "label": "Units",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["mg", "ml", "count"],
+                    "value": "mg",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "id": "timestampLiteral",
+            "mtype": "ParameterType",
+            "name": "TIMESTAMPLITERAL",
+            "label": "Timestamp Literal",
+            "description": "The TimestampLiteral expression returns a value of type TS with the given attributes.",
+            "hedType": "TimestampLiteral",
+            "useLiteral": true,
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Timestamp",
+                    "valueType": "dt:TimeStamp",
+                    "widgetType": "DateTimeLocal",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "id": "dosage.frequency",
+            "mtype": "ParameterType",
+            "name": "FREQUENCY",
+            "label": "Times Patient takes medication per period.",
+            "description": "...Description...",
+            "hedType": "PeriodLiteral",
+            "elements": [
+                {
+                    "name": "count",
+                    "label": "Number of doses",
+                    "valueType": "Integer",
+                    "widgetType": "Dropdown",
+                    "selectionChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "value": 0
+                },
+                {
+                    "name": "period",
+                    "label": "Per Time Period",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["Daily", "Weekly", "Monthly", "Annually", "As Needed"],
+                    "value": "Daily",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        }
+    ]
+}
