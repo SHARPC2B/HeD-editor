@@ -20,5 +20,6 @@
 			<input type="checkbox" ng-model="element.attributeValue"> {{element.attributeName}}
 		</span>
 	</div>
+	<input ng-switch-when="Checkbox" type="checkbox" ng-model="element.value">
 	<span class="help-inline">{{element.errors[0]}}</span>
 </div>

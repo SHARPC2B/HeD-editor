@@ -1,0 +1,76 @@
+{
+    "mtype": "PrimitiveTemplate",
+    "key": "13",
+    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL data",
+    "example": "...Example...",
+    "description": "...Description...",
+    "parameters": [
+        {
+            "id": "booleanLiteral",
+            "mtype": "ParameterType",
+            "name": "BOOLEANLITERAL",
+            "label": "Boolean Literal",
+            "description": "The BooleanLiteral expression returns a value of type BL with the given attributes.",
+            "hedType": "BooleanLiteral",
+            "useLiteral": true,
+            "elements": [
+                {
+                    "name": "boolean",
+                    "label": "Boolean Literal",
+                    "valueType": "xs:boolean",
+                    "widgetType": "Checkbox",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "id": "codedOrdinalLiteral",
+            "mtype": "ParameterType",
+            "name": "CODEDORDINALLITERAL",
+            "label": "Coded Ordinal Literal",
+            "description": "The CodedOrdinalLiteral expression returns a value of type CO with the given attributes.",
+            "hedType": "CodedOrdinalLiteral",
+            "useLiteral": true,
+            "elements": [
+                {
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "valueType": "dt:Uid",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "value": "RxNorm"
+                },
+                {
+                    "name": "code",
+                    "label": "Code",
+                    "valueType": "dt:Code",
+                    "widgetType": "TextBox",
+                    "value": ""
+                },
+                {
+                    "name": "codeSystemName",
+                    "label": "Code System Name",
+                    "valueType": "dt:Code",
+                    "widgetType": "TextBox",
+                    "value": ""
+                },
+                {
+                    "name": "displayName",
+                    "label": "Display Name",
+                    "valueType": "xs:string",
+                    "widgetType": "SearchChoice",
+                    "searchService": "CTS2",
+                    "value": ""
+                },
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "valueType": "dt:Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01
+                }
+            ]
+        }
+    ]
+}

@@ -48,11 +48,11 @@
                 {
                     "key": "13",
                     "mtype": "PrimitiveTemplate",
-                    "name": "Patient had LAB ordered over last M days",
-                    "example": "Patient had Hemoglobin A1c ordered over last 7 days",
+                    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL data",
+                    "example": "...Example...",
                     "description": "...Description...",
                     "errors": [],
-                    "parameterIds": ["LabTest", "TimeRange"]
+                    "parameterIds": ["booleanLiteral", "codedOrdinalLiteral"]
                 },
                 {
                     "key": "22",
