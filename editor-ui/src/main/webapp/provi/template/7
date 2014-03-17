@@ -1,7 +1,7 @@
 {
     "mtype": "PrimitiveTemplate",
-    "id": "7",
-    "name": "Template with TIMESTAMPINTERVALLITERAL plus DOSAGE plus TIMESTAMPLITERAL and FREQUENCY",
+    "key": "7",
+    "name": "Template with TIMESTAMPINTERVALLITERAL plus INTEGERLITERAL plus TIMESTAMPLITERAL and INTEGERINTERVALLITERAL",
     "example": "...Example...",
     "description": "...Description...",
     "parameters": [
@@ -35,30 +35,21 @@
             ]
         },
         {
-            "id": "dosage",
+            "id": "integerLiteral",
             "mtype": "ParameterType",
-            "name": "DOSAGE",
-            "label": "Dosage of Medication",
-            "description": "...Description...",
-            "hedType": "PhysicalQuantityLiteral",
+            "name": "INTEGERLITERAL",
+            "label": "Integer Literal",
+            "description": "The IntegerLiteral expression returns a value of type INT with the given attributes.",
+            "hedType": "IntegerLiteral",
+            "useLiteral": true,
             "elements": [
                 {
                     "name": "value",
-                    "label": "Amount of Medication per Dose",
-                    "valueType": "Decimal",
-                    "widgetType": "TextBox",
-                    "value": 0.0,
-                    "minValue": 0.0
-                },
-                {
-                    "name": "unit",
-                    "label": "Units",
-                    "valueType": "String",
-                    "widgetType": "Choice",
-                    "selectionChoices": ["mg", "ml", "count"],
-                    "value": "mg",
-                    "minSelectionCount": 1,
-                    "maxSelectionCount": 1
+                    "label": "Integer",
+                    "valueType": "xs:int",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
                 }
             ]
         },
@@ -81,30 +72,33 @@
             ]
         },
         {
-            "id": "dosage.frequency",
+            "id": "integerIntervalLiteral",
             "mtype": "ParameterType",
-            "name": "FREQUENCY",
-            "label": "Times Patient takes medication per period.",
-            "description": "...Description...",
-            "hedType": "PeriodLiteral",
+            "name": "INTEGERINTERVALLITERAL",
+            "label": "Integer Interval Literal",
+            "description": "The IntegerIntervalLiteral expression returns a value of type IVL_INT with the given attributes.",
+            "hedType": "IntegerIntervalLiteral",
+            "useLiteral": true,
             "elements": [
                 {
-                    "name": "count",
-                    "label": "Number of doses",
-                    "valueType": "Integer",
-                    "widgetType": "Dropdown",
-                    "selectionChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    "value": 0
+                    "name": "low",
+                    "label": "Lower Integer",
+                    "valueType": "xs:int",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1,
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
                 },
                 {
-                    "name": "period",
-                    "label": "Per Time Period",
-                    "valueType": "String",
-                    "widgetType": "Choice",
-                    "selectionChoices": ["Daily", "Weekly", "Monthly", "Annually", "As Needed"],
-                    "value": "Daily",
-                    "minSelectionCount": 1,
-                    "maxSelectionCount": 1
+                    "name": "high",
+                    "label": "Higher Integer",
+                    "valueType": "xs:int",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1,
+                    "attributeName": "highClosed",
+                    "attributeValue": false
                 }
             ]
         }

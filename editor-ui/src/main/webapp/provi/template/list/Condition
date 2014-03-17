@@ -4,7 +4,7 @@
             "label": "Medications",
             "templates": [
                 {
-                    "id": "1",
+                    "key": "1",
                     "mtype": "PrimitiveTemplate",
                     "name": "Patient on MEDICATION",
                     "example": "Patient on Metformin",
@@ -13,7 +13,7 @@
                     "parameterIds": ["medication"]
                 },
                 {
-                    "id": "1A",
+                    "key": "1A",
                     "mtype": "PrimitiveTemplate",
                     "name": "Patient on MEDICATION with DOSAGE",
                     "example": "Patient on Aspirin 75mg Daily",
@@ -22,7 +22,7 @@
                     "parameterIds": ["medication", "dosage"]
                 },
                 {
-                    "id": "1B",
+                    "key": "1B",
                     "mtype": "PrimitiveTemplate",
                     "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
                     "example": "Patient on Aspirin 75mg 2x Daily",
@@ -37,16 +37,16 @@
             "label": "Tests",
             "templates": [
                 {
-                    "id": "7",
+                    "key": "7",
                     "mtype": "PrimitiveTemplate",
-                    "name": "Template with TIMESTAMPINTERVALLITERAL plus DOSAGE plus TIMESTAMPLITERAL and FREQUENCY",
+                    "name": "Template with TIMESTAMPINTERVALLITERAL plus INTEGERLITERAL plus TIMESTAMPLITERAL and INTEGERINTERVALLITERAL",
                     "example": "...Example...",
                     "description": "...Description...",
                     "errors": [],
-                    "parameterIds": ["timestampIntervalLiteral", "dosage", "timestampLiteral", "dosage.frequency"]
+                    "parameterIds": ["timestampIntervalLiteral", "integerLiteral", "timestampLiteral", "integerIntervalLiteral"]
                 },
                 {
-                    "id": "13",
+                    "key": "13",
                     "mtype": "PrimitiveTemplate",
                     "name": "Patient had LAB ordered over last M days",
                     "example": "Patient had Hemoglobin A1c ordered over last 7 days",
@@ -55,7 +55,7 @@
                     "parameterIds": ["LabTest", "TimeRange"]
                 },
                 {
-                    "id": "22",
+                    "key": "22",
                     "mtype": "PrimitiveTemplate",
                     "name": "most recent LABTEST OP OP-VALUE",
                     "example": "Most recent Hemoglobin A1c > 7%",
@@ -64,7 +64,7 @@
                     "parameterIds": ["LabTest", "ResultValue"]
                 },
                 {
-                    "id": "23",
+                    "key": "23",
                     "mtype": "PrimitiveTemplate",
                     "name": "last/most recent LABTEST OP TIME-UNITS",
                     "example": "Most recent Hemoglobin A1c before 6 months ago",
@@ -73,7 +73,7 @@
                     "parameterIds": ["LabTest", "TimeRange"]
                 },
                 {
-                    "id": "24",
+                    "key": "24",
                     "mtype": "PrimitiveTemplate",
                     "name": "no LABTEST for OP TIME-UNITS",
                     "example": "No Hemoglobin A1c for > 6 months",
@@ -88,7 +88,7 @@
             "label": "Problems",
             "templates": [
                 {
-                    "id": "16",
+                    "key": "16",
                     "mtype": "PrimitiveTemplate",
                     "name": "PATIENT has PROBLEMS on problem list",
                     "example": "Patient has Type 2 DM on problem list",
@@ -103,7 +103,7 @@
             "label": "Vaccination",
             "templates": [
                 {
-                    "id": "21",
+                    "key": "21",
                     "mtype": "PrimitiveTemplate",
                     "name": "never had MED-VACCINE",
                     "example": "Never had Rotavirus-Vaccine",
@@ -112,7 +112,7 @@
                     "parameterIds": ["Medications"]
                 },
                 {
-                    "id": "28",
+                    "key": "28",
                     "mtype": "PrimitiveTemplate",
                     "name": "last VACCINATION prior to TIME-DATE",
                     "example": "Last Tetanus-Vaccine prior to 10 years ago",

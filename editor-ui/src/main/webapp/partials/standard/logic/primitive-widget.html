@@ -8,5 +8,17 @@
 	</span>
 	<select ng-switch-when="Dropdown" ng-model="element.value" ng-options="sc for sc in element.selectionChoices"></select>
 	<input ng-switch-when="SearchChoice" type="text" ng-model="element.value" typeahead="suggestion.designation for suggestion in cts2search($viewValue)">
+	<div ng-switch-when="DateTimeLocal">
+		<input type="datetime-local" ng-model="element.value">
+		<span ng-if="element.attributeName">
+			<input type="checkbox" ng-model="element.attributeValue"> {{element.attributeName}}
+		</span>
+	</div>
+	<div ng-switch-when="Number">
+		<input type="number" ng-model="element.value" step="{{element.step}}">
+		<span ng-if="element.attributeName">
+			<input type="checkbox" ng-model="element.attributeValue"> {{element.attributeName}}
+		</span>
+	</div>
 	<span class="help-inline">{{element.errors[0]}}</span>
 </div>

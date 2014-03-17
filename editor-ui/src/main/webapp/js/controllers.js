@@ -1249,18 +1249,14 @@ angular.module('ruleApp.controllers', [])
                 });
 
         };
-        $http.get(serviceUrl + '/template/' + clause.id).success(function(data) {
+        $http.get(serviceUrl + '/template/' + clause.key).success(function(data) {
             $scope.detail = data;
             $scope.template = clause.name;
             angular.forEach(data.parameters, function(parameter, key) {
                 $scope.template = $scope.template.replace(parameter.name, '<a ng-click="openOther(detail.parameters[' + key + '])">' + parameter.name + '</a>');
             });
         });
-        $scope.cts2search = function(matchValue) {
-            return $http.jsonp( serviceUrl + "/fwd/cts2/codesystem/RXNORM/version/RXNORM-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response) {
-                return response.data.entityDirectory.entryList;
-            });
-        };
+
         $scope.verify = function(data) {
             $http.put(serviceUrl + '/template/inst', data).success(function(response) {
                 $scope.detail = response;
@@ -1275,7 +1271,7 @@ angular.module('ruleApp.controllers', [])
                 controller: 'ParameterController',
                 resolve : {
                     parameter : function() {
-                        return angular.copy(parameter);
+                        return parameter;
                     }
                 }
             });
@@ -1283,21 +1279,16 @@ angular.module('ruleApp.controllers', [])
 
     }])
 
-    .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', '$modal', function($scope, $modalInstance, parameter, $http, $modal){
+    .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
         $scope.parameter = parameter;
         $scope.cts2search = function(matchValue) {
             return $http.jsonp(serviceUrl + "/fwd/cts2/codesystem/RXNORM/version/RXNORM-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response){
                 return response.data.entityDirectory.entryList;
             });
         };
-        $scope.save = function(detail) {
-            alert(detail);
-            $modalInstance.dismiss('cancel');
+        $scope.ok = function() {
+            $modalInstance.close();
         };
-        $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
-        };
-
     }])
 
     .controller('HomeImportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance){

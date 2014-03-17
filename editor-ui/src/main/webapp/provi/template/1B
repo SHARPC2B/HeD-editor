@@ -1,6 +1,6 @@
 {
     "mtype": "PrimitiveTemplate",
-    "id": "1B",
+    "key": "1B",
     "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
     "example": "Patient on Aspirin 75mg 2x Daily",
     "description": "This condition verifies whether the patient is taking some medication with exactly the specified dosage. For example : Patient is on Amoxicillin, oral, 500 mg 2/day.",
@@ -42,14 +42,15 @@
             "label": "Dosage of Medication",
             "description": "...Description...",
             "hedType": "PhysicalQuantityLiteral",
+            "useLiteral": true,
             "elements": [
                 {
                     "name": "value",
                     "label": "Amount of Medication per Dose",
-                    "valueType": "Decimal",
-                    "widgetType": "TextBox",
-                    "value": 0.0,
-                    "minValue": 0.0
+                    "valueType": "dt:Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01
                 },
                 {
                     "name": "unit",
