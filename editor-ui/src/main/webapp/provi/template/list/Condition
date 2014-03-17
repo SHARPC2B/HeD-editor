@@ -48,11 +48,11 @@
                 {
                     "key": "13",
                     "mtype": "PrimitiveTemplate",
-                    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL data",
+                    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL and PERIODLITERAL data",
                     "example": "...Example...",
                     "description": "...Description...",
                     "errors": [],
-                    "parameterIds": ["booleanLiteral", "codedOrdinalLiteral"]
+                    "parameterIds": ["booleanLiteral", "codedOrdinalLiteral", "periodLiteral"]
                 },
                 {
                     "key": "22",

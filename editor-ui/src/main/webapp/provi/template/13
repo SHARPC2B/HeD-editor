@@ -1,7 +1,7 @@
 {
     "mtype": "PrimitiveTemplate",
     "key": "13",
-    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL data",
+    "name": "Patient has BOOLEANLITERAL plus CODEDORDINALLITERAL and PERIODLITERAL data",
     "example": "...Example...",
     "description": "...Description...",
     "parameters": [
@@ -69,6 +69,80 @@
                     "widgetType": "Number",
                     "value": 0,
                     "step": 0.01
+                }
+            ]
+        },
+        {
+            "id": "periodLiteral",
+            "mtype": "ParameterType",
+            "name": "PERIODLITERAL",
+            "label": "Period Literal",
+            "description": "The PeriodLiteral expression returns a value of type PIVL_TS with the given attributes.",
+            "hedType": "PeriodLiteral",
+            "useLiteral": true,
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Phase",
+                    "valueType": "dt:TS",
+                    "widgetType": "DateTimeLocal",
+                    "value": "2014-02-20T01:04",
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Phase",
+                    "valueType": "dt:TS",
+                    "widgetType": "DateTimeLocal",
+                    "value": "",
+                    "attributeName": "highClosed",
+                    "attributeValue": true
+                },
+                {
+                    "name": "period",
+                    "label": "Period",
+                    "valueType": "dt:PQ",
+                    "widgetType": "TextBox",
+                    "value": ""
+                },
+                {
+                    "name": "numerator",
+                    "label": "Numerator",
+                    "valueType": "QTY",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "denominator",
+                    "label": "Denominator",
+                    "valueType": "QTY",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "count",
+                    "label": "Count",
+                    "valueType": "dt:INT",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "alignment",
+                    "label": "Alignment",
+                    "valueType": "dt:CalendarCycle",
+                    "widgetType": "DateTimeLocal",
+                    "value": ""
+                },
+                {
+                    "name": "isFlexible",
+                    "label": "Is Flexible",
+                    "valueType": "xs:boolean",
+                    "widgetType": "Checkbox",
+                    "value": false
                 }
             ]
         }
