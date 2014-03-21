@@ -1126,11 +1126,13 @@ angular.module('ruleApp.controllers', [])
             });
         };
         Blockly.Blocks.action_group = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(20);
                 this.appendDummyInput()
                     .appendField(new Blockly.FieldDropdown([["Perform all", "all"], ["Perform none", "none"], ["Perform any", "any"], ["Perform exactly one", "one"]]), "NAME");
+                this.appendDummyInput()
+                	.appendField("Tittle")
+                	.appendField(new Blockly.FieldTextInput("title"), "TITLE");
                 this.appendValueInput("Documentation")
                     .setCheck("Documentation")
                     .appendField("Documentation");
@@ -1144,11 +1146,13 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.atomic_action = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(99);
                 this.appendDummyInput()
                     .appendField(new Blockly.FieldDropdown([["Create", "CreateAction"], ["Update", "UpdateAction"], ["Remove", "RemoveAction"], ["Fire Event", "FireEventAction"], ["Declare", "DeclareResponseAction"], ["Collect", "CollectInformationAction"]]), "NAME");
+                this.appendDummyInput()
+                	.appendField("Tittle")
+                	.appendField(new Blockly.FieldTextInput("title"), "TITLE");
                 this.appendValueInput("Documentation")
                     .setCheck("Documentation")
                     .appendField("Documentation");
