@@ -6,16 +6,13 @@ public class RepositoryFactory {
 
     public static ArtifactRepository getRepository( REPOSITORY type ) {
         switch ( type ) {
-            case FILE :
             case STANBOL:
+                return new StanbolArtifactRepository();
+            case FILE :
+                return new FilesystemArtifactRepository();
             default:
-                try {
-                    return new StanbolArtifactRepository();
-                } catch ( Exception e ) {
-                    e.printStackTrace();
-                }
+                return new FilesystemArtifactRepository();
         }
-        return null;
     }
 
 }

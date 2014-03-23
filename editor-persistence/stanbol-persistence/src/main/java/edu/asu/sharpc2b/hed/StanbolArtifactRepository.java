@@ -88,7 +88,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
 
 
     @Override
-    public String cloneArtifact( String uri ) {
+    public String cloneArtifact( String uri, String newTitle, String newUri ) {
         return null;
     }
 
@@ -109,7 +109,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
     }
 
     @Override
-    public String saveArtifact( String uri ) {
+    public String saveArtifact( String uri, InputStream content ) {
         return null;
     }
 

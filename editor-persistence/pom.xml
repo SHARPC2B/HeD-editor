@@ -16,8 +16,10 @@
   <name>SHARPC-2B :: Sharp Editor Persistence Layer</name>
 
   <modules>
+	  <module>persistence</module>
     <module>persistence-api</module>
     <module>stanbol-persistence</module>
+	  <module>filesystem-persistence</module>
   </modules>
 
   <dependencies>

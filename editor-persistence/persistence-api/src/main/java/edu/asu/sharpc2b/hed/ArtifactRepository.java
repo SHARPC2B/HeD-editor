@@ -7,13 +7,13 @@ public interface ArtifactRepository {
 
     List<String> getAvailableArtifacts();
 
-    String cloneArtifact( String uri );
+    String cloneArtifact( String uri, String newTitle, String newUri );
 
     InputStream loadArtifact( String uri );
 
     String snapshotArtifact( String uri );
 
-    String saveArtifact( String uri );
+    String saveArtifact( String uri, InputStream content );
 
     String deleteArtifact( String uri );
 

@@ -9,11 +9,19 @@
   </parent>
 
   <groupId>sharpc2b</groupId>
-  <artifactId>persistence-api</artifactId>
+  <artifactId>filesystem-persistence</artifactId>
   <version>0.1-SNAPSHOT</version>
 
 
-  <name>SHARPC-2B :: Editor Persistence API</name>
+  <name>SHARPC-2B :: Filesystem Persistence Layer</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>sharpc2b</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 </project>
 
