@@ -8,33 +8,35 @@ object ApplicationBuild extends Build {
   val appName = "hed-editor-services"
   val appVersion = "1.0"
 
-  val dependencyOverrides = Seq(
-    "xml-apis" % "xml-apis" % "1.3.04"
-  )
-
   val appDependencies = Seq(
     // Add your project dependencies here,
 
-//    "xml-apis" % "xml-apis" % "1.4.01" force(),
+    //"xml-apis" % "xml-apis" % "1.4.01" force(),
+    "xerces" % "xercesImpl" % "2.10.0" force(),
     "com.hermit-reasoner" % "org.semanticweb.hermit" % "1.3.8.2" force(),
     "org.apache.jena" % "jena-core" % "2.11.0" force(),
     "com.hp.hpl.jena" % "arq" % "2.8.5" force(),
-    "org.apache.stanbol" % "org.apache.stanbol.client" % "0.20.0-SNAPSHOT" force(),
-    "org.drools" % "drools-core" % "5.6.0-SNAPSHOT" force(),
-    "org.drools" % "drools-shapes-utilities" % "0.5.6.Final" exclude("com.hp.hpl.jena", "jena") exclude("com.hp.hpl.jena", "arq"),
-
+    "org.apache.stanbol" % "org.apache.stanbol.client" % "0.20.0-SHARP" force() exclude("org.slf4j","slf4j-log4j12"),
 
     javaCore,
     javaEbean,
+
+
+    "org.drools" % "drools-core" % "5.6.0-SNAPSHOT" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
+
+    "org.drools" % "drools-shapes-utilities" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("com.hp.hpl.jena", "jena") exclude("com.hp.hpl.jena", "arq") exclude("thewebsemantic","jenabean"),
+    "org.drools" % "drools-shapes-generator" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("thewebsemantic","jenabean"),
+
 
     // "com.google.gdata" % "core" % "1.47.1" exclude("xml-apis","xml-apis"),
 
     "edu.mayo.cts2.framework" % "model" % "0.8.4" withSources() withJavadoc() exclude("org.slf4j","slf4j-log4j12"),
     "edu.mayo.cts2.framework" % "core" % "0.8.4" withSources() withJavadoc() exclude("org.slf4j","slf4j-log4j12"),
 
-    "sharpc2b" % "sharp-editor" % "0.1-SNAPSHOT",
-    "sharpc2b" % "import-export" % "0.1-SNAPSHOT",
-    "sharpc2b" % "editor-core" % "0.1-SNAPSHOT"
+    "sharpc2b" % "sharp-editor" % "0.1-SNAPSHOT"  exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude( "org.apache.maven.doxia", "doxia-site-renderer" ),
+    "sharpc2b" % "import-export" % "0.1-SNAPSHOT"  exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude( "org.apache.maven.doxia", "doxia-site-renderer" ),
+    "sharpc2b" % "editor-core" % "0.1-SNAPSHOT"  exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis")  exclude( "org.apache.maven.doxia", "doxia-site-renderer" )
+
     //    ,
 
     // Note at website (http://code.google.com/p/rest-assured/wiki/GettingStarted)
@@ -70,3 +72,4 @@ object ApplicationBuild extends Build {
   .settings(Play2WarPlugin.play2WarSettings: _*)
   .settings(Play2WarKeys.servletVersion := "3.0")
 }
+
