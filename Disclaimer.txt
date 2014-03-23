@@ -1,8 +1,40 @@
-DISCLAIMER
+Terms of Use and Disclaimer
 
-This code is still experimental and subject to variations.
+This software application is a tool for authoring inference engine rules and was created under an award
+from the U.S. Department of Health and Human Services (“HHS”) to the University of Texas Health Science
+Center at Houston (University of Texas) as Prime Recipient and IHC Health Services, Inc. (“IHCHS”) as
+Subrecipient (the “Award”).
 
-Neither the editor nor any artifact generated using the editor should be used in a clinical setting without going
-through an appropriate quality assurance process, including reviews by subject matter experts and software testing.
-Arizona State University and Intermountain Healthcare decline any responsibility for any consequence due to the
-misuse of this software. See the LICENSE file for additional information.
+This software application is referred to below as the “Tool”.
+
+	1.	Use and Compliance with Laws.
+	This Tool is made available for download and use by others, but only for lawful and ethical purposes and uses.
+	Each user of the Tool must ensure that the Tool is used in strict compliance with all applicable laws and
+	regulations and with high standards of professional healthcare ethics.  The Tool must not be exported or
+	re-exported in violation of any U.S. laws or regulations.  The Tool must not be used in any manner or application
+	that is hazardous or may cause injury to any person.
+
+	2.	No Data.
+	The Tool does not include any protected health information, personally-identifiable information, or any other data.
+
+	3.	No Fees.
+	There are no license fees, royalties or other fees payable for use of the Tool as permitted herein.
+
+	4.	Disclaimers.
+	THE TOOL IS PROVIDED AND ACCEPTED “AS IS” WITHOUT WARRANTY OR REPRESENTATION OF ANY KIND.  ALL IMPLIED WARRANTIES,
+	INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTIES OF NONINFRINGEMENT, MERCHANTABILITY, TITLE, OR FITNESS FOR A
+	PARTICULAR PURPOSE ARE DISCLAIMED AND EXCLUDED.  THERE IS NO REPRESENTATION OR WARRANTY THAT THE TOOL WILL SATISFY
+	A USER’S REQUIREMENTS OR THAT IT IS WITHOUT DEFECT OR ERROR OR THAT THE OPERATION THEREOF WILL BE UNINTERRUPTED.
+	EACH USER IS SOLELY RESPONSIBLE FOR DETERMINING THE SUITABILITY OF THE TOOL AND FOR TESTING AND EVALUATING IT BEFORE
+	ANY USE OF OR RELIANCE ON THE TOOL.  ANY PERSON WHO USES OR RELIES ON THE TOOL OR THE RULES, OUTPUT, OR DATA IT
+	PRODUCES ASSUMES ALL RISKS AND LIABILITIES ASSOCIATED WITH THE TOOL AND THOSE RULES, OUTPUT, AND DATA, INCLUDING,
+	WITHOUT LIMITATION, DEFECTS, PROGRAMMING ERRORS, PRODUCT LIABILITY CLAIMS, THE INFRINGEMENT OF THIRD PARTY RIGHTS
+	OR INTELLECTUAL PROPERTY, AND ANY OTHER PROBLEMS RELATING TO THE TOOL.  ALL SUCH USE AND RELIANCE MUST BE BY
+	QUALIFIED PROFESSIONALS WHO EXERCISE THEIR OWN INDEPENDENT PROFESSIONAL JUDGMENT.  THE TOOL IS NOT INTENDED,
+	LICENSED OR PROVIDED FOR USE IN THE DIAGNOSIS, CURE, MITIGATION, TREATMENT, MONITORING, OR PREVENTION OF ANY
+	DISEASE, CONDITION OR PATIENT.
+
+	5.	Government Awards.
+	The Tool and all use of it are subject to the Award and any requirements and limitations (contractual, governmental,
+	or otherwise) applicable to the Award.
+ 
