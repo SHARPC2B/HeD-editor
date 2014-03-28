@@ -1,5 +1,14 @@
 <div class="row-fluid">
 	<div class="borderedBox span5" style="padding: 7px;">
+		<form class="form-inline">
+			<label>Select the code system</label>
+			<select>
+				<option>RxNorm</option>
+  				<option>NDC</option>
+			</select>
+			<input type="search" class="search-query" placeholder="Search in CTS" ng-model="templateFilter">
+			<button type="submit" class="btn">Populate Templates</button>
+		</form>
 		<div class="search-prepend offset2">
 			Write a logic clause about:
 			<div class="icon-search icon-white" style="left: 182px;"></div>
