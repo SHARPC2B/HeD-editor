@@ -9,12 +9,8 @@
 			<input type="search" class="search-query" placeholder="Search in CTS" ng-model="templateFilter">
 			<button type="submit" class="btn">Populate Templates</button>
 		</form>
-		<div class="search-prepend offset2">
-			Write a logic clause about:
-			<div class="icon-search icon-white" style="left: 182px;"></div>
-			<input type="text" class="search-query" placeholder="search" ng-model="templateFilter">
-		</div><br>
 		<p class="text-center">Select an option below (a new window will open)</p>
+		<p><input type="search" class="search-query span12" placeholder="Filter templates" ng-model="templateFilter"></p>
 		<ul class="nav nav-list borderedBox">
 			<li ng-repeat="primitive in primitives"><a href="" class="nav-header" ng-click="primitive.show = !primitive.show" ng-show="(primitive.templates | filter:templateFilter).length > 0"><i class="icon-folder-open-alt" ng-show="!primitive.show"></i><i class="icon-folder-close-alt" ng-show="primitive.show"></i>{{primitive.label}}</a>
 				<ul class="nav nav-list" ng-show="!primitive.show">
