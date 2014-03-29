@@ -1,5 +1,5 @@
 import edu.asu.sharpc2b.hed.ArtifactRepository;
-import edu.asu.sharpc2b.hed.RepositoryFactory;
+import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -21,16 +21,16 @@ public class RepoTest {
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
 
-    private RepositoryFactory.REPOSITORY mode;
+    private ArtifactRepositoryFactory.REPOSITORY mode;
 
-    public RepoTest( RepositoryFactory.REPOSITORY mode ) {
+    public RepoTest( ArtifactRepositoryFactory.REPOSITORY mode ) {
         this.mode = mode;
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Object[][] data = new Object[][] {
-                { RepositoryFactory.REPOSITORY.FILE },
+                { ArtifactRepositoryFactory.REPOSITORY.FILE },
  //               { RepositoryFactory.REPOSITORY.STANBOL }
         };
         return Arrays.asList( data );
@@ -39,7 +39,7 @@ public class RepoTest {
     @Test
     public void testArtifacts() throws Exception {
 
-        ArtifactRepository knowledgeRepo = RepositoryFactory.getRepository( mode );
+        ArtifactRepository knowledgeRepo = ArtifactRepositoryFactory.getRepository( mode );
 
         String uuid = UUID.randomUUID().toString();
         String uri = "http://asu.bmi.edu/Rule_" + System.identityHashCode( uuid );
