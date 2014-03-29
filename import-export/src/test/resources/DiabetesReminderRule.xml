@@ -41,7 +41,7 @@
       <coverage xsi:type="Coverage">
         <focus value="ClinicalFocus"/>
         <description value="Diabetes Mellitus"/>
-        <value code="73211009" codeSystem="2.16.840.1.113883.6.96"/>
+        <value code="73211009" codeSystem="2.16.840.1.113883.6.96" />
       </coverage>
     </applicability>
 
@@ -136,7 +136,8 @@
           <operand xsi:type="Filter">
             <source xsi:type="ExpressionRef" name="HemoglobinA1cResultsFromLast12Months"/>
             <condition xsi:type="Greater">
-              <operand xsi:type="Property" path="observationEventTime"/>
+              <operand xsi:type="Property" path="observationEventTime">
+		          </operand>
               <operand xsi:type="DateAdd">
                 <date xsi:type="Today"/>
                 <granularity xsi:type="Literal" valueType="DateGranularity"

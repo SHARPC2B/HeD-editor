@@ -45,11 +45,17 @@ public class HeD2OwlDumper {
 
     private static KnowledgeBase kBase;
     private static final String HED = "org.hl7.knowledgeartifact.r1";
+    private PrefixOWLOntologyFormat outputFormat = new OWLFunctionalSyntaxOntologyFormat();
 
 
     public HeD2OwlDumper() {
         super();
         initKBase();
+    }
+
+    public HeD2OwlDumper( PrefixOWLOntologyFormat format ) {
+        this();
+        this.outputFormat = format;
     }
 
 
@@ -89,7 +95,7 @@ public class HeD2OwlDumper {
         OWLOntology result = transform( hed, root, version, prefixManager );
 
 
-        PrefixOWLOntologyFormat format = new OWLFunctionalSyntaxOntologyFormat();
+        PrefixOWLOntologyFormat format = outputFormat;
         format.copyPrefixesFrom( prefixManager );
         stream( result,
                 outStream,
@@ -110,6 +116,7 @@ public class HeD2OwlDumper {
         prefixManager.setPrefix( "IOLite:", "http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#" );
         prefixManager.setPrefix( "act:", "http://asu.edu/sharpc2b/actions#" );
         prefixManager.setPrefix( "meta:", "http://asu.edu/sharpc2b/metadata#" );
+        prefixManager.setPrefix( "a:", "http://asu.edu/sharpc2b/ops-set#" );
         prefixManager.setPrefix( "ops:", "http://asu.edu/sharpc2b/ops#" );
         prefixManager.setPrefix( "prr:", "http://asu.edu/sharpc2b/prr#" );
         prefixManager.setPrefix( "prr-sharp:", "http://asu.edu/sharpc2b/prr-sharp#" );

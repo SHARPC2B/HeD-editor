@@ -80,71 +80,130 @@ end
 rule "KnowledgeDocument Rule Variables"
 when
     $kd : KnowledgeDocument( $meta : metadata.artifactType, metadata.artifactType.value == "Rule",
-                             $defs : externalData.deves )
-    $rv : ExpressionDef( this memberOf $defs, $name : name, $xp : expression )
-    $cr : ClinicalRequest( this == $xp, $type : dataType )
+                             $ext : externalData, $defs : externalData.deves, $xprs : expressions.deves )
+    $rv : ExpressionDef( this memberOf $defs || this memberOf $xprs, $name : name, $xp : expression )
+    $cr : ClinicalRequest( this == $xp, $type : dataType, $initial : isInitial, $descr : description, $card : cardinality.value )
 then
     OWLNamedIndividual r = helper.asIndividual( $meta );
     OWLNamedIndividual rv = helper.asIndividual( "tns:Var_" + $name );
     OWLNamedIndividual type = helper.asIndividual( $type );
-    OWLNamedIndividual expr = helper.asIndividual( "tns:Expr_" + $cr.hashCode() );
-    OWLNamedIndividual exprInSharp = helper.asIndividual( $cr );
-    insert( helper.assertType( rv, "prr:RuleVariable" ) );
-    insert( helper.assertObjectProperty( "prr:productionRuleBoundRuleVariable", r, rv  ) );
-    insert( helper.assertDataProperty( "prr:name", rv, $name  ) );
-    insert( helper.assertObjectProperty( "prr-sharp:elementType", rv, helper.asIndividual( $type.toString() ) ) );
-    insert( helper.assertObjectProperty( "prr:variableFilterExpression", rv, expr ) );
-    insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, exprInSharp ) );
-end
-
-
-rule "Input Data Binding"
-when
-    $kd : KnowledgeDocument( $ext : externalData, $defs : externalData.deves )
-    $rv : ExpressionDef( this memberOf $defs, $name : name, $xp : expression )
-    $cr : ClinicalRequest( this == $xp, $type : dataType, $card : cardinality.value,
-                           $codePath : codeProperty, $dataPath : dateProperty, $subjectPath : subjectProperty,
-                           $codes : codes, $dates : dateRange, $subject : subject )
-    Link( $codes, $codeInd ; )
-then
+    OWLNamedIndividual expr = helper.asIndividual( "tns:prrExpr_" + $cr.hashCode() );
     OWLNamedIndividual ext = helper.asIndividual( $ext );
-    OWLNamedIndividual iter = helper.asIndividual( $cr );
+    OWLNamedIndividual iter = helper.asExpressionIndividual( "ClinicalRequest", $cr );
     OWLNamedIndividual extVar = helper.asIndividual( "tns:ExtVar_" + $cr.hashCode() );
     OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
 
-    insert( helper.assertType( iter, "single".equals( $card ) ? "ops:SingleIteratorExpression" : "ops:AggregateIteratorExpression" ) );
+    insert( helper.assertType( rv, "prr:RuleVariable" ) );
+    insert( helper.assertType( type, "ops:DomainClass" ) );
 
-    insert( helper.assertObjectProperty( "ops:source", iter, extVar ) );
-    insert( helper.assertObjectProperty( "ops:referredVariable", extVar, ext ) );
+    insert( helper.assertObjectProperty( "prr:productionRuleBoundRuleVariable", r, rv  ) );
+    insert( helper.assertDataProperty( "prr:name", rv, $name  ) );
+    insert( helper.assertDataProperty( "skos:notation", type, $type.toString() ) );
+    insert( helper.assertObjectProperty( "prr-sharp:elementType", rv, type ) );
+    insert( helper.assertObjectProperty( "prr:variableFilterExpression", rv, expr ) );
+    insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, iter ) );
 
+    insert( helper.assertType( iter, "Single".equals( $card ) ? "ops:SingleIteratorExpression" : "ops:AggregateIteratorExpression" ) );
+    insert( helper.assertType( extVar, "ops:VariableExpression" ) );
+    insert( helper.assertType( ext, "prr:Variable" ) );
     insert( helper.assertType( innVar, "ops:Variable" ) );
+
+
+    if ( $defs.contains( $rv ) ) {
+        insert( helper.assertObjectProperty( "ops:source", iter, extVar ) );
+        insert( helper.assertObjectProperty( "ops:referredVariable", extVar, ext ) );
+        insert( helper.assertDataProperty( "prr:name", ext, "$contextData"  ) );
+    }
+
     insert( helper.assertObjectProperty( "ops:iterator", iter, innVar ) );
-    insert( helper.assertObjectProperty( "ops:type", innVar, helper.asIndividual( $type.toString() ) ) );
+    //TODO - lowest priority : add source that gets the elements of type datatype
+
+end
 
 
+rule "Input Data Binding - Codes"
+when
+    $kd : KnowledgeDocument( $ext : externalData, $defs : externalData.deves, $xprs : expressions.deves )
+    $rv : ExpressionDef( this memberOf $defs || this memberOf $xprs, $name : name, $xp : expression )
+    $cr : ClinicalRequest( this == $xp, $type : dataType, $card : cardinality.value,
+                           $codePath : codeProperty, $dataPath : dateProperty, $subjectPath : subjectProperty,
+                           $codes : codes != null, $dates : dateRange, $subject : subject )
+    Link( $codes, $codeInd ; )
+then
+    OWLNamedIndividual iter = helper.asExpressionIndividual( "ClinicalRequest", $cr );
+    OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
 
+        OWLNamedIndividual andRoot = helper.assertExpression( drools, "And", $cr );
+        insert( helper.assertObjectProperty( "ops:body", iter, andRoot ) );
 
-    if ( $codes != null || $dates != null || $subject != null ) {
-        OWLNamedIndividual andRoot = helper.assertExpression( drools, "and", $cr );
-        insert( helper.assertObjectProperty( "ops:filter", iter, andRoot ) );
+            //OWLNamedIndividual codeEq = helper.assertExpression( drools, "In", $codePath );
+            OWLNamedIndividual codeEq = helper.assertExpression( drools, "Or", $codePath );
 
-        if ( $codes != null ) {
-            OWLNamedIndividual codeEq = helper.assertExpression( drools, "in", $codePath );
-            insert( helper.assertObjectProperty( "ops:hasOperand", andRoot, codeEq ) );
+            insert( helper.assertObjectProperty( "ops:firstOperand", andRoot, codeEq ) );
 
             OWLNamedIndividual leftProp = helper.assertPropertyChain( drools, $codePath, innVar, $type.getNamespaceURI() + "#" );
+
             insert( helper.assertObjectProperty( "ops:hasOperand", codeEq, leftProp ) );
+            insert( helper.assertObjectProperty( "ops:firstOperand", codeEq, leftProp ) );
             insert( helper.assertObjectProperty( "ops:hasOperand", codeEq, $codeInd ) );
-        }
-//        if ( $dates != null ) {
-//            OWLNamedIndividual dateEq = helper.assertExpression( drools, "in", $datePath );
-//            insert( helper.assertObjectProperty( "ops:hasOperand", andRoot, dateEq ) );
-//
-//            OWLNamedIndividual leftProp = helper.assertPropertyChain( drools, $datePath, innVar, $type.getNamespaceURI() + "#" );
-//            insert( helper.assertObjectProperty( "ops:hasOperand", dateEq, leftProp ) );
-//            insert( helper.assertObjectProperty( "ops:hasOperand", dateEq, $dateInd ) );
-//        }
-    }
+            insert( helper.assertObjectProperty( "ops:secondOperand", codeEq, $codeInd ) );
+end
+
+rule "Input Data Binding - Dates"
+when
+    $kd : KnowledgeDocument( $ext : externalData, $defs : externalData.deves, $xprs : expressions.deves )
+    $rv : ExpressionDef( this memberOf $defs || this memberOf $xprs, $name : name, $xp : expression )
+    $cr : ClinicalRequest( this == $xp, $type : dataType, $card : cardinality.value,
+                           $codePath : codeProperty, $datePath : dateProperty, $subjectPath : subjectProperty,
+                           $codes : codes, $dates : dateRange != null, $subject : subject )
+    Link( $dates, $dateInd ; )
+then
+    OWLNamedIndividual iter = helper.asExpressionIndividual( "ClinicalRequest", $cr );
+    OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
+
+        OWLNamedIndividual andRoot = helper.assertExpression( drools, "And", $cr );
+        insert( helper.assertObjectProperty( "ops:body", iter, andRoot ) );
+
+            //OWLNamedIndividual dateEq = helper.assertExpression( drools, "In", $datePath );
+            OWLNamedIndividual dateEq = helper.assertExpression( drools, "Or", $datePath );
+
+            insert( helper.assertObjectProperty( "ops:secondOperand", andRoot, dateEq ) );
+
+            OWLNamedIndividual leftProp = helper.assertPropertyChain( drools, $datePath, innVar, $type.getNamespaceURI() + "#" );
+
+            insert( helper.assertObjectProperty( "ops:hasOperand", dateEq, leftProp ) );
+            insert( helper.assertObjectProperty( "ops:firstOperand", dateEq, leftProp ) );
+            insert( helper.assertObjectProperty( "ops:hasOperand", dateEq, $dateInd ) );
+            insert( helper.assertObjectProperty( "ops:secondOperand", dateEq, $dateInd ) );
+end
+
+
+rule "Input Data Binding - Subject"
+when
+    $kd : KnowledgeDocument( $ext : externalData, $defs : externalData.deves, $xprs : expressions.deves )
+    $rv : ExpressionDef( this memberOf $defs || this memberOf $xprs, $name : name, $xp : expression )
+    $cr : ClinicalRequest( this == $xp, $type : dataType, $card : cardinality.value,
+                           $codePath : codeProperty, $datePath : dateProperty, $subjectPath : subjectProperty,
+                           $codes : codes, $dates : dateRange, $subject : subject != null )
+    Link( $subject, $subjInd ; )
+then
+    OWLNamedIndividual iter = helper.asExpressionIndividual( "ClinicalRequest", $cr );
+    OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
+
+        OWLNamedIndividual andRoot = helper.assertExpression( drools, "And", $cr );
+        insert( helper.assertObjectProperty( "ops:body", iter, andRoot ) );
+
+            //OWLNamedIndividual subjEq = helper.assertExpression( drools, "In", $subjectPath );
+            OWLNamedIndividual subjEq = helper.assertExpression( drools, "Or", $subjectPath );
+
+            insert( helper.assertObjectProperty( "ops:thirdOperand", andRoot, subjEq ) );
+
+            OWLNamedIndividual leftProp = helper.assertPropertyChain( drools, $subjectPath, innVar, $type.getNamespaceURI() + "#" );
+
+            insert( helper.assertObjectProperty( "ops:hasOperand", subjEq, leftProp ) );
+            insert( helper.assertObjectProperty( "ops:firstOperand", subjEq, leftProp ) );
+            insert( helper.assertObjectProperty( "ops:hasOperand", subjEq, $subjInd ) );
+            insert( helper.assertObjectProperty( "ops:secondOperand", subjEq, $subjInd ) );
 end
 
 
@@ -156,71 +215,85 @@ end
 
 
 
-rule "Process ValueSet"
+
+
+rule "Expression Type"
 when
-    $val : ValueSet( $id : id, $ver : version, $auth : authority )
+    $expr : Expression()
 then
-    OWLNamedIndividual val = helper.asIndividual( $val );
-    insert( helper.assertType( val, "prr-sharp:ValueSet" ) );
-    if ( $id != null ) { insert( helper.assertDataProperty( "meta:artifactId", val, $id ) ); }
-    if ( $ver != null ) { insert( helper.assertDataProperty( "meta:versionId", val, $ver ) ); }
-    if ( $auth != null ) { insert( helper.assertDataProperty( "dcterms:description", val, $auth ) ); }
-    insert( new Link( $val, val ) );
+    OWLNamedIndividual exp = helper.assertExpression( drools, $expr.getClass().getSimpleName(), $expr );
+    insert( new Link( $expr, exp ) );
 end
 
-/*
-rule "Process Property"
+
+rule "Expression Description"
 when
-    $pro : Property( $path : path, $src : source )
+    $expr : Expression( $descr : description != null )
+then
+    OWLNamedIndividual exp = helper.asIndividual( $expr );
+    insert( helper.assertDataProperty( "dcterms:description", exp, $descr ) );
+end
+
+
+rule "Process Property Get"
+when
+    $pro : Property( $path : path, $src : source != null )
+    Link( $pro, $exp ; )
     Link( $src, $semSrc ; )
 then
-    //TODO
     OWLNamedIndividual ind = helper.assertPropertyChain( drools, $path, $semSrc, "vmr:" );
-    insert( new Link( $pro, ind ) );
+    insert( helper.assertObjectProperty( "ops:source", $exp, ind ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $exp, $semSrc ) );
 end
-*/
-
-rule "Process IsEmpty"
-when
-    $ie : IsEmpty( $xp : operand )
-    Link( $xp, $op ; )
-then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "not-exists", $ie );
-    insert( helper.assertObjectProperty( "ops:hasOperand", ind, $op ) );
-    insert( new Link( $ie, ind ) );
-end
-
-rule "IsNotEmpty"
-when
-    $ie : IsNotEmpty( $xp : operand )
-    Link( $xp, $op ; )
-then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "exists", $ie );
-    insert( helper.assertObjectProperty( "ops:hasOperand", ind, $op ) );
-    insert( new Link( $ie, ind ) );
-end
-
 
 rule "Process ExpressionRef"
 when
     $ref : ExpressionRef( $name : name )
+    Link( $ref, $exp ; )
 then
-    OWLNamedIndividual ind = helper.asIndividual( $ref );
     OWLNamedIndividual var = helper.asIndividual( "tns:Var_" + $name );
 
-    insert( helper.assertType( ind, "ops:VariableExpression" ) );
-    insert( helper.assertObjectProperty( "ops:referredVariable", ind, var ) );
-    insert( new Link( $ref, ind ) );
+    insert( helper.assertType( $exp, "ops:VariableExpression" ) );
+    insert( helper.assertObjectProperty( "ops:referredVariable", $exp, var ) );
 end
 
-
-rule "Or op"
+rule "Process ObjectExpression Properties"
 when
-    $or : Or( )
+    $new : ObjectExpression( $props : properties )
+    $set : PropertyExpression( this memberOf $props, $exp : value, $name : name )
+    Link( $new, $obj ; )
+    Link( $exp, $setXp ; )
 then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "or", $or );
-    insert( new Link( $or, ind ) );
+    OWLNamedIndividual setter = helper.asIndividual( $set );
+    OWLNamedIndividual domProp = helper.asIndividual( "vmr:" + $name );
+    OWLNamedIndividual domPropConcept = helper.asIndividual( new CD() );
+
+    insert( helper.assertType( setter, "ops:PropertySetExpression" ) );
+    insert( helper.assertType( domProp, "ops:DomainPropertyExpression" ) );
+    insert( helper.assertType( domPropConcept, "ops:DomainProperty" ) );
+
+    insert( helper.assertObjectProperty( "ops:extraOperand", $obj, setter ) );
+
+    insert( helper.assertObjectProperty( "ops:firstOperand", setter, $setXp ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", setter, domProp ) );
+    insert( helper.assertObjectProperty( "ops:returns", domProp, domPropConcept ) );
+
+    insert( helper.assertDataProperty( "skos:notation", domPropConcept, $name.toString() ) );
 end
+
+rule "Process ObjectExpression Type"
+when
+    $new : ObjectExpression( $type : objectType )
+    Link( $new, $obj ; )
+then
+    OWLNamedIndividual type = helper.asIndividual( $type );
+    insert( helper.assertType( type, "ops:DomainClass" ) );
+    insert( helper.assertDataProperty( "skos:notation", type, $type.toString() ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $obj, type ) );
+end
+
+
+
 
 rule "Nary operands"
 when
@@ -231,70 +304,191 @@ then
     insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op ) );
 end
 
+rule "Unary operands"
+when
+    $nx : UnaryExpression( $ops1 : operand )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ;)
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+end
+
 rule "BiNary operands"
 when
-    $nx : BinaryExpression( $ops : operands )
+    $nx : BinaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ) )
     Link( $nx, $ind ; )
-    Link( $xp, $op ; exp memberOf $ops )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
 end
 
-rule "And op"
+rule "TerNary operands"
 when
-    $and : And( )
+    $nx : TernaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ), $ops3 : operands.get( 2 ) )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+    Link( $ops3, $op3 ; )
 then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "and", $and );
-    insert( new Link( $and, ind ) );
-end
-
-
-rule "Process GreaterOrEqual"
-when
-    $geq : GreaterOrEqual( )
-then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "geq", $geq );
-    insert( new Link( $geq, ind ) );
-end
-
-rule "PQLiteral"
-when
-    $pq : PhysicalQuantityLiteral( )
-then
-    OWLNamedIndividual ind = helper.asIndividual( $pq );
-    //TODO
-    insert( new Link( $pq, ind ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
+    insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
 end
 
 
-rule "Str Concat"
+rule "Process List Expression"
 when
-    $con : Concat( )
+    $list : List( $elems : elements )
+    $expr : Expression( this memberOf $elems )
+    Link( $list, list ; )
+    Link( $expr, expr ; )
+
 then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "strcat", $con );
-    insert( new Link( $con, ind ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", list, expr ) );
 end
 
-rule "Process Coalesce"
+
+rule "Interval Expr"
 when
-    $coa : Coalesce( )
+    $in : Interval( $b : begin, $e : end )
+    Link( $in, $ind ; )
+    Link( $b, $bind ; )
+    Link( $e, $eind ; )
 then
-    OWLNamedIndividual ind = helper.assertExpression( drools, "coalesce", $coa );
-    insert( new Link( $coa, ind ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $bind ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $bind ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $eind ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $eind ) );
+end
+
+
+rule "DateAdd operands"
+when
+    $nx : DateAdd( $ops1 : date, $ops2 : granularity, $ops3 : numberOfPeriods )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+    Link( $ops3, $op3 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
+    insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
+end
+
+rule "Filter operands"
+when
+    $nx : Filter( $ops1 : source, $ops2 : condition )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+end
+
+rule "Last operands"
+when
+    $nx : Last( $ops1 : source )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+end
+
+
+
+
+/***********************************************************************************************/
+/*  LITERALS
+/***********************************************************************************************/
+
+
+
+
+rule "Process PQLiteral"
+when
+    $pq : PhysicalQuantityLiteral( $unit : unit, $value : value )
+then
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "PhysicalQuantityLiteral", $pq );
+    helper.assertLiteralAttribute( drools, ind, "unit", $unit );
+    helper.assertLiteralAttribute( drools, ind, "value", $value );
+
 end
 
 rule "Process StringLiteral"
 when
     $sl : StringLiteral( $val : value )
 then
-    OWLNamedIndividual ind = helper.asIndividual( $sl );
-    insert( helper.assertType( ind, "ops:StringLiteral" ) );
-    insert( helper.assertDataProperty( "ops:representation", ind, $val ) );
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "StringLiteral", $sl );
+    helper.assertLiteralAttribute( drools, ind, "value", $val );
+end
 
-    insert( new Link( $sl, ind ) );
+rule "Process Integer"
+when
+    $il : IntegerLiteral( $val : value )
+then
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "IntegerLiteral", $il );
+    helper.assertLiteralAttribute( drools, ind, "value", $val );
+end
+
+rule "Process Boolean"
+when
+    $bl : BooleanLiteral( $val : value )
+then
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "BooleanLiteral", $bl );
+    helper.assertLiteralAttribute( drools, ind, "value", $val );
+end
+
+rule "Process CodeLiteral"
+when
+    $cl : CodeLiteral( $code : code, $codeSystem : codeSystem, $displayName : displayName, $csName : codeSystemName )
+then
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "CodeLiteral", $cl );
+    helper.assertLiteralAttribute( drools, ind, "code", $code );
+    helper.assertLiteralAttribute( drools, ind, "codeSystem", $codeSystem );
+    helper.assertLiteralAttribute( drools, ind, "codeSystemName", $csName );
+    helper.assertLiteralAttribute( drools, ind, "label", $displayName );
 end
 
 
+
+rule "Process PeriodLiteral"
+when
+    $cl : PeriodLiteral( $phase : phase, $period : period, $frequency : frequency, $count : count, $align : alignment, $flex : isFlexible )
+then
+    OWLNamedIndividual ind = helper.asExpressionIndividual( "CodeLiteral", $cl );
+    helper.assertLiteralAttribute( drools, ind, "phase", $phase );
+    helper.assertLiteralAttribute( drools, ind, "period", $period );
+    helper.assertLiteralAttribute( drools, ind, "frequency", $frequency );
+    helper.assertLiteralAttribute( drools, ind, "count", $count );
+    helper.assertLiteralAttribute( drools, ind, "alignment", $align );
+    helper.assertLiteralAttribute( drools, ind, "isFlexible", $flex );
+end
+
+rule "Process ValueSet"
+when
+    $val : ValueSet( $id : id, $ver : version, $auth : authority )
+then
+    OWLNamedIndividual val = helper.asIndividual( $val );
+    insert( helper.assertType( val, "prr-sharp:ValueSet" ) );
+    if ( $id != null ) { insert( helper.assertDataProperty( "meta:artifactId", val, $id ) ); }
+    if ( $ver != null ) { insert( helper.assertDataProperty( "meta:versionId", val, $ver ) ); }
+    if ( $auth != null ) { insert( helper.assertDataProperty( "dcterms:description", val, $auth ) ); }
+end
 
 
 
@@ -320,7 +514,7 @@ then
 
     insert( helper.assertObjectProperty( "prr:productionRuleBoundRuleVariable", r, rv  ) );
     insert( helper.assertDataProperty( "prr:name", rv, $name  ) );
-    insert( helper.assertObjectProperty( "prr:variableInitialExpression", rv, expr ) );
+    insert( helper.assertObjectProperty( "prr:variableFilterExpression", rv, expr ) );
     insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, $semXp ) );
 end
 
@@ -397,7 +591,7 @@ then
     OWLNamedIndividual rm = helper.urnAsIndividual( $ref );
     insert( helper.assertType( mr, "meta:DataModelRealization" ) );
     insert( helper.assertObjectProperty( "dcterms:references", kd, mr  ) );
-    insert( helper.assertDataProperty( "meta:description", mr, $mr.getDescription().getValue()  ) );
+    insert( helper.assertDataProperty( "dcterms:description", mr, $mr.getDescription().getValue()  ) );
     insert( helper.assertDataProperty( "dcterms:identifier", mr, $ref ) );
     insert( helper.assertObjectProperty( "meta:realizesInformation", mr, rm  ) );
 end
@@ -482,10 +676,11 @@ end
 
 rule "KnowledgeResource Location"
 when
-    $kd : KnowledgeResource( $loc : location!.value)
+    $kd : KnowledgeResource( $loc : location!.value )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual lc = helper.asIndividual( $kd.getLocation() );
+    insert( helper.assertType( lc, "meta:Site" ) );
     insert( helper.assertObjectProperty( "dcterms:spatial", kd, lc  ) );
     insert( helper.assertDataProperty( "meta:urlLocation", lc, $loc ) );
 end
@@ -502,7 +697,7 @@ then
     insert( helper.assertType( ev, "meta:Evidence" ) );
     insert( helper.assertObjectProperty( "meta:supportingEvidence", kd, ev  ) );
     if ( $qual != null ) { helper.assertCD( drools, "meta:qualityOfEvidence", ev, $qual ); }
-    if ( $qual != null ) { helper.assertCD( drools, "meta:strengthOfRecommendation", ev, $str ); }
+    if ( $str != null ) { helper.assertCD( drools, "meta:strengthOfRecommendation", ev, $str ); }
 end
 
 rule "Evidence Resource"
@@ -570,7 +765,8 @@ when
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual ac = helper.asIndividual( $ac );
-    insert( helper.assertObjectProperty( "dcterms:contributor", kd, ac ) );
+    insert( helper.assertType( ac, $ac instanceof Person ? "DUL:SocialPerson" : "DUL:Organization" ) );
+    insert( helper.assertObjectProperty( "meta:" + $role.toLowerCase(), kd, ac ) );
 end
 
 rule "KnowledgeDocument Publishers"
@@ -580,6 +776,7 @@ when
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual ac = helper.asIndividual( $ac );
+    insert( helper.assertType( ac, $ac instanceof Person ? "DUL:SocialPerson" : "DUL:Organization" ) );
     insert( helper.assertObjectProperty( "dcterms:publisher", kd, ac ) );
 end
 
@@ -603,6 +800,16 @@ then
     insert( helper.assertDataProperty( "meta:contactInformation", ac, $contact ) );
 end
 
+rule "Actor Affiliation"
+when
+    $ac : Person( $affiliation : affiliation )
+then
+    OWLNamedIndividual ac = helper.asIndividual( $ac );
+    OWLNamedIndividual aff = helper.asIndividual( $affiliation );
+    insert( helper.assertType( aff, "DUL:Organization" ) );
+    insert( helper.assertObjectProperty( "DUL:actsThrough", ac, aff ) );
+end
+
 rule "Actor Address"
 when
     $ac : Party( $addrs : addresses.addresses )
@@ -613,6 +820,26 @@ then
     OWLNamedIndividual ac = helper.asIndividual( $ac );
     insert( helper.assertDataProperty( "meta:address", ac, $list.toString() ) );
 end
+
+rule "Organization Name"
+when
+    $og : Organization( $name : name )
+then
+    OWLNamedIndividual ac = helper.asIndividual( $og );
+    insert( helper.assertDataProperty( "meta:agentName", ac, $name.toString() ) );
+end
+
+rule "Person Name"
+when
+    $px : Person( $name : name )
+          EN( this == $name, $parts : parts )
+          accumulate( ENXP( this memberOf $parts, $val : value ),
+                      $list : collectList( $val ) )
+then
+    OWLNamedIndividual ac = helper.asIndividual( $px );
+    insert( helper.assertDataProperty( "meta:agentName", ac, $list.toString() ) );
+end
+
 
 
 rule "RightsDeclaration Owner"
@@ -663,6 +890,7 @@ then
     OWLNamedIndividual a1 = helper.asIndividual( $a1 );
     OWLNamedIndividual a2 = helper.asIndividual( $a2 );
 
+    insert( helper.assertType( a2, "act:CompositeAction" ) );
     insert( helper.assertObjectProperty( "act:memberAction", a1, a2  ) );
 end
 
@@ -677,6 +905,58 @@ then
     insert( helper.assertObjectProperty( "act:memberAction", a1, a2  ) );
 end
 
+rule "Action Group Title"
+when
+    $a1 : ActionGroup( $title : title!.value )
+then
+    OWLNamedIndividual a1 = helper.asIndividual( $a1 );
+    insert( helper.assertDataProperty( "dcterms:title", a1, $title  ) );
+end
+
+rule "Action Group Description"
+when
+    $a1 : ActionGroup( $descr : description!.value )
+then
+    OWLNamedIndividual a1 = helper.asIndividual( $a1 );
+    insert( helper.assertDataProperty( "dcterms:description", a1, $descr  ) );
+end
+
+rule "Action Group Selection Behavior"
+when
+    $a1 : ActionGroup( behaviors != null, $bevs : behaviors.behaviors )
+    GroupSelectionBehavior( this memberOf $bevs, $bhv : value )
+then
+    OWLNamedIndividual a1 = helper.asIndividual( $a1 );
+    insert( helper.assertDataProperty( "act:groupSelection", a1, $bhv  ) );
+end
 
 
+rule "Action Supporting Evidence"
+when
+    $kd : ActionBase( $sup : supportingEvidence!.evidences )
+    $ev : Evidence( this memberOf $sup, $qual : qualityOfEvidence, $str : strengthOfRecommendation )
+then
+    OWLNamedIndividual kd = helper.asIndividual( $kd );
+    OWLNamedIndividual ev = helper.asIndividual( $ev );
+    insert( helper.assertType( ev, "meta:Evidence" ) );
+    insert( helper.assertObjectProperty( "meta:supportingEvidence", kd, ev  ) );
+    if ( $qual != null ) { helper.assertCD( drools, "meta:qualityOfEvidence", ev, $qual ); }
+    if ( $str != null ) { helper.assertCD( drools, "meta:strengthOfRecommendation", ev, $str ); }
+end
+
+
+rule "Create Action"
+when
+    $ca : CreateAction( $act : actionSentence )
+    Link( $act, $actInd ; )
+then
+    OWLNamedIndividual ca = helper.asIndividual( $ca );
+    OWLNamedIndividual expr = helper.asIndividual( "tns:prrExpr_" + $ca.hashCode() );
+
+    insert( helper.assertType( ca, "act:CreateAction" ) );
+    insert( helper.assertType( expr, "prr:Expression" ) );
+
+    insert( helper.assertObjectProperty( "prr:actionExpression", ca, expr  ) );
+    insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, $actInd ) );
+end
 

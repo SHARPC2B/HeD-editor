@@ -1,5 +1,7 @@
 package edu.asu.sharpc2b.transform;
 
+import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops_set.AndExpression;
 import org.drools.spi.KnowledgeHelper;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
@@ -70,6 +72,10 @@ public class HeD2OwlHelper {
         }
     }
 
+    public OWLNamedIndividual asExpressionIndividual( String op, Object root ) {
+        return asIndividual( "tns:" + op + "_" + System.identityHashCode( root ) );
+    }
+
     public OWLNamedIndividual urnAsIndividual( String x ) {
         return factory.getOWLNamedIndividual( IRI.create( x ) );
     }
@@ -96,6 +102,18 @@ public class HeD2OwlHelper {
                 factory.getOWLDataProperty( property, prefixManager ),
                 src,
                 factory.getOWLLiteral( tgt ) );
+    }
+
+    public OWLNamedIndividual assertLiteralAttribute( KnowledgeHelper kh, OWLNamedIndividual literal, String name, Object value ) {
+        if ( value != null ) {
+            OWLNamedIndividual attr = asIndividual( new Object() );
+            kh.insert( assertObjectProperty( "ops:hasAttribute", literal, attr ) );
+            kh.insert( assertType( attr, "ops:Attribute" ) );
+            kh.insert( assertDataProperty( "ops:attributeName", attr, name ) );
+            kh.insert( assertDataProperty( "ops:attributeValue", attr, value.toString() ) );
+            return attr;
+        }
+        return null;
     }
 
     public void assertCD( KnowledgeHelper kh, String property, OWLNamedIndividual src, Object code ) {
@@ -145,23 +163,54 @@ public class HeD2OwlHelper {
 
     private String getOriginalText( Object code ) {
         try {
-            return (String) code.getClass().getMethod( "getOriginalText" ).invoke( code );
+            return (String) code.getClass().getMethod( "getLabel" ).invoke( code );
         } catch ( IllegalAccessException e ) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch ( InvocationTargetException e ) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch ( NoSuchMethodException e ) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
 
-    public OWLNamedIndividual assertExpression( KnowledgeHelper kh, String op, Object link ) {
-        OWLNamedIndividual expr = asIndividual( "tns:Expr_" + op + "_" + System.identityHashCode( link ) );
+    public OWLNamedIndividual assertExpression( KnowledgeHelper kh, String op, Object root ) {
+        OWLNamedIndividual expr = asExpressionIndividual( op, root );
         OWLNamedIndividual opCode = asIndividual( "ops:Op_" + op );
         kh.insert( assertObjectProperty( "ops:opCode", expr, opCode ) );
         kh.insert( assertDataProperty( "skos-ext:code", opCode, op ) );
+        if ( ! op.endsWith( "Literal" ) ) {
+            String actualOp = mapOperation( op );
+            if ( actualOp != null ) {
+                kh.insert( assertType( expr, determineNamespace( actualOp ) + actualOp + "Expression" ) );
+            }
+        } else {
+            kh.insert( assertType( expr, "ops:" + op ) );
+        }
         return expr;
+    }
+
+    private String mapOperation( String op ) {
+        if ( "Property".equals( op ) ) {
+            return "PropertyGet";
+        } else if ( "ClinicalRequest".equals( op ) ) {
+            // actually mapped as a specific type of IteratorExpression elsewhere
+            return null;
+        } else if ( "ObjectExpression".equals( op ) ) {
+            return "Create";
+        }
+        return op;
+    }
+   
+
+    private String determineNamespace( String op ) {
+        String klass = op + "Expression";
+        try {
+            Class.forName( AndExpression.class.getPackage().getName() + "." + klass );
+            return "a:";
+        } catch ( ClassNotFoundException e ) {
+            return "ops:";
+        }
     }
 
     public OWLNamedIndividual assertPropertyChain( KnowledgeHelper kh, String path, OWLNamedIndividual srcVar, String modelNS ) {
@@ -174,7 +223,11 @@ public class HeD2OwlHelper {
             OWLNamedIndividual propCode = asIndividual( modelNS + prop );
             kh.insert( assertObjectProperty( "ops:propCode", expr, propCode ) );
             kh.insert( assertDataProperty( "skos-ext:code", propCode, modelNS + prop ) );
-            kh.insert( assertObjectProperty( "ops:source", expr, src ) );
+            if ( src != null ) {
+                //TODO not sure that src can be null in a valid case
+                kh.insert( assertObjectProperty( "ops:source", expr, src ) );
+            }
+            kh.insert( assertType( expr, "ops:PropertyExpression" ) );
             src = expr;
         }
         return src;

@@ -19,6 +19,16 @@
       <artifactId>generated-models</artifactId>
       <version>0.1-SNAPSHOT</version>
     </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>hed-model</artifactId>
+		  <version>0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>hed-model-expressions</artifactId>
+		  <version>0.1-SNAPSHOT</version>
+	  </dependency>
 
     <dependency>
       <groupId>org.drools</groupId>
