@@ -55,12 +55,13 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
 
 
-public class OOwl2HedDumper {
+public class OOwl2HedDumper implements HeDExporter {
 
     public OOwl2HedDumper() {
         super();
@@ -653,4 +654,11 @@ public class OOwl2HedDumper {
     }
 
 
+    @Override
+    public byte[] export( HeDKnowledgeDocument dok ) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Document dox = new OOwl2HedDumper().serialize( dok );
+        OOwl2HedDumper.dump( dox, baos );
+        return baos.toByteArray();
+    }
 }
