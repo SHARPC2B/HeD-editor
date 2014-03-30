@@ -74,8 +74,8 @@ public class ModelHome
         return core.saveArtifact( id );
     }
 
-    public static String exportArtifact( String id ) {
-        return core.exportArtifact( id );
+    public static byte[] exportArtifact( String id, String format ) {
+        return core.exportArtifact( id, format );
     }
 
     public static String closeArtifact() {
@@ -352,7 +352,7 @@ public class ModelHome
         for ( HedType type : typeList.hedTypes ) {
             if ( "CodeLiteral".equals( type.name ) ) {
                 ElementType codeSystem = type.getElement( "codeSystem" );
-                codeSystem.selectionChoices = lookupCodeSystems();
+                //  codeSystem.selectionChoices = lookupCodeSystems();
             }
         }
 

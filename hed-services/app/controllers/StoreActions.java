@@ -122,7 +122,7 @@ public class StoreActions
 
     public static Result exportArtifact( String id, String format ) {
 
-        String result = ModelHome.exportArtifact( id );
+        byte[] result = ModelHome.exportArtifact( id , format );
 
         System.out.println( "Export " + id + " := " + result );
         JsonNode jsonOut = Json.toJson( result );

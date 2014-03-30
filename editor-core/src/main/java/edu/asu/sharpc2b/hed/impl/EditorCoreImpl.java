@@ -1,13 +1,15 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import edu.asu.sharpc2b.hed.ArtifactRepository;
-import edu.asu.sharpc2b.hed.RepositoryFactory;
+import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
+import edu.asu.sharpc2b.hed.FilesystemArtifactRepository;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
-import org.drools.io.ResourceFactory;
+import edu.asu.sharpc2b.transform.HeDExporterFactory;
+import edu.asu.sharpc2b.transform.OOwl2HedDumper;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -50,10 +52,10 @@ import java.util.concurrent.ConcurrentMap;
 public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     private ConcurrentMap<String,HeDArtifactData> artifacts;
+
     private String currentArtifactId;
 
-    private ArtifactRepository knowledgeRepo = RepositoryFactory.getRepository( RepositoryFactory.REPOSITORY.STANBOL );
-    
+    private ArtifactRepository knowledgeRepo = ArtifactRepositoryFactory.getRepository( "FILE" );
 
     private static EditorCoreImpl instance = new EditorCoreImpl();
 
@@ -61,9 +63,15 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         return instance;
     }
 
+
+    public static String newArtifactId() {
+        String uuid = UUID.randomUUID().toString();
+        return "asu.bmi.edu/" + System.identityHashCode( uuid );
+    }
+
+
     protected EditorCoreImpl() {
         artifacts = new ConcurrentHashMap<String,HeDArtifactData>();
-        
     }
 
     
@@ -81,6 +89,135 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
 
 
+
+
+    @Override
+    public String createArtifact() {
+        System.out.println( "Create artifact using repo" +  knowledgeRepo.getClass().getName() );
+
+        HeDArtifactData artifact = new HeDArtifactData();
+
+        currentArtifactId = artifact.getArtifactId();
+
+        InputStream stream = new ByteArrayInputStream( artifact.getOwlData() );
+
+        artifacts.put( currentArtifactId, artifact );
+
+        knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), stream );
+
+        return currentArtifactId;
+    }
+
+
+    @Override
+    public List<String> getAvailableArtifacts() {
+        return knowledgeRepo.getAvailableArtifacts();
+    }
+
+    @Override
+    public String importFromStream( byte[] hedStream ) {
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ByteArrayInputStream bais = new ByteArrayInputStream( hedStream );
+            new HeD2OwlDumper().compile( bais, baos );
+            byte[] owlBytes = baos.toByteArray();
+
+            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( owlBytes );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument, owlBytes );
+
+            currentArtifactId = artifact.getArtifactId();
+
+            artifacts.put( currentArtifactId, artifact );
+
+            knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), new ByteArrayInputStream( owlBytes ) );
+
+            baos.close();
+
+            return currentArtifactId;
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String cloneArtifact( String id ) {
+        HeDArtifactData artifact = artifacts.get( id );
+        return knowledgeRepo.cloneArtifact( id, artifact.getTitle() + "_copy", newArtifactId() );
+    }
+
+    @Override
+    public String openArtifact( String id ) {
+        System.out.println( "Core opens artifact " + id );
+        if ( artifacts.containsKey( id ) ) {
+            return id;
+        }
+
+        try {
+            InputStream in = knowledgeRepo.loadArtifact( id );
+            byte[] data = new byte[ in.available() ];
+            in.read( data );
+
+            System.out.println( "Found bytes " + data.length );
+            System.out.println( "Found content " + new String( data ) );
+
+            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( data );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument, data );
+
+            currentArtifactId = artifact.getArtifactId();
+
+            artifacts.put( currentArtifactId, artifact );
+            in.close();
+            System.out.println( "Opened artifact with title " + knowledgeDocument.getTitle() );
+            return id;
+        } catch ( IOException ioe ) {
+            ioe.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String snapshotArtifact( String id ) {
+        return knowledgeRepo.snapshotArtifact( id );
+    }
+
+    @Override
+    public String saveArtifact( String id ) {
+        HeDArtifactData artifactData = artifacts.get( id );
+        return knowledgeRepo.saveArtifact( id, new ByteArrayInputStream( artifactData.refreshOwlData() ) );
+    }
+
+    @Override
+    public byte[] exportArtifact( String id, String format ) {
+        HeDArtifactData artifactData = artifacts.get( id );
+
+        return HeDExporterFactory.getExporter( HeDExporterFactory.HED_EXPORT_FORMATS.HED_XML ).export( artifactData.getKnowledgeDocument() );
+    }
+
+    @Override
+    public String closeArtifact() {
+        String lastId = currentArtifactId;
+        this.artifacts.remove( lastId );
+        this.currentArtifactId = null;
+        return lastId;
+    }
+
+    @Override
+    public String deleteArtifact( String id ) {
+        this.artifacts.remove( id );
+        this.currentArtifactId = null;
+        return knowledgeRepo.deleteArtifact( id );
+    }
+
+
+
+
+
+
+    /**************************************************************************************************************************/
+    /* EXPRESSIONS */
+    /**************************************************************************************************************************/
 
 
 
@@ -129,9 +266,12 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
 
-    
-    
-    
+
+
+    /**************************************************************************************************************************/
+    /* DOMAIN MODEL */
+    /**************************************************************************************************************************/
+
 
 
     private Map<String,String> domKlasses;
@@ -212,6 +352,20 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         return Collections.emptyMap();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+    /**************************************************************************************************************************/
+    /* TEMPLATES */
+    /**************************************************************************************************************************/
 
 
 
@@ -390,7 +544,6 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             dox.appendChild( rootElem );
             visitNode( root, rootElem, dox, odf );
 
-
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty( OutputKeys.INDENT, "yes");
             StreamResult result = new StreamResult(new StringWriter());
@@ -416,126 +569,6 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     private void visitLinks( OWLIndividual root, Element rootElem, Document dox, OWLDataFactory odf ) {
         //To change body of created methods use File | Settings | File Templates.
-    }
-
-
-
-
-
-    @Override
-    public String createArtifact() {
-
-        HeDArtifactData artifact = new HeDArtifactData();
-        currentArtifactId = artifact.getArtifactId();
-
-        InputStream stream = new ByteArrayInputStream( "test".getBytes() );
-
-        artifacts.put( currentArtifactId, artifact );
-
-        knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), stream );
-
-        return currentArtifactId;
-    }
-
-
-    @Override
-    public List<String> getAvailableArtifacts() {
-        return knowledgeRepo.getAvailableArtifacts();
-    }
-
-    @Override
-    public String importFromStream( byte[] hedStream ) {
-        try {
-
-            org.drools.io.Resource file = ResourceFactory.newFileResource( "/home/davide/Projects/Git/HeD-editor/sharp-editor/import-export/src/test/resources/DiabetesReminderRule.xml" );
-            hedStream = new byte[ file.getInputStream().available() ];
-            file.getInputStream().read( hedStream );
-
-            System.out.println( "Received import message, bytes avai " + hedStream.length );
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ByteArrayInputStream bais = new ByteArrayInputStream( hedStream );
-            new HeD2OwlDumper().compile( bais, baos );
-            byte[] owlBytes = baos.toByteArray();
-
-            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( owlBytes );
-            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument );
-
-            currentArtifactId = artifact.getArtifactId();
-
-            artifacts.put( currentArtifactId, artifact );
-
-            knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), new ByteArrayInputStream( owlBytes ) );
-
-            baos.close();
-
-            return currentArtifactId;
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public String cloneArtifact( String id ) {
-        return knowledgeRepo.cloneArtifact( id );
-    }
-
-    @Override
-    public String openArtifact( String id ) {
-        System.out.println( "Core opens artifact " + id );
-
-        try {
-            InputStream in = knowledgeRepo.loadArtifact( id );
-            byte[] data = new byte[ in.available() ];
-            in.read( data );
-
-            System.out.println( "Found bytes " + data.length );
-            System.out.println( "Found content " + new String( data ) );
-
-            HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( data );
-            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument );
-
-            currentArtifactId = artifact.getArtifactId();
-
-            artifacts.put( currentArtifactId, artifact );
-            in.close();
-            System.out.println( "Opened artifact with title " + knowledgeDocument.getTitle() );
-            return id;
-        } catch ( IOException ioe ) {
-            ioe.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public String snapshotArtifact( String id ) {
-        return knowledgeRepo.snapshotArtifact( id );
-    }
-
-    @Override
-    public String saveArtifact( String id ) {
-        return knowledgeRepo.saveArtifact( id );
-    }
-
-    @Override
-    public String exportArtifact( String id ) {
-        return "";
-    }
-
-    @Override
-    public String closeArtifact() {
-        String lastId = currentArtifactId;
-        this.artifacts.remove( lastId );
-        this.currentArtifactId = null;
-        return lastId;
-    }
-
-    @Override
-    public String deleteArtifact( String id ) {
-        this.artifacts.remove( id );
-        this.currentArtifactId = null;
-        return knowledgeRepo.deleteArtifact( id );
     }
 
 

@@ -32,17 +32,6 @@ public class ModelManagerTest {
 //
 //    }
 
-
-    @Test
-    @Ignore
-    public void testPesx() throws Exception {
-
-        EditorCore core = EditorCoreImpl.getInstance();
-
-        core.createArtifact();
-        System.out.println( core.getAvailableArtifacts() );
-    }
-
     @Test
     @Ignore
     public void testEmpireResourceAccess() {

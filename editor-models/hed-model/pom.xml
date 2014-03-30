@@ -215,7 +215,7 @@
             <import>ontologies/editor_models/sharp-time.owl</import>
             <import>ontologies/editor_models/event.owl</import>
             <import>ontologies/editor_models/actions.owl</import>
-            <!--import>/ontologies/editor_models/sharp_operators.ofn</import-->
+            <!--import>ontologies/editor_models/sharp_operators.ofn</import-->
             <import>ontologies/editor_models/prr-sharp.owl</import>
           </ontologyImports>
 
@@ -245,6 +245,7 @@
           <generateTraitDRL>true</generateTraitDRL>
           <generateDefaultImplClasses>true</generateDefaultImplClasses>
           <inheritanceMode>OPTIMIZED</inheritanceMode>
+	      <disableFullReasoning>true</disableFullReasoning>
           <generateIndividuals>true</generateIndividuals>
           <compilationOptionsPackage>minimal</compilationOptionsPackage>
         </configuration>

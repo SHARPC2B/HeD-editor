@@ -9,7 +9,7 @@
     </layout>
   </appender>
 
-  <logger name="com.clarkparsia">
+  <logger name="com.clarkparsia.empire.codegen">
     <level value="ERROR" />
   </logger>
 

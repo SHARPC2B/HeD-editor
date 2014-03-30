@@ -17,7 +17,7 @@ public interface ArtifactStore {
 
     String saveArtifact( String id );
 
-    String exportArtifact( String id );
+    byte[] exportArtifact( String id, String format );
 
     String closeArtifact();
 

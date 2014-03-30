@@ -1,126 +1,1719 @@
 [
-        {
-            "mtype": "TemplateGroup",
-            "label": "Medications",
-            "templates": [
-                {
-                    "id": "1",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "Patient on MEDICATION",
-                    "example": "Patient on Metformin",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["medication"]
-                },
-                {
-                    "id": "1A",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "Patient on MEDICATION with DOSAGE",
-                    "example": "Patient on Aspirin 75mg Daily",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["medication", "dosage"]
-                },
-                {
-                    "id": "1B",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "Patient on MEDICATION with DOSAGE from ROUTE with FREQUENCY",
-                    "example": "Patient on Aspirin 75mg 2x Daily",
-                    "description": "This condition verifies whether the patient is taking some medication with exactly the specified dosage. For example : Patient is on Amoxicillin, oral, 500 mg 2/day.",
-                    "errors": [],
-                    "parameterIds": ["medication", "dosage", "route", "dosage.frequency"]
-                }
-            ]
-        },
-        {
-            "mtype": "TemplateGroup",
-            "label": "Labs",
-            "templates": [
-                {
-                    "id": "7",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "Prior LAB result within last M days is OP VALUE",
-                    "example": "Prior Potassium result within last 7 days is > 5.2 mEq/L",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["LabResult", "TimeRange", "RefValue"]
-                },
-                {
-                    "id": "13",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "Patient had LAB ordered over last M days",
-                    "example": "Patient had Hemoglobin A1c ordered over last 7 days",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["LabTest", "TimeRange"]
-                },
-                {
-                    "id": "22",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "most recent LABTEST OP OP-VALUE",
-                    "example": "Most recent Hemoglobin A1c > 7%",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["LabTest", "ResultValue"]
-                },
-                {
-                    "id": "23",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "last/most recent LABTEST OP TIME-UNITS",
-                    "example": "Most recent Hemoglobin A1c before 6 months ago",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["LabTest", "TimeRange"]
-                },
-                {
-                    "id": "24",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "no LABTEST for OP TIME-UNITS",
-                    "example": "No Hemoglobin A1c for > 6 months",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["LabTest", "TimeRange"]
-                }
-            ]
-        },
-        {
-            "mtype": "TemplateGroup",
-            "label": "Problems",
-            "templates": [
-                {
-                    "id": "16",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "PATIENT has PROBLEMS on problem list",
-                    "example": "Patient has Type 2 DM on problem list",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["Problems"]
-                }
-            ]
-        },
-        {
-            "mtype": "TemplateGroup",
-            "label": "Vaccination",
-            "templates": [
-                {
-                    "id": "21",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "never had MED-VACCINE",
-                    "example": "Never had Rotavirus-Vaccine",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["Medications"]
-                },
-                {
-                    "id": "28",
-                    "mtype": "PrimitiveTemplate",
-                    "name": "last VACCINATION prior to TIME-DATE",
-                    "example": "Last Tetanus-Vaccine prior to 10 years ago",
-                    "description": "...Description...",
-                    "errors": [],
-                    "parameterIds": ["Medication", "TimeValue"]
-                }
-            ]
-        }
-    ]
-
+    {
+        "mtype": "TemplateGroup",
+        "label": "Prob",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Prob with EVALUATEDPERSONID and CONDITIONCODE and CONDITIONEFFECTIVETIME and AGEATONSET and CRITICALITY and CONTRIBUTEDTODEATH and WASCAUSEOFDEATH and CONDITIONSTATUS",
+                "description": "Family Medical History Entry Code Time Range Criticality And Status Only",
+                "parameterIds": [
+                    "EVALUATEDPERSONID",
+                    "CONDITIONCODE",
+                    "CONDITIONEFFECTIVETIME",
+                    "AGEATONSET",
+                    "CRITICALITY",
+                    "CONTRIBUTEDTODEATH",
+                    "WASCAUSEOFDEATH",
+                    "CONDITIONSTATUS"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Prob with CONDITIONCODE and CONDITIONEFFECTIVETIME and CRITICALITY and CONDITIONSTATUS",
+                "description": "Diagnosis History Entry Code Time Range Criticality And Status Only",
+                "parameterIds": [
+                    "CONDITIONCODE",
+                    "CONDITIONEFFECTIVETIME",
+                    "CRITICALITY",
+                    "CONDITIONSTATUS"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Prob with CONDITIONCODE",
+                "description": "Active Problem List Entry Code Only",
+                "parameterIds": [
+                    "CONDITIONCODE"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Prob with DIAGNOSTICEVENTTIME and PRIORITYINENCOUNTER and CONDITIONCODE",
+                "description": "Encounter Diagnosis",
+                "parameterIds": [
+                    "DIAGNOSTICEVENTTIME",
+                    "PRIORITYINENCOUNTER",
+                    "CONDITIONCODE"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Prob with CONDITIONCODE and CONDITIONEFFECTIVETIME and DIAGNOSTICEVENTTIME and AFFECTEDBODYSITE and CRITICALITY and PRIORITYINENCOUNTER and CONDITIONSTATUS",
+                "description": "Problem Detail",
+                "parameterIds": [
+                    "CONDITIONCODE",
+                    "CONDITIONEFFECTIVETIME",
+                    "DIAGNOSTICEVENTTIME",
+                    "AFFECTEDBODYSITE",
+                    "CRITICALITY",
+                    "PRIORITYINENCOUNTER",
+                    "CONDITIONSTATUS"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Prob with CONDITIONCODE and CONDITIONEFFECTIVETIME",
+                "description": "Denied Problem",
+                "parameterIds": [
+                    "CONDITIONCODE",
+                    "CONDITIONEFFECTIVETIME"
+                ]
+            }
+        ],
+        "cnt": 6
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Subs Admin",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and SUBSTANCE/FORM and PROPOSEDADMINISTRATIONTIMEINTERVAL and DOSE/DOSETYPE and DOSE/DOSEQUANTITY and DOSE/DELIVERYRATE and DOSE/FREQUENCY and DOSE/DELIVERYROUTE and NUMBERFILLSALLOWED",
+                "description": "Medication Proposal",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "SUBSTANCE/FORM",
+                    "PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "DOSE/DOSETYPE",
+                    "DOSE/DOSEQUANTITY",
+                    "DOSE/DELIVERYRATE",
+                    "DOSE/FREQUENCY",
+                    "DOSE/DELIVERYROUTE",
+                    "NUMBERFILLSALLOWED"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Subs Admin with LOADINGDOSE and DEMANDDOSE and LOCKOUTINTERVAL and SUBSTANCE/SUBSTANCECODE and DELIVERYROUTE and DELIVERYRATE and PROPOSEDADMINISTRATIONTIMEINTERVAL and PRNREASON and URGENCY and DOSERESTRICTION and COMMENT and SUBSTANCEADMINISTRATIONPROPOSAL/VALIDADMINISTRATIONTIMEINTERVAL",
+                "description": "P C A Proposal",
+                "parameterIds": [
+                    "LOADINGDOSE",
+                    "DEMANDDOSE",
+                    "LOCKOUTINTERVAL",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "DELIVERYROUTE",
+                    "DELIVERYRATE",
+                    "PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "PRNREASON",
+                    "URGENCY",
+                    "DOSERESTRICTION",
+                    "COMMENT",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/VALIDADMINISTRATIONTIMEINTERVAL"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and SUBJECTEFFECTIVETIME and REASON and DOCUMENTATIONTIME",
+                "description": "Undelivered Immunization",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "SUBJECTEFFECTIVETIME",
+                    "REASON",
+                    "DOCUMENTATIONTIME"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Subs Admin with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and SUBSTANCEADMINISTRATIONBASE/SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCEADMINISTRATIONBASE/DOSETYPE and SUBSTANCEADMINISTRATIONBASE/SUBSTANCE and SUBSTANCEADMINISTRATIONBASE/DOSEQUANTITY and SUBSTANCEADMINISTRATIONBASE/DELIVERYROUTE and SUBSTANCEADMINISTRATIONBASE/DELIVERYRATE and SUBSTANCEADMINISTRATIONBASE/FREQUENCY and SUBSTANCEADMINISTRATIONBASE/DOSINGPERIODINTERVALISIMPORTANT and SUBSTANCEADMINISTRATIONBASE/DELIVERYMETHOD and SUBSTANCEADMINISTRATIONBASE/APPROACHBODYSITE and SUBSTANCEADMINISTRATIONBASE/TARGETBODYSITE and SUBSTANCEADMINISTRATIONEVENT/DOSENUMBER and SUBSTANCEADMINISTRATIONEVENT/ADMINISTRATIONTIMEINTERVAL and SUBSTANCEADMINISTRATIONEVENT/DOCUMENTATIONTIME and SUBSTANCEADMINISTRATIONEVENT/INFORMATIONATTESTATIONTYPE and SUBSTANCEADMINISTRATIONEVENT/ISVALID and SUBSTANCEADMINISTRATIONEVENT/RELATEDENTITY and SUBSTANCEADMINISTRATIONEVENT/RELATEDCLINICALSTATEMENT and SUBSTANCEADMINISTRATIONORDER/COMMENT and SUBSTANCEADMINISTRATIONORDER/INFUSEOVER and SUBSTANCEADMINISTRATIONORDER/ORIGINATIONMODE and SUBSTANCEADMINISTRATIONORDER/PRNREASON and SUBSTANCEADMINISTRATIONORDER/VALIDADMINISTRATIONTIMEINTERVAL and SUBSTANCEADMINISTRATIONORDER/URGENCY and SUBSTANCEADMINISTRATIONORDER/DOSERESTRICTION and SUBSTANCEADMINISTRATIONORDER/ADMINISTRATIONTIMEINTERVAL and SUBSTANCEADMINISTRATIONORDER/DOSINGSIG and SUBSTANCEADMINISTRATIONORDER/NUMBERFILLSALLOWED and SUBSTANCEADMINISTRATIONORDER/ORDEREVENTTIME and SUBSTANCEADMINISTRATIONORDER/RELATEDENTITY and SUBSTANCEADMINISTRATIONORDER/RELATEDCLINICALSTATEMENT and SUBSTANCEADMINISTRATIONPROPOSAL/URGENCY and SUBSTANCEADMINISTRATIONPROPOSAL/DOSINGSIG and SUBSTANCEADMINISTRATIONPROPOSAL/DOSERESTRICTION and SUBSTANCEADMINISTRATIONPROPOSAL/PROPOSEDADMINISTRATIONTIMEINTERVAL and SUBSTANCEADMINISTRATIONPROPOSAL/VALIDADMINISTRATIONTIMEINTERVAL and SUBSTANCEADMINISTRATIONPROPOSAL/NUMBERFILLSALLOWED and SUBSTANCEADMINISTRATIONPROPOSAL/ORIGINATIONMODE and SUBSTANCEADMINISTRATIONPROPOSAL/COMMENT and SUBSTANCEADMINISTRATIONPROPOSAL/PRNREASON and SUBSTANCEADMINISTRATIONPROPOSAL/INFUSEOVER and SUBSTANCEADMINISTRATIONPROPOSAL/TIMING and SUBSTANCEADMINISTRATIONPROPOSAL/RELATEDENTITY and SUBSTANCEADMINISTRATIONPROPOSAL/RELATEDCLINICALSTATEMENT and SUBSTANCEDISPENSATIONORDER/COMMENT and SUBSTANCEDISPENSATIONORDER/DISPENSATIONQUANTITY and SUBSTANCEDISPENSATIONORDER/ORDEREVENTTIME and SUBSTANCEDISPENSATIONORDER/ORIGINATIONMODE and SUBSTANCEDISPENSATIONORDER/REASON and SUBSTANCEDISPENSATIONORDER/URGENCY and SUBSTANCEDISPENSATIONPROPOSAL/COMMENT and SUBSTANCEDISPENSATIONPROPOSAL/DISPENSATIONQUANTITY and SUBSTANCEDISPENSATIONPROPOSAL/PROPOSEDDISPENSATIONTIME and SUBSTANCEDISPENSATIONPROPOSAL/REASON and SUBSTANCEDISPENSATIONPROPOSAL/URGENCY and SUBSTANCEDISPENSATIONEVENT/DAYSSUPPLY and SUBSTANCEDISPENSATIONEVENT/DISPENSATIONQUANTITY and SUBSTANCEDISPENSATIONEVENT/DOSERESTRICTION and SUBSTANCEDISPENSATIONEVENT/DISPENSATIONTIME and SUBSTANCEDISPENSATIONEVENT/FILLNUMBER and SUBSTANCEDISPENSATIONEVENT/FILLSREMAINING and SUBSTANCEDISPENSATIONEVENT/RELATEDENTITY and SUBSTANCEDISPENSATIONEVENT/RELATEDCLINICALSTATEMENT and ENTERALFEEDINGORDER/DIETQUALIFIER and ENTERALFEEDINGORDER/DOSINGGOAL and ENTERALFEEDINGORDER/DOSINGRATEINCREMENT and ENTERALFEEDINGORDER/DOSINGRATEINCREMENTINTERVAL and ENTERALFEEDINGPROPOSAL/DIETQUALIFIER and ENTERALFEEDINGPROPOSAL/DOSINGGOAL and ENTERALFEEDINGPROPOSAL/DOSINGRATEINCREMENT and ENTERALFEEDINGPROPOSAL/DOSINGRATEINCREMENTINTERVAL and UNDELIVEREDSUBSTANCEADMINISTRATION/REASON and UNDELIVEREDSUBSTANCEADMINISTRATION/SUBJECTEFFECTIVETIME and UNDELIVEREDSUBSTANCEADMINISTRATION/DOCUMENTATIONTIME and UNDELIVEREDSUBSTANCEADMINISTRATION/RELATEDENTITY and UNDELIVEREDSUBSTANCEADMINISTRATION/RELATEDCLINICALSTATEMENT and COMPOSITEIVORDER/DILUENT and COMPOSITEIVORDER/ADDITIVE and COMPOSITEIVPROPOSAL/DILUENT and COMPOSITEIVPROPOSAL/ADDITIVE and PCAORDER/LOADINGDOSE and PCAORDER/DEMANDDOSE and PCAORDER/LOCKOUTINTERVAL and PCAPROPOSAL/LOADINGDOSE and PCAPROPOSAL/DEMANDDOSE and PCAPROPOSAL/LOCKOUTINTERVAL and ENTITY/TEMPLATEID and ENTITY/ID and ENTITY/ENTITYTYPE and ENTITY/EVALUATEDPERSONID and ENTITYBASE/EXTENSION and ENTITY/ATTRIBUTE and ENTITY/RELATEDENTITY and ADMINISTRABLESUBSTANCE/SUBSTANCECODE and ADMINISTRABLESUBSTANCE/STRENGTH and ADMINISTRABLESUBSTANCE/FORM and ADMINISTRABLESUBSTANCE/SUBSTANCEBRANDCODE and ADMINISTRABLESUBSTANCE/SUBSTANCEGENERICCODE and ADMINISTRABLESUBSTANCE/MANUFACTURER and ADMINISTRABLESUBSTANCE/LOTNO and ADMINISTRABLESUBSTANCE/RELATEDENTITY",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "SUBSTANCEADMINISTRATIONBASE/SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCEADMINISTRATIONBASE/DOSETYPE",
+                    "SUBSTANCEADMINISTRATIONBASE/SUBSTANCE",
+                    "SUBSTANCEADMINISTRATIONBASE/DOSEQUANTITY",
+                    "SUBSTANCEADMINISTRATIONBASE/DELIVERYROUTE",
+                    "SUBSTANCEADMINISTRATIONBASE/DELIVERYRATE",
+                    "SUBSTANCEADMINISTRATIONBASE/FREQUENCY",
+                    "SUBSTANCEADMINISTRATIONBASE/DOSINGPERIODINTERVALISIMPORTANT",
+                    "SUBSTANCEADMINISTRATIONBASE/DELIVERYMETHOD",
+                    "SUBSTANCEADMINISTRATIONBASE/APPROACHBODYSITE",
+                    "SUBSTANCEADMINISTRATIONBASE/TARGETBODYSITE",
+                    "SUBSTANCEADMINISTRATIONEVENT/DOSENUMBER",
+                    "SUBSTANCEADMINISTRATIONEVENT/ADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCEADMINISTRATIONEVENT/DOCUMENTATIONTIME",
+                    "SUBSTANCEADMINISTRATIONEVENT/INFORMATIONATTESTATIONTYPE",
+                    "SUBSTANCEADMINISTRATIONEVENT/ISVALID",
+                    "SUBSTANCEADMINISTRATIONEVENT/RELATEDENTITY",
+                    "SUBSTANCEADMINISTRATIONEVENT/RELATEDCLINICALSTATEMENT",
+                    "SUBSTANCEADMINISTRATIONORDER/COMMENT",
+                    "SUBSTANCEADMINISTRATIONORDER/INFUSEOVER",
+                    "SUBSTANCEADMINISTRATIONORDER/ORIGINATIONMODE",
+                    "SUBSTANCEADMINISTRATIONORDER/PRNREASON",
+                    "SUBSTANCEADMINISTRATIONORDER/VALIDADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCEADMINISTRATIONORDER/URGENCY",
+                    "SUBSTANCEADMINISTRATIONORDER/DOSERESTRICTION",
+                    "SUBSTANCEADMINISTRATIONORDER/ADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCEADMINISTRATIONORDER/DOSINGSIG",
+                    "SUBSTANCEADMINISTRATIONORDER/NUMBERFILLSALLOWED",
+                    "SUBSTANCEADMINISTRATIONORDER/ORDEREVENTTIME",
+                    "SUBSTANCEADMINISTRATIONORDER/RELATEDENTITY",
+                    "SUBSTANCEADMINISTRATIONORDER/RELATEDCLINICALSTATEMENT",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/URGENCY",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/DOSINGSIG",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/DOSERESTRICTION",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/VALIDADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/NUMBERFILLSALLOWED",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/ORIGINATIONMODE",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/COMMENT",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/PRNREASON",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/INFUSEOVER",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/TIMING",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/RELATEDENTITY",
+                    "SUBSTANCEADMINISTRATIONPROPOSAL/RELATEDCLINICALSTATEMENT",
+                    "SUBSTANCEDISPENSATIONORDER/COMMENT",
+                    "SUBSTANCEDISPENSATIONORDER/DISPENSATIONQUANTITY",
+                    "SUBSTANCEDISPENSATIONORDER/ORDEREVENTTIME",
+                    "SUBSTANCEDISPENSATIONORDER/ORIGINATIONMODE",
+                    "SUBSTANCEDISPENSATIONORDER/REASON",
+                    "SUBSTANCEDISPENSATIONORDER/URGENCY",
+                    "SUBSTANCEDISPENSATIONPROPOSAL/COMMENT",
+                    "SUBSTANCEDISPENSATIONPROPOSAL/DISPENSATIONQUANTITY",
+                    "SUBSTANCEDISPENSATIONPROPOSAL/PROPOSEDDISPENSATIONTIME",
+                    "SUBSTANCEDISPENSATIONPROPOSAL/REASON",
+                    "SUBSTANCEDISPENSATIONPROPOSAL/URGENCY",
+                    "SUBSTANCEDISPENSATIONEVENT/DAYSSUPPLY",
+                    "SUBSTANCEDISPENSATIONEVENT/DISPENSATIONQUANTITY",
+                    "SUBSTANCEDISPENSATIONEVENT/DOSERESTRICTION",
+                    "SUBSTANCEDISPENSATIONEVENT/DISPENSATIONTIME",
+                    "SUBSTANCEDISPENSATIONEVENT/FILLNUMBER",
+                    "SUBSTANCEDISPENSATIONEVENT/FILLSREMAINING",
+                    "SUBSTANCEDISPENSATIONEVENT/RELATEDENTITY",
+                    "SUBSTANCEDISPENSATIONEVENT/RELATEDCLINICALSTATEMENT",
+                    "ENTERALFEEDINGORDER/DIETQUALIFIER",
+                    "ENTERALFEEDINGORDER/DOSINGGOAL",
+                    "ENTERALFEEDINGORDER/DOSINGRATEINCREMENT",
+                    "ENTERALFEEDINGORDER/DOSINGRATEINCREMENTINTERVAL",
+                    "ENTERALFEEDINGPROPOSAL/DIETQUALIFIER",
+                    "ENTERALFEEDINGPROPOSAL/DOSINGGOAL",
+                    "ENTERALFEEDINGPROPOSAL/DOSINGRATEINCREMENT",
+                    "ENTERALFEEDINGPROPOSAL/DOSINGRATEINCREMENTINTERVAL",
+                    "UNDELIVEREDSUBSTANCEADMINISTRATION/REASON",
+                    "UNDELIVEREDSUBSTANCEADMINISTRATION/SUBJECTEFFECTIVETIME",
+                    "UNDELIVEREDSUBSTANCEADMINISTRATION/DOCUMENTATIONTIME",
+                    "UNDELIVEREDSUBSTANCEADMINISTRATION/RELATEDENTITY",
+                    "UNDELIVEREDSUBSTANCEADMINISTRATION/RELATEDCLINICALSTATEMENT",
+                    "COMPOSITEIVORDER/DILUENT",
+                    "COMPOSITEIVORDER/ADDITIVE",
+                    "COMPOSITEIVPROPOSAL/DILUENT",
+                    "COMPOSITEIVPROPOSAL/ADDITIVE",
+                    "PCAORDER/LOADINGDOSE",
+                    "PCAORDER/DEMANDDOSE",
+                    "PCAORDER/LOCKOUTINTERVAL",
+                    "PCAPROPOSAL/LOADINGDOSE",
+                    "PCAPROPOSAL/DEMANDDOSE",
+                    "PCAPROPOSAL/LOCKOUTINTERVAL",
+                    "ENTITY/TEMPLATEID",
+                    "ENTITY/ID",
+                    "ENTITY/ENTITYTYPE",
+                    "ENTITY/EVALUATEDPERSONID",
+                    "ENTITYBASE/EXTENSION",
+                    "ENTITY/ATTRIBUTE",
+                    "ENTITY/RELATEDENTITY",
+                    "ADMINISTRABLESUBSTANCE/SUBSTANCECODE",
+                    "ADMINISTRABLESUBSTANCE/STRENGTH",
+                    "ADMINISTRABLESUBSTANCE/FORM",
+                    "ADMINISTRABLESUBSTANCE/SUBSTANCEBRANDCODE",
+                    "ADMINISTRABLESUBSTANCE/SUBSTANCEGENERICCODE",
+                    "ADMINISTRABLESUBSTANCE/MANUFACTURER",
+                    "ADMINISTRABLESUBSTANCE/LOTNO",
+                    "ADMINISTRABLESUBSTANCE/RELATEDENTITY"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Subs Admin with DATASOURCETYPE and SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and ADMINISTRATIONTIMEINTERVAL and DOCUMENTATIONTIME and DOSETYPE and DOSENUMBER and DOSEQUANTITY and DELIVERYRATE and FREQUENCY and DELIVERYROUTE and INFORMATIONATTESTATIONTYPE",
+                "description": "Medication Detail Entry",
+                "parameterIds": [
+                    "DATASOURCETYPE",
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "DOCUMENTATIONTIME",
+                    "DOSETYPE",
+                    "DOSENUMBER",
+                    "DOSEQUANTITY",
+                    "DELIVERYRATE",
+                    "FREQUENCY",
+                    "DELIVERYROUTE",
+                    "INFORMATIONATTESTATIONTYPE"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and ADMINISTRATIONTIMEINTERVAL and DOSE/DOSEQUANTITY and DOSE/DELIVERYRATE and FREQUENCY and DOSE/DELIVERYROUTE",
+                "description": "Prescription",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "DOSE/DOSEQUANTITY",
+                    "DOSE/DELIVERYRATE",
+                    "FREQUENCY",
+                    "DOSE/DELIVERYROUTE"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and DOSE/DOSETYPE and SUBJECTEFFECTIVETIME and REASON and DOCUMENTATIONTIME",
+                "description": "Undelivered Medication",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "DOSE/DOSETYPE",
+                    "SUBJECTEFFECTIVETIME",
+                    "REASON",
+                    "DOCUMENTATIONTIME"
+                ]
+            },
+            {
+                "id": 7,
+                "name": "Subs Admin with DATASOURCETYPE and SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and DOSE/DELIVERYROUTE and SUBSTANCE/VACCINATIONPROTOCOL/EVALUATIONSTATUS and ADMINISTRATIONTIMEINTERVAL and SUBSTANCE/VACCINATIONPROTOCOL/EVALUATIONSTATUSREASON",
+                "description": "Immunization Detail",
+                "parameterIds": [
+                    "DATASOURCETYPE",
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "DOSE/DELIVERYROUTE",
+                    "SUBSTANCE/VACCINATIONPROTOCOL/EVALUATIONSTATUS",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "SUBSTANCE/VACCINATIONPROTOCOL/EVALUATIONSTATUSREASON"
+                ]
+            },
+            {
+                "id": 8,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and PROPOSEDADMINISTRATIONTIMEINTERVAL and VALIDADMINISTRATIONTIMEINTERVAL and VACCINATIONPROTOCOL/POSITIONINSERIES and DOSE/DELIVERYROUTE",
+                "description": "Immunization Proposal",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "VALIDADMINISTRATIONTIMEINTERVAL",
+                    "VACCINATIONPROTOCOL/POSITIONINSERIES",
+                    "DOSE/DELIVERYROUTE"
+                ]
+            },
+            {
+                "id": 9,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and DISPENSETIME and DOSE/DOSETYPE and SUPPLYDURATION and DISPENSEQUANTITY and DOSE/DELIVERYRATE and DOSE/FREQUENCY and DOSE/DOSERESTRICTION and DOSE/DELIVERYROUTE and DOSE/DELIVERYRATE and FILLNUMBER and FILLSREMAINING",
+                "description": "Substance Dispensation Event",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "DISPENSETIME",
+                    "DOSE/DOSETYPE",
+                    "SUPPLYDURATION",
+                    "DISPENSEQUANTITY",
+                    "DOSE/DELIVERYRATE",
+                    "DOSE/FREQUENCY",
+                    "DOSE/DOSERESTRICTION",
+                    "DOSE/DELIVERYROUTE",
+                    "DOSE/DELIVERYRATE",
+                    "FILLNUMBER",
+                    "FILLSREMAINING"
+                ]
+            },
+            {
+                "id": 10,
+                "name": "Subs Admin with DIETQUALIFIER and DIETQUALIFIER/DIETQUALIFIERTYPE and DIETQUALIFIER/AMOUNT and DIETQUALIFIER/QUALIFIER and SUBSTANCE and DOSINGGOAL and DOSINGGOAL/MAXDOSEFORINTERVAL and DOSINGGOAL/TIMEINTERVAL and DOSINGRATEINCREMENT and DOSINGRATEINCREMENTINTERVAL",
+                "description": "Enteral Feeding Proposal",
+                "parameterIds": [
+                    "DIETQUALIFIER",
+                    "DIETQUALIFIER/DIETQUALIFIERTYPE",
+                    "DIETQUALIFIER/AMOUNT",
+                    "DIETQUALIFIER/QUALIFIER",
+                    "SUBSTANCE",
+                    "DOSINGGOAL",
+                    "DOSINGGOAL/MAXDOSEFORINTERVAL",
+                    "DOSINGGOAL/TIMEINTERVAL",
+                    "DOSINGRATEINCREMENT",
+                    "DOSINGRATEINCREMENTINTERVAL"
+                ]
+            },
+            {
+                "id": 11,
+                "name": "Subs Admin with DIETQUALIFIER and DIETQUALIFIER/DIETQUALIFIERTYPE and DIETQUALIFIER/AMOUNT and DIETQUALIFIER/QUALIFIER and SUBSTANCE/SUBSTANCECODE and DOSINGGOAL and DOSINGGOAL/MAXDOSEFORINTERVAL and DOSINGGOAL/TIMEINTERVAL and DOSINGRATEINCREMENT and DOSINGRATEINCREMENTINTERVAL",
+                "description": "Enteral Feeding Order",
+                "parameterIds": [
+                    "DIETQUALIFIER",
+                    "DIETQUALIFIER/DIETQUALIFIERTYPE",
+                    "DIETQUALIFIER/AMOUNT",
+                    "DIETQUALIFIER/QUALIFIER",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "DOSINGGOAL",
+                    "DOSINGGOAL/MAXDOSEFORINTERVAL",
+                    "DOSINGGOAL/TIMEINTERVAL",
+                    "DOSINGRATEINCREMENT",
+                    "DOSINGRATEINCREMENTINTERVAL"
+                ]
+            },
+            {
+                "id": 12,
+                "name": "Subs Admin with DELIVERYRATE and DELIVERYROUTE and DOSEQUANTITY and DOSETYPE and SUBSTANCE and COMMENT and DOSERESTRICTION and INFUSEOVER and PRNREASON and PROPOSEDADMINISTRATIONTIMEINTERVAL and URGENCY and VALIDADMINISTRATIONTIMEINTERVAL and ADDITIVE/SUBSTANCE/SUBSTANCECODE and ADDITIVE/SUBSTANCEAMOUNT",
+                "description": "Composite I V Proposal",
+                "parameterIds": [
+                    "DELIVERYRATE",
+                    "DELIVERYROUTE",
+                    "DOSEQUANTITY",
+                    "DOSETYPE",
+                    "SUBSTANCE",
+                    "COMMENT",
+                    "DOSERESTRICTION",
+                    "INFUSEOVER",
+                    "PRNREASON",
+                    "PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "URGENCY",
+                    "VALIDADMINISTRATIONTIMEINTERVAL",
+                    "ADDITIVE/SUBSTANCE/SUBSTANCECODE",
+                    "ADDITIVE/SUBSTANCEAMOUNT"
+                ]
+            },
+            {
+                "id": 13,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and SUBSTANCE/SUBSTANCEBRANDCODE and SUBSTANCE/SUBSTANCEGENERICCODE and SUBSTANCE/FORM and SUBSTANCE/STRENGTH and ADMINISTRATIONTIMEINTERVAL and DOSETYPE and DOSEQUANTITY and DELIVERYRATE and FREQUENCY and DELIVERYROUTE and NUMBERFILLSALLOWED",
+                "description": "Medication Order",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "SUBSTANCE/SUBSTANCEBRANDCODE",
+                    "SUBSTANCE/SUBSTANCEGENERICCODE",
+                    "SUBSTANCE/FORM",
+                    "SUBSTANCE/STRENGTH",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "DOSETYPE",
+                    "DOSEQUANTITY",
+                    "DELIVERYRATE",
+                    "FREQUENCY",
+                    "DELIVERYROUTE",
+                    "NUMBERFILLSALLOWED"
+                ]
+            },
+            {
+                "id": 14,
+                "name": "Subs Admin with DELIVERYRATE and DELIVERYROUTE and DOSEQUANTITY and DOSETYPE and SUBSTANCE/SUBSTANCECODE and ADMINISTRATIONTIMEINTERVAL and COMMENT and DOSERESTRICTION and INFUSEOVER and ORDEREVENTTIME and ORIGINATIONMODE and PRNREASON and SUBSTANCEADMINISTRATIONORDER/URGENCY and VALIDADMINISTRATIONTIMEINTERVAL and ADDITIVE/SUBSTANCE/SUBSTANCECODE and ADDITIVE/SUBSTANCEAMOUNT",
+                "description": "Composite I V Order",
+                "parameterIds": [
+                    "DELIVERYRATE",
+                    "DELIVERYROUTE",
+                    "DOSEQUANTITY",
+                    "DOSETYPE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "COMMENT",
+                    "DOSERESTRICTION",
+                    "INFUSEOVER",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PRNREASON",
+                    "SUBSTANCEADMINISTRATIONORDER/URGENCY",
+                    "VALIDADMINISTRATIONTIMEINTERVAL",
+                    "ADDITIVE/SUBSTANCE/SUBSTANCECODE",
+                    "ADDITIVE/SUBSTANCEAMOUNT"
+                ]
+            },
+            {
+                "id": 15,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and SUBSTANCE/SUBSTANCEBRANDCODE and SUBSTANCE/SUBSTANCEGENERICCODE and SUBSTANCE/FORM and SUBSTANCE/STRENGTH and ORDEREVENTTIME and DISPENSATIONQUANTITY and DELIVERYROUTE and DELIVERYRATE and REASON and URGENCY and COMMENT and ORIGINATIONMODE",
+                "description": "Substance Dispensation Order",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "SUBSTANCE/SUBSTANCEBRANDCODE",
+                    "SUBSTANCE/SUBSTANCEGENERICCODE",
+                    "SUBSTANCE/FORM",
+                    "SUBSTANCE/STRENGTH",
+                    "ORDEREVENTTIME",
+                    "DISPENSATIONQUANTITY",
+                    "DELIVERYROUTE",
+                    "DELIVERYRATE",
+                    "REASON",
+                    "URGENCY",
+                    "COMMENT",
+                    "ORIGINATIONMODE"
+                ]
+            },
+            {
+                "id": 16,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and SUBSTANCE/FORM and SUBSTANCE/STRENGTH and ADMINISTRATIONTIMEINTERVAL and DOSETYPE and DOSEQUANTITY and DELIVERYRATE and FREQUENCY and DELIVERYROUTE",
+                "description": "I V Fluid Order",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "SUBSTANCE/FORM",
+                    "SUBSTANCE/STRENGTH",
+                    "ADMINISTRATIONTIMEINTERVAL",
+                    "DOSETYPE",
+                    "DOSEQUANTITY",
+                    "DELIVERYRATE",
+                    "FREQUENCY",
+                    "DELIVERYROUTE"
+                ]
+            },
+            {
+                "id": 17,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE",
+                "description": "Current Medication List Entry Code Only",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE"
+                ]
+            },
+            {
+                "id": 18,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE",
+                "description": "Current Supplements List Entry Code Only",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE"
+                ]
+            },
+            {
+                "id": 19,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and PROPOSEDDISPENSATIONTIME and DISPENSATIONQUANTITY and DELIVERYROUTE and DELIVERYRATE and REASON and URGENCY and COMMENT",
+                "description": "Substance Dispensation Proposal",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "PROPOSEDDISPENSATIONTIME",
+                    "DISPENSATIONQUANTITY",
+                    "DELIVERYROUTE",
+                    "DELIVERYRATE",
+                    "REASON",
+                    "URGENCY",
+                    "COMMENT"
+                ]
+            },
+            {
+                "id": 20,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE and ADMINISTRATIONTIMEINTERVAL",
+                "description": "Simple Immunization History List Entry Code And Date Only",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE",
+                    "ADMINISTRATIONTIMEINTERVAL"
+                ]
+            },
+            {
+                "id": 21,
+                "name": "Subs Admin with SUBSTANCEADMINISTRATIONGENERALPURPOSE and SUBSTANCE/SUBSTANCECODE and SUBSTANCE/FORM and SUBSTANCE/STRENGTH and PROPOSEDADMINISTRATIONTIMEINTERVAL and INFUSEOVER and DOSETYPE and DOSEQUANTITY and DELIVERYRATE and FREQUENCY and DELIVERYROUTE and COMMENT",
+                "description": "I V Fluid Proposal",
+                "parameterIds": [
+                    "SUBSTANCEADMINISTRATIONGENERALPURPOSE",
+                    "SUBSTANCE/SUBSTANCECODE",
+                    "SUBSTANCE/FORM",
+                    "SUBSTANCE/STRENGTH",
+                    "PROPOSEDADMINISTRATIONTIMEINTERVAL",
+                    "INFUSEOVER",
+                    "DOSETYPE",
+                    "DOSEQUANTITY",
+                    "DELIVERYRATE",
+                    "FREQUENCY",
+                    "DELIVERYROUTE",
+                    "COMMENT"
+                ]
+            },
+            {
+                "id": 22,
+                "name": "Subs Admin with LOADINGDOSE and DEMANDDOSE and LOCKOUTINTERVAL",
+                "description": "P C A Order",
+                "parameterIds": [
+                    "LOADINGDOSE",
+                    "DEMANDDOSE",
+                    "LOCKOUTINTERVAL"
+                ]
+            }
+        ],
+        "cnt": 23
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Proc",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Proc with COMMENT and PROCEDURECODE and PROPOSEDPROCEDURETIME and REASON and RELATEDENTITY and URGENCY",
+                "description": "Consultation Proposal",
+                "parameterIds": [
+                    "COMMENT",
+                    "PROCEDURECODE",
+                    "PROPOSEDPROCEDURETIME",
+                    "REASON",
+                    "RELATEDENTITY",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Proc with PROCEDURECODE and PROCEDURETIME and RELATEDCLINICALSTATEMENT and RELATEDCLINICALSTATEMENT and RELATEDCLINICALSTATEMENT and RELATEDCLINICALSTATEMENT and RELATEDENTITY and TARGETBODYSITE",
+                "description": "Specimen Collection For Lab Analysis",
+                "parameterIds": [
+                    "PROCEDURECODE",
+                    "PROCEDURETIME",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDENTITY",
+                    "TARGETBODYSITE"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Proc with DOCUMENTATIONTIME and PROCEDURECODE and REASON and RELATEDCLINICALSTATEMENT and SUBJECTEFFECTIVETIME",
+                "description": "Undelivered Procedure",
+                "parameterIds": [
+                    "DOCUMENTATIONTIME",
+                    "PROCEDURECODE",
+                    "REASON",
+                    "RELATEDCLINICALSTATEMENT",
+                    "SUBJECTEFFECTIVETIME"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Proc with APPROACHBODYSITE and COMMENT and CONTRAST and CONTRASTROUTE and CONTRASTTYPE and FREQUENCY and ISOLATIONCODE and PORTABLEEXAM and PROCEDURECODE and PROCEDUREMETHOD and PROPOSEDPROCEDURETIME and REASON and SEDATION and STRESSOR and TARGETBODYSITE and TRANSPORTMODE and URGENCY",
+                "description": "Imaging Proposal",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COMMENT",
+                    "CONTRAST",
+                    "CONTRASTROUTE",
+                    "CONTRASTTYPE",
+                    "FREQUENCY",
+                    "ISOLATIONCODE",
+                    "PORTABLEEXAM",
+                    "PROCEDURECODE",
+                    "PROCEDUREMETHOD",
+                    "PROPOSEDPROCEDURETIME",
+                    "REASON",
+                    "SEDATION",
+                    "STRESSOR",
+                    "TARGETBODYSITE",
+                    "TRANSPORTMODE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Proc with COLLECTIONMETHOD and COMMENT and FREQUENCY and PROCEDURECODE and PROPOSEDPROCEDURETIME and REASON and SPECIMENSOURCE and URGENCY",
+                "description": "Simple Laboratory Proposal",
+                "parameterIds": [
+                    "COLLECTIONMETHOD",
+                    "COMMENT",
+                    "FREQUENCY",
+                    "PROCEDURECODE",
+                    "PROPOSEDPROCEDURETIME",
+                    "REASON",
+                    "SPECIMENSOURCE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Proc with CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/TEMPLATEID and DIETORDER/DIETQUALIFIER and DIETPROPOSAL/DIETQUALIFIER and DIETPROPOSAL/DIETQUALIFIERS and IMAGINGORDER/CONTRAST and IMAGINGORDER/CONTRASTROUTE and IMAGINGORDER/CONTRASTTYPE and IMAGINGORDER/ISOLATIONCODE and IMAGINGORDER/PORTABLEEXAM and IMAGINGORDER/SEDATION and IMAGINGORDER/STRESSOR and IMAGINGORDER/TRANSPORTMODE and IMAGINGPROPOSAL/CONTRAST and IMAGINGPROPOSAL/CONTRASTROUTE and IMAGINGPROPOSAL/CONTRASTTYPE and IMAGINGPROPOSAL/ISOLATIONCODE and IMAGINGPROPOSAL/PORTABLEEXAM and IMAGINGPROPOSAL/SEDATION and IMAGINGPROPOSAL/STRESSOR and IMAGINGPROPOSAL/TRANSPORTMODE and LABORATORYORDER/COLLECTIONMETHOD and LABORATORYORDER/SPECIALHANDLING and LABORATORYORDER/SPECIMEN and LABORATORYORDER/SUSPECTEDPATHOGEN and LABORATORYPROPOSAL/COLLECTIONMETHOD and LABORATORYPROPOSAL/SPECIALHANDLING and LABORATORYPROPOSAL/SPECIMEN and LABORATORYPROPOSAL/SUSPECTEDPATHOGEN and PROCEDUREBASE/APPROACHBODYSITE and PROCEDUREBASE/PROCEDURECODE and PROCEDUREBASE/PROCEDUREMETHOD and PROCEDUREBASE/TARGETBODYSITE and PROCEDUREEVENT/PROCEDURETIME and PROCEDUREEVENT/RELATEDCLINICALSTATEMENT and PROCEDUREEVENT/RELATEDENTITY and PROCEDUREORDER/COMMENT and PROCEDUREORDER/FREQUENCY and PROCEDUREORDER/ORDEREVENTTIME and PROCEDUREORDER/ORIGINATIONMODE and PROCEDUREORDER/PRNREASON and PROCEDUREORDER/PROCEDURETIME and PROCEDUREORDER/REASON and PROCEDUREORDER/RELATEDCLINICALSTATEMENT and PROCEDUREORDER/RELATEDENTITY and PROCEDUREORDER/URGENCY and PROCEDUREPROPOSAL/COMMENT and PROCEDUREPROPOSAL/FREQUENCY and PROCEDUREPROPOSAL/ORIGINATIONMODE and PROCEDUREPROPOSAL/PRNREASON and PROCEDUREPROPOSAL/PROPOSEDPROCEDURETIME and PROCEDUREPROPOSAL/REASON and PROCEDUREPROPOSAL/RELATEDCLINICALSTATEMENT and PROCEDUREPROPOSAL/RELATEDENTITY and PROCEDUREPROPOSAL/REPEATNUMBER and PROCEDUREPROPOSAL/TIMING and PROCEDUREPROPOSAL/URGENCY and RESPIRATORYCAREORDER/EPAP and RESPIRATORYCAREORDER/FIO2 and RESPIRATORYCAREORDER/INSPIRATORYTIME and RESPIRATORYCAREORDER/IPAP and RESPIRATORYCAREORDER/ISOLATIONCODE and RESPIRATORYCAREORDER/PEAKFLOWRATE and RESPIRATORYCAREORDER/PEAKINSPIRATORYPRESSURE and RESPIRATORYCAREORDER/PEEP and RESPIRATORYCAREORDER/PRESSURESUPPORT and RESPIRATORYCAREORDER/RESPIRATORYRATE and RESPIRATORYCAREORDER/SPO2RANGE and RESPIRATORYCAREORDER/SPO2TITRATION and RESPIRATORYCAREORDER/TIDALVOLUME and RESPIRATORYCAREORDER/VENTILATORMODE and RESPIRATORYCAREPROPOSAL/EPAP and RESPIRATORYCAREPROPOSAL/FIO2 and RESPIRATORYCAREPROPOSAL/INSPIRATORYTIME and RESPIRATORYCAREPROPOSAL/IPAP and RESPIRATORYCAREPROPOSAL/ISOLATIONCODE and RESPIRATORYCAREPROPOSAL/PEAKFLOWRATE and RESPIRATORYCAREPROPOSAL/PEAKINSPIRATORYPRESSURE and RESPIRATORYCAREPROPOSAL/PEEP and RESPIRATORYCAREPROPOSAL/PRESSURESUPPORT and RESPIRATORYCAREPROPOSAL/RESPIRATORYRATE and RESPIRATORYCAREPROPOSAL/SPO2RANGE and RESPIRATORYCAREPROPOSAL/SPO2TITRATION and RESPIRATORYCAREPROPOSAL/TIDALVOLUME and RESPIRATORYCAREPROPOSAL/VENTILATORMODE and SCHEDULEDPROCEDURE/PROCEDURETIME and SCHEDULEDPROCEDURE/RELATEDCLINICALSTATEMENT and SCHEDULEDPROCEDURE/RELATEDENTITY and UNDELIVEREDPROCEDURE/DOCUMENTATIONTIME and UNDELIVEREDPROCEDURE/REASON and UNDELIVEREDPROCEDURE/RELATEDCLINICALSTATEMENT and UNDELIVEREDPROCEDURE/RELATEDENTITY and UNDELIVEREDPROCEDURE/SUBJECTEFFECTIVETIME",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "DIETORDER/DIETQUALIFIER",
+                    "DIETPROPOSAL/DIETQUALIFIER",
+                    "DIETPROPOSAL/DIETQUALIFIERS",
+                    "IMAGINGORDER/CONTRAST",
+                    "IMAGINGORDER/CONTRASTROUTE",
+                    "IMAGINGORDER/CONTRASTTYPE",
+                    "IMAGINGORDER/ISOLATIONCODE",
+                    "IMAGINGORDER/PORTABLEEXAM",
+                    "IMAGINGORDER/SEDATION",
+                    "IMAGINGORDER/STRESSOR",
+                    "IMAGINGORDER/TRANSPORTMODE",
+                    "IMAGINGPROPOSAL/CONTRAST",
+                    "IMAGINGPROPOSAL/CONTRASTROUTE",
+                    "IMAGINGPROPOSAL/CONTRASTTYPE",
+                    "IMAGINGPROPOSAL/ISOLATIONCODE",
+                    "IMAGINGPROPOSAL/PORTABLEEXAM",
+                    "IMAGINGPROPOSAL/SEDATION",
+                    "IMAGINGPROPOSAL/STRESSOR",
+                    "IMAGINGPROPOSAL/TRANSPORTMODE",
+                    "LABORATORYORDER/COLLECTIONMETHOD",
+                    "LABORATORYORDER/SPECIALHANDLING",
+                    "LABORATORYORDER/SPECIMEN",
+                    "LABORATORYORDER/SUSPECTEDPATHOGEN",
+                    "LABORATORYPROPOSAL/COLLECTIONMETHOD",
+                    "LABORATORYPROPOSAL/SPECIALHANDLING",
+                    "LABORATORYPROPOSAL/SPECIMEN",
+                    "LABORATORYPROPOSAL/SUSPECTEDPATHOGEN",
+                    "PROCEDUREBASE/APPROACHBODYSITE",
+                    "PROCEDUREBASE/PROCEDURECODE",
+                    "PROCEDUREBASE/PROCEDUREMETHOD",
+                    "PROCEDUREBASE/TARGETBODYSITE",
+                    "PROCEDUREEVENT/PROCEDURETIME",
+                    "PROCEDUREEVENT/RELATEDCLINICALSTATEMENT",
+                    "PROCEDUREEVENT/RELATEDENTITY",
+                    "PROCEDUREORDER/COMMENT",
+                    "PROCEDUREORDER/FREQUENCY",
+                    "PROCEDUREORDER/ORDEREVENTTIME",
+                    "PROCEDUREORDER/ORIGINATIONMODE",
+                    "PROCEDUREORDER/PRNREASON",
+                    "PROCEDUREORDER/PROCEDURETIME",
+                    "PROCEDUREORDER/REASON",
+                    "PROCEDUREORDER/RELATEDCLINICALSTATEMENT",
+                    "PROCEDUREORDER/RELATEDENTITY",
+                    "PROCEDUREORDER/URGENCY",
+                    "PROCEDUREPROPOSAL/COMMENT",
+                    "PROCEDUREPROPOSAL/FREQUENCY",
+                    "PROCEDUREPROPOSAL/ORIGINATIONMODE",
+                    "PROCEDUREPROPOSAL/PRNREASON",
+                    "PROCEDUREPROPOSAL/PROPOSEDPROCEDURETIME",
+                    "PROCEDUREPROPOSAL/REASON",
+                    "PROCEDUREPROPOSAL/RELATEDCLINICALSTATEMENT",
+                    "PROCEDUREPROPOSAL/RELATEDENTITY",
+                    "PROCEDUREPROPOSAL/REPEATNUMBER",
+                    "PROCEDUREPROPOSAL/TIMING",
+                    "PROCEDUREPROPOSAL/URGENCY",
+                    "RESPIRATORYCAREORDER/EPAP",
+                    "RESPIRATORYCAREORDER/FIO2",
+                    "RESPIRATORYCAREORDER/INSPIRATORYTIME",
+                    "RESPIRATORYCAREORDER/IPAP",
+                    "RESPIRATORYCAREORDER/ISOLATIONCODE",
+                    "RESPIRATORYCAREORDER/PEAKFLOWRATE",
+                    "RESPIRATORYCAREORDER/PEAKINSPIRATORYPRESSURE",
+                    "RESPIRATORYCAREORDER/PEEP",
+                    "RESPIRATORYCAREORDER/PRESSURESUPPORT",
+                    "RESPIRATORYCAREORDER/RESPIRATORYRATE",
+                    "RESPIRATORYCAREORDER/SPO2RANGE",
+                    "RESPIRATORYCAREORDER/SPO2TITRATION",
+                    "RESPIRATORYCAREORDER/TIDALVOLUME",
+                    "RESPIRATORYCAREORDER/VENTILATORMODE",
+                    "RESPIRATORYCAREPROPOSAL/EPAP",
+                    "RESPIRATORYCAREPROPOSAL/FIO2",
+                    "RESPIRATORYCAREPROPOSAL/INSPIRATORYTIME",
+                    "RESPIRATORYCAREPROPOSAL/IPAP",
+                    "RESPIRATORYCAREPROPOSAL/ISOLATIONCODE",
+                    "RESPIRATORYCAREPROPOSAL/PEAKFLOWRATE",
+                    "RESPIRATORYCAREPROPOSAL/PEAKINSPIRATORYPRESSURE",
+                    "RESPIRATORYCAREPROPOSAL/PEEP",
+                    "RESPIRATORYCAREPROPOSAL/PRESSURESUPPORT",
+                    "RESPIRATORYCAREPROPOSAL/RESPIRATORYRATE",
+                    "RESPIRATORYCAREPROPOSAL/SPO2RANGE",
+                    "RESPIRATORYCAREPROPOSAL/SPO2TITRATION",
+                    "RESPIRATORYCAREPROPOSAL/TIDALVOLUME",
+                    "RESPIRATORYCAREPROPOSAL/VENTILATORMODE",
+                    "SCHEDULEDPROCEDURE/PROCEDURETIME",
+                    "SCHEDULEDPROCEDURE/RELATEDCLINICALSTATEMENT",
+                    "SCHEDULEDPROCEDURE/RELATEDENTITY",
+                    "UNDELIVEREDPROCEDURE/DOCUMENTATIONTIME",
+                    "UNDELIVEREDPROCEDURE/REASON",
+                    "UNDELIVEREDPROCEDURE/RELATEDCLINICALSTATEMENT",
+                    "UNDELIVEREDPROCEDURE/RELATEDENTITY",
+                    "UNDELIVEREDPROCEDURE/SUBJECTEFFECTIVETIME"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Proc with COMMENT and ORDEREVENTTIME and ORIGINATIONMODE and PROCEDURECODE and PROCEDURETIME and REASON and RELATEDENTITY and URGENCY",
+                "description": "Consultation Order",
+                "parameterIds": [
+                    "COMMENT",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PROCEDURECODE",
+                    "PROCEDURETIME",
+                    "REASON",
+                    "RELATEDENTITY",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 7,
+                "name": "Proc with APPROACHBODYSITE and COMMENT and CONTRAST and CONTRASTROUTE and CONTRASTTYPE and FREQUENCY and ISOLATIONCODE and ORDEREVENTTIME and ORIGINATIONMODE and PORTABLEEXAM and PRNREASON and PROCEDURECODE and PROCEDUREMETHOD and PROCEDURETIME and REASON and SEDATION and STRESSOR and TARGETBODYSITE and TRANSPORTMODE and URGENCY",
+                "description": "Imaging Order",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COMMENT",
+                    "CONTRAST",
+                    "CONTRASTROUTE",
+                    "CONTRASTTYPE",
+                    "FREQUENCY",
+                    "ISOLATIONCODE",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PORTABLEEXAM",
+                    "PRNREASON",
+                    "PROCEDURECODE",
+                    "PROCEDUREMETHOD",
+                    "PROCEDURETIME",
+                    "REASON",
+                    "SEDATION",
+                    "STRESSOR",
+                    "TARGETBODYSITE",
+                    "TRANSPORTMODE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 8,
+                "name": "Proc with COLLECTIONMETHOD and COMMENT and FREQUENCY and PROCEDURECODE and PROPOSEDPROCEDURETIME and REASON and SPECIALHANDLING and SPECIMENSOURCE and SUSPECTEDPATHOGEN and URGENCY",
+                "description": "Microbiology Laboratory Proposal",
+                "parameterIds": [
+                    "COLLECTIONMETHOD",
+                    "COMMENT",
+                    "FREQUENCY",
+                    "PROCEDURECODE",
+                    "PROPOSEDPROCEDURETIME",
+                    "REASON",
+                    "SPECIALHANDLING",
+                    "SPECIMENSOURCE",
+                    "SUSPECTEDPATHOGEN",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 9,
+                "name": "Proc with PROCEDURECODE and PROCEDURETIME and TARGETBODYSITE",
+                "description": "Simple Procedure History With Target Body Site Code Target Body Site And Date Only",
+                "parameterIds": [
+                    "PROCEDURECODE",
+                    "PROCEDURETIME",
+                    "TARGETBODYSITE"
+                ]
+            },
+            {
+                "id": 10,
+                "name": "Proc with APPROACHBODYSITE and COLLECTIONMETHOD and COMMENT and FREQUENCY and ORDEREVENTTIME and ORIGINATIONMODE and PRNREASON and PROCEDURECODE and PROCEDUREMETHOD and PROCEDURETIME and REASON and SPECIALHANDLING and SPECIMENSOURCE and SUSPECTEDPATHOGEN and TARGETBODYSITE and URGENCY",
+                "description": "Laboratory Order",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COLLECTIONMETHOD",
+                    "COMMENT",
+                    "FREQUENCY",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PRNREASON",
+                    "PROCEDURECODE",
+                    "PROCEDUREMETHOD",
+                    "PROCEDURETIME",
+                    "REASON",
+                    "SPECIALHANDLING",
+                    "SPECIMENSOURCE",
+                    "SUSPECTEDPATHOGEN",
+                    "TARGETBODYSITE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 11,
+                "name": "Proc with APPROACHBODYSITE and PROCEDURECODE and PROCEDUREMETHOD and PROCEDURETIME and RELATEDCLINICALSTATEMENT and TARGETBODYSITE",
+                "description": "Scheduled Procedure",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "PROCEDURECODE",
+                    "PROCEDUREMETHOD",
+                    "PROCEDURETIME",
+                    "RELATEDCLINICALSTATEMENT",
+                    "TARGETBODYSITE"
+                ]
+            },
+            {
+                "id": 12,
+                "name": "Proc ",
+                "description": "Respiratory Care Proposal",
+                "parameterIds": []
+            },
+            {
+                "id": 13,
+                "name": "Proc with APPROACHBODYSITE and COMMENT and FREQUENCY and PROCEDURECODE and PROPOSEDPROCEDURETIME and REASON and TARGETBODYSITE and URGENCY",
+                "description": "Procedure Proposal",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COMMENT",
+                    "FREQUENCY",
+                    "PROCEDURECODE",
+                    "PROPOSEDPROCEDURETIME",
+                    "REASON",
+                    "TARGETBODYSITE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 14,
+                "name": "Proc with APPROACHBODYSITE and COMMENT and FREQUENCY and ORDEREVENTTIME and ORIGINATIONMODE and PRNREASON and PROCEDURECODE and PROCEDURETIME and REASON and TARGETBODYSITE and URGENCY",
+                "description": "Procedure Order",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COMMENT",
+                    "FREQUENCY",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PRNREASON",
+                    "PROCEDURECODE",
+                    "PROCEDURETIME",
+                    "REASON",
+                    "TARGETBODYSITE",
+                    "URGENCY"
+                ]
+            },
+            {
+                "id": 15,
+                "name": "Proc with PROCEDURECODE and PROCEDURETIME",
+                "description": "Simple Procedure History Code And Date Only",
+                "parameterIds": [
+                    "PROCEDURECODE",
+                    "PROCEDURETIME"
+                ]
+            },
+            {
+                "id": 16,
+                "name": "Proc ",
+                "description": "Respiratory Care Order",
+                "parameterIds": []
+            }
+        ],
+        "cnt": 17
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Enc",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Enc ",
+                "description": "Scheduled Appointment",
+                "parameterIds": []
+            },
+            {
+                "id": 1,
+                "name": "Enc ",
+                "description": "Clinical Statement Event",
+                "parameterIds": []
+            },
+            {
+                "id": 2,
+                "name": "Enc ",
+                "description": "Missed Appointment ",
+                "parameterIds": []
+            },
+            {
+                "id": 3,
+                "name": "Enc ",
+                "description": "Appointment Proposal",
+                "parameterIds": []
+            },
+            {
+                "id": 4,
+                "name": "Enc ",
+                "description": "Appointment Request",
+                "parameterIds": []
+            },
+            {
+                "id": 5,
+                "name": "Enc with RELATEDENTITY and RELATEDENTITY and RELATEDENTITY and RELATEDCLINICALSTATEMENT and ENCOUNTERTYPE and ENCOUNTEREVENTTIME",
+                "description": "Encounter Detail",
+                "parameterIds": [
+                    "RELATEDENTITY",
+                    "RELATEDENTITY",
+                    "RELATEDENTITY",
+                    "RELATEDCLINICALSTATEMENT",
+                    "ENCOUNTERTYPE",
+                    "ENCOUNTEREVENTTIME"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Enc with ENCOUNTERTYPE and ENCOUNTEREVENTTIME",
+                "description": "Encounter List Entry",
+                "parameterIds": [
+                    "ENCOUNTERTYPE",
+                    "ENCOUNTEREVENTTIME"
+                ]
+            }
+        ],
+        "cnt": 7
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "AE",
+        "templates": [
+            {
+                "id": 0,
+                "name": "AE with ADVERSEEVENTCODE and ADVERSEEVENTAGENT and ADVERSEEVENTTIME and DOCUMENTATIONTIME and AFFECTEDBODYSITE and CRITICALITY and ADVERSEEVENTSTATUS",
+                "description": "Adverse Event To Medication Or Immunization",
+                "parameterIds": [
+                    "ADVERSEEVENTCODE",
+                    "ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTTIME",
+                    "DOCUMENTATIONTIME",
+                    "AFFECTEDBODYSITE",
+                    "CRITICALITY",
+                    "ADVERSEEVENTSTATUS"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "AE with ADVERSEEVENTCODE and ADVERSEEVENTAGENT and ADVERSEEVENTTIME and DOCUMENTATIONTIME and CRITICALITY and ADVERSEEVENTSTATUS",
+                "description": "Adverse Event To Food",
+                "parameterIds": [
+                    "ADVERSEEVENTCODE",
+                    "ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTTIME",
+                    "DOCUMENTATIONTIME",
+                    "CRITICALITY",
+                    "ADVERSEEVENTSTATUS"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "AE with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and ADVERSEEVENTBASE/ADVERSEEVENTCODE and ADVERSEEVENTBASE/ADVERSEEVENTAGENT and ADVERSEEVENTBASE/ADVERSEEVENTTIME and ADVERSEEVENTBASE/DOCUMENTATIONTIME and ADVERSEEVENTBASE/AFFECTEDBODYSITE and ADVERSEEVENT/CRITICALITY and ADVERSEEVENT/SEVERITY and ADVERSEEVENT/ADVERSEEVENTSTATUS and ADVERSEEVENT/RELATEDENTITY and ADVERSEEVENT/RELATEDCLINICALSTATEMENT and DENIEDADVERSEEVENT/RELATEDENTITY and DENIEDADVERSEEVENT/RELATEDCLINICALSTATEMENT",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "ADVERSEEVENTBASE/ADVERSEEVENTCODE",
+                    "ADVERSEEVENTBASE/ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTBASE/ADVERSEEVENTTIME",
+                    "ADVERSEEVENTBASE/DOCUMENTATIONTIME",
+                    "ADVERSEEVENTBASE/AFFECTEDBODYSITE",
+                    "ADVERSEEVENT/CRITICALITY",
+                    "ADVERSEEVENT/SEVERITY",
+                    "ADVERSEEVENT/ADVERSEEVENTSTATUS",
+                    "ADVERSEEVENT/RELATEDENTITY",
+                    "ADVERSEEVENT/RELATEDCLINICALSTATEMENT",
+                    "DENIEDADVERSEEVENT/RELATEDENTITY",
+                    "DENIEDADVERSEEVENT/RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "AE with ADVERSEEVENTCODE and ADVERSEEVENTAGENT and ADVERSEEVENTTIME and DOCUMENTATIONTIME and AFFECTEDBODYSITE and CRITICALITY and ADVERSEEVENTSTATUS",
+                "description": "Adverse Event Detail",
+                "parameterIds": [
+                    "ADVERSEEVENTCODE",
+                    "ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTTIME",
+                    "DOCUMENTATIONTIME",
+                    "AFFECTEDBODYSITE",
+                    "CRITICALITY",
+                    "ADVERSEEVENTSTATUS"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "AE with ADVERSEEVENTCODE and ADVERSEEVENTAGENT and ADVERSEEVENTTIME and AFFECTEDBODYSITE and DOCUMENTATIONTIME",
+                "description": "Denied Adverse Event",
+                "parameterIds": [
+                    "ADVERSEEVENTCODE",
+                    "ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTTIME",
+                    "AFFECTEDBODYSITE",
+                    "DOCUMENTATIONTIME"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "AE with ADVERSEEVENTCODE and ADVERSEEVENTAGENT and ADVERSEEVENTTIME and DOCUMENTATIONTIME and AFFECTEDBODYSITE and CRITICALITY and ADVERSEEVENTSTATUS",
+                "description": "Adverse Event To Other Substance",
+                "parameterIds": [
+                    "ADVERSEEVENTCODE",
+                    "ADVERSEEVENTAGENT",
+                    "ADVERSEEVENTTIME",
+                    "DOCUMENTATIONTIME",
+                    "AFFECTEDBODYSITE",
+                    "CRITICALITY",
+                    "ADVERSEEVENTSTATUS"
+                ]
+            }
+        ],
+        "cnt": 6
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Goals",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Goals with GOALFOCUS and TARGETGOALVALUE and GOALPURSUITEFFECTIVETIME and GOALACHIEVEMENTTARGETTIME",
+                "description": "Current Goal List Entry Code Time And Target Only",
+                "parameterIds": [
+                    "GOALFOCUS",
+                    "TARGETGOALVALUE",
+                    "GOALPURSUITEFFECTIVETIME",
+                    "GOALACHIEVEMENTTARGETTIME"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Goals with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and GOALBASE/GOALFOCUS and GOAL/CRITICALITY and GOALPROPOSAL/URGENCY and GOALBASE/GOALPURSUITEFFECTIVETIME and GOALBASE/GOALACHIEVEMENTTARGETTIME and GOALBASE/TARGETBODYSITE and GOALBASE/TARGETGOALVALUE and GOAL/GOALOBSERVEREVENTTIME and GOAL/GOALSTATUS and GOAL/RELATEDENTITY and GOAL/RELATEDCLINICALSTATEMENT and GOALPROPOSAL/COMMENT and GOALPROPOSAL/RELATEDENTITY and GOALPROPOSAL/RELATEDCLINICALSTATEMENT and GOAL/CRITICALITY",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "GOALBASE/GOALFOCUS",
+                    "GOAL/CRITICALITY",
+                    "GOALPROPOSAL/URGENCY",
+                    "GOALBASE/GOALPURSUITEFFECTIVETIME",
+                    "GOALBASE/GOALACHIEVEMENTTARGETTIME",
+                    "GOALBASE/TARGETBODYSITE",
+                    "GOALBASE/TARGETGOALVALUE",
+                    "GOAL/GOALOBSERVEREVENTTIME",
+                    "GOAL/GOALSTATUS",
+                    "GOAL/RELATEDENTITY",
+                    "GOAL/RELATEDCLINICALSTATEMENT",
+                    "GOALPROPOSAL/COMMENT",
+                    "GOALPROPOSAL/RELATEDENTITY",
+                    "GOALPROPOSAL/RELATEDCLINICALSTATEMENT",
+                    "GOAL/CRITICALITY"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Goals with GOALFOCUS and TARGETGOALVALUE",
+                "description": "Current Goal List Entry Code And Target Only",
+                "parameterIds": [
+                    "GOALFOCUS",
+                    "TARGETGOALVALUE"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Goals with GOALFOCUS and GOALPURSUITEFFECTIVETIME and GOALACHIEVEMENTTARGETTIME and TARGETBODYSITE and TARGETGOALVALUE and URGENCY",
+                "description": "Proposed Goal",
+                "parameterIds": [
+                    "GOALFOCUS",
+                    "GOALPURSUITEFFECTIVETIME",
+                    "GOALACHIEVEMENTTARGETTIME",
+                    "TARGETBODYSITE",
+                    "TARGETGOALVALUE",
+                    "URGENCY"
+                ]
+            }
+        ],
+        "cnt": 4
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Supply",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Supply with SUPPLYCODE and QUANTITY and TARGETBODYSITE and URGENCY and PROPOSEDSUPPLYTIME and ORDEREVENTTIME and SUPPLYTIME and FREQUENCY and URGENCY and ORIGINATIONMODE and COMMENT",
+                "description": "Supply Order",
+                "parameterIds": [
+                    "SUPPLYCODE",
+                    "QUANTITY",
+                    "TARGETBODYSITE",
+                    "URGENCY",
+                    "PROPOSEDSUPPLYTIME",
+                    "ORDEREVENTTIME",
+                    "SUPPLYTIME",
+                    "FREQUENCY",
+                    "URGENCY",
+                    "ORIGINATIONMODE",
+                    "COMMENT"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Supply with SUPPLYCODE and QUANTITY and TARGETBODYSITE and SUPPLYTIME",
+                "description": "Supply Dispensed",
+                "parameterIds": [
+                    "SUPPLYCODE",
+                    "QUANTITY",
+                    "TARGETBODYSITE",
+                    "SUPPLYTIME"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Supply with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and SUPPLYBASE/SUPPLYCODE and SUPPLYBASE/QUANTITY and SUPPLYBASE/TARGETBODYSITE and SUPPLYEVENT/SUPPLYTIME and SUPPLYEVENT/RELATEDENTITY and SUPPLYEVENT/RELATEDCLINICALSTATEMENT and SUPPLYORDER/COMMENT and SUPPLYORDER/ORIGINATIONMODE and SUPPLYORDER/URGENCY and SUPPLYORDER/SUPPLYTIME and SUPPLYORDER/ORDEREVENTTIME and SUPPLYORDER/FREQUENCY and SUPPLYORDER/RELATEDENTITY and SUPPLYORDER/RELATEDCLINICALSTATEMENT and SUPPLYPROPOSAL/COMMENT and SUPPLYPROPOSAL/URGENCY and SUPPLYPROPOSAL/PROPOSEDSUPPLYTIME and SUPPLYPROPOSAL/FREQUENCY and SUPPLYPROPOSAL/RELATEDENTITY and SUPPLYPROPOSAL/RELATEDCLINICALSTATEMENT and UNDELIVEREDSUPPLY/REASON and UNDELIVEREDSUPPLY/SUBJECTEFFECTIVETIME and UNDELIVEREDSUPPLY/DOCUMENTATIONTIME and UNDELIVEREDSUPPLY/RELATEDENTITY and UNDELIVEREDSUPPLY/RELATEDCLINICALSTATEMENT",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "SUPPLYBASE/SUPPLYCODE",
+                    "SUPPLYBASE/QUANTITY",
+                    "SUPPLYBASE/TARGETBODYSITE",
+                    "SUPPLYEVENT/SUPPLYTIME",
+                    "SUPPLYEVENT/RELATEDENTITY",
+                    "SUPPLYEVENT/RELATEDCLINICALSTATEMENT",
+                    "SUPPLYORDER/COMMENT",
+                    "SUPPLYORDER/ORIGINATIONMODE",
+                    "SUPPLYORDER/URGENCY",
+                    "SUPPLYORDER/SUPPLYTIME",
+                    "SUPPLYORDER/ORDEREVENTTIME",
+                    "SUPPLYORDER/FREQUENCY",
+                    "SUPPLYORDER/RELATEDENTITY",
+                    "SUPPLYORDER/RELATEDCLINICALSTATEMENT",
+                    "SUPPLYPROPOSAL/COMMENT",
+                    "SUPPLYPROPOSAL/URGENCY",
+                    "SUPPLYPROPOSAL/PROPOSEDSUPPLYTIME",
+                    "SUPPLYPROPOSAL/FREQUENCY",
+                    "SUPPLYPROPOSAL/RELATEDENTITY",
+                    "SUPPLYPROPOSAL/RELATEDCLINICALSTATEMENT",
+                    "UNDELIVEREDSUPPLY/REASON",
+                    "UNDELIVEREDSUPPLY/SUBJECTEFFECTIVETIME",
+                    "UNDELIVEREDSUPPLY/DOCUMENTATIONTIME",
+                    "UNDELIVEREDSUPPLY/RELATEDENTITY",
+                    "UNDELIVEREDSUPPLY/RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Supply with SUPPLYCODE and QUANTITY and TARGETBODYSITE and FREQUENCY",
+                "description": "Supply Proposal",
+                "parameterIds": [
+                    "SUPPLYCODE",
+                    "QUANTITY",
+                    "TARGETBODYSITE",
+                    "FREQUENCY"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Supply with COMMENT and NUTRIENT and TEXTURE and FREQUENCY and SUPPLYCODE and PROPOSEDSUPPLYTIME and REASON and TARGETBODYSITE and URGENCY and DIETTYPE and ISINEFFECT",
+                "description": "Diet Proposal",
+                "parameterIds": [
+                    "COMMENT",
+                    "NUTRIENT",
+                    "TEXTURE",
+                    "FREQUENCY",
+                    "SUPPLYCODE",
+                    "PROPOSEDSUPPLYTIME",
+                    "REASON",
+                    "TARGETBODYSITE",
+                    "URGENCY",
+                    "DIETTYPE",
+                    "ISINEFFECT"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Supply with SUPPLYCODE and QUANTITY and TARGETBODYSITE and REASON and SUBJECTAFFECTEDTIME and DOCUMENTATIONTIME",
+                "description": "Undelivered Supply",
+                "parameterIds": [
+                    "SUPPLYCODE",
+                    "QUANTITY",
+                    "TARGETBODYSITE",
+                    "REASON",
+                    "SUBJECTAFFECTEDTIME",
+                    "DOCUMENTATIONTIME"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Supply with APPROACHBODYSITE and COMMENT and DIETQUALIFIER and FREQUENCY and ORDEREVENTTIME and ORIGINATIONMODE and PRNREASON and PROCEDURECODE and PROCEDUREMETHOD and PROCEDURETIME and REASON and TARGETBODYSITE and URGENCY",
+                "description": "Diet Order",
+                "parameterIds": [
+                    "APPROACHBODYSITE",
+                    "COMMENT",
+                    "DIETQUALIFIER",
+                    "FREQUENCY",
+                    "ORDEREVENTTIME",
+                    "ORIGINATIONMODE",
+                    "PRNREASON",
+                    "PROCEDURECODE",
+                    "PROCEDUREMETHOD",
+                    "PROCEDURETIME",
+                    "REASON",
+                    "TARGETBODYSITE",
+                    "URGENCY"
+                ]
+            }
+        ],
+        "cnt": 7
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Obs",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Obs with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/EXTENSION and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and OBSERVATIONBASE/OBSERVATIONFOCUS and OBSERVATIONBASE/OBSERVATIONMETHOD and OBSERVATIONBASE/TARGETBODYSITE and OBSERVATIONORDER/URGENCY and OBSERVATIONORDER/ORDEREVENTTIME and OBSERVATIONORDER/OBSERVATIONTIME and OBSERVATIONORDER/FREQUENCY and OBSERVATIONORDER/RELATEDENTITY and OBSERVATIONORDER/RELATEDCLINICALSTATEMENT and OBSERVATIONPROPOSAL/COMMENT and OBSERVATIONPROPOSAL/URGENCY and OBSERVATIONPROPOSAL/PROPOSEDOBSERVATIONTIME and OBSERVATIONPROPOSAL/FREQUENCY and OBSERVATIONPROPOSAL/RELATEDENTITY and OBSERVATIONPROPOSAL/RELATEDCLINICALSTATEMENT and OBSERVATIONRESULT/OBSERVATIONEVENTTIME and OBSERVATIONRESULT/OBSERVATIONVALUE and OBSERVATIONRESULT/INTERPRETATION and OBSERVATIONRESULT/RELATEDENTITY and OBSERVATIONRESULT/RELATEDCLINICALSTATEMENT and UNCONDUCTEDOBSERVATION/REASON and UNCONDUCTEDOBSERVATION/SUBJECTEFFECTIVETIME and UNCONDUCTEDOBSERVATION/DOCUMENTATIONTIME and UNCONDUCTEDOBSERVATION/RELATEDENTITY and UNCONDUCTEDOBSERVATION/RELATEDCLINICALSTATEMENT",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/EXTENSION",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "OBSERVATIONBASE/OBSERVATIONFOCUS",
+                    "OBSERVATIONBASE/OBSERVATIONMETHOD",
+                    "OBSERVATIONBASE/TARGETBODYSITE",
+                    "OBSERVATIONORDER/URGENCY",
+                    "OBSERVATIONORDER/ORDEREVENTTIME",
+                    "OBSERVATIONORDER/OBSERVATIONTIME",
+                    "OBSERVATIONORDER/FREQUENCY",
+                    "OBSERVATIONORDER/RELATEDENTITY",
+                    "OBSERVATIONORDER/RELATEDCLINICALSTATEMENT",
+                    "OBSERVATIONPROPOSAL/COMMENT",
+                    "OBSERVATIONPROPOSAL/URGENCY",
+                    "OBSERVATIONPROPOSAL/PROPOSEDOBSERVATIONTIME",
+                    "OBSERVATIONPROPOSAL/FREQUENCY",
+                    "OBSERVATIONPROPOSAL/RELATEDENTITY",
+                    "OBSERVATIONPROPOSAL/RELATEDCLINICALSTATEMENT",
+                    "OBSERVATIONRESULT/OBSERVATIONEVENTTIME",
+                    "OBSERVATIONRESULT/OBSERVATIONVALUE",
+                    "OBSERVATIONRESULT/INTERPRETATION",
+                    "OBSERVATIONRESULT/RELATEDENTITY",
+                    "OBSERVATIONRESULT/RELATEDCLINICALSTATEMENT",
+                    "UNCONDUCTEDOBSERVATION/REASON",
+                    "UNCONDUCTEDOBSERVATION/SUBJECTEFFECTIVETIME",
+                    "UNCONDUCTEDOBSERVATION/DOCUMENTATIONTIME",
+                    "UNCONDUCTEDOBSERVATION/RELATEDENTITY",
+                    "UNCONDUCTEDOBSERVATION/RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Obs with RELATEDENTITY and RELATEDENTITY and OBSERVATIONFOCUS and OBSERVATIONMETHOD and TARGETBODYSITE and OBSERVATIONEVENTTIME and INTERPRETATION and RELATEDCLINICALSTATEMENT",
+                "description": "Microbiology Lab Result",
+                "parameterIds": [
+                    "RELATEDENTITY",
+                    "RELATEDENTITY",
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONMETHOD",
+                    "TARGETBODYSITE",
+                    "OBSERVATIONEVENTTIME",
+                    "INTERPRETATION",
+                    "RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Obs with OBSERVATIONFOCUS and OBSERVATIONEVENTTIME and OBSERVATIONVALUE",
+                "description": "Vital Signs",
+                "parameterIds": [
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONEVENTTIME",
+                    "OBSERVATIONVALUE"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Obs with OBSERVATIONFOCUS and OBSERVATIONEVENTTIME and OBSERVATIONVALUE and OBSERVATIONVALUE and OBSERVATIONVALUE and OBSERVATIONVALUE and RELATEDCLINICALSTATEMENT",
+                "description": "Simple Lab Result",
+                "parameterIds": [
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONEVENTTIME",
+                    "OBSERVATIONVALUE",
+                    "OBSERVATIONVALUE",
+                    "OBSERVATIONVALUE",
+                    "OBSERVATIONVALUE",
+                    "RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Obs with RELATEDENTITY and OBSERVATIONFOCUS and OBSERVATIONMETHOD and TARGETBODYSITE and OBSERVATIONEVENTTIME and RELATEDCLINICALSTATEMENT and RELATEDCLINICALSTATEMENT",
+                "description": "Microbiology Lab Result With Sensitivites",
+                "parameterIds": [
+                    "RELATEDENTITY",
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONMETHOD",
+                    "TARGETBODYSITE",
+                    "OBSERVATIONEVENTTIME",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Obs with INTERPRETATION and RELATEDCLINICALSTATEMENT",
+                "description": "Observations",
+                "parameterIds": [
+                    "INTERPRETATION",
+                    "RELATEDCLINICALSTATEMENT"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Obs with ATTRIBUTE and ATTRIBUTE and ATTRIBUTE and ATTRIBUTE and RELATEDCLINICALSTATEMENT and RELATEDCLINICALSTATEMENT and OBSERVATIONFOCUS and OBSERVATIONEVENTTIME and OBSERVATIONVALUE",
+                "description": "Need For Intervention For Condition",
+                "parameterIds": [
+                    "ATTRIBUTE",
+                    "ATTRIBUTE",
+                    "ATTRIBUTE",
+                    "ATTRIBUTE",
+                    "RELATEDCLINICALSTATEMENT",
+                    "RELATEDCLINICALSTATEMENT",
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONEVENTTIME",
+                    "OBSERVATIONVALUE"
+                ]
+            },
+            {
+                "id": 7,
+                "name": "Obs with RELATEDENTITY and RELATEDENTITY and OBSERVATIONFOCUS and INTERPRETATION and OBSERVATIONEVENTTIME and OBSERVATIONVALUE",
+                "description": "Microorganism Sensitivity",
+                "parameterIds": [
+                    "RELATEDENTITY",
+                    "RELATEDENTITY",
+                    "OBSERVATIONFOCUS",
+                    "INTERPRETATION",
+                    "OBSERVATIONEVENTTIME",
+                    "OBSERVATIONVALUE"
+                ]
+            },
+            {
+                "id": 8,
+                "name": "Obs with OBSERVATIONFOCUS and OBSERVATIONEVENTTIME and OBSERVATIONVALUE",
+                "description": "Observation Result With Interpretation",
+                "parameterIds": [
+                    "OBSERVATIONFOCUS",
+                    "OBSERVATIONEVENTTIME",
+                    "OBSERVATIONVALUE"
+                ]
+            }
+        ],
+        "cnt": 9
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Comm",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Comm with CLINICALSTATEMENT/TEMPLATEID and CLINICALSTATEMENT/ID and CLINICALSTATEMENT/DATASOURCETYPE and CLINICALSTATEMENT/EVALUATEDPERSONID and CLINICALSTATEMENT/ATTRIBUTE and CLINICALSTATEMENT/RELATEDENTITY and CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT and COMMUNICATIONBASE/MEDIUM and COMMUNICATIONBASE/MESSAGE and COMMUNICATIONBASE/REASON and COMMUNICATIONBASE/TOPIC and COMMUNICATIONBASE/SENDER and COMMUNICATIONBASE/RECIPIENT and COMMUNICATIONAGENT/AGENT and COMMUNICATIONAGENT/ROLE and COMMUNICATIONORDER/COMMENT and COMMUNICATIONORDER/ORDEREVENTTIME and COMMUNICATIONORDER/ORIGINATIONMODE and COMMUNICATIONORDER/URGENCY and COMMUNICATIONPROPOSAL/COMMENT and COMMUNICATIONPROPOSAL/URGENCY and COMMUNICATIONPROPOSAL/PROPOSEDCOMMUNICATIONTIME and COMMUNICATIONEVENT/COMMUNICATIONTIME",
+                "description": "N A",
+                "parameterIds": [
+                    "CLINICALSTATEMENT/TEMPLATEID",
+                    "CLINICALSTATEMENT/ID",
+                    "CLINICALSTATEMENT/DATASOURCETYPE",
+                    "CLINICALSTATEMENT/EVALUATEDPERSONID",
+                    "CLINICALSTATEMENT/ATTRIBUTE",
+                    "CLINICALSTATEMENT/RELATEDENTITY",
+                    "CLINICALSTATEMENT/RELATEDCLINICALSTATEMENT",
+                    "COMMUNICATIONBASE/MEDIUM",
+                    "COMMUNICATIONBASE/MESSAGE",
+                    "COMMUNICATIONBASE/REASON",
+                    "COMMUNICATIONBASE/TOPIC",
+                    "COMMUNICATIONBASE/SENDER",
+                    "COMMUNICATIONBASE/RECIPIENT",
+                    "COMMUNICATIONAGENT/AGENT",
+                    "COMMUNICATIONAGENT/ROLE",
+                    "COMMUNICATIONORDER/COMMENT",
+                    "COMMUNICATIONORDER/ORDEREVENTTIME",
+                    "COMMUNICATIONORDER/ORIGINATIONMODE",
+                    "COMMUNICATIONORDER/URGENCY",
+                    "COMMUNICATIONPROPOSAL/COMMENT",
+                    "COMMUNICATIONPROPOSAL/URGENCY",
+                    "COMMUNICATIONPROPOSAL/PROPOSEDCOMMUNICATIONTIME",
+                    "COMMUNICATIONEVENT/COMMUNICATIONTIME"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Comm with MESSAGE and URGENCY and MEDIUM and REASON and SENDER/AGENT/NAME and SENDER/AGENT/TELECOM and SENDER/AGENT/ADDRESS and SENDER/ROLE and RECIPIENT/AGENT/NAME and RECIPIENT/AGENT/TELECOM and RECIPIENT/AGENT/ADDRESS and RECIPIENT/ROLE and PROPOSEDCOMMUNICATIONTIME",
+                "description": "Deliverable Message",
+                "parameterIds": [
+                    "MESSAGE",
+                    "URGENCY",
+                    "MEDIUM",
+                    "REASON",
+                    "SENDER/AGENT/NAME",
+                    "SENDER/AGENT/TELECOM",
+                    "SENDER/AGENT/ADDRESS",
+                    "SENDER/ROLE",
+                    "RECIPIENT/AGENT/NAME",
+                    "RECIPIENT/AGENT/TELECOM",
+                    "RECIPIENT/AGENT/ADDRESS",
+                    "RECIPIENT/ROLE",
+                    "PROPOSEDCOMMUNICATIONTIME"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Comm with MESSAGE",
+                "description": "Displayable Message",
+                "parameterIds": [
+                    "MESSAGE"
+                ]
+            }
+        ],
+        "cnt": 3
+    },
+    {
+        "mtype": "TemplateGroup",
+        "label": "Ent",
+        "templates": [
+            {
+                "id": 0,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM",
+                "description": "Medicaments",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM"
+                ]
+            },
+            {
+                "id": 1,
+                "name": "Ent with DESCRIPTION and ENTITYTYPE",
+                "description": "Identified Microorganism",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "ENTITYTYPE"
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Ent with ENTITY/TEMPLATEID and ENTITY/ID and ENTITY/ENTITYTYPE and ENTITY/EVALUATEDPERSONID and ENTITY/EXTENSION and ENTITY/ATTRIBUTE and EVALUATEDPERSON/DEMOGRAPHICS and EVALUATEDPERSON/BIRTHTIME and EVALUATEDPERSON/AGE and EVALUATEDPERSON/GENDER and EVALUATEDPERSON/RACE and EVALUATEDPERSON/ETHNICITY and PERSON/NAME and PERSON/ADDRESS and PERSON/TELECOM and EVALUATEDPERSON/ISDECEASED and EVALUATEDPERSON/AGEATDEATH and EVALUATEDPERSON/PREFERREDLANGUAGE and ENTITY/RELATEDENTITY",
+                "description": "N A",
+                "parameterIds": [
+                    "ENTITY/TEMPLATEID",
+                    "ENTITY/ID",
+                    "ENTITY/ENTITYTYPE",
+                    "ENTITY/EVALUATEDPERSONID",
+                    "ENTITY/EXTENSION",
+                    "ENTITY/ATTRIBUTE",
+                    "EVALUATEDPERSON/DEMOGRAPHICS",
+                    "EVALUATEDPERSON/BIRTHTIME",
+                    "EVALUATEDPERSON/AGE",
+                    "EVALUATEDPERSON/GENDER",
+                    "EVALUATEDPERSON/RACE",
+                    "EVALUATEDPERSON/ETHNICITY",
+                    "PERSON/NAME",
+                    "PERSON/ADDRESS",
+                    "PERSON/TELECOM",
+                    "EVALUATEDPERSON/ISDECEASED",
+                    "EVALUATEDPERSON/AGEATDEATH",
+                    "EVALUATEDPERSON/PREFERREDLANGUAGE",
+                    "ENTITY/RELATEDENTITY"
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM and MANUFACTURER and LOTNO and EXPIRATIONDATE",
+                "description": "Vaccine",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM",
+                    "MANUFACTURER",
+                    "LOTNO",
+                    "EXPIRATIONDATE"
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Ent with BIRTHTIME and GENDER",
+                "description": "Patient D O B And Gender Only",
+                "parameterIds": [
+                    "BIRTHTIME",
+                    "GENDER"
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Ent with DESCRIPTION and ENTITYTYPE",
+                "description": "Organization",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "ENTITYTYPE"
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Ent with SOURCE",
+                "description": "Lab Specimen",
+                "parameterIds": [
+                    "SOURCE"
+                ]
+            },
+            {
+                "id": 7,
+                "name": "Ent with ADDRESS and ADDRESS and NAME and TELECOM and TELECOM and AGE and BIRTHTIME and ETHNICITY and GENDER and PREFERREDLANGUAGE and RACE and TIMEOFDEATH",
+                "description": "Patient Detail",
+                "parameterIds": [
+                    "ADDRESS",
+                    "ADDRESS",
+                    "NAME",
+                    "TELECOM",
+                    "TELECOM",
+                    "AGE",
+                    "BIRTHTIME",
+                    "ETHNICITY",
+                    "GENDER",
+                    "PREFERREDLANGUAGE",
+                    "RACE",
+                    "TIMEOFDEATH"
+                ]
+            },
+            {
+                "id": 8,
+                "name": "Ent ",
+                "description": "Patient Minimal",
+                "parameterIds": []
+            },
+            {
+                "id": 9,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM",
+                "description": "Nutritional Supplement",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM"
+                ]
+            },
+            {
+                "id": 10,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM",
+                "description": "Anti Microbial Substance",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM"
+                ]
+            },
+            {
+                "id": 11,
+                "name": "Ent with BIRTHTIME and GENDER and ETHNICITY and RACE",
+                "description": "Patient D O B Gender Race Ethnicity",
+                "parameterIds": [
+                    "BIRTHTIME",
+                    "GENDER",
+                    "ETHNICITY",
+                    "RACE"
+                ]
+            },
+            {
+                "id": 12,
+                "name": "Ent with AGE and GENDER",
+                "description": "Patient Age Gender Only",
+                "parameterIds": [
+                    "AGE",
+                    "GENDER"
+                ]
+            },
+            {
+                "id": 13,
+                "name": "Ent with GENDER and AGEATDEATH",
+                "description": "Patient Relative Minimal",
+                "parameterIds": [
+                    "GENDER",
+                    "AGEATDEATH"
+                ]
+            },
+            {
+                "id": 14,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM",
+                "description": "Intravenous Fluid",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM"
+                ]
+            },
+            {
+                "id": 15,
+                "name": "Ent with DESCRIPTION and ENTITYTYPE",
+                "description": "Facility",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "ENTITYTYPE"
+                ]
+            },
+            {
+                "id": 16,
+                "name": "Ent with AGEATDEATH and TIMEOFDEATH",
+                "description": "Patient Relative",
+                "parameterIds": [
+                    "AGEATDEATH",
+                    "TIMEOFDEATH"
+                ]
+            },
+            {
+                "id": 17,
+                "name": "Ent with ENTITYREFERENCE and DESCRIPTION",
+                "description": "Knowledge Module Reference",
+                "parameterIds": [
+                    "ENTITYREFERENCE",
+                    "DESCRIPTION"
+                ]
+            },
+            {
+                "id": 18,
+                "name": "Ent with GENDER and BIRTHTIME and AGE and ISDECEASED",
+                "description": "Patient Relative ",
+                "parameterIds": [
+                    "GENDER",
+                    "BIRTHTIME",
+                    "AGE",
+                    "ISDECEASED"
+                ]
+            },
+            {
+                "id": 19,
+                "name": "Ent with DESCRIPTION and ENTITYTYPE",
+                "description": "Provider",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "ENTITYTYPE"
+                ]
+            },
+            {
+                "id": 20,
+                "name": "Ent with DESCRIPTION and STRENGTH and SUBSTANCECODE and FORM",
+                "description": "Enteral Nutrition",
+                "parameterIds": [
+                    "DESCRIPTION",
+                    "STRENGTH",
+                    "SUBSTANCECODE",
+                    "FORM"
+                ]
+            }
+        ],
+        "cnt": 21
+    }
+]

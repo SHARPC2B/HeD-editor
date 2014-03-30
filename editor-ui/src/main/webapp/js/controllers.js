@@ -1,6 +1,6 @@
 'use strict';
 
-var serviceUrl = 'provi';
+var serviceUrl = 'http://localhost:9000';
 
 
 angular.module('ruleApp.controllers', [])

@@ -1,9 +1,16 @@
 package edu.asu.sharpc2b.hed.impl;
 
+import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
+import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.w3c.dom.Document;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -11,28 +18,35 @@ import java.util.UUID;
 public class HeDArtifactData {
 
     private HeDKnowledgeDocument knowledgeDocument;
+    private byte[] owlData;
+
+    private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
 
 
-    public HeDArtifactData( HeDKnowledgeDocument dok ) {
-        knowledgeDocument = dok;
-        if ( knowledgeDocument.getArtifactId().isEmpty() ) {
-            knowledgeDocument.addArtifactId( knowledgeDocument.getArtifactVersion().get( 0 ).getArtifactId().get( 0 ) );
+    public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData ) {
+        this.knowledgeDocument = dok;
+        this.owlData = owlData;
+
+        if ( dok.getArtifactId().isEmpty() && ! dok.getArtifactVersion().isEmpty() ) {
+            // move the id up in a more convenient position
+            VersionedIdentifier vid = dok.getArtifactVersion().get( 0 );
+            dok.getArtifactId().addAll( vid.getArtifactId() );
         }
-
-        initDemoExpressions();
     }
 
-
     public HeDArtifactData() {
-        String uuid = UUID.randomUUID().toString();
-        String artifactId = "urn:asu.bmi.edu:Rule_" + System.identityHashCode( uuid );
-        String title =  "HeD Artifact " + System.identityHashCode( uuid );
+        String artifactId = EditorCoreImpl.newArtifactId();
+        String title =  "HeD Artifact " + artifactId.substring( artifactId.lastIndexOf( "/" ) + 1 );
 
         knowledgeDocument = new HeDKnowledgeDocumentImpl();
+        ((HeDKnowledgeDocumentImpl) knowledgeDocument).setDyEntryId( artifactId + "#KnowledgeDocument" );
         knowledgeDocument.addArtifactId( artifactId );
         knowledgeDocument.addIdentifier( artifactId );
         knowledgeDocument.addTitle( title );
 
+        knowledgeDocument.addKeyTerm( new ConceptCodeImpl() );
+
+        refreshOwlData();
     }
 
 
@@ -44,20 +58,45 @@ public class HeDArtifactData {
         return knowledgeDocument.getTitle().get( 0 );
     }
 
-
-
-
-
-
-
-
-    private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
-
-
-    private void initDemoExpressions() {
-        String req1 = "<xml><block type=\"logic_root\" inline=\"false\" deletable=\"false\" movable=\"false\" x=\"0\" y=\"0\"><field name=\"NAME\">request</field><value name=\"NAME\"><block type=\"http://asu.edu/sharpc2b/ops#ClinicalRequestExpression\" inline=\"false\"><value name=\"ARG_0\"><block type=\"ObservationProposal\"></block></value><value name=\"ARG_2\"><block type=\"http://asu.edu/sharpc2b/ops#DomainPropertyExpression\" inline=\"false\"><field name=\"DomainProperty\">http://asu.edu/sharpc2b/vmr-clean-A#substanceCode</field></block></value><value name=\"ARG_3\"><block type=\"http://asu.edu/sharpc2b/ops-set#ListExpression\" inline=\"false\"><list_mutation items=\"2\"></list_mutation></block></value><value name=\"ARG_5\"><block type=\"xsd:boolean\"><field name=\"VALUE\">FALSE</field></block></value><value name=\"ARG_6\"><block type=\"xsd:boolean\"><field name=\"VALUE\">TRUE</field></block></value></block></value></block></xml>";
-        updateNamedExpression( "HemoglobinA1cResultsFromLast12Months", "HemoglobinA1cResultsFromLast12Months", req1.getBytes() );
+    public HeDKnowledgeDocument getKnowledgeDocument() {
+        return knowledgeDocument;
     }
+
+    public byte[] getOwlData() {
+        return owlData;
+    }
+
+    public void setOwlData( byte[] owlData ) {
+        this.owlData = owlData;
+    }
+
+    public byte[] refreshOwlData() {
+        OWLOntology onto = ModelManagerOwlAPIHermit.getInstance().objectGraphToHeDOntology( knowledgeDocument );
+        ByteArrayOutputStream baos = new ByteArrayOutputStream( );
+        try {
+            onto.getOWLOntologyManager().saveOntology( onto, new OWLFunctionalSyntaxOntologyFormat(), baos );
+            this.owlData = baos.toByteArray();
+            baos.close();
+        } catch ( OWLOntologyStorageException e ) {
+            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        return owlData;
+    }
+
+
+
+
+
+
+    //    private void initDemoExpressions() {
+//        String req1 = "<xml><block type=\"logic_root\" inline=\"false\" deletable=\"false\" movable=\"false\" x=\"0\" y=\"0\"><field name=\"NAME\">request</field><value name=\"NAME\"><block type=\"http://asu.edu/sharpc2b/ops#ClinicalRequestExpression\" inline=\"false\"><value name=\"ARG_0\"><block type=\"ObservationProposal\"></block></value><value name=\"ARG_2\"><block type=\"http://asu.edu/sharpc2b/ops#DomainPropertyExpression\" inline=\"false\"><field name=\"DomainProperty\">http://asu.edu/sharpc2b/vmr-clean-A#substanceCode</field></block></value><value name=\"ARG_3\"><block type=\"http://asu.edu/sharpc2b/ops-set#ListExpression\" inline=\"false\"><list_mutation items=\"2\"></list_mutation></block></value><value name=\"ARG_5\"><block type=\"xsd:boolean\"><field name=\"VALUE\">FALSE</field></block></value><value name=\"ARG_6\"><block type=\"xsd:boolean\"><field name=\"VALUE\">TRUE</field></block></value></block></value></block></xml>";
+//        updateNamedExpression( "HemoglobinA1cResultsFromLast12Months", "HemoglobinA1cResultsFromLast12Months", req1.getBytes() );
+//    }
+
+
+
 
 
     public Map<String,String> getNamedExpressions() {

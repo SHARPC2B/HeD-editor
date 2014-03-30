@@ -28,10 +28,10 @@ public class TestOntologyCompilation {
         DLFactory factory = DLFactoryImpl.getInstance();
         InputStream source = TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/DUL.owl" );
 
-        OntoModel results = factory.buildModel( "DUL",
-                                                ResourceFactory.newInputStreamResource( source ),
-                                                OntoModel.Mode.OPTIMIZED,
-                                                OntoModelCompiler.AXIOM_INFERENCE.NONE.getGenerators() );
+//        OntoModel results = factory.buildModel( "DUL",
+//                                                ResourceFactory.newInputStreamResource( source ),
+//                                                OntoModel.Mode.OPTIMIZED,
+//                                                OntoModelCompiler.AXIOM_INFERENCE.NONE.getGenerators() );
     }
 
     @Test
@@ -40,38 +40,38 @@ public class TestOntologyCompilation {
         DLFactory factory = DLFactoryImpl.getInstance();
 
 
-        OntoModel results = factory.buildModel( "HeD",
-                new Resource[] {
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/DUL.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/IOLite.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/LMM_L1.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos_lmm.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/dc_owl2dl.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/dc2dul.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/metadata.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/prr-core.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp-time.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp_operators.ofn" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/event.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/actions.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/prr-sharp.owl" ) ),
-                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp.owl" ) )
-                },
-                OntoModel.Mode.OPTIMIZED,
-                OntoModelCompiler.AXIOM_INFERENCE.NONE.getGenerators() );
+//        OntoModel results = factory.buildModel( "HeD",
+//                new Resource[] {
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/DUL.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/IOLite.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/LMM_L1.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/skos_lmm.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/dc_owl2dl.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/dc2dul.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/metadata.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/prr-core.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp-time.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp_operators.ofn" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/event.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/actions.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/prr-sharp.owl" ) ),
+//                    ResourceFactory.newInputStreamResource( TestOntologyCompilation.class.getResourceAsStream( "/ontologies/editor_models/sharp.owl" ) )
+//                },
+//                OntoModel.Mode.OPTIMIZED,
+//                OntoModelCompiler.AXIOM_INFERENCE.NONE.getGenerators() );
 
-        System.out.println( results );
+//        System.out.println( results );
+//
+//        SemanticXSDModelCompiler xcompiler = (SemanticXSDModelCompiler) ModelCompilerFactory.newModelCompiler( ModelFactory.CompileTarget.XSDX );
+//        SemanticXSDModel xmlModel = (SemanticXSDModel) xcompiler.compile( results );
 
-        SemanticXSDModelCompiler xcompiler = (SemanticXSDModelCompiler) ModelCompilerFactory.newModelCompiler( ModelFactory.CompileTarget.XSDX );
-        SemanticXSDModel xmlModel = (SemanticXSDModel) xcompiler.compile( results );
-
-        xmlModel.streamAll( System.err );
-
-        Concept con = results.getConcept( IRI.create( "http://asu.edu/sharpc2b/metadata#DataModel" ).toQuotedString() );
-        System.out.println( con.getEffectiveProperties() );
+//        xmlModel.streamAll( System.err );
+//
+//        Concept con = results.getConcept( IRI.create( "http://asu.edu/sharpc2b/metadata#DataModel" ).toQuotedString() );
+//        System.out.println( con.getEffectiveProperties() );
 
 
 

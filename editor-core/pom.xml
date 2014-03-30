@@ -24,7 +24,7 @@
     <dependency>
       <groupId>sharpc2b</groupId>
       <artifactId>hed-ontologies</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${editor.version}</version>
     </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
@@ -33,14 +33,19 @@
     </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
-      <artifactId>persistence-api</artifactId>
+      <artifactId>persistence-factory</artifactId>
       <version>${editor.version}</version>
     </dependency>
-    <dependency>
-      <groupId>sharpc2b</groupId>
-      <artifactId>stanbol-persistence</artifactId>
-      <version>${editor.version}</version>
-    </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>persistence-api</artifactId>
+		  <version>${editor.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>filesystem-persistence</artifactId>
+		  <version>${editor.version}</version>
+	  </dependency>
 
 
 
