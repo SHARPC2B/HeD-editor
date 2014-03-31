@@ -66,7 +66,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     public static String newArtifactId() {
         String uuid = UUID.randomUUID().toString();
-        return "asu.bmi.edu/" + System.identityHashCode( uuid );
+        return "asu.bmi.edu_" + System.identityHashCode( uuid );
     }
 
 
@@ -87,6 +87,13 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         this.currentArtifactId = currentArtifactId;
     }
 
+    public HeDKnowledgeDocument getArtifact( String id ) {
+        if ( artifacts.containsKey( id ) ) {
+            return artifacts.get( id ).getKnowledgeDocument();
+        } else {
+            return artifacts.get( currentArtifactId ).getKnowledgeDocument();
+        }
+    }
 
 
 

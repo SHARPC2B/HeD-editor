@@ -54,7 +54,7 @@ angular.module('ruleApp.controllers', [])
             if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
                 $http({
                     method : 'PUT',
-                    url : serviceUrl + '/store/' + $scope.currentRuleId,
+                    url : serviceUrl + '/store/artifacts/' + $scope.currentRuleId,
                     data : [],
                     headers : { 'Content-Type':'application/html' }
                 }).success( function( data ) {
@@ -80,7 +80,7 @@ angular.module('ruleApp.controllers', [])
             if ( $scope.hasOwnProperty( 'currentRuleId' ) && confirm( "Delete Current Artifact : Are you sure?" ) ) {
                 $http({
                     method : 'DELETE',
-                    url : serviceUrl + '/store/' + $scope.currentRuleId,
+                    url : serviceUrl + '/store/artifacts/' + $scope.currentRuleId,
                     data : [],
                     headers : { 'Content-Type':'application/html' }
                 }).success( function( data ) {
@@ -119,9 +119,144 @@ angular.module('ruleApp.controllers', [])
         $scope.deselectCategory = function(category) {
             $scope.selectedCategories.splice($scope.selectedCategories.indexOf(category), 1);
         };
-        $http.get('partials/standard/background/coverage.json').success(function(data) {
+
+
+        $http.get( serviceUrl + '/rule/metadata/contributors/' + $scope.currentRuleId ).success(function(data) {
+            $scope.contributors = data;
+        });
+        $http.get( serviceUrl + '/rule/metadata/publishers/' + $scope.currentRuleId ).success(function(data) {
+            $scope.publishers = data;
+        });
+        $http.get( serviceUrl + '/rule/metadata/coverage/' + $scope.currentRuleId ).success(function(data) {
             $scope.coverages = data;
         });
+        $http.get(serviceUrl + '/rule/metadata/resources/' + $scope.currentRuleId ).success(function(data) {
+            $scope.resources = data;
+        });
+        $http.get(serviceUrl + '/rule/metadata/rights/' + $scope.currentRuleId).success(function(data) {
+            $scope.rights = data;
+        });
+        $http.get(serviceUrl + '/rule/metadata/evidence/' + $scope.currentRuleId).success(function(data) {
+            $scope.evidences = data;
+        });
+
+        $scope.addCoverage = function(coverage) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/coverage/' + $scope.currentRuleId,
+                data: coverage
+            }).success(function(data) {
+                    $scope.coverages.push(data);
+                });
+        };
+        $scope.addContributor = function(contributor) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/contributors/' + $scope.currentRuleId,
+                data: contributor
+            }).success(function(data) {
+                    $scope.contributors.push(data);
+                });
+        };
+        $scope.addPublisher = function(publisher) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/publishers/' + $scope.currentRuleId,
+                data: publisher
+            }).success(function(data) {
+                    $scope.publishers.push(data);
+                });
+
+        };
+        $scope.addResource = function(resource) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/resources/' + $scope.currentRuleId,
+                data: resource
+            }).success(function(data) {
+                    $scope.resources.push(data);
+                });
+
+        };
+        $scope.addEvidence = function(evidence) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/evidence/' + $scope.currentRuleId,
+                data: evidence
+            }).success(function(data) {
+                    $scope.evidences.push(data);
+                });
+        };
+        $scope.addRight = function(right) {
+            $http({
+                method: 'POST',
+                url: serviceUrl + '/rule/metadata/rights/' + $scope.currentRuleId,
+                data: right
+            }).success(function(data) {
+                    $scope.rights.push(data);
+                });
+
+        };
+
+
+        $scope.removeContributor = function(contri) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/contributors/' + $scope.currentRuleId,
+                data : contri
+            }).success(function(contri) {
+                    $scope.contributors.splice(contri.rowIndex, 1);
+                });
+        };
+        $scope.removePublisher = function(pub) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/publishers/' + $scope.currentRuleId,
+                data : pub
+            }).success(function(pub) {
+                    $scope.publishers.splice(contri.rowIndex, 1);
+                });
+        };
+        $scope.removeCoverage = function(cov) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/coverage/' + $scope.currentRuleId,
+                data : cov
+            }).success(function(cov) {
+                    $scope.coverages.splice(cov.rowIndex, 1);
+                });
+        };
+        $scope.removeResource = function(res) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/resources/' + $scope.currentRuleId,
+                data : res
+            }).success(function(res) {
+                    $scope.resources.splice(res.rowIndex, 1);
+                });
+        };
+        $scope.removeEvidence = function(ev) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/evidence/' + $scope.currentRuleId,
+                data : ev
+            }).success(function(ev) {
+                    $scope.evidences.splice(ev.rowIndex, 1);
+                });
+        };
+        $scope.removeRight = function(rig) {
+            $http({
+                method: 'DELETE',
+                url: serviceUrl + '/rule/metadata/rights/' + $scope.currentRuleId,
+                data : rig
+            }).success(function(rig) {
+                    $scope.rights.splice(rig.rowIndex, 1);
+                });
+        };
+
+
+
+
         $scope.gridCoverage = {
             data: 'coverages',
             enableRowSelection: false,
@@ -132,16 +267,6 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeCoverage(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-        $scope.addCoverage = function(coverage) {
-            $scope.coverages.push(angular.copy(coverage));
-        };
-        $scope.removeCoverage = function(row) {
-            $scope.coverages.splice(row.rowIndex, 1);
-        };
-        $http.get(serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors').success(function(data) {
-            $scope.contributors = data;
-            $scope.publishers = angular.copy(data);
-        });
         $scope.gridContributor = {
             data: 'contributors',
             enableRowSelection: false,
@@ -151,23 +276,6 @@ angular.module('ruleApp.controllers', [])
                 { field: "Type"},
                 { cellTemplate: '<a href="" ng-click="removeContributor(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
-        };
-		$scope.addContributor = function(contributor) {
-			$http({
-				method: 'POST',
-				url: serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors',
-				data: contributor
-			}).success(function(data) {
-				$scope.contributors.push(data);
-			});
-		};
-        $scope.removeContributor = function(row) {
-			$http({
-				method: 'DELETE',
-				url: serviceUrl + '/rule/' + $rootScope.artifact_id + '/background/contributors' + row.rowIndex
-			}).success(function(data) {
-				$scope.contributors.splice(row.rowIndex, 1);
-			});
         };
         $scope.gridPublisher = {
             data: 'publishers',
@@ -179,15 +287,6 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-        $scope.addPublisher = function(publisher) {
-            $scope.publishers.push(angular.copy(publisher));
-        };
-        $scope.removePublisher = function(row) {
-            $scope.publishers.splice(row.rowIndex, 1);
-        };
-        $http.get('partials/standard/background/resource.json').success(function(data) {
-            $scope.resources = data;
-        });
         $scope.gridResource = {
             data: 'resources',
             enableRowSelection: false,
@@ -199,9 +298,6 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeResource(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-        $http.get('partials/standard/background/evidence.json').success(function(data) {
-            $scope.evidences = data;
-        });
         $scope.gridEvidence = {
             data: 'evidences',
             enableRowSelection: false,
@@ -213,16 +309,7 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-        $scope.tinymceOptions = {
-            menubar: false,
-            plugins: ["image spellchecker emoticons"],
-            toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons",
-            statusbar: false
-        };
-        $scope.rights = [{"Name":"Mayo Clinic",
-            "Type":"Company",
-            "Permissions":"Author"
-        }];
+
         $scope.gridRight = {
             data: 'rights',
             enableRowSelection: false,
@@ -233,6 +320,14 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removePublisher(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
+
+        $scope.tinymceOptions = {
+            menubar: false,
+            plugins: ["image spellchecker emoticons"],
+            toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons",
+            statusbar: false
+        };
+
         $scope.openRowDetail = function(row) {
             $modal.open({
                 templateUrl: 'partials/standard/background/table-detail.html',
@@ -1293,15 +1388,25 @@ angular.module('ruleApp.controllers', [])
 
     .controller('HomeImportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance){
         $scope.import = function() {
-            $http({
-                method : 'POST',
-                url : serviceUrl + '/store/import'
-            }).success( function( data ) {
-                    $scope.currentRuleId = data;
-                    updateTitle( $scope );
+            var f = document.getElementById('inputFile').files[0];
+            var r = new FileReader();
+            r.onloadend = function(e){
+                var byteData = e.target.result;
+                delete $http.defaults.headers.common['X-Requested-With'];
+                $http({
+                    method : 'POST',
+                    url : serviceUrl + '/store/import/' + f.name,
+                    data : { 'bytes' : byteData },
+                    headers : { 'Content-Type' : 'appplication/xml' }
+                }).success( function( data ) {
+                        $scope.currentRuleId = data;
+                        $scope.$parent.currentRuleId = data;
+                        updateTitle( $scope.$parent );
 
-                    $modalInstance.dismiss('ok');
-                });
+                        $modalInstance.dismiss('ok');
+                    });
+            }
+            r.readAsBinaryString(f);
         };
         $scope.close = function() {
             $modalInstance.dismiss();
@@ -1309,11 +1414,17 @@ angular.module('ruleApp.controllers', [])
     }])
 
     .controller('HomeExportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance) {
-        $http.get('partials/home/rules.json').success(function(data) {
+        $http.get( serviceUrl + '/store/list' ).success(function(data) {
             $scope.rules = data;
         });
-        $scope.export = function() {
+        $scope.export = function(ruleId) {
             $scope.status = 'Creating file ...';
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/store/export/' + ruleId + '/HeD'
+            }).success( function( data ) {
+                    $modalInstance.dismiss('ok');
+                });
         };
         $scope.close = function() {
             $modalInstance.dismiss();
@@ -1331,10 +1442,10 @@ angular.module('ruleApp.controllers', [])
             $http({
                 method : 'GET',
                 url : serviceUrl + '/store/' + ruleId
-            }).success( function( data ) {
-                    alert( $scope.currentRuleId );
-                    $scope.currentRuleId = data;
-                    updateTitle( $scope );
+            }).success( function( openId ) {
+                    $scope.currentRuleId = openId;
+                    $scope.$parent.currentRuleId = openId;
+                    updateTitle( $scope.$parent );
 
                     $modalInstance.dismiss('ok');
                 });

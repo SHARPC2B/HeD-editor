@@ -7,7 +7,6 @@ import models.ModelHome;
 import models.PrimitiveInst;
 import models.Rule;
 import models.RuleGroup;
-import models.TemplateList;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -15,6 +14,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static controllers.SharpController.setHeaderCORS;
@@ -61,23 +61,28 @@ public class StoreActions
     }
 
 
-    public static Result importFromStream() {
-
+    public static Result importFromStream(String fileName) {
         final Http.Request request = request();
 
         Http.RequestBody body = request.body();
+        byte[] data = body.asRaw().asBytes();
 
-        String result = ModelHome.importFromStream( body.asRaw().asBytes() );
+        // TODO : Improve this, as it is removing the wrapper { "bytes" : " .... " } created by the js controller
+        data = Arrays.copyOfRange( data, 10, data.length - 2 );
+        String hed = new String ( data );
+        hed = hed.replace( "\\\"", "\"" );
+        hed = hed.replace( "\\n", "\n" );
+
+        String result = ModelHome.importFromStream( hed.getBytes() );
 
         System.out.println( "Import result = " + result );
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
     public static Result cloneArtifact( String id ) {
-
         String result = ModelHome.cloneArtifact( id );
 
         System.out.println( "Cloned " + id + " := " + result );
@@ -95,7 +100,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
-        return ok( jsonOut );
+        return created( jsonOut );
     }
 
     public static Result snapshotArtifact( String id ) {
@@ -110,7 +115,6 @@ public class StoreActions
     }
 
     public static Result saveArtifact( String id ) {
-
         String result = ModelHome.saveArtifact( id );
 
         System.out.println( "Save " + id + " := " + result );
@@ -121,7 +125,6 @@ public class StoreActions
     }
 
     public static Result exportArtifact( String id, String format ) {
-
         byte[] result = ModelHome.exportArtifact( id , format );
 
         System.out.println( "Export " + id + " := " + result );
@@ -143,10 +146,11 @@ public class StoreActions
     }
 
     public static Result deleteArtifact( String id ) {
+        System.out.println( "Delete " + id + " := " + id );
 
         String result = ModelHome.deleteArtifact( id );
 
-        System.out.println( "Delete " + id + " := " + result );
+
         JsonNode jsonOut = Json.toJson( result );
 
         setHeaderCORS();
@@ -154,6 +158,10 @@ public class StoreActions
     }
 
 
+    public static Result configStoreAccess( String path ) {
+        setHeaderCORS();
+        return ok();
+    }
 
 
 
@@ -163,31 +171,21 @@ public class StoreActions
 
 
 
-    public static Result list()
-    {
+
+    public static Result list() {
         List<String> ids = ModelHome.getAvailableArtifacts();
 
-//        System.out.println( "new rule ruleId = " + rule.ruleId );
         JsonNode jsonOut = Json.toJson( ids );
-        System.out.println( "created Rule = " + jsonOut );
-
         setHeaderCORS();
 
-//        return created( jsonOut );
         return ok( jsonOut );
     }
 
-    public static Result get(String id)
-    {
+    public static Result get(String id) {
         Rule rule = ModelHome.getArtifact( id );
-
-        System.out.println( "new rule ruleId = " + rule.ruleId );
         JsonNode jsonOut = Json.toJson( rule );
-        System.out.println( "created Rule = " + jsonOut );
 
         setHeaderCORS();
-
-//        return created( jsonOut );
         return ok( jsonOut );
     }
 
@@ -308,5 +306,8 @@ public class StoreActions
 
         return ok( jsonOut );
     }
+
+
+
 
 }

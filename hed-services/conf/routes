@@ -47,16 +47,44 @@ OPTIONS        /rule/expressions/*path                    controllers.Expression
 GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()
 GET            /domain/properties                         controllers.DomainModelActions.getAvailableProperties()
 
+
+########################################################
+
+GET            /rule/metadata/keyTerms/:id                controllers.MetadataActions.getKeyTerms(id)
+GET            /rule/metadata/categories/:id              controllers.MetadataActions.getCategories(id)
+GET            /rule/metadata/contributors/:id            controllers.MetadataActions.getContributors(id)
+GET            /rule/metadata/coverage/:id                controllers.MetadataActions.getCoverage(id)
+GET            /rule/metadata/publishers/:id              controllers.MetadataActions.getPublishers(id)
+GET            /rule/metadata/rights/:id                  controllers.MetadataActions.getRights(id)
+GET            /rule/metadata/evidence/:id                controllers.MetadataActions.getEvidence(id)
+GET            /rule/metadata/resources/:id               controllers.MetadataActions.getResources(id)
+GET            /rule/metadata/docs/:id                    controllers.MetadataActions.getDocumentation(id)
+
+POST           /rule/metadata/keyTerms/:id                controllers.MetadataActions.addKeyTerm(id)
+POST           /rule/metadata/categories/:id              controllers.MetadataActions.addCategory(id)
+POST           /rule/metadata/contributors/:id            controllers.MetadataActions.addContributor(id)
+POST           /rule/metadata/coverage/:id                controllers.MetadataActions.addCoverage(id)
+POST           /rule/metadata/publishers/:id              controllers.MetadataActions.addPublisher(id)
+POST           /rule/metadata/rights/:id                  controllers.MetadataActions.addRights(id)
+POST           /rule/metadata/evidence/:id                controllers.MetadataActions.addEvidence(id)
+POST           /rule/metadata/resources/:id               controllers.MetadataActions.addResources(id)
+POST           /rule/metadata/docs/:id                    controllers.MetadataActions.setDocumentation(id)
+
+DELETE         /rule/metadata/publishers/:id              controllers.MetadataActions.removePublisher(id)
+
+
+
+
 ########################################################
 
 GET            /store/list                                controllers.StoreActions.getAvailableArtifacts()
+POST           /store/import/:fname                       controllers.StoreActions.importFromStream(fname)
+POST           /store/artifacts/:id                       controllers.StoreActions.cloneArtifact(id)
 POST           /store                                     controllers.StoreActions.createNewArtifact()
-POST           /store/import                              controllers.StoreActions.importFromStream()
-POST           /store/:id                                 controllers.StoreActions.cloneArtifact(id)
 GET            /store/:id                                 controllers.StoreActions.openArtifact(id)
 POST           /store/snapshots/:id                       controllers.StoreActions.snapshotArtifact(id)
-PUT            /store/:id                                 controllers.StoreActions.saveArtifact(id)
-DELETE         /store/:id                                 controllers.StoreActions.deleteArtifact(id)
+PUT            /store/artifacts/:id                       controllers.StoreActions.saveArtifact(id)
+DELETE         /store/artifacts/:id                       controllers.StoreActions.deleteArtifact(id)
 DELETE         /store                                     controllers.StoreActions.closeArtifact()
 GET            /store/export/:id/:format                  controllers.StoreActions.exportArtifact(id,format)
 

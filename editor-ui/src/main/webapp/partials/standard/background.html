@@ -83,9 +83,7 @@
 				<div class="control-group">
 					<label class="control-label" for="inputName">Name:</label>
 					<div class="controls">
-						<select x-ng-model="contributor.Name" id="inputName" class="span11">
-							<option>Mayo Clinic</option>
-						</select>
+						<textarea x-ng-model="contributor.Name" id="inputName" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
@@ -172,9 +170,7 @@
 				<div class="control-group">
 					<label class="control-label" for="inputName">Name:</label>
 					<div class="controls">
-						<select x-ng-model="publisher.Name" id="inputName" class="span11">
-							<option>Mayo Clinic</option>
-						</select>
+						<textarea x-ng-model="publisher.Name" id="inputName" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
@@ -218,9 +214,7 @@
 				<div class="control-group">
 					<label class="control-label" for="inputName">Name:</label>
 					<div class="controls">
-						<select x-ng-model="right.Name" id="inputName" class="span11">
-							<option>Mayo Clinic</option>
-						</select>
+						<textarea x-ng-model="right.Name" id="inputName" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
@@ -237,9 +231,9 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="inputAssertedTights">Asserted rights:</label>
+					<label class="control-label" for="inputAssertedRights">Asserted rights:</label>
 					<div class="controls">
-						<textarea rows="3" x-ng-model="right.AssertedTights" class="span11"></textarea>
+						<textarea rows="3" x-ng-model="right.AssertedRights" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
@@ -267,31 +261,31 @@
 				<div class="control-group">
 					<label class="control-label" for="inputTitle">Title:</label>
 					<div class="controls">
-						<input type="text" id="inputTitle" class="span11">
+						<input type="text" x-ng-model="resource.Title" id="inputTitle" class="span11">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputCitation">Citation:</label>
 					<div class="controls">
-						<textarea rows="3" class="span11"></textarea>
+						<textarea rows="3" x-ng-model="resource.Citation" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputLocation">Location:</label>
 					<div class="controls">
-						<input type="url" id="inputLocation" class="span11">
+						<input type="url" x-ng-model="resource.Location" id="inputLocation" class="span11">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputDescription">Description:</label>
 					<div class="controls">
-						<textarea rows="3" class="span11"></textarea>
+						<textarea rows="3" x-ng-model="resource.Description" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputType">Type:</label>
 					<div class="controls">
-						<select class="span11">
+						<select x-ng-model="resource.Type" class="span11">
 		    				<option>AdaptedFrom</option>
 		    				<option>AssociatedResource</option>
 		    				<option>DependsOn</option>
@@ -303,7 +297,7 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<a href="" x-ng-click="addRight(right)"><i class="icon-plus icon-3x"></i> Add</a>
+						<a href="" x-ng-click="addResource(resource)"><i class="icon-plus icon-3x"></i> Add</a>
 						<a href="" x-ng-click="resource=''"><i class="icon-eraser icon-3x"></i> Clear</a>
 					</div>
 				</div>
@@ -322,8 +316,8 @@
 					<div class="controls">
 						<div class="search-prepend">
 							<div class="icon-search icon-white"></div>
-							<input type="text" class="search-query span9" placeholder="code">
-							<select class="span2">
+							<input type="text" x-ng-model="evidence.Quality" class="search-query span9" placeholder="code">
+							<select x-ng-model="evidence.QualityCodeSystem" class="span2">
 								<option>Code Set</option>
 							</select>
 						</div>
@@ -334,8 +328,8 @@
 					<div class="controls">
 						<div class="search-prepend">
 							<div class="icon-search icon-white"></div>
-							<input type="text" class="search-query span9" placeholder="code">
-							<select class="span2">
+							<input x-ng-model="evidence.Strength" type="text" class="search-query span9" placeholder="code">
+							<select x-ng-model="evidence.StrengthCodeSystem" class="span2">
 								<option>Code Set</option>
 							</select>
 						</div>
@@ -344,25 +338,25 @@
 				<div class="control-group">
 					<label class="control-label" for="inputTitle">Title:</label>
 					<div class="controls">
-						<input type="text" id="inputTitle" class="span11">
+						<input type="text" x-ng-model="evidence.Title" id="inputTitle" class="span11">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputCitation">Citation:</label>
 					<div class="controls">
-						<textarea rows="3" class="span11"></textarea>
+						<textarea rows="3" x-ng-model="evidence.Citation" id="inputCitation" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputLocation">Location:</label>
 					<div class="controls">
-						<input type="url" id="inputLocation" class="span11">
+						<input type="url" x-ng-model="evidence.Location" id="inputLocation" class="span11">
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputDescription">Description:</label>
 					<div class="controls">
-						<textarea rows="3" class="span11"></textarea>
+						<textarea rows="3" x-ng-model="evidence.Description" id="inputDescription" class="span11"></textarea>
 					</div>
 				</div>
 				<div class="control-group">
