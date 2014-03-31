@@ -465,7 +465,7 @@ public class OOwl2HedDumper implements HeDExporter {
         Element con = dox.createElement( "Contributor" );
         con.setAttribute( "xsi:type", ag instanceof SocialPerson ? "Person" : "Organization" );
 
-        if ( ! ( (SocialPerson) ag ).getContactInformation().isEmpty() ) {
+        if ( ag instanceof SocialPerson ) {
             Element contacts = dox.createElement( "contacts" );
             for ( String ct : ( (SocialPerson) ag ).getContactInformation() ) {
                 Element contact = dox.createElement( "contact" );

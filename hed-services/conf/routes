@@ -23,6 +23,7 @@ PUT            /template/inst                             controllers.ArtifactAc
 GET            /template/:id                              controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 #GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 
+GET            /rule/export/:id/:format                   controllers.RuleActions.getExternalFormat(id,format)
 GET            /rule                                      controllers.RuleActions.list()
 POST           /rule                                      controllers.RuleActions.create()
 GET            /rule/:id                                  controllers.RuleActions.get(id)

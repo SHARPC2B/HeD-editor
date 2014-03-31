@@ -54,6 +54,12 @@ public class RuleActions
         return ok( jsonOut );
     }
 
+    public static Result getExternalFormat( String id, String format ) {
+        byte[] outerFormat = ModelHome.exportArtifact( id, format );
+        setHeaderCORS();
+        return ok( outerFormat );
+    }
+
 
 
 

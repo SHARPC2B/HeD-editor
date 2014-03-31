@@ -18,13 +18,15 @@ import java.util.StringTokenizer;
 
 public class SharpAnnotationProvider implements EmpireAnnotationProvider {
 
+    private Enumeration<URL> sources;
+
     @Override
     public Collection<Class<?>> getClassesWithAnnotation( Class<? extends Annotation> theAnnotation ) {
         if ( theAnnotation.equals( RdfsClass.class ) ) {
             long now = System.currentTimeMillis();
             try {
                 Set<Class<?>> classes = new HashSet<Class<?>>();
-                Enumeration<URL> sources = ClassLoader.getSystemResources( "empire.annotation.index" );
+                Enumeration<URL> sources = getSources();
                 while ( sources.hasMoreElements() ) {
                     URL url = sources.nextElement();
                     addClasses( classes, url );
@@ -76,5 +78,17 @@ public class SharpAnnotationProvider implements EmpireAnnotationProvider {
                 return ClassLoader.getSystemClassLoader().loadClass(klassName);
             }
         }
+    }
+
+    public Enumeration<URL> getSources() throws IOException {
+        String res = "empire.annotation.index";
+        Enumeration<URL> sources = ClassLoader.getSystemResources( res );
+        if ( ! sources.hasMoreElements() ) {
+            sources = Thread.currentThread().getContextClassLoader().getResources( res );
+            if ( ! sources.hasMoreElements() ) {
+                sources = SharpAnnotationProvider.class.getClassLoader().getResources( res );
+            }
+        }
+        return sources;
     }
 }

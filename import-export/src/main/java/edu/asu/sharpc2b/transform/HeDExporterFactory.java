@@ -13,4 +13,9 @@ public class HeDExporterFactory {
                     return new OOwl2HedDumper();
         }
     }
+
+    public static HeDExporter getExporter( String format ) {
+        return getExporter( HED_EXPORT_FORMATS.valueOf( format ) );
+    }
+
 }

@@ -80,7 +80,7 @@
             <artifactId>ejb3-persistence</artifactId>
           </exclusion>
         </exclusions>
-        <version>0.7.3</version>
+        <version>0.7.3-SHARP</version>
       </dependency>
       <dependency>
         <groupId>com.clarkparsia</groupId>
@@ -92,7 +92,7 @@
       <dependency>
         <groupId>com.clarkparsia</groupId>
         <artifactId>Empire-sesame2</artifactId>
-        <version>0.7.3</version>
+        <version>0.7.3-SHARP</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>

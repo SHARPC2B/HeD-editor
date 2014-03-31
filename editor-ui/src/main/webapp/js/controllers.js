@@ -1272,7 +1272,7 @@ angular.module('ruleApp.controllers', [])
         $scope.$parent.title = 'Guided Mode - Step 5: Review, Save, and Publish your Finished Rule';
         $scope.$parent.menuItems = standardMenuItems(5);
 
-        $http.get(serviceUrl + '/save/DopamineComplexIVOrderWithComplexLiteral.xml').success(function(data) {
+        $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/HED_XML' ).success(function(data) {
         	$scope.xml = data;
         });
     }])

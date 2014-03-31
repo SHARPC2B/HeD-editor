@@ -94,14 +94,15 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     public HeDKnowledgeDocument getArtifact( String id ) {
+        return getArtifactData( id ).getKnowledgeDocument();
+    }
+    public HeDArtifactData getArtifactData( String id ) {
         if ( artifacts.containsKey( id ) ) {
-            return artifacts.get( id ).getKnowledgeDocument();
+            return artifacts.get( id );
         } else {
-            return artifacts.get( currentArtifactId ).getKnowledgeDocument();
+            return artifacts.get( currentArtifactId );
         }
     }
-
-
 
 
     @Override
@@ -197,15 +198,15 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public String saveArtifact( String id ) {
-        HeDArtifactData artifactData = artifacts.get( id );
+        HeDArtifactData artifactData = getArtifactData( id );
         return knowledgeRepo.saveArtifact( id, new ByteArrayInputStream( artifactData.refreshOwlData() ) );
     }
 
     @Override
     public byte[] exportArtifact( String id, String format ) {
-        HeDArtifactData artifactData = artifacts.get( id );
+        HeDKnowledgeDocument dok = getArtifact( id );
 
-        return HeDExporterFactory.getExporter( HeDExporterFactory.HED_EXPORT_FORMATS.HED_XML ).export( artifactData.getKnowledgeDocument() );
+        return HeDExporterFactory.getExporter( format ).export( dok );
     }
 
     @Override

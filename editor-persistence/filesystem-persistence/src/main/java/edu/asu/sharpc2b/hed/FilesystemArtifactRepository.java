@@ -61,10 +61,11 @@ public class FilesystemArtifactRepository implements ArtifactRepository {
         PrintWriter output = null;
         FileOutputStream fos = null;
         try {
+            File f = new File( getFullFileNameForTitle( title ) );
+
             output = new PrintWriter( new FileWriter( repoIndex.getAbsolutePath(), true ) );
             output.println( uri + "," + title  );
 
-            File f = new File( getFullFileNameForTitle( title ) );
             fos = new FileOutputStream( f );
             byte[] data = new byte[ content.available() ];
             content.read( data );
