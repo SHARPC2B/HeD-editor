@@ -312,13 +312,10 @@ public class ModelHome
             fillResource( res, r );
             resources.add( r );
         }
-        //TODO fix missing range in ontology
-        for ( Thing res : dok.getVersionOf() ) {
+        for ( KnowledgeResource res : dok.getVersionOf() ) {
             Resource r = new Resource();
             r.Type = "VersionOf";
-            if ( res instanceof KnowledgeResource ) {
-                fillResource( (KnowledgeResource) res, r );
-            }
+            fillResource( res, r );
             resources.add( r );
         }
         return resources;
@@ -668,12 +665,7 @@ public class ModelHome
         } else if ( "SimilarTo".equals( res.Type ) ) {
             src = dok.getSimilarTo();
         } else if ( "VersionOf".equals( res.Type ) ) {
-            src = new ArrayList<KnowledgeResource>();
-            for ( Thing t : dok.getVersionOf() ) {
-                if ( t instanceof KnowledgeResource ) {
-                    src.add( (KnowledgeResource) t );
-                }
-            }
+            src = dok.getVersionOf();
         }
 
         for ( KnowledgeResource kr : src ) {
