@@ -44,8 +44,10 @@ POST           /rule/expressions/:exprId/:exprName        controllers.Expression
 
 OPTIONS        /rule/expressions/*path                    controllers.ExpressionActions.configExpressionsAccess(path)
 
+GET            /domain/hierarchy                          controllers.DomainModelActions.getDomainClassHierarchyDescr()
 GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()
 GET            /domain/properties                         controllers.DomainModelActions.getAvailableProperties()
+GET            /domain/properties/:klass                  controllers.DomainModelActions.getAvailablePropertiesForKlass(klass)
 
 
 ########################################################

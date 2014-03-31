@@ -33,6 +33,12 @@
         <version>${chance.version}</version>
       </dependency>
 
+	    <dependency>
+		    <groupId>sharpc2b</groupId>
+		    <artifactId>generated-models</artifactId>
+		    <version>0.1-SNAPSHOT</version>
+	    </dependency>
+
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>

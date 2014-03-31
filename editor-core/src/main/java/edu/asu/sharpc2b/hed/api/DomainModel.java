@@ -11,4 +11,6 @@ public interface DomainModel {
 
     public Map<String, String> getDomainProperties( String klassId );
 
+    public String getDomainClassHierarchyDescription();
+
 }

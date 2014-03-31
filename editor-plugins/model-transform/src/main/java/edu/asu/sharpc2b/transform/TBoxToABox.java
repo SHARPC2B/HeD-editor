@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -442,6 +443,10 @@ public class TBoxToABox
             OWLAxiom axiom = odf.getOWLObjectPropertyAssertionAxiom( mm_domain(), x, y );
 
             oom.addAxiom( ontA, axiom );
+        } else if ( owlDomain instanceof OWLObjectUnionOf ) {
+            for ( OWLClassExpression op : ( (OWLObjectUnionOf) owlDomain ).getOperands() ) {
+                transform_domain( owlProperty, op );
+            }
         }
 
     }

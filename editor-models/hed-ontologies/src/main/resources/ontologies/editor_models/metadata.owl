@@ -7,8 +7,8 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 
 Ontology(<http://asu.edu/sharpc2b/metadata>
-Import(<http://bmi.asu.edu/sharpc2b/skoslmm>)
 Import(<http://asu.edu/sharpc2b/dc2dul>)
+Import(<http://bmi.asu.edu/sharpc2b/skoslmm>)
 
 Declaration(Class(meta:ClinicalCoverage))
 EquivalentClasses(meta:ClinicalCoverage DataSomeValuesFrom(meta:coverageType DataOneOf("ClinicalFocus" "ClinicalVenue" "PatientAgeGroup" "PatientGender" "TargetUser" "WorkflowSetting" "WorkflowTask")))
@@ -212,6 +212,7 @@ ObjectPropertyRange(meta:usageTerms meta:RightsDeclaration)
 Declaration(ObjectProperty(meta:versionOf))
 SubObjectPropertyOf(meta:versionOf <http://purl.org/dc/terms/isVersionOf>)
 ObjectPropertyDomain(meta:versionOf <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#InformationRealization>)
+ObjectPropertyRange(meta:versionOf meta:KnowledgeResource)
 Declaration(ObjectProperty(meta:workflowSetting))
 SubObjectPropertyOf(meta:workflowSetting <http://purl.org/dc/terms/annotation>)
 ObjectPropertyDomain(meta:workflowSetting meta:ClinicalCoverage)

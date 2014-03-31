@@ -3,6 +3,7 @@ package sharpc2b;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -172,7 +173,9 @@ public class TBoxToABoxPlugin
             throw new MojoFailureException( "Failed to create output ontology", e );
         }
 
-        oFormat = IriUtil.getDefaultSharpOntologyFormat();
+        // for some reason, with java7 the functional notatoin will fail, due to an internal exeception in some comparator
+        // while trying to sort the axioms
+        oFormat = new TurtleOntologyFormat();
 
         oFormat.setPrefix( "a:", ontA.getOntologyID().getOntologyIRI().toString() + "#" );
         oFormat.setPrefix( "t:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );

@@ -17,6 +17,13 @@ import static play.mvc.Results.ok;
 
 public class DomainModelActions extends Controller {
 
+
+    public static Result getDomainClassHierarchyDescr() {
+        String hier = ModelHome.getDomainClassHierarchyDescription();
+        setHeaderCORS();
+        return ok( hier );
+    }
+
     public static Result getAvailableClasses() {
         Map<String,String> domainClasses = ModelHome.getDomainClasses();
         System.out.println( "Retrieved domain klasses from model " + domainClasses );
@@ -55,7 +62,7 @@ public class DomainModelActions extends Controller {
         return ok( jsonOut );
     }
 
-    public static Result getAvailableProperties( String klass ) {
+    public static Result getAvailablePropertiesForKlass( String klass ) {
         Map<String,String> domainClasses = ModelHome.getDomainProperties( klass );
 
         List<NamedConcept> expressions = new ArrayList<NamedConcept>();

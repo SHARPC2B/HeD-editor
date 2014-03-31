@@ -155,7 +155,7 @@
           <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
           <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr-clean.xsd.ttl</inputOntologyFile>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/domain-vmr.ofn</outputOntologyFile>
-          <outputOntologyIriString>http://asu.edu/sharpc2b/vmr-clean-A</outputOntologyIriString>
+          <outputOntologyIriString>urn:hl7-org:vmr:r2</outputOntologyIriString>
         </configuration>
       </plugin>
 

@@ -1005,17 +1005,20 @@ public class ModelHome
 
     public static Map<String, String> getDomainClasses() {
         Map<String,String> dk = core.getDomainClasses();
-        System.out.println( "Retrieved domain klasses" );
         return dk;
     }
 
     public static Map<String, String> getDomainProperties() {
         return core.getDomainProperties();
     }
+
     public static Map<String, String> getDomainProperties( String klassId ) {
         return core.getDomainProperties( klassId );
     }
 
+    public static String getDomainClassHierarchyDescription() {
+        return core.getDomainClassHierarchyDescription();
+    }
 
 
 }

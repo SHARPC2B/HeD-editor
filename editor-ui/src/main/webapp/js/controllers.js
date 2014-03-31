@@ -652,7 +652,7 @@ angular.module('ruleApp.controllers', [])
             .attr("width", radius)
             .attr("height", radius)
             .append("svg:g");
-        d3.json(serviceUrl + "/VMR.json", function(data) {
+        d3.json(serviceUrl + "/domain/hierarchy", function(data) {
             node = root = data;
 
             var nodes = pack.nodes(root);
@@ -1487,8 +1487,7 @@ function availableProperties( httpContext, $scope ) {
     httpContext({
         method : 'GET',
         url : serviceUrl + '/domain/properties',
-        data : $scope.domainClasses,
-        headers : { 'Content-Type':'application/html' }
+        data : $scope.domainClasses
     }).success(function(data) {
         var properties = data;
         for ( var j = 0; j < properties.length; j++ ) {

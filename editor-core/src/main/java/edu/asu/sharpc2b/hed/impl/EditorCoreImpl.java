@@ -10,6 +10,8 @@ import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.transform.HeDExporterFactory;
 import edu.asu.sharpc2b.transform.OOwl2HedDumper;
+import org.drools.io.Resource;
+import org.drools.io.impl.ClassPathResource;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -50,6 +52,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
+
+    private static final String DOMAIN_MODEL_PATH = "ontologies/domain_models/domain-vmr.ofn";
+    private static final String DOMAIN_NS = "urn:hl7-org:vmr:r2#";
+
 
     private ConcurrentMap<String,HeDArtifactData> artifacts;
 
@@ -280,97 +286,32 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     /**************************************************************************************************************************/
 
 
-
-    private Map<String,String> domKlasses;
-    private Map<String,String> domProptis;
-
     @Override
     public Map<String, String> getDomainClasses() {
-        if ( domKlasses == null ) {
-            domKlasses = new HashMap<String,String>();
-            try {
-                OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
-                OWLDataFactory odf = domain.getOWLOntologyManager().getOWLDataFactory();
-                for ( OWLNamedIndividual ind : domain.getIndividualsInSignature() ) {
-                    if ( ind.getTypes( domain ).contains( odf.getOWLClass( IRI.create( "http://asu.edu/sharpc2b/ops#DomainClass" ) ) ) )  {
-                        if ( ! isDatatype( ind.getIRI() ) && ! isAbstract( ind.getIRI() ) ) {
-                            domKlasses.put( ind.getIRI().toString(), ind.getIRI().getFragment() );
-                        }
-                    }
-                }
-            } catch ( OWLOntologyCreationException e ) {
-                e.printStackTrace();
-            }
-            return domKlasses;
-
-        } else {
-            return domKlasses;
-        }
-    }
-
-    private boolean isAbstract( IRI iri ) {
-        //TODO hack!
-//        return iri.getFragment().endsWith( "Base" );
-        return false;
-    }
-
-    private boolean isDatatype( IRI iri ) {
-        //TODO hack!
-        return iri.getFragment().toUpperCase().equals( iri.getFragment() ) || iri.getFragment().contains( "." );
+        return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomKlasses();
     }
 
     @Override
     public Map<String, String> getDomainProperties() {
-        if ( domProptis == null ) {
-            domProptis = new HashMap<String,String>();
-            try {
-                OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-core.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/skos-ext.owl" ) );
-                manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/expr-core.owl" ) );
-                OWLOntology domain = manager.loadOntologyFromOntologyDocument( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/domain_models/domain-vmr.ofn" ) );
-                OWLDataFactory odf = domain.getOWLOntologyManager().getOWLDataFactory();
-                for ( OWLNamedIndividual ind : domain.getIndividualsInSignature() ) {
-                    if ( ind.getTypes( domain ).contains( odf.getOWLClass( IRI.create( "http://asu.edu/sharpc2b/ops#DomainProperty"  ) ) ) ) {
-                        Set<OWLIndividual> values = ind.getObjectPropertyValues( odf.getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#partOf" ) ), domain );
-                        for ( OWLIndividual val : values ) {
-                            if ( val.isNamed() && getDomainClasses().containsKey( ((OWLNamedIndividual) val ).getIRI().toString()) ) {
-                                domProptis.put( ind.getIRI().toString(), ( (OWLNamedIndividual) val ).getIRI().getFragment() + "::" + ind.getIRI().getFragment() );
-                            }
-                        }
-                    }
-                }
-            } catch ( OWLOntologyCreationException e ) {
-                e.printStackTrace();
-            }
-            return domProptis;
-
-        } else {
-            return domProptis;
+        Map<String,String> allProps = new HashMap<>(  );
+        for ( Map<String,String> props : DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis().values() ) {
+            allProps.putAll( props );
         }
+        return allProps;
     }
 
     @Override
     public Map<String, String> getDomainProperties( String klassId ) {
-        return Collections.emptyMap();
+        return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis().get( klassId );
+    }
+
+    @Override
+    public String getDomainClassHierarchyDescription() {
+        return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomainHierarchy();
     }
 
 
-
-
-
-
-
-
-
-
-
-
-    /**************************************************************************************************************************/
+/**************************************************************************************************************************/
     /* TEMPLATES */
     /**************************************************************************************************************************/
 
