@@ -99,8 +99,12 @@ angular.module('ruleApp.controllers', [])
         $scope.selectedCategories = [];
         $http.get('partials/standard/background/iso639-1.json').success(function(data) {
             $scope.isoLangs = data;
-            $scope.isoLang = $scope.isoLangs[39];
+            $scope.background = {};
+            $scope.background.isoLang = $scope.isoLangs[39];
         });
+        $scope.saveBackground = function(background) {
+        	console.log(background);
+        };
         $http.get('partials/standard/background/tag-cloud.json').success(function(data) {
             $scope.keyTerms = data;
             $scope.Categories = data;
@@ -309,7 +313,23 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
+<<<<<<< HEAD
 
+=======
+        $scope.tinymceOptions = {
+            menubar: false,
+            plugins: ["image spellchecker emoticons"],
+            toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons",
+            statusbar: false
+        };
+        $scope.saveDocumentation = function(documentation) {
+        	console.log(documentation);
+        };
+        $scope.rights = [{"Name":"Mayo Clinic",
+            "Type":"Company",
+            "Permissions":"Author"
+        }];
+>>>>>>> 2d22c1f... Updated the background information screen (adding individual save
         $scope.gridRight = {
             data: 'rights',
             enableRowSelection: false,

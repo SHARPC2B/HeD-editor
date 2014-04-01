@@ -11,29 +11,36 @@
 		</ul>
 	</div>
 </div>
-<div class="row-fluid">
-	<form class="form-inline span4">
-		<label>Artifact Name:</label>
-  		<input class="input-xlarge" type="text">
-  	</form>
-  	<form class="form-inline span4">
-  		<label>Language:</label>
-  		<select x-ng-model="isoLang" x-ng-options="il.name for il in isoLangs" class="input-xlarge"></select>
-  	</form>
-  	<form class="form-inline span4">
-  		<label>Artifact Type:</label>
-  		<select class="input-xlarge" >
-  			<option>Rule</option>
-  			<option>Order Set</option>
-  			<option>Documentation Template</option>
-  		</select>
-  	</form>
-</div>
-<div class="row-fluid">
-	<p>Describe this artifact in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
-	<textarea rows="5" class="span12"></textarea>
-</div>
 <accordion close-others="false">
+	<accordion-group is-open="true">
+        <accordion-heading>Background Information:</accordion-heading>
+        <div class="row-fluid">
+            <form class="form-inline span4">
+				<label>Artifact Name:</label>
+		  		<input class="input-xlarge" type="text" x-ng-model="background.Name" >
+		  	</form>
+		  	<form class="form-inline span4">
+		  		<label>Language:</label>
+		  		<select x-ng-model="background.isoLang" x-ng-options="il.name for il in isoLangs" class="input-xlarge"></select>
+		  	</form>
+		  	<form class="form-inline span4">
+		  		<label>Artifact Type:</label>
+		  		<select class="input-xlarge" x-ng-model="background.Type">
+		  			<option>Rule</option>
+		  			<option>Order Set</option>
+		  			<option>Documentation Template</option>
+		  		</select>
+		  	</form>
+        </div>
+        <div class="row-fluid">
+			<p>Describe this artifact in your own words. You should describe the consequences of the rule and the conditions necessary to cause those consequences.</p>
+			<textarea rows="5" class="span12" x-ng-model="background.Description"></textarea>
+		</div>
+		<div class="row-fluid">
+			<a href="" x-ng-click="saveBackground(background)" class="text-center offset5 span1"><i class="icon-save icon-3x"></i><br> Save</a>
+			<a href="" x-ng-click="background=''" class="text-center span1"><i class="icon-eraser icon-3x"></i><br> Clear</a>
+		</div>
+    </accordion-group>
     <accordion-group is-open="false">
         <accordion-heading>Key Terms:</accordion-heading>
         <div class="row-fluid">
@@ -373,10 +380,9 @@
     	<accordion-heading>
     		Documentation:<i class="pull-right icon-question-sign"></i>
         </accordion-heading>
-    	<textarea x-ui-tinymce="tinymceOptions" x-ng-model="tinymceModel" rows="15"></textarea>
+    	<textarea x-ui-tinymce="tinymceOptions" x-ng-model="documentation" rows="15"></textarea><br>
+    	<div class="row-fluid">
+			<a href="" x-ng-click="saveDocumentation(documentation)" class="text-center offset5 span2"><i class="icon-save icon-3x"></i><br> Save</a>
+		</div>
     </accordion-group>
 </accordion>
-<div class="row-fluid">
-	<a href="" class="text-center offset5 span1"><i class="icon-trash icon-5x"></i><br>Clear</a>
-	<a href="" class="text-center span1"><i class="icon-save icon-5x"></i><br>Save</a>
-</div>
