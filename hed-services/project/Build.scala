@@ -21,11 +21,13 @@ object ApplicationBuild extends Build {
     javaCore,
     javaEbean,
 
+    "com.clarkparsia" % "Empire-core" % "0.7.3-SHARP" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
 
-    "org.drools" % "drools-core" % "5.6.0-SNAPSHOT" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
+    "org.drools" % "drools-core" % "5.6.0.Final" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
+    "org.drools" % "drools-compiler" % "5.6.0.Final" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
 
-    "org.drools" % "drools-shapes-utilities" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("com.hp.hpl.jena", "jena") exclude("com.hp.hpl.jena", "arq") exclude("thewebsemantic","jenabean"),
-    "org.drools" % "drools-shapes-generator" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("thewebsemantic","jenabean"),
+    "org.drools" % "drools-shapes-utilities" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("com.hp.hpl.jena", "jena") exclude("com.hp.hpl.jena", "arq") exclude("thewebsemantic","jenabean") exclude("com.clarkparsia","Empire-core"),
+    "org.drools" % "drools-shapes-generator" % "0.5.6.Final" exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis") exclude("thewebsemantic","jenabean") exclude("com.clarkparsia","Empire-core"),
 
 
     // "com.google.gdata" % "core" % "1.47.1" exclude("xml-apis","xml-apis"),

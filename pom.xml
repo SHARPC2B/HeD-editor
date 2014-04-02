@@ -51,9 +51,6 @@
   <repositories>
 
     <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
       <id>scalasbt</id>
       <name>libs-releases</name>
       <url>http://scalasbt.artifactoryonline.com/scalasbt/libs-releases</url>
@@ -243,12 +240,12 @@
       <dependency>
         <groupId>com.clarkparsia</groupId>
         <artifactId>Empire-core</artifactId>
-        <version>0.7.3</version>
+        <version>0.7.3-SHARP</version>
       </dependency>
       <dependency>
         <groupId>com.clarkparsia</groupId>
         <artifactId>Empire-sesame2</artifactId>
-        <version>0.7.3</version>
+        <version>0.7.3-SHARP</version>
       </dependency>
 
       <dependency>
