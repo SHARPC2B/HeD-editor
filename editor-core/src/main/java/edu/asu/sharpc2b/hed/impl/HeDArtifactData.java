@@ -1,6 +1,11 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
+import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.prr.ComputerExecutableRule;
+import edu.asu.sharpc2b.prr.Expression;
+import edu.asu.sharpc2b.prr.ProductionRule;
+import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
@@ -32,6 +37,8 @@ public class HeDArtifactData {
             VersionedIdentifier vid = dok.getArtifactVersion().get( 0 );
             dok.getArtifactId().addAll( vid.getArtifactId() );
         }
+
+        cacheBlocklyExpressions( dok );
     }
 
     public HeDArtifactData() {
@@ -98,6 +105,26 @@ public class HeDArtifactData {
 
 
 
+
+    public void cacheBlocklyExpressions( HeDKnowledgeDocument dok ) {
+        for ( ComputerExecutableRule rule : dok.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    String name = expr.getName().get( 0 );
+
+                    if ( ! expr.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = expr.getVariableFilterExpression().get( 0 );
+                        if ( ! prrExpr.getBodyExpression().isEmpty() ) {
+                            SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
+
+                            blocklyExpressions.put( name, new HeDNamedExpression( prrExpr.getRdfId().toString(), name, BlocklyFactory.fromExpression( name, sharpExpression ) ) );
+                        }
+                    }
+
+                }
+            }
+        }
+    }
 
     public Map<String,String> getNamedExpressions() {
         HashMap<String,String> expressions = new HashMap<String,String>( blocklyExpressions.size() );
