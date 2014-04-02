@@ -9,7 +9,7 @@
   <metadata>
 
     <identifiers>
-      <identifier root="urn:www.usd.edu" version="1.0"/>
+      <identifier root="urn:www.usd.edu.diabetes" version="1.0"/>
     </identifiers>
     <artifactType value="Rule"/>
     <schemaIdentifier root="urn:www.hed.org/knowledgedocument" version="1.0"/>

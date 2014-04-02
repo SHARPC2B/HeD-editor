@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledgeDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../../../../editor-models/generated-models/src/main/resources/xsd/HeD/knowledgeartifact/knowledgedocument.xsd
+                                       urn:hl7-org:vmr:r2 ../../../../editor-models/generated-models/src/main/resources/xsd/vmr/vmr-clean.xsd
+                                       urn:hl7-org:cdsdt:r2 ../../../../editor-models/generated-models/src/main/resources/xsd/HeD/common/datatypes.xsd"
+                   xmlns="urn:hl7-org:knowledgeartifact:r1"
+                   xmlns:vmr="urn:hl7-org:vmr:r2"
+                   xmlns:dt="urn:hl7-org:cdsdt:r2">
+  <metadata>
+
+    <identifiers>
+      <identifier root="urn:www.usd.edu.diabetes1" version="1.0"/>
+    </identifiers>
+    <artifactType value="Rule"/>
+    <schemaIdentifier root="urn:www.hed.org/knowledgedocument" version="1.0"/>
+
+    <dataModels>
+      <modelReference>
+        <description value="HL7 Virtual Medical Record version 1.0"/>
+        <referencedModel value="urn:hl7-org:vmr:r2"/>
+      </modelReference>
+    </dataModels>
+
+    <title value="Hemoglobin A1c Lite"/>
+
+    <relatedResources>
+      <relatedResource>
+        <relationship value="AdaptedFrom"/>
+        <resources>
+          <resource>
+            <title value="Recommendation 1: Order HgbA1c Now (Overdue HgbA1c)"/>
+            <location
+                value="http://cdsportal.partners.org/transformXML.aspx?xmlFileName=CDSC-Diabetes-L3-PHS-2011-L3-7.0-090221fe8003f004.xml"/>
+            <description value="CDSC L3 Diabetes Mellitus Assessment Rule"/>
+          </resource>
+        </resources>
+      </relatedResource>
+    </relatedResources>
+
+    <applicability>
+      <coverage xsi:type="Coverage">
+        <focus value="ClinicalFocus"/>
+        <description value="Diabetes Mellitus"/>
+        <value code="73211009" codeSystem="2.16.840.1.113883.6.96"/>
+      </coverage>
+    </applicability>
+
+    <status value="Draft"/>
+
+    <contributions>
+      <contribution>
+        <contributor xsi:type="Person">
+          <contacts>
+            <contact value="mailto:aziz.boxwala@meliorix.com"/>
+          </contacts>
+          <name use="C">
+            <dt:part value="Aziz" type="GIV"/>
+            <dt:part value="Boxwala" type="FAM"/>
+          </name>
+          <affiliation>
+            <name value="Meliorix Inc."/>
+          </affiliation>
+        </contributor>
+        <role value="Author"/>
+      </contribution>
+    </contributions>
+
+  </metadata>
+
+	<externalData>
+		<def name="test">
+			<expression xsi:type="Today" />
+		</def>
+	</externalData>
+
+	<expressions>
+		<def name="foo">
+			<expression xsi:type="IntegerLiteral" value="3" />
+		</def>
+	</expressions>
+
+
+</knowledgeDocument>
