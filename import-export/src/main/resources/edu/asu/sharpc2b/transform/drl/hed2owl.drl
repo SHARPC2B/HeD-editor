@@ -51,7 +51,7 @@ end
 
 rule "Process KnowledgeDocument"
 when
-    $kd : KnowledgeDocument( $ext : externalData )
+    $kd : KnowledgeDocument( $ext : externalData != null )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual ex = helper.asIndividual( $ext );
@@ -356,15 +356,22 @@ then
 end
 
 
-rule "Interval Expr"
+rule "Interval Expr - Begin"
 when
-    $in : Interval( $b : begin, $e : end )
+    $in : Interval( $b : begin != null )
     Link( $in, $ind ; )
     Link( $b, $bind ; )
-    Link( $e, $eind ; )
 then
     insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $bind ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $bind ) );
+end
+
+rule "Interval Expr - End"
+when
+    $in : Interval( $e : end != null )
+    Link( $in, $ind ; )
+    Link( $e, $eind ; )
+then
     insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $eind ) );
     insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $eind ) );
 end
@@ -620,7 +627,9 @@ then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual dc = helper.asIndividual( $dc );
     insert( helper.assertObjectProperty( "meta:documentation", kd, dc ) );
-    insert( helper.assertDataProperty( "meta:content", dc, $dc.getContent().toString() ) );
+    if ( $dc.getContent() != null ) {
+        insert( helper.assertDataProperty( "meta:content", dc, $dc.getContent().toString() ) );
+    }
 end
 
 rule "KnowledgeDocument Related Resource"
@@ -716,14 +725,16 @@ end
 rule "KnowledgeDocument Applicability"
 when
     $kd : KnowledgeDocument( $app : metadata.applicability.coverages )
-    $cv : Coverage( this memberOf $app, $focus : focus.value, $descr : description.value, $val : value )
+    $cv : Coverage( this memberOf $app, $focus : focus.value, $descr : description, $val : value )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual cv = helper.asIndividual( $cv );
     insert( helper.assertType( cv, "meta:ClinicalCoverage" ) );
     insert( helper.assertObjectProperty( "meta:applicability", kd, cv ) );
     insert( helper.assertDataProperty( "meta:coverageType", cv, $focus ) );
-    insert( helper.assertDataProperty( "dcterms:description", cv, $descr ) );
+    if ( $descr != null ) {
+        insert( helper.assertDataProperty( "dcterms:description", cv, $descr.getValue() ) );
+    }
     helper.assertCD( drools, "meta:coveredConcept", cv, $val );
 end
 
@@ -766,7 +777,9 @@ then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
     OWLNamedIndividual ac = helper.asIndividual( $ac );
     insert( helper.assertType( ac, $ac instanceof Person ? "DUL:SocialPerson" : "DUL:Organization" ) );
-    insert( helper.assertObjectProperty( "meta:" + $role.toLowerCase(), kd, ac ) );
+    if ( $role != null ) {
+        insert( helper.assertObjectProperty( "meta:" + $role.toLowerCase(), kd, ac ) );
+    }
 end
 
 rule "KnowledgeDocument Publishers"
