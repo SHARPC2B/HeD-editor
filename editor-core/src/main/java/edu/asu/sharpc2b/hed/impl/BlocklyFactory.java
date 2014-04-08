@@ -2,7 +2,6 @@ package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfsClass;
 import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
-import edu.asu.sharpc2b.ops.IntegerLiteral;
 import edu.asu.sharpc2b.ops.IteratorExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops.Variable;
@@ -77,19 +76,6 @@ public class BlocklyFactory {
         if ( sharpExpression instanceof IteratorExpression ) {
             IteratorExpression iter = (IteratorExpression) sharpExpression;
             Variable v = iter.getIterator().get( 0 );
-        } else if ( sharpExpression instanceof IntegerLiteral ) {
-            IntegerLiteral lit = (IntegerLiteral) sharpExpression;
-            Element value = dox.createElement( "value" );
-                value.setAttribute( "name", "ARG_0" );
-                Element intg = dox.createElement( "block" );
-                intg.setAttribute( "type", "xsd:int" );
-                    Element fld = dox.createElement( "field" );
-                    fld.setAttribute( "name", "VALUE" );
-                    List values = lit.getHasAttribute().get( 0 ).getAttributeValue();
-                    fld.setTextContent( values.get( 0 ).toString() );
-                    intg.appendChild( fld );
-                value.appendChild( intg );
-            block.appendChild( value );
         }
 
         parent.appendChild( block );
