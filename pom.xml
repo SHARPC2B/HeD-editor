@@ -51,6 +51,10 @@
   <repositories>
 
     <repository>
+	    <snapshots>
+		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
+	    </snapshots>
       <id>scalasbt</id>
       <name>libs-releases</name>
       <url>http://scalasbt.artifactoryonline.com/scalasbt/libs-releases</url>
@@ -60,13 +64,14 @@
 	    <snapshots>
 		    <enabled>false</enabled>
 	    </snapshots>
-	  <id>Jenabean</id>
+	    <id>Jenabean</id>
       <url>http://jenabean.googlecode.com/svn/repo</url>
     </repository>
 
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
 	    </snapshots>      <!-- Pellet here -->
       <id>berkeleybop</id>
       <name>Berkeleybop</name>
@@ -84,6 +89,7 @@
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
       <id>EmpireRDF</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
@@ -92,6 +98,7 @@
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
@@ -100,6 +107,7 @@
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
 	  <id>aduna-repository</id>
       <url>http://repo.aduna-software.org/maven2/releases</url>
@@ -108,8 +116,9 @@
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
-	  <id>central</id>
+	    <id>central</id>
       <url>http://repo1.maven.org/maven2/</url>
     </repository>
 
