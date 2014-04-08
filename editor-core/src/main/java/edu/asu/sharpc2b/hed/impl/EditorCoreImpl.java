@@ -303,6 +303,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public Map<String, String> getDomainProperties( String klassId ) {
+        // TODO improve when multiple models are supported
+        if ( ! klassId.startsWith( DOMAIN_NS ) ) {
+            klassId = DOMAIN_NS + klassId;
+        }
         return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis().get( klassId );
     }
 

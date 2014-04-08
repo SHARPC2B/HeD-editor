@@ -556,15 +556,31 @@ angular.module('ruleApp.controllers', [])
             }
         };
         $scope.domainClasses = [];
+        $scope.domainProperties = [];
         $scope.addDomainClass = function(domainClass) {
-            $scope.domainClasses.push(domainClass);
-            Blockly.Blocks[domainClass] = {
-                init: function() {
-                    this.setColour(40);
-                    this.appendDummyInput().appendField(domainClass);
-                    this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainClass']);
-                }
-            };
+            if ( $scope.domainClasses.indexOf( domainClass ) < 0 ) {
+                $scope.domainClasses.push(domainClass);
+                $scope.domainProperties.push(domainClass);
+                Blockly.Blocks[domainClass] = {
+                    init: function() {
+                        this.setColour(40);
+                        this.appendDummyInput().appendField(domainClass);
+                        this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainClass']);
+                    }
+                };
+                Blockly.Blocks[domainClass + '/properties' ] = {
+                    helpUrl: 'http://www.example.com/',
+                    init: function() {
+                        this.setColour(40);
+                        this.appendDummyInput().appendField(domainClass);
+                        this.appendValueInput()
+                            .appendField(new Blockly.FieldDropdown( availableProperties( $http, $scope, domainClass ) ), "DomainProperty")
+                            .setCheck('http://asu.edu/sharpc2b/ops#DomainProperty');
+                        this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainProperty']);
+                        this.setTooltip('');
+                    }
+                };
+            }
         };
 
         $scope.select2DomainClasses = {
@@ -591,17 +607,6 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops#DomainPropertyExpression'] = {
-            helpUrl: 'http://www.example.com/',
-            init: function() {
-                this.setColour(40);
-                this.appendValueInput()
-                    .appendField(new Blockly.FieldDropdown( availableProperties( $http, $scope ) ), "DomainProperty")
-                    .setCheck('http://asu.edu/sharpc2b/ops#DomainProperty');
-                this.setOutput(true, ['http://asu.edu/sharpc2b/ops#DomainProperty']);
-                this.setTooltip('');
-            }
-        };
         Blockly.Blocks['logic_root'] = {
             helpUrl: 'http://www.example.com/',
             init: function() {
@@ -625,19 +630,6 @@ angular.module('ruleApp.controllers', [])
         	modalInstance.result.then(function(text) {
         		callback(text);
         	});
-        };
-
-        Blockly.Blocks['xsd:text'] = {
-        	init : function() {
-        		// Assign 'this' to a variable for use in the tooltip closure.
-        	    var thisBlock = this;
-        		this.setColour(152);
-        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
-        		this.setOutput(true, 'xsd:string');
-        		this.setTooltip(function() {
-        			return thisBlock.getFieldValue('TEXT');
-        		});
-        	}
         };
 
         var radius = 566,
@@ -1481,13 +1473,12 @@ function availableExpressions( httpContext, initMessage ) {
     return map;
 }
 
-function availableProperties( httpContext, $scope ) {
+function availableProperties( httpContext, $scope, domainClass ) {
     var pmap = [ ["(Choose Property...)", "" ] ];
 
     httpContext({
         method : 'GET',
-        url : serviceUrl + '/domain/properties',
-        data : $scope.domainClasses
+        url : serviceUrl + '/domain/properties/' + domainClass
     }).success(function(data) {
         var properties = data;
         for ( var j = 0; j < properties.length; j++ ) {

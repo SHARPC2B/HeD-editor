@@ -77,6 +77,7 @@ public class EditorCoreTest {
     }
 
     @Test
+    @Ignore
     public void testImportExpressions() throws Exception {
         Logger.getRootLogger().removeAllAppenders();
         Logger.getRootLogger().addAppender(new NullAppender());

@@ -62,7 +62,7 @@ public class DomainModelActions extends Controller {
         return ok( jsonOut );
     }
 
-    public static Result getAvailablePropertiesForKlass( String klass ) {
+    public static Result getAvailablePropertiesForKlass(String klass) {
         Map<String,String> domainClasses = ModelHome.getDomainProperties( klass );
 
         List<NamedConcept> expressions = new ArrayList<NamedConcept>();

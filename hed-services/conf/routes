@@ -48,7 +48,7 @@ OPTIONS        /rule/expressions/*path                    controllers.Expression
 GET            /domain/hierarchy                          controllers.DomainModelActions.getDomainClassHierarchyDescr()
 GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()
 GET            /domain/properties                         controllers.DomainModelActions.getAvailableProperties()
-GET            /domain/properties/:klass                  controllers.DomainModelActions.getAvailablePropertiesForKlass(klass)
+GET            /domain/properties/:klass                  controllers.DomainModelActions.getAvailablePropertiesForKlass(klass:String)
 
 
 ########################################################

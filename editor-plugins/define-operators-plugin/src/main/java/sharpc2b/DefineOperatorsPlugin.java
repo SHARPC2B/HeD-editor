@@ -1,11 +1,9 @@
 package sharpc2b;
 
 import edu.asu.sharpc2b.transform.BlocklyGenerator;
-import edu.asu.sharpc2b.transform.SharpLiterals;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.FileDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
@@ -16,7 +14,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import edu.asu.sharpc2b.transform.IriUtil;
 import edu.asu.sharpc2b.transform.OwlUtil;
@@ -24,8 +21,7 @@ import edu.asu.sharpc2b.transform.SharpOperators;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
+import java.net.URISyntaxException;
 
 /**
  * Goal
@@ -86,6 +82,14 @@ public class DefineOperatorsPlugin
      */
     private File alternateResourceDir;
 
+    /**
+     * The plugin can pre-generate the spreadsheet containing the operators (SPREADSHEET)
+     * OR
+     * can generate the operator ontology (ONTOLOGY)
+     * The latter is the default;
+     */
+    private String generationTarget;
+
     //=====================================================================================================
     // Maven parameter Getters and Setters
     //=====================================================================================================
@@ -141,16 +145,26 @@ public class DefineOperatorsPlugin
         this.hedSourceOntologyPath = hedSourceOntologyPath;
     }
 
+    public String getGenerationTarget() {
+        return generationTarget;
+    }
+
+    public void setGenerationTarget( String generationTarget ) {
+        this.generationTarget = generationTarget;
+    }
+
+    public void setAlternateResourceDir( File alternateResourceDir ) {
+        this.alternateResourceDir = alternateResourceDir;
+    }
+
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
         final SharpOperators converter;
-        final SharpLiterals literalProcessor;
 
         final OWLOntologyManager oom;
         final PrefixOWLOntologyFormat oFormat;
 
-//        OWLOntology ontT;
         final OWLOntology operatorOntology;
         OWLOntology hedOntology = null;
 
@@ -166,9 +180,6 @@ public class DefineOperatorsPlugin
         InputStream stream0 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" );
         InputStream stream1 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" );
         InputStream stream2 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" );
-        System.out.println( stream0 );
-        System.out.println( stream1 );
-        System.out.println( stream2 );
 
         OWLOntologyDocumentSource s0 = new StreamDocumentSource( stream0 );
         OWLOntologyDocumentSource s1 = new StreamDocumentSource( stream1 );
@@ -184,10 +195,6 @@ public class DefineOperatorsPlugin
             e.printStackTrace();
         }
 
-
-        PrefixManager pm;
-
-        OWLOntology ontology;
         try {
             oom.loadOntologyFromOntologyDocument( s0, config );
             oom.loadOntologyFromOntologyDocument( s1, config );
@@ -202,12 +209,9 @@ public class DefineOperatorsPlugin
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
         oFormat.setPrefix( "a:", operatorOntology.getOntologyID().getOntologyIRI().toString() + "#" );
 
+        converter = new SharpOperators( );
+        converter.addSharpOperators( operatorDefinitionFile, hedOntology, operatorOntology, getGenerationTarget() );
 
-        converter = new SharpOperators();
-        converter.addSharpOperators( operatorDefinitionFile, operatorOntology );
-
-        literalProcessor = new SharpLiterals();
-        literalProcessor.addSharpLiteralExpressions( hedOntology, operatorOntology );
 
         try
         {
@@ -221,9 +225,7 @@ public class DefineOperatorsPlugin
         }
 
 
-
         BlocklyGenerator blockly = new BlocklyGenerator();
-
         blockly.processOperators( outputBlocklyDir, operatorOntology );
     }
 
@@ -231,15 +233,21 @@ public class DefineOperatorsPlugin
 
 
 
-
-    public static void main( String... args ) throws MojoFailureException, MojoExecutionException {
+    /*
+        For testing purposes only. The real invocation is done through maven configuration, which uses
+        paths relative to the build directory.
+     */
+    public static void main( String... args ) throws MojoFailureException, MojoExecutionException, URISyntaxException {
         DefineOperatorsPlugin def = new DefineOperatorsPlugin();
 
         def.setHedSourceOntologyPath( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/knowledgedocument.xsd.ttl" );
         def.setOperatorDefinitionFile( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/src/main/resources/SharpOperators.xlsx" ) );
         def.setOutputOntologyIriString( "http://asu.edu/sharpc2b/ops-set" );
+
         def.setOutputBlocklyDir( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/blockly" ) );
         def.setOutputOntologyFile( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/ontologies/editor_models/sharp_operators.ofn" ) );
+
+        def.setGenerationTarget( "ONTOLOGY" );
 
         def.execute();
     }

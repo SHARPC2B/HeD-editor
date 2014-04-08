@@ -1,6 +1,8 @@
 package edu.asu.sharpc2b.transform;
 
+import com.hp.hpl.jena.sparql.function.library.max;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -10,39 +12,54 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.FileDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataHasValue;
+import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
+import org.semanticweb.owlapi.model.OWLDataMinCardinality;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * User: rk
  */
-    public class SharpOperators
-{
+public class SharpOperators {
 
-//    static final File defaultExcelFile = FileUtil
-//            .getFileInProjectDir( "/model-transform/src/main/resources/SharpOperators.xlsx" );
-
+    public static enum CompilationTarget { SPREADSHEET, ONTOLOGY }
 
     static String typesBaseIRI = IriUtil.sharpEditorIRI( "ops" ).toString() + "#";
 
@@ -52,14 +69,17 @@ import java.util.Set;
 
     static Map<String, IRI> typeExpressionNameMap = new HashMap<String, IRI>();
 
+    private static Map<String, String> primitiveTypeMap = new HashMap<>();
+
     static
     {
         initTypeNameMap();
         initTypeNameIriMap();
         initTypeExpressionNameMap();
+        initPrimitiveTypeMap();
     }
 
-    static final int ARITY_NARY = -2;
+    static final int ARITY_NARY = Integer.MAX_VALUE;
 
     static final int ARITY_LIST = -1;
 
@@ -85,16 +105,310 @@ import java.util.Set;
 
     //===============================================================================================
 
-    public SharpOperators ()
-    {
+    public SharpOperators () {
         super();
     }
 
     //===============================================================================================
 
+    public void addSharpOperators( File operatorDefinitionFile, OWLOntology hedOntology, OWLOntology operatorOntology, String generationTarget ) {
+        CompilationTarget target = generationTarget != null ? CompilationTarget.valueOf( generationTarget.toUpperCase() ) : CompilationTarget.ONTOLOGY;
+        switch ( target ) {
+            case SPREADSHEET:
+                prepareSharpOperators( operatorDefinitionFile, hedOntology );
+                break;
+            case ONTOLOGY:
+            default:
+                addSharpOperators( operatorDefinitionFile, operatorOntology );
+                break;
+        }
+    }
+
+
+
+
+
+    /*******************************************************************************************************************************************/
+
+
+
+
+
+    private void prepareSharpOperators( File operatorDefinitionFile, OWLOntology hedOntology ) {
+        OWLDataFactory factory = hedOntology.getOWLOntologyManager().getOWLDataFactory();
+        OWLClass root = factory.getOWLClass( IRI.create( "urn:hl7-org:knowledgeartifact:r1#Expression" ) );
+
+        List<ExprInfo> expressions = new ArrayList<ExprInfo>();
+        prepareExpressionType( root, root, hedOntology, expressions  );
+
+        try {
+            FileInputStream fis = new FileInputStream( operatorDefinitionFile );
+            Workbook workbook = WorkbookFactory.create( fis );
+            Sheet blank = workbook.getSheet( "Operand_Blank" );
+            if ( blank != null ) {
+                workbook.removeSheetAt( workbook.getSheetIndex( blank ) );
+            }
+            blank = workbook.createSheet( "Operand_Blank" );
+
+            fillOperators( blank, expressions );
+
+            workbook.write( new FileOutputStream( operatorDefinitionFile ) );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    private void fillOperators( Sheet blank, List<ExprInfo> expressions ) {
+        int maxArgs = 0;
+        for ( ExprInfo xp : expressions ) {
+            maxArgs = Math.max( maxArgs, xp.operands.size() );
+        }
+        createHeader( blank, maxArgs );
+        int j = 1;
+        for ( ExprInfo xp : expressions ) {
+            Row row = blank.createRow( j++ );
+
+            row.createCell( 0 ).setCellValue( xp.opName );
+            row.createCell( 1 ).setCellValue( xp.arity );
+            int xtraCounter = 0;
+            for ( OpInfo op : xp.operands ) {
+                if ( ! "operand".equals( op.name ) ) {
+                    row.createCell( 6 + ( 2 * xtraCounter ) ).setCellValue( op.name );
+                    if ( ! "Expression".equals( op.type ) ) {
+                        row.createCell( 7 + ( 2 * xtraCounter ) ).setCellValue( op.type );
+                    }
+                    xtraCounter++;
+                }
+
+            }
+        }
+    }
+
+    private void createHeader( Sheet blank, int maxArgs ) {
+        Row header = blank.createRow( 0 );
+
+        Cell ops = header.createCell( 0 );
+        ops.setCellValue( "operator" );
+        Cell nargs = header.createCell( 1 );
+        nargs.setCellValue( "nArgs" );
+        Cell res = header.createCell( 2 );
+        res.setCellValue( "resultType" );
+        Cell op1 = header.createCell( 3 );
+        op1.setCellValue( "operand1Type" );
+        Cell op2 = header.createCell( 4 );
+        op2.setCellValue( "operand2Type" );
+        Cell op3 = header.createCell( 5 );
+        op3.setCellValue( "operand3Type" );
+        Cell multi = header.createCell( 6 );
+        multi.setCellValue( "multiField" );
+        for ( int j = 0; j < maxArgs; j++ ) {
+            Cell xop = header.createCell( 8 + ( 2 * j ) );
+            xop.setCellValue( "extraOpName" );
+            Cell xopT = header.createCell( 9 + ( 2 * j ) );
+            xopT.setCellValue( "extraOpType" );
+        }
+    }
+
+    private void prepareExpressionType( OWLClass klass, OWLClass root, OWLOntology hedOntology, List<ExprInfo> expressions ) {
+        boolean concrete = ! hasSubTypes( klass, hedOntology );
+        if ( ! concrete ) {
+            for ( OWLSubClassOfAxiom sub : hedOntology.getSubClassAxiomsForSuperClass( klass ) ) {
+                if ( ! sub.getSubClass().isAnonymous() ) {
+                    OWLClass subKlass = sub.getSubClass().asOWLClass();
+                    prepareExpressionType( subKlass, root, hedOntology, expressions );
+                }
+            }
+        } else {
+            ExprInfo expr = new ExprInfo();
+            expr.opName = klass.asOWLClass().getIRI().getFragment();
+            if ( isLiteral( klass ) ) {
+                expressions.add( 0, expr );
+            } else {
+                expressions.add( expr );
+            }
+
+            Set<OWLClassExpression> descriptors = gatherParentInfo( klass, root, hedOntology );
+
+            for ( OWLClassExpression info : descriptors ) {
+                extractOperandInfo( info, expr, hedOntology );
+            }
+
+        }
+    }
+
+    private void extractOperandInfo( OWLClassExpression info, ExprInfo expr, OWLOntology hedOntology ) {
+
+        boolean isNary = false;
+        if ( info instanceof OWLObjectIntersectionOf ) {
+            OWLObjectIntersectionOf intersectionOf = (OWLObjectIntersectionOf) info;
+            for ( OWLClassExpression atom : intersectionOf.asConjunctSet() ) {
+                OpInfo op = new OpInfo();
+                if ( atom instanceof OWLObjectAllValuesFrom ) {
+                    OWLObjectAllValuesFrom obj = (OWLObjectAllValuesFrom) atom;
+                    op.name = obj.getProperty().asOWLObjectProperty().getIRI().getFragment();
+
+                    OWLClassExpression range;
+                        range = obj.getFiller();
+                        op.type = adaptType( range.asOWLClass().getIRI(), hedOntology.getOntologyID().getOntologyIRI() );
+                    expr.operands.add( 0, op );
+
+                    if ( op.name.equals( "operand" ) ) {
+                        isNary = true;
+                        for ( OWLClassExpression inner : intersectionOf.asConjunctSet() ) {
+                            if (inner instanceof OWLObjectMinCardinality ) {
+                                // assume there is only one "arity" axiom
+                                expr.arity = ((OWLObjectMinCardinality) inner).getCardinality();
+                            } else if ( inner instanceof OWLObjectMaxCardinality ) {
+                                isNary = false;
+                            }
+                        }
+                    }
+                } else if ( atom instanceof OWLDataAllValuesFrom ) {
+                    OWLDataAllValuesFrom data = (OWLDataAllValuesFrom) atom;
+                    op.name = data.getProperty().asOWLDataProperty().getIRI().getFragment();
+
+                    OWLDataRange range;
+                    try {
+                        range = data.getFiller();
+                        op.type = adaptType( range.asOWLDatatype().getIRI(), hedOntology.getOntologyID().getOntologyIRI() );
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                    }
+                    expr.operands.add( op );
+                } else if ( atom instanceof OWLDataMaxCardinality || atom instanceof OWLObjectMaxCardinality ) {
+                    isNary = false;
+                }
+            }
+        }
+        if ( isNary ) {
+            expr.arity = Integer.MAX_VALUE;
+        }
+        if ( ! expr.operands.isEmpty() && expr.arity == 0 ) {
+            expr.arity = -1;
+        }
+        if ( expr.opName.contains( "Literal" ) ) {
+            expr.arity = -99;
+        }
+    }
+
+    private String adaptType( IRI propType, IRI ontologyIRI ) {
+
+        if ( "http://www.w3.org/2001/XMLSchema#".equals( propType.getNamespace() ) ) {
+            return "xsd:" + propType.getFragment();
+        } else if ( ( ontologyIRI.toString() + "#" ).equals( propType.getNamespace() ) ) {
+            return propType.getFragment();
+        } else {
+                String fragment = propType.getFragment();
+                String chosenType = primitiveTypeMap.get( fragment );
+                if ( chosenType != null ) {
+                    return chosenType;
+                } else {
+                    System.out.println( "TODO Map primitive type " + propType );
+                    return "xsd:string";
+                }
+
+        }
+
+    }
+
+
+    private Set<OWLClassExpression> gatherParentInfo( OWLClass klass, OWLClass root, OWLOntology hedOntology ) {
+        Set<OWLClassExpression> supers = new HashSet<OWLClassExpression>();
+        for ( OWLSubClassOfAxiom info : hedOntology.getSubClassAxiomsForSubClass( klass ) ) {
+            OWLClassExpression sup = info.getSuperClass();
+            if ( sup.isAnonymous() ) {
+                supers.add( sup );
+            } else {
+                if ( ! sup.asOWLClass().getIRI().equals( root.getIRI() ) ) {
+                    supers.addAll( gatherParentInfo( sup.asOWLClass(), root, hedOntology ) );
+                }
+            }
+        }
+        return supers;
+    }
+
+    private boolean hasSubTypes( OWLClass klass, OWLOntology hedOntology ) {
+        for ( OWLSubClassOfAxiom sub : hedOntology.getSubClassAxiomsForSuperClass( klass ) ) {
+            if ( ! sub.getSubClass().isAnonymous() ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isLiteral( OWLClassExpression owlClass ) {
+        if ( ! owlClass.isAnonymous() ) {
+            return owlClass.asOWLClass().getIRI().toString().endsWith( "LiteralExpression" );
+        }
+        return false;
+    }
+
+    private static class ExprInfo {
+        public int arity = 0;
+        public String opName;
+        public List<OpInfo> operands = new ArrayList<OpInfo>();
+
+        public String toString() {
+            String s = opName + "\t" + arity + "\t";
+            for ( OpInfo op : operands ) {
+                s += op.name + "\t" + op.type + "\t";
+            }
+            s += "\n";
+            return s;
+        }
+    }
+
+    private static class OpInfo {
+        public String name = "operand";
+        public String type;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*******************************************************************************************************************************************/
+
+
+    private Map<String,PropertyInfo> extraProperties = new HashMap<String, PropertyInfo>(  );
+    private int extensionColumn = 8;
+
+    private static class PropertyInfo {
+        public Set<IRI> domains = new HashSet<IRI>();
+        public IRI name;
+        public IRI range;
+        public Boolean object;
+
+        public String toString() {
+            String s = name.getFragment() + " {";
+            for ( IRI d : domains ) {
+                s += d.getFragment() + " ";
+            }
+            s += "} --> " + range.getFragment();
+            return s;
+        }
+    }
+
+
+
+
     public void addSharpOperators (final File excelFile,
-                                   final OWLOntology ontology)
-    {
+                                   final OWLOntology ontology) {
         this.ont = ontology;
         setupOntologyManager( ont );
         addImports();
@@ -115,6 +429,14 @@ import java.util.Set;
 
         /* skip the first row -- contains column names */
 
+
+
+        for (int rowNum = 1; rowNum <= lastRowNum; rowNum++) {
+            discoverExtraProperties( sheet, sheet.getRow( rowNum ), ontology.getOntologyID().getOntologyIRI() );
+        }
+
+        declareExtraProperties( extraProperties, ontology );
+
         for (int rowNum = 1; rowNum <= lastRowNum; rowNum++)
         {
             Row row = sheet.getRow( rowNum );
@@ -134,12 +456,117 @@ import java.util.Set;
             }
 
             boolean overloadedName = operatorName.equals( lastOperatorName ) ||
-                    operatorName.equals( nextOperatorName );
+                                     operatorName.equals( nextOperatorName );
 
             processOneRow( row, overloadedName );
 
             /* setup for next iteration */
             lastOperatorName = operatorName;
+        }
+    }
+
+    private void declareExtraProperties( Map<String, PropertyInfo> extraProperties, OWLOntology ontology ) {
+        OWLDataFactory factory = ontology.getOWLOntologyManager().getOWLDataFactory();
+        for ( PropertyInfo info : extraProperties.values() ) {
+            OWLProperty property;
+            if ( info.object ) {
+                property = factory.getOWLObjectProperty( info.name );
+            } else {
+                property = factory.getOWLDataProperty( info.name );
+            }
+
+            OWLClassExpression domain;
+            if ( info.domains.size() == 1 ) {
+                domain = factory.getOWLClass( info.domains.iterator().next() );
+            } else {
+                // need to do this explicitly here, because the reasoner may not try to process this due to efficiency constraints
+                Set<OWLClassExpression> doms = new HashSet<OWLClassExpression>();
+                for ( IRI d : info.domains ) {
+                    doms.add( factory.getOWLClass( d ) );
+                }
+
+                domain = factory.getOWLClass( outputIRI( info.name.getFragment().substring( 0, 1 ).toUpperCase() + info.name.getFragment().substring( 1 ) + "Domain" ) );
+                addAxiom( factory.getOWLEquivalentClassesAxiom( domain, factory.getOWLObjectUnionOf( doms ) ) );
+                for ( OWLClassExpression klass : doms ) {
+                    addAxiom( factory.getOWLSubClassOfAxiom( klass, domain ) );
+                }
+            }
+
+            OWLClassExpression range = factory.getOWLClass( info.range );
+
+
+            addAxiom( factory.getOWLDeclarationAxiom( property ) );
+            if ( info.object ) {
+                addAxiom( factory.getOWLObjectPropertyDomainAxiom( (OWLObjectPropertyExpression) property, domain ) );
+                addAxiom( factory.getOWLObjectPropertyRangeAxiom( (OWLObjectPropertyExpression) property, range ) );
+            } else {
+                addAxiom( factory.getOWLDataPropertyDomainAxiom( (OWLDataProperty) property, domain ) );
+                IRI rangeIri = info.range;
+                if ( rangeIri.toString().startsWith( "xsd:" ) ) {
+                    // hack: using the short form
+                    rangeIri = IRI.create( "http://www.w3.org/2001/XMLSchema#" + rangeIri.getFragment() );
+                }
+                addAxiom( factory.getOWLDataPropertyRangeAxiom( (OWLDataProperty) property, factory.getOWLDatatype( rangeIri) ) );
+            }
+        }
+    }
+
+    private void discoverExtraProperties( Sheet sheet, Row row, IRI ontoIri ) {
+        String operationName = row.getCell( 0 ).getStringCellValue() + "Expression";
+        for ( int j = extensionColumn; j < 50; j = j + 2 ) {
+            if ( row.getCell( j ) == null ) {
+                return;
+            }
+            String propName = row.getCell( j ).getStringCellValue();
+            String propType = row.getCell( j + 1 ).getStringCellValue();
+            if ( propName != null ) {
+                PropertyInfo info = extraProperties.get( propName );
+                if ( info == null ) {
+                    info = new PropertyInfo();
+                }
+
+                IRI ranIri;
+                boolean isObject;
+                if ( propType.startsWith( "xsd:" ) ) {
+                    ranIri = IRI.create( "http://www.w3.org/2001/XMLSchema#" + propType.substring( 4 ) );
+                    isObject = false;
+                } else {
+                    boolean found = false;
+                    if ( propType.contains( "Literal" ) ) {
+                        for ( int k = 0; k < sheet.getLastRowNum(); k++ ) {
+                            if ( propType.equals(  sheet.getRow( k ).getCell( 0 ).getStringCellValue() ) ) {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    ranIri = found ? outputIRI( propType + "Expression" ) : IriUtil.opsIRI( propType + "Expression" );
+                    isObject = true;
+                }
+
+
+                boolean needsOverride = ( "source".equals( propName )           //HACK to resolve a conflict
+                                          || info.object != null && info.object.booleanValue() != isObject )
+                                          || ( info.range != null && ! info.range.equals( ranIri ) );
+                if ( needsOverride ) {
+                    // the property already exists, but with a different type. We need to move up
+                    propName = propName + "_" + ranIri.getFragment().replace( "Expression", "" );
+                    if ( ! extraProperties.containsKey( propName ) ) {
+                        info = new PropertyInfo();
+                    } else {
+                        info = extraProperties.get( propName );
+                    }
+                }
+
+                info.object = isObject;
+                info.range = ranIri;
+                info.name = outputIRI( propName );
+                info.domains.add( outputIRI( operationName ) );
+
+                if ( ! extraProperties.containsKey( propName ) ) {
+                    extraProperties.put( propName, info );
+                }
+            }
         }
     }
 
@@ -156,46 +583,17 @@ import java.util.Set;
         int colOperand3Type = i++;
 
         String opNameFromConfig = row.getCell( colOperatorName ).getStringCellValue();
-//            String numArgs = row.getCell( colNumArgs ).getStringCellValue();
-        String numArgs = row.getCell( colNumArgs ).toString();
+        //TODO move int to ENUM Arity
+        int arity = (int) row.getCell( colNumArgs ).getNumericCellValue();
         String resultTypeName = row.getCell( colResultType ).getStringCellValue();
-        String op1TypeName = row.getCell( colOperand1Type ).getStringCellValue();
 
-        boolean isNary = numArgs.equals( "n" );
-        boolean isListArg = numArgs.equals( "a" );
-        boolean hasArity = !(isNary || isListArg);
-
-        int arity;
-        {
-            if (numArgs.equals( "n" ))
-            {
-                arity = -1;
-            }
-            else if (numArgs.equals( "a" ))
-            {
-                arity = -1;
-            }
-            else if (numArgs.equals( "1.0" ))
-            {
-                arity = 1;
-            }
-            else if (numArgs.equals( "2.0" ))
-            {
-                arity = 2;
-            }
-            else if (numArgs.equals( "3.0" ))
-            {
-                arity = 3;
-            }
-            else
-            {
-                throw new RuntimeException( "Encountered bad value for number of operands: " + numArgs );
-            }
-        }
 
             /* only needed for arity = 2 or 3 */
-        String op2TypeName = 2 <= arity ? row.getCell( colOperand2Type ).getStringCellValue() : null;
-        String op3TypeName = 3 <= arity ? row.getCell( colOperand3Type ).getStringCellValue() : null;
+
+        String op1TypeName = 1 <= arity ? row.getCell( colOperand1Type ).getStringCellValue() : null;
+        String op2TypeName = 2 <= arity && arity < Integer.MAX_VALUE ? row.getCell( colOperand2Type ).getStringCellValue() : null;
+        String op3TypeName = 3 <= arity && arity < Integer.MAX_VALUE ? row.getCell( colOperand3Type ).getStringCellValue() : null;
+
 
             /* At this point, have all the values from the spreadsheet row. */
 
@@ -209,12 +607,20 @@ import java.util.Set;
         final String opName;
         opName = isOverloadedName ? (opNameFromConfig + typeNameMap.get( op1TypeName )) : opNameFromConfig;
 
-        defineOperatorIndividual( opName, opNameFromConfig, resultTypeName, arity, op1TypeName, op2TypeName,
-                                  op3TypeName );
+        if ( opName.contains( "Literal" ) ) {
+            defineLiteralIndividual( opName, resultTypeName );
+        } else {
+            defineOperatorIndividual( opName, opNameFromConfig, resultTypeName, arity, op1TypeName, op2TypeName,
+                                      op3TypeName );
+        }
 
 
-        defineOperatorExpressionClass( opName, opNameFromConfig, resultTypeName, arity, op1TypeName,
-                                       op2TypeName, op3TypeName );
+        defineOperatorExpressionClass( opName, opNameFromConfig, resultTypeName, arity,
+                                       op1TypeName, op2TypeName, op3TypeName, row );
+    }
+
+    private void defineLiteralIndividual( String opName, String resultTypeName ) {
+        OWLNamedIndividual literal = odf.getOWLNamedIndividual( outputIRI( opName ) );
     }
 
     /**
@@ -233,7 +639,7 @@ import java.util.Set;
         OWLNamedIndividual operator = odf.getOWLNamedIndividual( outputIRI( opName ) );
         OWLNamedIndividual operatorRepresentation = odf.getOWLNamedIndividual( outputIRI( opName + "Code" ) );
         OWLNamedIndividual resultType = getOpsTypeIndividual( resultTypeName );
-        OWLNamedIndividual operand1Type = getOpsTypeIndividual( op1TypeName );
+        OWLNamedIndividual operand1Type = 1 <= arity ? getOpsTypeIndividual( op1TypeName ) : null;
         OWLNamedIndividual operand2Type = 2 <= arity ? getOpsTypeIndividual( op2TypeName ) : null;
         OWLNamedIndividual operand3Type = 3 <= arity ? getOpsTypeIndividual( op3TypeName ) : null;
 
@@ -264,7 +670,7 @@ import java.util.Set;
             /* assert operator return Type */
         OWLObjectProperty resultTypeRelationship = odf
                 .getOWLObjectProperty(  IriUtil.opsIRI( "evaluatesAs" ) );
-        addAxiom( odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType ) );
+            addAxiom( odf.getOWLObjectPropertyAssertionAxiom( resultTypeRelationship, operator, resultType ) );
 
         assertOperandTypes( arity, operator, operand1Type, operand2Type, operand3Type );
 
@@ -273,13 +679,14 @@ import java.util.Set;
     /**
      * Create Expression Class
      */
-    private void defineOperatorExpressionClass (final String opName,
+    private void defineOperatorExpressionClass( final String opName,
                                                 final String opNameFromConfig,
                                                 final String resultTypeName,
                                                 final int arity,
                                                 final String op1TypeName,
                                                 final String op2TypeName,
-                                                final String op3TypeName)
+                                                final String op3TypeName,
+                                                final Row row )
     {
 //        final String opNameFromConfig = ; final boolean nary = ; final boolean listArg = ;
 //
@@ -317,7 +724,12 @@ import java.util.Set;
             OWLObjectProperty hasOperand2 = odf.getOWLObjectProperty( IriUtil.opsIRI( "secondOperand" ) );
             OWLObjectProperty hasOperand3 = odf.getOWLObjectProperty( IriUtil.opsIRI( "thirdOperand" ) );
 
-            OWLClass masterParent = odf.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) );
+            OWLClass masterParent;
+            if ( isLiteral( exprClass ) ) {
+                masterParent = odf.getOWLClass( IriUtil.opsIRI( "PrimitiveExpression" ) );
+            } else {
+                masterParent = odf.getOWLClass( IriUtil.opsIRI( "OperatorExpression" ) );
+            }
 
             addAxiom( odf.getOWLSubClassOfAxiom( exprClass, masterParent ) );
 
@@ -325,57 +737,59 @@ import java.util.Set;
             requirements.add( masterParent );
 //            requirements.add( odf.getOWLObjectHasValue( hasOperator, operator ) );
 
-                /* AND has operator with the specified skos:notation */
-            OWLDataProperty skosNotation = odf
-                    .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
-            OWLObjectProperty denotedBy = odf
-                    .getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#conceptDenotedBy" ) );
-            OWLObjectProperty opCode = odf
-                    .getOWLObjectProperty(  IriUtil.opsIRI( "opCode" ) );
+            /*  even "literals" are treated in the same way
+            if ( ! isLiteral( exprClass ) ) {
+            */
+                OWLDataProperty skosNotation = odf
+                        .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+                OWLObjectProperty denotedBy = odf
+                        .getOWLObjectProperty( IRI.create( "http://asu.edu/sharpc2b/skos-ext#conceptDenotedBy" ) );
+                OWLObjectProperty opCode = odf
+                        .getOWLObjectProperty(  IriUtil.opsIRI( "opCode" ) );
 
-            OWLObjectIntersectionOf operatorCodeRestr = odf.getOWLObjectIntersectionOf( odf.getOWLClass( IriUtil.opsIRI( "OperatorConceptCode" ) ),
-                                                                                        odf.getOWLDataHasValue( skosNotation,
-                                                                                                                odf.getOWLLiteral( opName ) ) );
+                OWLObjectIntersectionOf operatorCodeRestr = odf.getOWLObjectIntersectionOf( odf.getOWLClass( IriUtil.opsIRI( "OperatorConceptCode" ) ),
+                                                                                            odf.getOWLDataHasValue( skosNotation,
+                                                                                                                    odf.getOWLLiteral( opName ) ) );
 
-            requirements.add( odf.getOWLObjectSomeValuesFrom( opCode, operatorCodeRestr ) );
+                requirements.add( odf.getOWLObjectSomeValuesFrom( opCode, operatorCodeRestr ) );
 
-            closures.add( odf.getOWLObjectAllValuesFrom( opCode, operatorCodeRestr ) );
+                closures.add( odf.getOWLObjectAllValuesFrom( opCode, operatorCodeRestr ) );
+  /*
+            } else {
+                OWLDataProperty skosNotation = odf
+                        .getOWLDataProperty( IRI.create( "http://www.w3.org/2004/02/skos/core#notation" ) );
+                OWLObjectProperty opCode = odf
+                        .getOWLObjectProperty( IriUtil.opsIRI( "opCode" ) );
 
+                OWLObjectIntersectionOf operatorCodeRestr = odf.getOWLObjectIntersectionOf( odf.getOWLClass( IriUtil.opsIRI( "OperatorConceptCode" ) ),
+                                                                                            odf.getOWLDataHasValue( skosNotation,
+                                                                                                                    odf.getOWLLiteral( opName ) ) );
+                requirements.add( odf.getOWLObjectSomeValuesFrom( opCode, operatorCodeRestr ) );
+                closures.add( odf.getOWLObjectAllValuesFrom( opCode, operatorCodeRestr ) );
+            }
+  */
                 /* AND if n-Ary, all operands are of a particular type, and at least one. */
 
             boolean nary = arity == ARITY_NARY;
-            boolean listArg = arity == ARITY_LIST;
-            boolean hasArity = arity >= ARITY_NULLARY;
 
-            if (nary)
-            {
-                requirements.add( odf.getOWLObjectAllValuesFrom( hasOperand,
+
+
+            if (nary) {
+                closures.add( odf.getOWLObjectAllValuesFrom( hasOperand,
                                                                  getExpressionTypeClass( op1TypeName ) ) );
                 requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand,
                                                                   getExpressionTypeClass( op1TypeName ) ) );
-            }
-
+            } else // --->
                 /* AND if aggregate type, only a single operand of type = ListExpression */
-            if (listArg)
-            {
-                OWLClass listExpr = getExpressionTypeClass( "List" );
-                requirements.add( odf.getOWLObjectExactCardinality( 1, hasOperand ) );
-                requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand, listExpr ) );
-                closures.add( odf.getOWLObjectAllValuesFrom( hasOperand,
-                                                             listExpr ) );
-
-            } else {
                 /* AND if Arity type, add requirement for first operand */
-                if (hasArity)
-                {
+                if (1 <= arity && arity < Integer.MAX_VALUE ) {
                     requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand1,
                                                                       getExpressionTypeClass( op1TypeName ) ) );
                     closures.add( odf.getOWLObjectAllValuesFrom( hasOperand1,
                                                                  getExpressionTypeClass( op1TypeName ) ) );
                 }
                 /* AND if Binary or Ternary, add requirement for second operand */
-                if (2 <= arity)
-                {
+                if (2 <= arity && arity < Integer.MAX_VALUE) {
                     requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand2,
                                                                       getExpressionTypeClass( op2TypeName ) ) );
                     closures.add( odf.getOWLObjectAllValuesFrom( hasOperand2,
@@ -383,17 +797,18 @@ import java.util.Set;
 
                 }
                 /* AND if Ternary, add requirement for third operand */
-                if (3 <= arity)
-                {
+                if (3 <= arity && arity < Integer.MAX_VALUE) {
                     requirements.add( odf.getOWLObjectSomeValuesFrom( hasOperand3,
                                                                       getExpressionTypeClass( op3TypeName ) ) );
                     closures.add( odf.getOWLObjectAllValuesFrom( hasOperand3,
                                                                  getExpressionTypeClass( op3TypeName ) ) );
 
                 }
-            }
 
             switch ( arity ) {
+                case -1:
+                    closures.add( odf.getOWLClass( IriUtil.opsIRI( "MiscExpression" ) ) );
+                    break;
                 case 0:
                     closures.add( odf.getOWLClass( IriUtil.opsIRI( "NullaryExpression" ) ) );
                     break;
@@ -406,14 +821,52 @@ import java.util.Set;
                 case 3:
                     closures.add( odf.getOWLClass( IriUtil.opsIRI( "TernaryExpression" ) ) );
                     break;
-                default:
+                case Integer.MAX_VALUE :
                     closures.add( odf.getOWLClass( IriUtil.opsIRI( "NAryExpression" ) ) );
+                default:
                     break;
             }
 
-            OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
 
-            addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
+
+            // now process extra properties
+            for ( PropertyInfo info : extraProperties.values() ) {
+                if ( info.domains.contains( exprClass.getIRI() ) ) {
+                    if ( info.object ) {
+                        requirements.add( odf.getOWLObjectSomeValuesFrom( odf.getOWLObjectProperty( info.name ),
+                                                                          odf.getOWLClass( info.range ) ) );
+                        String multiField = row.getCell( 6 ) != null ? row.getCell( 6 ).getStringCellValue() : null;
+                        boolean multiple = info.name.getFragment().equals( multiField );
+                        if ( ! multiple ) {
+                            closures.add( odf.getOWLObjectMaxCardinality( 1,
+                                                                              odf.getOWLObjectProperty( info.name ),
+                                                                              odf.getOWLClass( info.range ) ) );
+                        } else {
+                            //System.out.println( "Found extra multiple " + info.name + " i n " + exprClass.asOWLClass().getIRI() );
+                        }
+                        closures.add( odf.getOWLObjectAllValuesFrom( odf.getOWLObjectProperty( info.name ),
+                                                                     odf.getOWLClass( info.range ) ) );
+                    } else {
+                        requirements.add( odf.getOWLDataSomeValuesFrom( odf.getOWLDataProperty( info.name ),
+                                                                        odf.getOWLDatatype( info.range ) ) );
+                        closures.add( odf.getOWLDataMaxCardinality( 1,
+                                                                        odf.getOWLDataProperty( info.name ),
+                                                                        odf.getOWLDatatype( info.range ) ) );
+                        closures.add( odf.getOWLDataAllValuesFrom( odf.getOWLDataProperty( info.name ),
+                                                                   odf.getOWLDatatype( info.range ) ) );
+                    }
+                }
+            }
+
+
+            if ( ! requirements.isEmpty() ) {
+                if ( requirements.size() > 1 ) {
+                    OWLObjectIntersectionOf andExpression = odf.getOWLObjectIntersectionOf( requirements );
+                    addAxiom( odf.getOWLEquivalentClassesAxiom( exprClass, andExpression ) );
+                } else {
+                    addAxiom( odf.getOWLSubClassOfAxiom( exprClass, requirements.iterator().next() ) );
+                }
+            }
 
             for ( OWLClassExpression closure : closures ) {
                 addAxiom( odf.getOWLSubClassOfAxiom( exprClass, closure ) );
@@ -441,31 +894,36 @@ import java.util.Set;
         OWLObjectProperty operandTypeRelationship = odf
                 .getOWLObjectProperty(  IriUtil.opsIRI( "hasOperandType" ) );
         OWLObjectProperty firstOperandTypeRelationship = odf
-                .getOWLObjectProperty(  IriUtil.opsIRI( "hasFirstOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "firstOperandType" ) );
         OWLObjectProperty secondOperandTypeRelationship = odf
-                .getOWLObjectProperty(  IriUtil.opsIRI( "hasSecondOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "secondOperandType" ) );
         OWLObjectProperty thirdOperandTypeRelationship = odf
-                .getOWLObjectProperty(  IriUtil.opsIRI( "hasThirdOperandType" ) );
+                .getOWLObjectProperty(  IriUtil.opsIRI( "thirdOperandType" ) );
 
             /* first operand type */
-        OWLObjectProperty opRelationship = 0 < arity
-                ? firstOperandTypeRelationship
-                : operandTypeRelationship;
-        addAxiom( odf.getOWLObjectPropertyAssertionAxiom( opRelationship, operator, operand1Type ) );
+        // n-ary ops use Integer.MAXINT
+        OWLObjectProperty opRelationship = arity < 10000
+                                           ? firstOperandTypeRelationship
+                                           : operandTypeRelationship;
+
+        if ( 1 <= arity ) {
+            addAxiom( odf.getOWLObjectPropertyAssertionAxiom( opRelationship,
+                                                              operator,
+                                                              operand1Type ) );
+        }
 
             /* second operand type */
-        if (2 <= arity)
-        {
+        if ( 2 <= arity && arity < Integer.MAX_VALUE ) {
             addAxiom( odf.getOWLObjectPropertyAssertionAxiom( secondOperandTypeRelationship, operator,
                                                               operand2Type ) );
         }
 
             /* third operand type */
-        if (3 <= arity)
-        {
+        if ( 3 <= arity && arity < Integer.MAX_VALUE ) {
             addAxiom( odf.getOWLObjectPropertyAssertionAxiom( thirdOperandTypeRelationship, operator,
                                                               operand3Type ) );
         }
+
     }
 
     private void addOperatorType (final OWLNamedIndividual operator,
@@ -563,14 +1021,14 @@ import java.util.Set;
         {
             e.printStackTrace();
             String msg = "Unable to find, load, or read Excel file or find correct Sheet." +
-                    " Base Exception message = " + e.getMessage();
+                         " Base Exception message = " + e.getMessage();
             throw new RuntimeException( msg, e );
         }
         catch (IOException e)
         {
             e.printStackTrace();
             String msg = "Unable to find, load, or read Excel file or find correct Sheet." +
-                    " Base Exception message = " + e.getMessage();
+                         " Base Exception message = " + e.getMessage();
             throw new RuntimeException( msg, e );
         }
         finally
@@ -615,8 +1073,8 @@ import java.util.Set;
 
         IRI typeIRI = typeExpressionNameMap.get( typeNameInSpreadsheet );
         OWLClass type = typeIRI == null
-                ? null
-                : odf.getOWLClass( IRI.create( typeIRI.toString() + "Expression" ) );
+                        ? null
+                        : odf.getOWLClass( IRI.create( typeIRI.toString() + "Expression" ) );
         return type;
     }
 
@@ -634,7 +1092,7 @@ import java.util.Set;
         typeNameIriMap.put( "Time/Duration", IRI.create( typesBaseIRI + "timeDurationType" ) );
         typeNameIriMap.put( "Timestamp", IRI.create( typesBaseIRI + "timestampType" ) );
         typeNameIriMap.put( "DateGranularity", IRI.create( typesBaseIRI + "dateGranularityType" ) );
-        typeNameIriMap.put( "Integer", IRI.create( typesBaseIRI + "intType" ) );
+        typeNameIriMap.put( "Int", IRI.create( typesBaseIRI + "intType" ) );
         typeNameIriMap.put( "Interval<T>", IRI.create( typesBaseIRI + "intervalType" ) );
         typeNameIriMap.put( "Collection<T>", IRI.create( typesBaseIRI + "collectionType" ) );
         typeNameIriMap.put( "List", IRI.create( typesBaseIRI + "listType" ) );
@@ -646,8 +1104,16 @@ import java.util.Set;
         typeNameIriMap.put( "Ordered Type", IRI.create( typesBaseIRI + "listType" ) );
         typeNameIriMap.put( "Scalar", IRI.create( typesBaseIRI + "scalarType" ) );
         typeNameIriMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "anyType" ) );
+        typeNameIriMap.put( "Date", IRI.create( typesBaseIRI + "dateType" ) );
+        typeNameIriMap.put( "Interval", IRI.create( typesBaseIRI + "intervalType" ) );
+        typeNameIriMap.put( "Ordinal", IRI.create( typesBaseIRI + "ordinalType" ) );
+        typeNameIriMap.put( "Code", IRI.create( typesBaseIRI + "codeType" ) );
+        typeNameIriMap.put( "ClinicalRequest", IRI.create( typesBaseIRI + "listType" ) );
     }
 
+    // This table maps the content of the "type" cell in the spreadsheet
+    // to the "Expression" class in the expr-core ontology.
+    // TODO it should not be necessary
     static void initTypeExpressionNameMap ()
     {
         typeExpressionNameMap.put( "Any", IRI.create( typesBaseIRI + "Operator" ) );
@@ -662,8 +1128,9 @@ import java.util.Set;
         typeExpressionNameMap.put( "Time/Duration", IRI.create( typesBaseIRI + "TimeDuration" ) );
         typeExpressionNameMap.put( "Timestamp", IRI.create( typesBaseIRI + "Timestamp" ) );
         typeExpressionNameMap.put( "DateGranularity", IRI.create( typesBaseIRI + "DateGranularity" ) );
-        typeExpressionNameMap.put( "Integer", IRI.create( typesBaseIRI + "Integer" ) );
+        typeExpressionNameMap.put( "Int", IRI.create( typesBaseIRI + "Int" ) );
         typeExpressionNameMap.put( "Interval<T>", IRI.create( typesBaseIRI + "Interval" ) );
+        typeExpressionNameMap.put( "Interval", IRI.create( typesBaseIRI + "Interval" ) );
         typeExpressionNameMap.put( "Collection<T>", IRI.create( typesBaseIRI + "Collection" ) );
         typeExpressionNameMap.put( "List", IRI.create( typesBaseIRI + "List" ) );
         typeExpressionNameMap.put( "List<T>", IRI.create( typesBaseIRI + "List" ) );
@@ -674,6 +1141,13 @@ import java.util.Set;
         typeExpressionNameMap.put( "Ordered Type", IRI.create( typesBaseIRI + "List" ) );
         typeExpressionNameMap.put( "Scalar", IRI.create( typesBaseIRI + "Scalar" ) );
         typeExpressionNameMap.put( "Expression<T:S>", IRI.create( typesBaseIRI + "Operator" ) );
+        typeExpressionNameMap.put( "Date", IRI.create( typesBaseIRI + "Date" ) );
+        typeExpressionNameMap.put( "Ordinal", IRI.create( typesBaseIRI + "Ordinal" ) );
+        typeExpressionNameMap.put( "Code", IRI.create( typesBaseIRI + "Code" ) );
+        typeExpressionNameMap.put( "ClinicalRequest", IRI.create( typesBaseIRI + "ClinicalRequest" ) );
+        typeExpressionNameMap.put( "Ratio", IRI.create( typesBaseIRI + "Ratio" ) );
+        typeExpressionNameMap.put( "TimeInterval", IRI.create( typesBaseIRI + "TimeInterval" ) );
+        typeExpressionNameMap.put( "PhysicalQuantity", IRI.create( typesBaseIRI + "PhysicalQuantity" ) );
     }
 
     static void initTypeNameMap ()
@@ -688,9 +1162,10 @@ import java.util.Set;
         typeNameMap.put( "Boolean", "Boolean" );
         typeNameMap.put( "String", "String" );
         typeNameMap.put( "Time/Duration", "TimeDuration" );
+        typeNameMap.put( "Date", "Date" );
         typeNameMap.put( "Timestamp", "Timestamp" );
         typeNameMap.put( "DateGranularity", "DateGranularity" );
-        typeNameMap.put( "Integer", "Integer" );
+        typeNameMap.put( "Int", "Int" );
         typeNameMap.put( "Interval<T>", "Interval" );
         typeNameMap.put( "Collection<T>", "Collection" );
         typeNameMap.put( "List", "List" );
@@ -702,8 +1177,31 @@ import java.util.Set;
         typeNameMap.put( "Ordered Type", "List" );
         typeNameMap.put( "Scalar", "Scalar" );
         typeNameMap.put( "Expression<T:S>", "Any" );
+        typeNameMap.put( "Ordinal", "Ordinal" );
+        typeNameMap.put( "Code", "Code" );
     }
 
+
+    private  static void initPrimitiveTypeMap ()  {
+        primitiveTypeMap.put( "Uid", "xsd:string" );
+        primitiveTypeMap.put( "Decimal", "xsd:double" );
+        primitiveTypeMap.put( "Code", "xsd:string" );
+        primitiveTypeMap.put( "TimeStamp", "xsd:dateTime" );
+        primitiveTypeMap.put( "Literal", "xsd:string" );
+        primitiveTypeMap.put( "CalendarCycle", "xsd:string" );
+        primitiveTypeMap.put( "TS", "xsd:dateTime" );
+        primitiveTypeMap.put( "PQ", "PhysicalQuantityLiteral" );
+        primitiveTypeMap.put( "INT", "xsd:integer" );
+        primitiveTypeMap.put( "set_TelecommunicationAddressUse", "xsd:string" );
+        primitiveTypeMap.put( "set_TelecommunicationCapability", "xsd:string" );
+        primitiveTypeMap.put( "ENXP", "xsd:string" );
+        primitiveTypeMap.put( "set_EntityNameUse", "xsd:string" );
+        primitiveTypeMap.put( "set_PostalAddressUse", "xsd:string" );
+        primitiveTypeMap.put( "ADXP", "xsd:string" );
+        primitiveTypeMap.put( "QTY", "xsd:double" );
+        primitiveTypeMap.put( "IVL_TS", "TimestampIntervalLiteral" );
+        primitiveTypeMap.put( "RTO", "RatioLiteral" );
+    }
 
 
 }

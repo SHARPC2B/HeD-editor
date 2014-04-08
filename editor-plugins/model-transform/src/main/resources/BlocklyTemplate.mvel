@@ -5,101 +5,39 @@ Blockly.Blocks['@{iri}'] = {
 
     this.setColour( @{ color } );
 
-    this.appendDummyInput().appendTitle('@{name}')
+    this.appendDummyInput().appendField('@{name}');
 
+    @foreach{ arg : arguments }
+        @includeNamed{ "argument"; arg=arg }
+    @end{}
 
-    @if{ isUnary } @includeNamed{ "unary"; arg1=argTypes[0]; argName1=argTypeNames[0] } @end{}
-    @if{ isBinary } @includeNamed{ "binary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1] } @end{}
-    @if{ isTernary } @includeNamed{ "ternary"; arg1=argTypes[0]; argName1=argTypeNames[0]; arg2=argTypes[1]; argName2=argTypeNames[1]; arg3=argTypes[2]; argName3=argTypeNames[2];  } @end{}
-    @if{ isNary } @includeNamed{ "nary"; iri=iri; args=argTypes[3]; argsName=argTypeNames[3] } @end{}
-
-    this.setOutput( true, @if{returnType == null || returnType.empty}null@else{}[@foreach{ret : returnType}'@{ret}'@end{','}]@end{} );
+    this.setOutput( true, @if{returnType == null || returnType.empty}null@else{}[@foreach{ret : returnType}'@{ret.IRI.toString()}'@end{','}]@end{} );
 
     this.setInputsInline( false );
 
-    this.setTooltip( '@{tooltip}' );
-  } @if{ isNary },
-        @includeNamed{ "mutatorCode" }
+    this.setTooltip( '@includeNamed{ "inlineHelp" }' );
+  }
+  @if{ multipleArg != null },
+        @includeNamed{ "mutatorCode"; arg=multipleArg }
   @end{}
 };
 @end{}
 
 
-@declare{"blockyPrimitive"}
-@code{ int j = 0; }
-Blockly.Blocks['@{iri}'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( @{ color } );
-
-    this.appendDummyInput().appendTitle( '@{name}' );
-
-
-    @foreach{ paramName : paramNames }
-        this.appendValueInput( 'ARG_@{j}' )
-                             .setCheck( '@{ paramTypes.get(j) }' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendTitle( '@{ paramNames.get(j) + ' [' + paramTypeNames.get(j) + ']' }' );
-        @code{j++;}
+@declare{"argument"}
+    this.appendValueInput( '@{arg.id}@if{arg.multiple}_0@end{}' )
+                         .setCheck( @if{arg.allowedTypes == null || arg.allowedTypes.empty}null@else{}[ @foreach{ a : arg.allowedTypes}'@{a}'@end{','} ]@end{} )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( '@{arg.name}' );
+    @if{ arg.multiple }
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
     @end{}
-
-    this.setOutput( true, '@{returnType}' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( '@{tooltip}' );
-  }
-};
 @end{}
 
 
-@declare{"unary"}
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( @if{arg1 == null || arg1.empty}null@else{}[ @foreach{a : arg1}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName1}' );
-@end{}
+@declare{"inlineHelp"} @{tooltip} \n Return type : @{returnTypeNames} \n Allowed types : \n @foreach{ arg : arguments } @{arg.name} : @{arg.allowedTypeNames} \n @end{} @end{}
 
-@declare{"binary"}
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( @if{arg1 == null || arg1.empty}null@else{}[ @foreach{a : arg1}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName1}' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( @if{arg2 == null || arg2.empty}null@else{}[ @foreach{a : arg2}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName2}' );
-@end{}
-
-@declare{"ternary"}
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( @if{arg1 == null || arg1.empty}null@else{}[ @foreach{a : arg1}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName1}' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( @if{arg2 == null || arg2.empty}null@else{}[ @foreach{a : arg2}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName2}' );
-    this.appendValueInput( 'ARG_2' )
-                         .setCheck( @if{arg3 == null || arg3.empty}null@else{}[ @foreach{a : arg3}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argName3}' );
-@end{}
-
-
-@declare{"nary"}
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argsName}' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendTitle( '@{argsName}' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-@end{}
 
 @declare{"mutatorCode"}
 
@@ -111,14 +49,14 @@ Blockly.Blocks['@{iri}'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('@{arg.id}_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendTitle( '@{argsName}' );
+      var input = this.appendValueInput('@{arg.id}_' + x)
+                         .setCheck( @if{arg.allowedTypes == null || arg.allowedTypes.empty}null@else{}[ @foreach{ a : arg.allowedTypes}'@{a}'@end{','} ]@end{} )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( '@{arg.name} @{arg.allowedTypeNames}' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -141,16 +79,16 @@ Blockly.Blocks['@{iri}'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('@{arg.id}_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( @if{args == null || args.empty}null@else{}[ @foreach{ a : args}'@{a}'@end{','} ]@end{} )
-                                          .setAlign( Blockly.ALIGN_RIGHT )
-                                          .appendTitle( '@{argsName}' );
+         var input = this.appendValueInput('@{arg.id}_' + this.itemCount_)
+                         .setCheck( @if{arg.allowedTypes == null || arg.allowedTypes.empty}null@else{}[ @foreach{ a : arg.allowedTypes}'@{a}'@end{','} ]@end{} )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( '@{arg.name} @{arg.allowedTypeNames}' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -167,7 +105,7 @@ Blockly.Blocks['@{iri}'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('@{arg.id}_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -186,7 +124,7 @@ Blockly.Blocks['xsd:string'] = {
   init: function() {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
-    this.appendDummyInput().appendTitle( '[string]' ).appendTitle( textInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[string]' ).appendField( textInput, 'VALUE' );
     this.setOutput( true, 'xsd:string' );
   }
 };
@@ -195,16 +133,16 @@ Blockly.Blocks['xsd:anyURI'] = {
   init: function() {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
-    this.appendDummyInput().appendTitle( '[URI]' ).appendTitle( textInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[URI]' ).appendField( textInput, 'VALUE' );
     this.setOutput( true, 'xsd:anyURI' );
   }
 };
 
-Blockly.Blocks['xsd:dateTimeStamp'] = {
+Blockly.Blocks['xsd:dateTime'] = {
   init: function() {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
-    this.appendDummyInput().appendTitle( '[dateTime]' ).appendTitle( textInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[dateTime]' ).appendField( textInput, 'VALUE' );
     this.setOutput( true, 'xsd:dateTimeStamp' );
   }
 };
@@ -213,7 +151,7 @@ Blockly.Blocks['xsd:int'] = {
   init: function() {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
-    this.appendDummyInput().appendTitle( '[int]' ).appendTitle( numInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[int]' ).appendField( numInput, 'VALUE' );
     this.setOutput( true, 'xsd:int' );
   }
 };
@@ -222,7 +160,7 @@ Blockly.Blocks['xsd:boolean'] = {
   init: function() {
     this.setColour(152);
     var boolInput = new Blockly.FieldCheckbox('TRUE');
-    this.appendDummyInput().appendTitle( '[bool]' ).appendTitle( boolInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[bool]' ).appendField( boolInput, 'VALUE' );
     this.setOutput( true, 'xsd:boolean' );
   }
 };
@@ -231,10 +169,24 @@ Blockly.Blocks['xsd:double'] = {
   init: function() {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
-    this.appendDummyInput().appendTitle( '[double]' ).appendTitle( numInput, 'VALUE' );
+    this.appendDummyInput().appendField( '[double]' ).appendField( numInput, 'VALUE' );
     this.setOutput( true, 'xsd:double' );
   }
 };
+
+
+        Blockly.Blocks['xsd:text'] = {
+        	init : function() {
+        		// Assign 'this' to a variable for use in the tooltip closure.
+        	    var thisBlock = this;
+        		this.setColour(152);
+        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
+        		this.setOutput(true, 'xsd:string');
+        		this.setTooltip(function() {
+        			return thisBlock.getFieldValue('TEXT');
+        		});
+        	}
+        };
 
 
 @end{}
@@ -243,7 +195,7 @@ Blockly.Blocks['xsd:double'] = {
 Blockly.Blocks.argument_group_container = {
     init: function() {
         this.setColour(230);
-        this.appendDummyInput().appendTitle('Add arguments');
+        this.appendDummyInput().appendField('Add arguments');
         this.appendStatementInput('STACK');
         this.setTooltip('Add, or remove arguments');
         this.contextMenu = false;
@@ -253,7 +205,7 @@ Blockly.Blocks.argument_group_container = {
 Blockly.Blocks.argument_group_item = {
     init: function() {
         this.setColour(230);
-        this.appendDummyInput().appendTitle('Argument');
+        this.appendDummyInput().appendField('Argument');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Add a new argument');

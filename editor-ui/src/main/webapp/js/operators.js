@@ -1,156 +1,3 @@
-Blockly.Blocks.argument_group_container = {
-	init: function() {
-		this.setColour(230);
-		this.appendDummyInput().appendField('Add arguments');
-		this.appendStatementInput('STACK');
-		this.setTooltip('Add, or remove arguments');
-		this.contextMenu = false;
-	}
-};
-Blockly.Blocks.argument_group_item = {
-	init: function() {
-		this.setColour(230);
-		this.appendDummyInput().appendField('Argument');
-		this.setPreviousStatement(true);
-		this.setNextStatement(true);
-		this.setTooltip('Add a new argument');
-		this.contextMenu = false;
-	}
-};
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AtanIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AtanInteger');
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AtanInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AvgReal');
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AvgReal' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'AvgReal_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT )
-                                          .appendField( '[Col, Lis]' );
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
   init: function() {
@@ -158,434 +5,68 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Max')
+    this.appendDummyInput().appendField('Max');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'path_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'source_List' );
+    
 
+    
 
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Max' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Max_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Max \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#CodedOrdinalLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'CodedOrdinal' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'code [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'codeSystem [string]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'codeSystemName [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'displayName [string]' );
-
-
-        this.appendValueInput( 'ARG_4' )
-                             .setCheck( 'xsd:double' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [double]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#CodedOrdinalType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : CodedOrdinal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EarliestExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Earliest')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Earliest' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Earliest_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMaxExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IndexMax')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IndexMax' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'IndexMax_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualScalarExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('EqualScalar')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
+    this.appendDummyInput().appendField('Is');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#isType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'isType' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : EqualScalar' );
+    this.setTooltip( ' HeD expression : Is \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  isType : [Dom] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertyGetExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Get')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Obj]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Dom]' );
-
-
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Get' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessExpression'] = {
@@ -594,29 +75,170 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Less')
+    this.appendDummyInput().appendField('Less');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Less' );
+    this.setTooltip( ' HeD expression : Less \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SetSubsumesExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('SetSubsumes');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#ancestors' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'ancestors' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#descendents' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'descendents' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : SetSubsumes \n Return type : [Boo] \n Allowed types :  ancestors : [Int, Lis, Tim] \n  descendents : [Int, Lis, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PeriodLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('PeriodLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#isFlexible' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'isFlexible' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#count' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'count' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#alignment' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'alignment' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#frequency' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#RatioType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'frequency' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#period' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PhysicalQuantityType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'period' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#phase' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'phase' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : PeriodLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  isFlexible : [boolean] \n  count : [int] \n  alignment : [string] \n  frequency : [Rat] \n  period : [Phy] \n  phase : [Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Contains');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Contains \n Return type : [Boo] \n Allowed types :  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SortExpression'] = {
@@ -625,177 +247,76 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SortExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Sort')
+    this.appendDummyInput().appendField('Sort');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#orderBy' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'orderBy' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Sort' );
+    this.setTooltip( ' HeD expression : Sort \n Return type : [Col, Lis] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#VarianceExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Variance')
+    this.appendDummyInput().appendField('As');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#strict' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'strict' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'firstOperand' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#asType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'asType' );
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+    
+
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Variance' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Variance_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : As \n Return type : [any] \n Allowed types :  strict : [boolean] \n  firstOperand : [any] \n  asType : [Dom] \n  ' );
   }
-
-
-
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#RealIntervalLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'RealInterval' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:double' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'high [double]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'highClosed [boolean]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:double' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'low [double]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'lowClosed [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#RealIntervalType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : RealInterval' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
@@ -804,25 +325,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Ln')
+    this.appendDummyInput().appendField('Ln');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Ln' );
+    this.setTooltip( ' HeD expression : Ln \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
@@ -831,137 +352,205 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AllTrue')
+    this.appendDummyInput().appendField('AllTrue');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'path_string' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
+
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : AllTrue' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'AllTrue_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : AllTrue \n Return type : [Boo] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualListExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntegerIntervalLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('EqualList')
+    this.appendDummyInput().appendField('IntegerIntervalLiteral');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#lowClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'lowClosed' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#low' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'low' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#highClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'highClosed' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#high' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'high' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType','http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : EqualList' );
+    this.setTooltip( ' HeD expression : IntegerIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  lowClosed : [boolean] \n  low : [int] \n  highClosed : [boolean] \n  high : [int] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Add');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Add \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubsumesExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Subsumes');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#ancestor' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CodeType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'ancestor' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#descendent' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CodeType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'descendent' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Subsumes \n Return type : [Boo] \n Allowed types :  ancestor : [Cod] \n  descendent : [Cod] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CodeLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('CodeLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#displayName' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'displayName' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codeSystemName' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codeSystemName' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codeSystem' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codeSystem' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#code' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'code' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CodeType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : CodeLiteral \n Return type : [Cod] \n Allowed types :  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
@@ -970,32 +559,29 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Coalesce')
+    this.appendDummyInput().appendField('Coalesce');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Coalesce' );
-  } ,
-
+    this.setTooltip( ' HeD expression : Coalesce \n Return type : [any] \n Allowed types :  hasOperand : [any] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
     var container = document.createElement( 'Coalesce_mutation' );
@@ -1005,14 +591,14 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [any]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -1035,15 +621,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [any]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1055,12 +642,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1069,7 +656,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
   }
 
 
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
@@ -1078,32 +665,29 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('And')
+    this.appendDummyInput().appendField('And');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : And' );
-  } ,
-
+    this.setTooltip( ' HeD expression : And \n Return type : [Boo] \n Allowed types :  hasOperand : [Boo] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
     var container = document.createElement( 'And_mutation' );
@@ -1113,14 +697,14 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Boo]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -1143,15 +727,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Boo]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -1163,12 +748,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -1177,69 +762,42 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
   }
 
 
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsListExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PhysicalQuantityLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ContainsList')
+    this.appendDummyInput().appendField('PhysicalQuantityLiteral');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'value_double' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#unit' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'unit' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#PhysicalQuantityType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ContainsList' );
+    this.setTooltip( ' HeD expression : PhysicalQuantityLiteral \n Return type : [Phy] \n Allowed types :  value_double : [double] \n  unit : [string] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('PowerReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : PowerReal' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AfterExpression'] = {
@@ -1248,29 +806,68 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AfterExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('After')
+    this.appendDummyInput().appendField('After');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : After' );
+    this.setTooltip( ' HeD expression : After \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Multiply');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Multiply \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CeilingExpression'] = {
@@ -1279,241 +876,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CeilingExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Ceiling')
+    this.appendDummyInput().appendField('Ceiling');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Ceiling' );
+    this.setTooltip( ' HeD expression : Ceiling \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StdDevExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('StdDev')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : StdDev' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'StdDev_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SumReal')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SumReal' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'SumReal_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OverlapsExpression'] = {
@@ -1522,191 +903,84 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OverlapsExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Overlaps')
+    this.appendDummyInput().appendField('Overlaps');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Overlaps' );
+    this.setTooltip( ' HeD expression : Overlaps \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PhysicalQuantityIntervalLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ExpInteger')
+    this.appendDummyInput().appendField('PhysicalQuantityIntervalLiteral');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#lowClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'lowClosed' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#highClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'highClosed' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#high_PhysicalQuantity' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PhysicalQuantityType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'high_PhysicalQuantity' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#low_PhysicalQuantity' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PhysicalQuantityType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'low_PhysicalQuantity' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ExpInteger' );
+    this.setTooltip( ' HeD expression : PhysicalQuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  lowClosed : [boolean] \n  highClosed : [boolean] \n  high_PhysicalQuantity : [Phy] \n  low_PhysicalQuantity : [Phy] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SumInteger')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SumInteger' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'SumInteger_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SinRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SinReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SinReal' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PredExpression'] = {
@@ -1715,52 +989,146 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PredExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Pred')
+    this.appendDummyInput().appendField('Pred');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Pred' );
+    this.setTooltip( ' HeD expression : Pred \n Return type : [any] \n Allowed types :  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsinIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CodedOrdinalLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AsinInteger')
+    this.appendDummyInput().appendField('CodedOrdinalLiteral');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'value_double' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#displayName' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'displayName' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codeSystemName' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codeSystemName' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codeSystem' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codeSystem' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#code' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'code' );
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CodeType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : AsinInteger' );
+    this.setTooltip( ' HeD expression : CodedOrdinalLiteral \n Return type : [Cod] \n Allowed types :  value_double : [double] \n  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Modulo');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Modulo \n Return type : [Num] \n Allowed types :  firstOperand : [Int] \n  secondOperand : [Int] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TimestampLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('TimestampLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_dateTime' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#dateTime' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_dateTime' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#DateType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : TimestampLiteral \n Return type : [Dat] \n Allowed types :  value_dateTime : [dateTime] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntervalExpression'] = {
@@ -1769,60 +1137,111 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntervalExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Interval')
+    this.appendDummyInput().appendField('Interval');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#endOpen' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'endOpen' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#beginOpen' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'beginOpen' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#begin' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'begin' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#end' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'end' );
+    
 
+    
 
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Interval' );
+    this.setTooltip( ' HeD expression : Interval \n Return type : [Col, Int, Lis] \n Allowed types :  endOpen : [boolean] \n  beginOpen : [boolean] \n  begin : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  end : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInIntervalExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ProperInInterval')
+    this.appendDummyInput().appendField('ProperContains');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ProperInInterval' );
+    this.setTooltip( ' HeD expression : ProperContains \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ComplexLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ComplexLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_string' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types :  value_string : [string] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
@@ -1831,253 +1250,79 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('GreaterOrEqual')
+    this.appendDummyInput().appendField('GreaterOrEqual');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : GreaterOrEqual' );
+    this.setTooltip( ' HeD expression : GreaterOrEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#ClinicalRequestExpression'] = {
-    init: function() {
-        this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-        this.setColour( 42 );
-
-        this.appendDummyInput().appendTitle( 'ClinicalRequestExpression' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainClass' )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'datatype [Cls]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainClass' )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'dateProperty [Pro]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-            .setCheck( 'http://asu.edu/sharpc2b/ops#DomainProperty' )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'codeProperty [Pro]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-            .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'codes [Col, Lis]' );
-
-
-        this.appendValueInput( 'ARG_4' )
-            .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'dateRange [Col, Lis]' );
-
-
-        this.appendValueInput( 'ARG_5' )
-            .setCheck( 'xsd:boolean' )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'singleCardinality [boolean]' );
-
-
-        this.appendValueInput( 'ARG_6' )
-            .setCheck( 'xsd:boolean' )
-            .setAlign( Blockly.ALIGN_RIGHT )
-            .appendTitle( 'initial [boolean]' );
-
-
-
-        this.setOutput( true, 'http://asu.edu/sharpc2b/ops#CollectionType' );
-
-        this.setInputsInline( false );
-
-        this.setTooltip( 'HeD literal : ClinicalRequestExpression' );
-    }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyListExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NowExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('IsEmptyList')
+    this.appendDummyInput().appendField('Now');
 
+    
 
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#DateType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : IsEmptyList' );
+    this.setTooltip( ' HeD expression : Now \n Return type : [Dat] \n Allowed types :  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexLatestExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DistinctExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('IndexLatest')
+    this.appendDummyInput().appendField('Distinct');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'source_List' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : IndexLatest' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'IndexLatest_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Distinct \n Return type : [Col, Lis] \n Allowed types :  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SqrtRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SqrtReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SqrtReal' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
@@ -2086,32 +1331,29 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Or')
+    this.appendDummyInput().appendField('Or');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Or' );
-  } ,
-
+    this.setTooltip( ' HeD expression : Or \n Return type : [Boo] \n Allowed types :  hasOperand : [Boo] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
     var container = document.createElement( 'Or_mutation' );
@@ -2121,14 +1363,14 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Boo]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -2151,15 +1393,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Boo]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2171,12 +1414,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2185,58 +1428,272 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
   }
 
 
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('UnionInterval')
+    this.appendDummyInput().appendField('Divide');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'secondOperand' );
+    
 
+    
 
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : UnionInterval' );
-  } ,
+    this.setTooltip( ' HeD expression : Divide \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
+};
 
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BooleanLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('BooleanLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_boolean' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_boolean' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : BooleanLiteral \n Return type : [Boo] \n Allowed types :  value_boolean : [boolean] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ClinicalRequestExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ClinicalRequest');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#useValueSets' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'useValueSets' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#useSubsumption' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'useSubsumption' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#triggerType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'triggerType' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#templateId' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'templateId' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'scope' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#isInitial' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'isInitial' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#cardinality' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'cardinality' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codeProperty' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codeProperty' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#codes' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'codes' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#dataType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'dataType' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#dateProperty' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'dateProperty' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#dateRange' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'dateRange' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#idProperty' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'idProperty' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#subject' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'subject' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#subjectProperty' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'subjectProperty' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#timeOffset' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'timeOffset' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ClinicalRequest \n Return type : [Col] \n Allowed types :  useValueSets : [boolean] \n  useSubsumption : [boolean] \n  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  codeProperty : [Dom] \n  codes : [Int, Lis, Tim] \n  dataType : [Dom] \n  dateProperty : [Dom] \n  dateRange : [Int, Tim] \n  idProperty : [Dom] \n  subject : [any] \n  subjectProperty : [Dom] \n  timeOffset : [Int] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectExpressionExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ObjectExpression');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#objectType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'objectType' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#property_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ObjectExpression \n Return type : [Obj] \n Allowed types :  objectType : [Dom] \n  property : [Pro] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'UnionInterval_mutation' );
+    var container = document.createElement( 'ObjectExpression_mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property [Pro]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -2259,15 +1716,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property [Pro]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -2279,12 +1737,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -2293,294 +1751,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionIntervalExpression'] = {
   }
 
 
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExistExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Exist')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Exist' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Exist_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#DateLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Date' );
-
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#DateType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Date' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SinIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SinInteger')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SinInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualBooleanExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('EqualBoolean')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Boo]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Boo]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : EqualBoolean' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#StringLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'String' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#StringType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : String' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ContainsInterval')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ContainsInterval' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#QuantityIntervalLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'QuantityInterval' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'high [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'highClosed [boolean]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'low [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'lowClosed [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#QuantityIntervalType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : QuantityInterval' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LastExpression'] = {
@@ -2589,25 +1760,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LastExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Last')
+    this.appendDummyInput().appendField('Last');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#orderBy' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'orderBy' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
-
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Last' );
+    this.setTooltip( ' HeD expression : Last \n Return type : [any] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
@@ -2616,133 +1795,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Count')
+    this.appendDummyInput().appendField('Count');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'path_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'source_List' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Count' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Count_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Count \n Return type : [Rea, Num, Int] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AbsReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AbsReal' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
@@ -2751,60 +1830,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('LessOrEqual')
+    this.appendDummyInput().appendField('LessOrEqual');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : LessOrEqual' );
+    this.setTooltip( ' HeD expression : LessOrEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SeqToExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SeqTo')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SeqTo' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
@@ -2813,55 +1865,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Set')
+    this.appendDummyInput().appendField('Set');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType','http://asu.edu/sharpc2b/ops#ClassType','http://asu.edu/sharpc2b/ops#CodeType','http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#DomainClass','http://asu.edu/sharpc2b/ops#DomainProperty','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#ObjectType','http://asu.edu/sharpc2b/ops#PhysicalQuantityType','http://asu.edu/sharpc2b/ops#PropertyType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#Set','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimeIntervalType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Dom]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#PropertyType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Set' );
+    this.setTooltip( ' HeD expression : Set \n Return type : [Pro] \n Allowed types :  firstOperand : [Boo, Cla, Cod, Col, Dat, Dom, Dom, Int, Int, Lis, Num, Obj, Phy, Pro, Rat, Rea, Set, Str, Tim, Tim] \n  secondOperand : [Dom] \n  ' );
   }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#ComplexLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Complex' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#ComplexType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Complex' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeginExpression'] = {
@@ -2870,195 +1900,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeginExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Begin')
+    this.appendDummyInput().appendField('Begin');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Begin' );
+    this.setTooltip( ' HeD expression : Begin \n Return type : [any] \n Allowed types :  firstOperand : [Int, Tim] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('WithinInterval')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : WithinInterval' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AcosIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AcosInteger')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AcosInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimRightExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('TrimRight')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : TrimRight' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AtanRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AtanReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AtanReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinAnyExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('WithinAny')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : WithinAny' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CosRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('CosReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : CosReal' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LowerExpression'] = {
@@ -3067,198 +1927,111 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LowerExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Lower')
+    this.appendDummyInput().appendField('Lower');
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Lower' );
+    this.setTooltip( ' HeD expression : Lower \n Return type : [Str] \n Allowed types :  firstOperand : [Str] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyRealExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RealIntervalLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('MultiplyReal')
+    this.appendDummyInput().appendField('RealIntervalLiteral');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#low_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'low_double' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#lowClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'lowClosed' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#high_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'high_double' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#highClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'highClosed' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : MultiplyReal' );
+    this.setTooltip( ' HeD expression : RealIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#IntegerLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IdentifierLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'Integer' );
+    this.appendDummyInput().appendField('IdentifierLiteral');
 
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:int' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [int]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#IntegerType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Integer' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ModuloReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#root' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'root' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#extension' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'extension' );
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ModuloReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimLeftExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('TrimLeft')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : TrimLeft' );
+    this.setTooltip( ' HeD expression : IdentifierLiteral \n Return type : [Str] \n Allowed types :  root : [string] \n  extension : [string] \n  ' );
   }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#BooleanLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Boolean' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#BooleanType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Boolean' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#RatioLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Ratio' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'denominator [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'numerator [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#RatioType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Ratio' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
@@ -3267,401 +2040,62 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ObjectRedefine')
+    this.appendDummyInput().appendField('ObjectRedefine');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'scope' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#property_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_Object' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Obj]' );
+                         .appendField( 'source_Object' );
+    
 
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ObjectRedefine' );
+    this.setTooltip( ' HeD expression : ObjectRedefine \n Return type : [Obj] \n Allowed types :  scope : [string] \n  property : [Pro] \n  source_Object : [Obj] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('MaxInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : MaxInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MeetsExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Meets')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Meets' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNotEmptyExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IsNotEmpty')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IsNotEmpty' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#TimestampLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Timestamp' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:dateTimeStamp' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [dateTimeStamp]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#TimestampType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Timestamp' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('LengthInterval')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : LengthInterval' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsListExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ProperContainsList')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ProperContainsList' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IfNullExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IfNull')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IfNull' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#AddressLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Address' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'part [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'use [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#AddressType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Address' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectListExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IntersectList')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IntersectList' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StringExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('String')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : String' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('TruncatedDivide')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : TruncatedDivide' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Latest')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Latest' );
-  } ,
-
+  ,
+        
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Latest_mutation' );
+    var container = document.createElement( 'ObjectRedefine_mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property [Pro]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -3684,15 +2118,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property [Pro]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -3704,12 +2139,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -3718,140 +2153,455 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LatestExpression'] = {
   }
 
 
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MeetsExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('NegateInteger')
+    this.appendDummyInput().appendField('Meets');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : NegateInteger' );
+    this.setTooltip( ' HeD expression : Meets \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('MultiplyInteger')
+    this.appendDummyInput().appendField('Intersect');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : MultiplyInteger' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#CodeLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Code' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'code [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'codeSystem [string]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'codeSystemName [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'displayName [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#CodeType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Code' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceListExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('DifferenceList')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : DifferenceList' );
+    this.setTooltip( ' HeD expression : Intersect \n Return type : [Col, Lis] \n Allowed types :  hasOperand : [Int, Tim] \n  ' );
   }
+  ,
+        
+
+  mutationToDom: function(workspace) {
+    var container = document.createElement( 'Intersect_mutation' );
+    container.setAttribute( 'items', this.itemCount_ );
+    return container;
+  },
+
+  domToMutation: function(container) {
+    for (var x = 0; x < this.itemCount_; x++) {
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
+    }
+    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
+    for (var x = 0; x < this.itemCount_; x++) {
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Int, Tim]' );
+    }
+    if (this.itemCount_ == 0) {
+        this.appendDummyInput('EMPTY');
+    }
+  },
+
+  decompose: function(workspace) {
+      var containerBlock = new Blockly.Block(workspace,
+                                             'argument_group_container');
+      containerBlock.initSvg();
+      var connection = containerBlock.getInput('STACK').connection;
+      for (var x = 0; x < this.itemCount_; x++) {
+        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+      return containerBlock;
+    },
+
+  compose: function(containerBlock) {
+      for (var x = this.itemCount_ - 1; x >= 0; x--) {
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
+         }
+       this.itemCount_ = 0;
+       // Rebuild the block's inputs.
+       var itemBlock = containerBlock.getInputTargetBlock('STACK');
+       while (itemBlock) {
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Int, Tim]' );
+
+         // Reconnect any child blocks.
+         if (itemBlock.valueConnection_) {
+          input.connection.connect(itemBlock.valueConnection_);
+         }
+         this.itemCount_++;
+         itemBlock = itemBlock.nextConnection &&
+             itemBlock.nextConnection.targetBlock();
+       }
+
+    },
+    
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var x = 0;
+    while (itemBlock) {
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      x++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  }
+
+
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNotEmptyExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('IsNotEmpty');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : IsNotEmpty \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RealLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('RealLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_double' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : RealLiteral \n Return type : [Rea, Num] \n Allowed types :  value_double : [double] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IfNullExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('IfNull');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : IfNull \n Return type : [any] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpressionRefExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ExpressionRef');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#name' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'name' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ExpressionRef \n Return type : [any] \n Allowed types :  name : [string] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Literal');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'valueType' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types :  value_string : [string] \n  valueType : [anyURI] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PropertyExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Property');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'scope' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'path' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_Object' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_Object' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Property \n Return type : [any] \n Allowed types :  scope : [string] \n  path : [Dom] \n  source_Object : [Obj] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Within');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element_Ordinal' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element_Ordinal' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#interval' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'interval' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Within \n Return type : [Boo] \n Allowed types :  element_Ordinal : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  interval : [Int, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('TruncatedDivide');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : TruncatedDivide \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ValueSetExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ValueSet');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#version' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'version' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#id' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'id' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#authority' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'authority' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ValueSet \n Return type : [Col, Lis] \n Allowed types :  version : [string] \n  id : [string] \n  authority : [string] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
@@ -3860,32 +2610,37 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('List')
+    this.appendDummyInput().appendField('List');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#key' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'key' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element_0' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
+
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : List' );
-  } ,
-
+    this.setTooltip( ' HeD expression : List \n Return type : [Col, Lis] \n Allowed types :  key : [string] \n  element : [any] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
     var container = document.createElement( 'List_mutation' );
@@ -3895,14 +2650,14 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops-set#element_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#element_' + x)
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element [any]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -3925,15 +2680,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops-set#element_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#element_' + this.itemCount_)
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element [any]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -3945,12 +2701,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops-set#element_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -3959,496 +2715,225 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
   }
 
 
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinRealExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('MinReal')
+    this.appendDummyInput().appendField('Indexer');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#index' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'index' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : MinReal' );
+    this.setTooltip( ' HeD expression : Indexer \n Return type : [any] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  index : [Int] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PhysicalQuantityIntervalLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'PhysicalQuantityInterval' );
+    this.appendDummyInput().appendField('Sum');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'path_string' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'high [string]' );
+    
 
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'highClosed [boolean]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'low [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'lowClosed [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#PhysicalQuantityIntervalType' );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : PhysicalQuantityInterval' );
+    this.setTooltip( ' HeD expression : Sum \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MedianExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Median')
+    this.appendDummyInput().appendField('Literal');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'value_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'valueType' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Median' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Median_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types :  value_string : [string] \n  valueType : [anyURI] \n  ' );
   }
-
-
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpRealExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ExpReal')
+    this.appendDummyInput().appendField('Equal');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ExpReal' );
+    this.setTooltip( ' HeD expression : Equal \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExtractCharactersExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CaseExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('ExtractCharacters')
+    this.appendDummyInput().appendField('Case');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#caseItem' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'caseItem' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#comparand' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'comparand' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#else' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'else' );
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+    
+
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ExtractCharacters' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'ExtractCharacters_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Case \n Return type : [any] \n Allowed types :  caseItem : [any] \n  comparand : [any] \n  else : [any] \n  ' );
   }
-
-
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TanRealExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EntityNameLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('TanReal')
+    this.appendDummyInput().appendField('EntityNameLiteral');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#use' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'use' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#part' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'part' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : TanReal' );
+    this.setTooltip( ' HeD expression : EntityNameLiteral \n Return type : [Str] \n Allowed types :  use : [string] \n  part : [string] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#CreateExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('New')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Dom]' );
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Pro]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Pro]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : New' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'New_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Pro]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('PowerInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : PowerInteger' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateDiffExpression'] = {
@@ -4457,141 +2942,41 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateDiffExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('DateDiff')
+    this.appendDummyInput().appendField('DateDiff');
 
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#endDate' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Tim]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
+                         .appendField( 'endDate' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity_String' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Tim]' );
-    this.appendValueInput( 'ARG_2' )
-                         .setCheck( null )
+                         .appendField( 'granularity_String' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#startDate' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'startDate' );
+    
 
+    
 
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : DateDiff' );
+    this.setTooltip( ' HeD expression : DateDiff \n Return type : [Rea, Num, Int] \n Allowed types :  endDate : [Dat] \n  granularity_String : [Str] \n  startDate : [Dat] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ReverseExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Reverse')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Reverse' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Reverse_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogExpression'] = {
@@ -4600,29 +2985,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Log')
+    this.appendDummyInput().appendField('Log');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Log' );
+    this.setTooltip( ' HeD expression : Log \n Return type : [Rea, Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FirstExpression'] = {
@@ -4631,56 +3020,111 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FirstExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('First')
+    this.appendDummyInput().appendField('First');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#orderBy' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'orderBy' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
-
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : First' );
+    this.setTooltip( ' HeD expression : First \n Return type : [any] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualStringExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('EqualString')
+    this.appendDummyInput().appendField('Length');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : EqualString' );
+    this.setTooltip( ' HeD expression : Length \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [any] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#QuantityIntervalLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('QuantityIntervalLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#low_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'low_double' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#lowClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'lowClosed' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#high_double' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'high_double' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#highClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'highClosed' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : QuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EndExpression'] = {
@@ -4689,113 +3133,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EndExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('End')
+    this.appendDummyInput().appendField('End');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : End' );
+    this.setTooltip( ' HeD expression : End \n Return type : [any] \n Allowed types :  firstOperand : [Int, Tim] \n  ' );
   }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#IdentifierLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Identifier' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'extension [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'root [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#IdentifierType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Identifier' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PeriodLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Period' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'alignment [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'count [string]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'frequency [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'isFlexible [boolean]' );
-
-
-        this.appendValueInput( 'ARG_4' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'period [string]' );
-
-
-        this.appendValueInput( 'ARG_5' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'phase [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#PeriodType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Period' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FilterExpression'] = {
@@ -4804,131 +3160,103 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FilterExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Filter')
+    this.appendDummyInput().appendField('Filter');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+                         .appendField( 'scope' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#condition' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Boo]' );
+                         .appendField( 'condition' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Filter' );
+    this.setTooltip( ' HeD expression : Filter \n Return type : [Col, Lis] \n Allowed types :  scope : [string] \n  condition : [Boo] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualObjectExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('EqualObject')
+    this.appendDummyInput().appendField('Abs');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Obj]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#ObjectType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Obj]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : EqualObject' );
+    this.setTooltip( ' HeD expression : Abs \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RatioLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AbsInteger')
+    this.appendDummyInput().appendField('RatioLiteral');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#numerator' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'numerator' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#denominator' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'denominator' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AbsInteger' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#TimestampIntervalLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'TimestampInterval' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'high [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'highClosed [boolean]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'low [string]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'lowClosed [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#TimestampIntervalType' );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : TimestampInterval' );
+    this.setTooltip( ' HeD expression : RatioLiteral \n Return type : [Rea, Num, Rat] \n Allowed types :  numerator : [double] \n  denominator : [double] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotEqualExpression'] = {
@@ -4937,329 +3265,60 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotEqualExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('NotEqual')
+    this.appendDummyInput().appendField('NotEqual');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : NotEqual' );
+    this.setTooltip( ' HeD expression : NotEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionListExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CurrentExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('UnionList')
+    this.appendDummyInput().appendField('Current');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'scope' );
+    
 
+    
 
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : UnionList' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'UnionList_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Current \n Return type : [Obj] \n Allowed types :  scope : [string] \n  ' );
   }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ModuloInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ModuloInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexMinExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IndexMin')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IndexMin' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'IndexMin_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyCollectionExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IsEmptyCollection')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IsEmptyCollection' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#RealLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Real' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:double' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [double]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#RealType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Real' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
@@ -5268,32 +3327,29 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Concat')
+    this.appendDummyInput().appendField('Concat');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Concat' );
-  } ,
-
+    this.setTooltip( ' HeD expression : Concat \n Return type : [Str] \n Allowed types :  hasOperand : [Str] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
     var container = document.createElement( 'Concat_mutation' );
@@ -5303,14 +3359,14 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Str]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -5333,15 +3389,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Str]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -5353,12 +3410,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -5367,70 +3424,77 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
   }
 
 
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InListExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UrlLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('InList')
+    this.appendDummyInput().appendField('UrlLiteral');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_anyURI' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'value_anyURI' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#use' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'use' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#capabilities' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'capabilities' );
+    
 
+    
 
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : InList' );
+    this.setTooltip( ' HeD expression : UrlLiteral \n Return type : [Str] \n Allowed types :  value_anyURI : [anyURI] \n  use : [string] \n  capabilities : [string] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#EntityNameLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NullExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'EntityName' );
+    this.appendDummyInput().appendField('Null');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'valueType' );
+    
 
+    
 
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'part [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'use [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#EntityNameType' );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : EntityName' );
+    this.setTooltip( ' HeD expression : Null \n Return type : [any] \n Allowed types :  valueType : [anyURI] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UpperExpression'] = {
@@ -5439,25 +3503,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UpperExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Upper')
+    this.appendDummyInput().appendField('Upper');
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Upper' );
+    this.setTooltip( ' HeD expression : Upper \n Return type : [Str] \n Allowed types :  firstOperand : [Str] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexOfExpression'] = {
@@ -5466,137 +3530,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexOfExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('IndexOf')
+    this.appendDummyInput().appendField('IndexOf');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'element' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
 
+    
 
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : IndexOf' );
+    this.setTooltip( ' HeD expression : IndexOf \n Return type : [Rea, Num, Int] \n Allowed types :  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FlattenExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Flatten')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Flatten' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Flatten_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundExpression'] = {
@@ -5605,212 +3565,68 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Round')
+    this.appendDummyInput().appendField('Round');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#precision' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'precision' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Round' );
+    this.setTooltip( ' HeD expression : Round \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  precision : [Int] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InAnyExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddressLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('InAny')
+    this.appendDummyInput().appendField('AddressLiteral');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#use' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'use' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#part' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
+                         .appendField( 'part' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : InAny' );
+    this.setTooltip( ' HeD expression : AddressLiteral \n Return type : [Str] \n Allowed types :  use : [string] \n  part : [string] \n  ' );
   }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#IntegerIntervalLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'IntegerInterval' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:int' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'high [int]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'highClosed [boolean]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:int' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'low [int]' );
-
-
-        this.appendValueInput( 'ARG_3' )
-                             .setCheck( 'xsd:boolean' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'lowClosed [boolean]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#IntegerIntervalType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : IntegerInterval' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#XorExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Xor')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Xor' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Xor_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CombineExpression'] = {
@@ -5819,78 +3635,79 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CombineExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Combine')
+    this.appendDummyInput().appendField('Combine');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#separator' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'separator' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_String' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_String' );
+    
 
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Combine' );
+    this.setTooltip( ' HeD expression : Combine \n Return type : [Str] \n Allowed types :  separator : [Str] \n  source_String : [Str] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthStringExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntegerLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('LengthString')
+    this.appendDummyInput().appendField('IntegerLiteral');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'value' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : LengthString' );
+    this.setTooltip( ' HeD expression : IntegerLiteral \n Return type : [Rea, Num, Int] \n Allowed types :  value : [int] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#IteratorExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TodayExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('BUG')
+    this.appendDummyInput().appendField('Today');
 
+    
 
-
-
-
-
-
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#DateType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : BUG' );
+    this.setTooltip( ' HeD expression : Today \n Return type : [Dat] \n Allowed types :  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FloorExpression'] = {
@@ -5899,25 +3716,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FloorExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Floor')
+    this.appendDummyInput().appendField('Floor');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Floor' );
+    this.setTooltip( ' HeD expression : Floor \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PosExpression'] = {
@@ -5926,92 +3743,235 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PosExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Pos')
+    this.appendDummyInput().appendField('Pos');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#pattern' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'pattern' );
+    
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#string' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'string' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Pos' );
+    this.setTooltip( ' HeD expression : Pos \n Return type : [Rea, Num, Int] \n Allowed types :  pattern : [string] \n  string : [Str] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PhysicalQuantityLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ParameterRefExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'PhysicalQuantity' );
+    this.appendDummyInput().appendField('ParameterRef');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#name' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'name' );
+    
 
+    
 
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'unit [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:double' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [double]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#PhysicalQuantityType' );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : PhysicalQuantity' );
+    this.setTooltip( ' HeD expression : ParameterRef \n Return type : [any] \n Allowed types :  name : [string] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('SubtractInteger')
+    this.appendDummyInput().appendField('Subtract');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'secondOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : SubtractInteger' );
+    this.setTooltip( ' HeD expression : Subtract \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TimestampIntervalLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('TimestampIntervalLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#low_dateTime' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#dateTime' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'low_dateTime' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#lowClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'lowClosed' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#high_dateTime' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#dateTime' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'high_dateTime' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#highClosed' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'highClosed' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#TimeIntervalType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : TimestampIntervalLiteral \n Return type : [Col, Tim, Int, Lis] \n Allowed types :  low_dateTime : [dateTime] \n  lowClosed : [boolean] \n  high_dateTime : [dateTime] \n  highClosed : [boolean] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ComplexLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ComplexLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_string' );
+    
+
+    
+
+    this.setOutput( true, null );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types :  value_string : [string] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Negate');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Negate \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Avg');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'path_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Avg \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SplitExpression'] = {
@@ -6020,29 +3980,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SplitExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Split')
+    this.appendDummyInput().appendField('Split');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#separator' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-    this.appendValueInput( 'ARG_1' )
+                         .appendField( 'separator' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#stringToSplit' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'stringToSplit' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Split' );
+    this.setTooltip( ' HeD expression : Split \n Return type : [Col, Lis] \n Allowed types :  separator : [Str] \n  stringToSplit : [Str] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeforeExpression'] = {
@@ -6051,311 +4015,84 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeforeExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Before')
+    this.appendDummyInput().appendField('Before');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Before' );
+    this.setTooltip( ' HeD expression : Before \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AcosRealExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InValueSetExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AcosReal')
+    this.appendDummyInput().appendField('InValueSet');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#version' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'version' );
+    
 
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AcosReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('EqualInterval')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#id' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'id' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#authority' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'authority' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CodeType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
 
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : EqualInterval' );
+    this.setTooltip( ' HeD expression : InValueSet \n Return type : [Boo] \n Allowed types :  version : [string] \n  id : [string] \n  authority : [string] \n  firstOperand : [Cod] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('DivideReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : DivideReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsinRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AsinReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AsinReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AvgInteger')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AvgInteger' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'AvgInteger_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('DifferenceInterval')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : DifferenceInterval' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ToStringExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ToString')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ToString' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
@@ -6364,322 +4101,108 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AnyTrue')
+    this.appendDummyInput().appendField('AnyTrue');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'path_string' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
+
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : AnyTrue' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'AnyTrue_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : AnyTrue \n Return type : [Boo] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgTimeDurationExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AvgTimeDuration')
+    this.appendDummyInput().appendField('Date');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#year' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'year' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#second' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'second' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#month' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'month' );
+    
 
-    this.setOutput( true, null );
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#minute' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'minute' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#millisecond' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#double' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'millisecond' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#hour' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hour' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#day' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#int' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'day' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#DateType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : AvgTimeDuration' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'AvgTimeDuration_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Date \n Return type : [Dat] \n Allowed types :  year : [int] \n  second : [int] \n  month : [int] \n  minute : [int] \n  millisecond : [double] \n  hour : [int] \n  day : [int] \n  ' );
   }
-
-
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexEarliestExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IndexEarliest')
-
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IndexEarliest' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'IndexEarliest_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
-  }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConditionalExpression'] = {
@@ -6688,91 +4211,155 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConditionalExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Conditional')
+    this.appendDummyInput().appendField('Conditional');
 
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#condition' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Boo]' );
-    this.appendValueInput( 'ARG_1' )
+                         .appendField( 'condition' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#else' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_2' )
+                         .appendField( 'else' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#then' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'then' );
+    
 
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Conditional' );
+    this.setTooltip( ' HeD expression : Conditional \n Return type : [any] \n Allowed types :  condition : [Boo] \n  else : [any] \n  then : [any] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CosIntegerExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectDescriptorExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('CosInteger')
+    this.appendDummyInput().appendField('ObjectDescriptor');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#objectType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'objectType' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#property_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
 
+    
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#ObjectType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : CosInteger' );
+    this.setTooltip( ' HeD expression : ObjectDescriptor \n Return type : [Obj] \n Allowed types :  objectType : [Dom] \n  property : [Pro] \n  ' );
   }
-};
+  ,
+        
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+  mutationToDom: function(workspace) {
+    var container = document.createElement( 'ObjectDescriptor_mutation' );
+    container.setAttribute( 'items', this.itemCount_ );
+    return container;
+  },
 
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AddInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+  domToMutation: function(container) {
+    for (var x = 0; x < this.itemCount_; x++) {
+      this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
+    }
+    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
+    for (var x = 0; x < this.itemCount_; x++) {
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'property [Pro]' );
+    }
+    if (this.itemCount_ == 0) {
+        this.appendDummyInput('EMPTY');
+    }
+  },
+
+  decompose: function(workspace) {
+      var containerBlock = new Blockly.Block(workspace,
+                                             'argument_group_container');
+      containerBlock.initSvg();
+      var connection = containerBlock.getInput('STACK').connection;
+      for (var x = 0; x < this.itemCount_; x++) {
+        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+      return containerBlock;
+    },
+
+  compose: function(containerBlock) {
+      for (var x = this.itemCount_ - 1; x >= 0; x--) {
+           this.removeInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
+         }
+       this.itemCount_ = 0;
+       // Rebuild the block's inputs.
+       var itemBlock = containerBlock.getInputTargetBlock('STACK');
+       while (itemBlock) {
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#property_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#PropertyType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'property [Pro]' );
 
+         // Reconnect any child blocks.
+         if (itemBlock.valueConnection_) {
+          input.connection.connect(itemBlock.valueConnection_);
+         }
+         this.itemCount_++;
+         itemBlock = itemBlock.nextConnection &&
+             itemBlock.nextConnection.targetBlock();
+       }
 
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AddInteger' );
+    },
+    
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var x = 0;
+    while (itemBlock) {
+      var input = this.getInput('http://asu.edu/sharpc2b/ops-set#property_' + x);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      x++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
   }
+
+
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
@@ -6781,106 +4368,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Min')
+    this.appendDummyInput().appendField('Min');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#path_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+                         .appendField( 'path_string' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'source_List' );
+    
 
+    
 
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Min' );
-  } ,
-
-
-  mutationToDom: function(workspace) {
-    var container = document.createElement( 'Min_mutation' );
-    container.setAttribute( 'items', this.itemCount_ );
-    return container;
-  },
-
-  domToMutation: function(container) {
-    for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
-    }
-    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
-    for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
-    }
-    if (this.itemCount_ == 0) {
-        this.appendDummyInput('EMPTY');
-    }
-  },
-
-  decompose: function(workspace) {
-      var containerBlock = new Blockly.Block(workspace,
-                                             'argument_group_container');
-      containerBlock.initSvg();
-      var connection = containerBlock.getInput('STACK').connection;
-      for (var x = 0; x < this.itemCount_; x++) {
-        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-      return containerBlock;
-    },
-
-  compose: function(containerBlock) {
-      for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
-         }
-       this.itemCount_ = 0;
-       // Rebuild the block's inputs.
-       var itemBlock = containerBlock.getInputTargetBlock('STACK');
-       while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
-
-         // Reconnect any child blocks.
-         if (itemBlock.valueConnection_) {
-          input.connection.connect(itemBlock.valueConnection_);
-         }
-         this.itemCount_++;
-         itemBlock = itemBlock.nextConnection &&
-             itemBlock.nextConnection.targetBlock();
-       }
-
-    },
-
-  saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
-    var x = 0;
-    while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
-      itemBlock.valueConnection_ = input && input.connection.targetConnection;
-      x++;
-      itemBlock = itemBlock.nextConnection &&
-          itemBlock.nextConnection.targetBlock();
-    }
+    this.setTooltip( ' HeD expression : Min \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
-
-
-
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotExpression'] = {
@@ -6889,56 +4403,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Not')
+    this.appendDummyInput().appendField('Not');
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Boo]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Not' );
+    this.setTooltip( ' HeD expression : Not \n Return type : [Boo] \n Allowed types :  firstOperand : [Boo] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Log10Expression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Log10')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : Log10' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubstringExpression'] = {
@@ -6947,84 +4430,382 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubstringExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Substring')
+    this.appendDummyInput().appendField('Substring');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#length' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'length' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#startIndex' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'startIndex' );
+    
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#stringToSub' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_2' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'stringToSub' );
+    
 
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Substring' );
+    this.setTooltip( ' HeD expression : Substring \n Return type : [Str] \n Allowed types :  length : [Int] \n  startIndex : [Int] \n  stringToSub : [Str] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DataRequestExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('AllFalse')
+    this.appendDummyInput().appendField('DataRequest');
 
-
-
-
-
-
-    this.appendValueInput( 'ARGS_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#triggerType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARGS_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
-    this.itemCount_ = 2;
+                         .appendField( 'triggerType' );
+    
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#templateId' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'templateId' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'scope' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#isInitial' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#boolean' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'isInitial' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#cardinality' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'cardinality' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#dataType' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'dataType' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#idProperty' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'idProperty' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#timeOffset' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'timeOffset' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : DataRequest \n Return type : [Col] \n Allowed types :  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  dataType : [Dom] \n  idProperty : [Dom] \n  timeOffset : [Int] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SimpleCodeLiteralExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('SimpleCodeLiteral');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#code' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'code' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CodeType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : SimpleCodeLiteral \n Return type : [Cod] \n Allowed types :  code : [string] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Power');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Power \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ForEachExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('ForEach');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#scope' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'scope' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#source_List' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'source_List' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : ForEach \n Return type : [Col, Lis] \n Allowed types :  scope : [string] \n  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('DatePart');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'granularity' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#date' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'date' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : DatePart \n Return type : [Rea, Num, Int] \n Allowed types :  granularity : [string] \n  date : [Dat] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('In');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#collection' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'collection' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#element' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'element' );
+    
+
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : AllFalse' );
-  } ,
+    this.setTooltip( ' HeD expression : In \n Return type : [Boo] \n Allowed types :  collection : [Int, Lis, Tim] \n  element : [any] \n  ' );
+  }
+  
+};
 
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Difference');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'secondOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Difference \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Union');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#hasOperand_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Union \n Return type : [Col, Lis] \n Allowed types :  hasOperand : [Int, Lis, Tim] \n  ' );
+  }
+  ,
+        
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'AllFalse_mutation' );
+    var container = document.createElement( 'Union_mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
 
   domToMutation: function(container) {
     for (var x = 0; x < this.itemCount_; x++) {
-      this.removeInput('ARGS_' + x);
+      this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
     }
     this.itemCount_ = parseInt(container.getAttribute('items'), 10);
     for (var x = 0; x < this.itemCount_; x++) {
-      var input = this.appendValueInput('ARGS_' + x)
-                                       .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                       .setAlign( Blockly.ALIGN_RIGHT )
-                                       .appendField( '[Col, Lis]' );
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Int, Lis, Tim]' );
     }
     if (this.itemCount_ == 0) {
         this.appendDummyInput('EMPTY');
@@ -7047,15 +4828,16 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
 
   compose: function(containerBlock) {
       for (var x = this.itemCount_ - 1; x >= 0; x--) {
-           this.removeInput('ARGS_' + x);
+           this.removeInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
          }
        this.itemCount_ = 0;
        // Rebuild the block's inputs.
        var itemBlock = containerBlock.getInputTargetBlock('STACK');
        while (itemBlock) {
-         var input = this.appendValueInput('ARGS_' + this.itemCount_)
-                                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                                          .setAlign( Blockly.ALIGN_RIGHT );
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops#hasOperand_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'hasOperand [Int, Lis, Tim]' );
 
          // Reconnect any child blocks.
          if (itemBlock.valueConnection_) {
@@ -7067,12 +4849,12 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
        }
 
     },
-
+    
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var x = 0;
     while (itemBlock) {
-      var input = this.getInput('ARGS_' + x);
+      var input = this.getInput('http://asu.edu/sharpc2b/ops#hasOperand_' + x);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       x++;
       itemBlock = itemBlock.nextConnection &&
@@ -7081,216 +4863,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllFalseExpression'] = {
   }
 
 
-
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ForEachExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ForEach')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ForEach' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsIntervalExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ProperContainsInterval')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : ProperContainsInterval' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('AddReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : AddReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('DatePart')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Tim]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : DatePart' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('RoundReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : RoundReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SubtractReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SubtractReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TanIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('TanInteger')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : TanInteger' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SuccExpression'] = {
@@ -7299,51 +4872,52 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SuccExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Succ')
+    this.appendDummyInput().appendField('Succ');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
+    this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Succ' );
+    this.setTooltip( ' HeD expression : Succ \n Return type : [any] \n Allowed types :  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
+  
 };
 
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#SimpleCodeLiteral'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StringLiteralExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField( 'SimpleCode' );
+    this.appendDummyInput().appendField('StringLiteral');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#value_string' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value_string' );
+    
 
+    
 
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'code [string]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#SimpleCodeType' );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD literal : SimpleCode' );
+    this.setTooltip( ' HeD expression : StringLiteral \n Return type : [Str] \n Allowed types :  value_string : [string] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterExpression'] = {
@@ -7352,98 +4926,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Greater')
+    this.appendDummyInput().appendField('Greater');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Greater' );
+    this.setTooltip( ' HeD expression : Greater \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerStringExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IndexerString')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IndexerString' );
-  }
-};
-
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#UrlLiteral'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField( 'Url' );
-
-
-
-        this.appendValueInput( 'ARG_0' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'capabilities [string]' );
-
-
-        this.appendValueInput( 'ARG_1' )
-                             .setCheck( 'xsd:string' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'use [string]' );
-
-
-        this.appendValueInput( 'ARG_2' )
-                             .setCheck( 'xsd:anyURI' )
-                             .setAlign( Blockly.ALIGN_RIGHT )
-                             .appendField( 'value [anyURI]' );
-
-
-
-    this.setOutput( true, 'http://asu.edu/sharpc2b/ops#UrlType' );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD literal : Url' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
@@ -7452,242 +4961,103 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('DateAdd')
+    this.appendDummyInput().appendField('DateAdd');
 
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#TimestampType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Tim]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'granularity' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#date' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_2' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .appendField( 'date' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#numberOfPeriods' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
+                         .appendField( 'numberOfPeriods' );
+    
 
+    
 
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#TimestampType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#DateType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : DateAdd' );
+    this.setTooltip( ' HeD expression : DateAdd \n Return type : [Dat] \n Allowed types :  granularity : [string] \n  date : [Dat] \n  numberOfPeriods : [Int] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TrimExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Trim')
+    this.appendDummyInput().appendField('IsEmpty');
 
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#StringType' ] )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Str]' );
+                         .appendField( 'firstOperand' );
+    
 
+    
 
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#StringType'] );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Trim' );
+    this.setTooltip( ' HeD expression : IsEmpty \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  ' );
   }
+  
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectIntervalExpression'] = {
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('IntersectInterval')
+    this.appendDummyInput().appendField('ProperIn');
 
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( null )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( null )
+                         .appendField( 'firstOperand' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#TimeIntervalType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'secondOperand' );
+    
 
+    
 
-
-
-    this.setOutput( true, null );
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : IntersectInterval' );
+    this.setTooltip( ' HeD expression : ProperIn \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
   }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('MaxReal')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : MaxReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerListExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('IndexerList')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, null );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IndexerList' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateRealExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('NegateReal')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : NegateReal' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('MinInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : MinInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('DivideInteger')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : DivideInteger' );
-  }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNullExpression'] = {
@@ -7696,83 +5066,25 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNullExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('IsNull')
+    this.appendDummyInput().appendField('IsNull');
 
-
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : IsNull' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SqrtIntegerExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('SqrtInteger')
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntegerType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Int, Num, Rea]' );
-
-
-
-
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#IntegerType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( 'HeD expression : SqrtInteger' );
-  }
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInListExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('ProperInList')
-
-
-
-
-    this.appendValueInput( 'ARG_0' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-    this.appendValueInput( 'ARG_1' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#List' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[Col, Lis]' );
-
-
-
+    
 
     this.setOutput( true, ['http://asu.edu/sharpc2b/ops#BooleanType'] );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : ProperInList' );
+    this.setTooltip( ' HeD expression : IsNull \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  ' );
   }
+  
 };
 
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConvertExpression'] = {
@@ -7781,25 +5093,54 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConvertExpression'] = {
 
     this.setColour( 42 );
 
-    this.appendDummyInput().appendField('Convert')
+    this.appendDummyInput().appendField('Convert');
 
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#toType' )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'toType' );
+    
 
-
-    this.appendValueInput( 'ARG_0' )
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
                          .setCheck( null )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( '[any]' );
+                         .appendField( 'firstOperand' );
+    
 
-
-
-
+    
 
     this.setOutput( true, null );
 
     this.setInputsInline( false );
 
-    this.setTooltip( 'HeD expression : Convert' );
+    this.setTooltip( ' HeD expression : Convert \n Return type : [any] \n Allowed types :  toType : [anyURI] \n  firstOperand : [any] \n  ' );
   }
+  
+};
+
+Blockly.Blocks.argument_group_container = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendField('Add arguments');
+        this.appendStatementInput('STACK');
+        this.setTooltip('Add, or remove arguments');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.argument_group_item = {
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput().appendField('Argument');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Add a new argument');
+        this.contextMenu = false;
+    }
 };
 
 
@@ -7821,7 +5162,7 @@ Blockly.Blocks['xsd:anyURI'] = {
   }
 };
 
-Blockly.Blocks['xsd:dateTimeStamp'] = {
+Blockly.Blocks['xsd:dateTime'] = {
   init: function() {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
@@ -7856,5 +5197,19 @@ Blockly.Blocks['xsd:double'] = {
     this.setOutput( true, 'xsd:double' );
   }
 };
+
+
+        Blockly.Blocks['xsd:text'] = {
+        	init : function() {
+        		// Assign 'this' to a variable for use in the tooltip closure.
+        	    var thisBlock = this;
+        		this.setColour(152);
+        		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
+        		this.setOutput(true, 'xsd:string');
+        		this.setTooltip(function() {
+        			return thisBlock.getFieldValue('TEXT');
+        		});
+        	}
+        };
 
 

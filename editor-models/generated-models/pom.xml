@@ -178,6 +178,8 @@
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/sharp_operators.ofn</outputOntologyFile>
           <outputBlocklyDir>${pom.basedir}/target/generated-sources/blockly</outputBlocklyDir>
           <outputOntologyIriString>http://asu.edu/sharpc2b/ops-set</outputOntologyIriString>
+	        <!-- The plugin can also generate the SPREADSHEET (operatorDefinitionFile above) which requires manual editing to fill the information not present in the schema -->
+	        <generationTarget>ONTOLOGY</generationTarget>
         </configuration>
       </plugin>
 
@@ -199,7 +201,14 @@
                   <targetPath>${basedir}/../../editor-ui/src/main/webapp/partials/standard/expression</targetPath>
                   <directory>${project.build.outputDirectory}/../generated-sources/blockly</directory>
                   <includes>
-                    <include>*.js, *.xml</include>
+                    <include>*.xml</include>
+                  </includes>
+                </resource>
+	              <resource>
+                  <targetPath>${basedir}/../../editor-ui/src/main/webapp/js</targetPath>
+                  <directory>${project.build.outputDirectory}/../generated-sources/blockly</directory>
+                  <includes>
+                    <include>*.js</include>
                   </includes>
                 </resource>
                 <resource>

@@ -7,7 +7,6 @@ import edu.asu.sharpc2b.metadata.Evidence;
 import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.Site;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
-import edu.asu.sharpc2b.ops.Attribute;
 import edu.asu.sharpc2b.ops.BinaryExpression;
 import edu.asu.sharpc2b.ops.CreateExpression;
 import edu.asu.sharpc2b.ops.DomainClass;
@@ -372,10 +371,7 @@ public class OOwl2HedDumper implements HeDExporter {
     private void visitLiteral( SharpExpression expr, Element x, Document dox ) {
 //        if ( expr instanceof CodeLiteral ) {
 //            CodeLiteral code = (CodeLiteral) expr;
-            for ( Attribute attr : expr.getHasAttribute() ) {
-                List values = attr.getAttributeValue();
-                x.setAttribute( attr.getAttributeName().get( 0 ), values.get( 0 ).toString() );
-            }
+
 //        }
     }
 
