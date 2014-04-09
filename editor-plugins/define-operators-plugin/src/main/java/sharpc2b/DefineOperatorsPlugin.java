@@ -1,6 +1,7 @@
 package sharpc2b;
 
 import edu.asu.sharpc2b.transform.BlocklyGenerator;
+import edu.asu.sharpc2b.transform.ImportRuleGenerator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -66,6 +67,13 @@ public class DefineOperatorsPlugin
      * @parameter default-value="./target/generated-sources"
      */
     private File outputBlocklyDir;
+
+    /**
+     * File in which to save the import rules
+     *
+     * @parameter default-value="./target/generated-sources"
+     */
+    private File outputRuleDir;
 
     /**
      * The IRI to give the saved output Ontology.
@@ -137,6 +145,14 @@ public class DefineOperatorsPlugin
         this.outputBlocklyDir = outputBlocklyDir;
     }
 
+    public File getOutputRuleDir() {
+        return outputRuleDir;
+    }
+
+    public void setOutputRuleDir( File outputRuleDir ) {
+        this.outputRuleDir = outputRuleDir;
+    }
+
     public String getHedSourceOntologyPath() {
         return hedSourceOntologyPath;
     }
@@ -160,6 +176,7 @@ public class DefineOperatorsPlugin
     public void execute ()
             throws MojoExecutionException, MojoFailureException
     {
+
         final SharpOperators converter;
 
         final OWLOntologyManager oom;
@@ -212,7 +229,6 @@ public class DefineOperatorsPlugin
         converter = new SharpOperators( );
         converter.addSharpOperators( operatorDefinitionFile, hedOntology, operatorOntology, getGenerationTarget() );
 
-
         try
         {
             oom.saveOntology( operatorOntology, oFormat, IRI.create( getOutputOntologyFile() ) );
@@ -227,6 +243,10 @@ public class DefineOperatorsPlugin
 
         BlocklyGenerator blockly = new BlocklyGenerator();
         blockly.processOperators( outputBlocklyDir, operatorOntology );
+
+        ImportRuleGenerator ruler = new ImportRuleGenerator();
+        ruler.processOperators( operatorDefinitionFile, operatorOntology, hedOntology, outputRuleDir );
+
     }
 
 
@@ -246,10 +266,13 @@ public class DefineOperatorsPlugin
 
         def.setOutputBlocklyDir( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/blockly" ) );
         def.setOutputOntologyFile( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/generated-models/target/generated-sources/ontologies/editor_models/sharp_operators.ofn" ) );
+        def.setOutputRuleDir( new File( "/home/davide/Projects/Git/HeD-editor/sharp-editor/import-export/src/main/resources/edu/asu/sharpc2b/transform/drl" ) );
 
         def.setGenerationTarget( "ONTOLOGY" );
 
         def.execute();
+
+
     }
 
 }

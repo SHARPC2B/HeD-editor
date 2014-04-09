@@ -1,0 +1,1723 @@
+
+package edu.asu.sharpc2b;
+
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.*;
+import uk.ac.manchester.cs.owl.owlapi.*;
+
+import edu.asu.sharpc2b.transform.HeD2OwlHelper;
+
+import org.hl7.knowledgeartifact.r1.*;
+import org.hl7.cdsdt.r2.*;
+
+import javax.xml.bind.*;
+import java.util.Set;
+import java.util.HashSet;
+
+global String tns;
+global HeD2OwlHelper helper;
+
+
+
+rule "Nary operands"
+when
+    $nx : NaryExpression( $ops : operands )
+    Link( $nx, $ind ; )
+    Link( $xp, $op ; exp memberOf $ops )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op ) );
+end
+
+rule "Unary operands"
+when
+    $nx : UnaryExpression( $ops1 : operand )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ;)
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+end
+
+rule "BiNary operands"
+when
+    $nx : BinaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ) )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+end
+
+rule "TerNary operands"
+when
+    $nx : TernaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ), $ops3 : operands.get( 2 ) )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+    Link( $ops3, $op3 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
+    insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
+end
+
+
+
+
+
+
+    rule "Expression IntegerIntervalLiteral"
+    when
+        $xp : IntegerIntervalLiteral(  _lowClosed : lowClosed , _high : high , _low : low , _highClosed : highClosed  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:high", $ind, "" + _high );
+        
+            helper.assertNullSafeDataProperty( drools, "a:low", $ind, "" + _low );
+        
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+        
+    end
+
+
+
+
+
+
+    rule "Expression IntegerLiteral"
+    when
+        $xp : IntegerLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression PhysicalQuantityIntervalLiteral"
+    when
+        $xp : PhysicalQuantityIntervalLiteral(  _lowClosed : lowClosed , _highClosed : highClosed  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+        
+    end
+
+
+    rule "Expression PhysicalQuantityIntervalLiteral_high"
+    when
+        $xp : PhysicalQuantityIntervalLiteral()
+        _high : Object() from $xp.high
+        Link( $xp, $ind ; )
+        Link( _high, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:high_PhysicalQuantity", $ind, $val ) );
+    end
+
+    rule "Expression PhysicalQuantityIntervalLiteral_low"
+    when
+        $xp : PhysicalQuantityIntervalLiteral()
+        _low : Object() from $xp.low
+        Link( $xp, $ind ; )
+        Link( _low, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:low_PhysicalQuantity", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ComplexLiteral"
+    when
+        $xp : ComplexLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression RatioLiteral"
+    when
+        $xp : RatioLiteral(  _numerator : numerator , _denominator : denominator  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:numerator", $ind, "" + _numerator );
+        
+            helper.assertNullSafeDataProperty( drools, "a:denominator", $ind, "" + _denominator );
+        
+    end
+
+
+
+
+
+
+    rule "Expression PeriodLiteral"
+    when
+        $xp : PeriodLiteral(  _alignment : alignment , _count : count , _isFlexible : isFlexible  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:alignment", $ind, "" + _alignment );
+        
+            helper.assertNullSafeDataProperty( drools, "a:count", $ind, "" + _count );
+        
+            helper.assertNullSafeDataProperty( drools, "a:isFlexible", $ind, "" + _isFlexible );
+        
+    end
+
+
+    rule "Expression PeriodLiteral_frequency"
+    when
+        $xp : PeriodLiteral()
+        _frequency : Object() from $xp.frequency
+        Link( $xp, $ind ; )
+        Link( _frequency, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:frequency", $ind, $val ) );
+    end
+
+    rule "Expression PeriodLiteral_period"
+    when
+        $xp : PeriodLiteral()
+        _period : Object() from $xp.period
+        Link( $xp, $ind ; )
+        Link( _period, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:period", $ind, $val ) );
+    end
+
+    rule "Expression PeriodLiteral_phase"
+    when
+        $xp : PeriodLiteral()
+        _phase : Object() from $xp.phase
+        Link( $xp, $ind ; )
+        Link( _phase, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:phase", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression StringLiteral"
+    when
+        $xp : StringLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression QuantityIntervalLiteral"
+    when
+        $xp : QuantityIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high );
+        
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low );
+        
+    end
+
+
+
+
+
+
+    rule "Expression RealIntervalLiteral"
+    when
+        $xp : RealIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high );
+        
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low );
+        
+    end
+
+
+
+
+
+
+    rule "Expression AddressLiteral"
+    when
+        $xp : AddressLiteral(  _part : parts[ 0 ]  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part );
+        
+    end
+
+
+
+
+
+
+    rule "Expression CodeLiteral"
+    when
+        $xp : CodeLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _code : code , _displayName : displayName  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName );
+        
+            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem );
+        
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+        
+            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName );
+        
+    end
+
+
+
+
+
+
+    rule "Expression CodedOrdinalLiteral"
+    when
+        $xp : CodedOrdinalLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _value : value , _code : code , _displayName : displayName  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName );
+        
+            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem );
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+        
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+        
+            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName );
+        
+    end
+
+
+
+
+
+
+    rule "Expression EntityNameLiteral"
+    when
+        $xp : EntityNameLiteral(  _part : parts[ 0 ]  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part );
+        
+    end
+
+
+
+
+
+
+    rule "Expression Literal"
+    when
+        $xp : Literal(  _value : value , _valueType : valueType  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+        
+            helper.assertNullSafeDataProperty( drools, "a:valueType", $ind, "" + _valueType );
+        
+    end
+
+
+
+
+
+
+    rule "Expression PhysicalQuantityLiteral"
+    when
+        $xp : PhysicalQuantityLiteral(  _unit : unit , _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:unit", $ind, "" + _unit );
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression UrlLiteral"
+    when
+        $xp : UrlLiteral(  _value : value , _capabilities : capabilities  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_anyURI", $ind, "" + _value );
+        
+            helper.assertNullSafeDataProperty( drools, "a:capabilities", $ind, "" + _capabilities );
+        
+    end
+
+
+
+
+
+
+    rule "Expression RealLiteral"
+    when
+        $xp : RealLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression TimestampLiteral"
+    when
+        $xp : TimestampLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_dateTime", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression TimestampIntervalLiteral"
+    when
+        $xp : TimestampIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:high_dateTime", $ind, "" + _high );
+        
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+        
+            helper.assertNullSafeDataProperty( drools, "a:low_dateTime", $ind, "" + _low );
+        
+    end
+
+
+
+
+
+
+    rule "Expression IdentifierLiteral"
+    when
+        $xp : IdentifierLiteral(  _extension : extension , _root : root  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:extension", $ind, "" + _extension );
+        
+            helper.assertNullSafeDataProperty( drools, "a:root", $ind, "" + _root );
+        
+    end
+
+
+
+
+
+
+    rule "Expression BooleanLiteral"
+    when
+        $xp : BooleanLiteral(  _value : value  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:value_boolean", $ind, "" + _value );
+        
+    end
+
+
+
+
+
+
+    rule "Expression SimpleCodeLiteral"
+    when
+        $xp : SimpleCodeLiteral(  _code : code  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+        
+    end
+
+
+
+
+
+
+    rule "Expression Sort"
+    when
+        $xp : Sort(  _orderBy : orderBy  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+        
+    end
+
+
+    rule "Expression Sort_source"
+    when
+        $xp : Sort()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Distinct_source"
+    when
+        $xp : Distinct()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Current"
+    when
+        $xp : Current(  _scope : scope  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+    end
+
+
+
+
+
+
+
+    rule "Expression DateAdd_numberOfPeriods"
+    when
+        $xp : DateAdd()
+        _numberOfPeriods : Object() from $xp.numberOfPeriods
+        Link( $xp, $ind ; )
+        Link( _numberOfPeriods, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:numberOfPeriods", $ind, $val ) );
+    end
+
+    rule "Expression DateAdd_granularity"
+    when
+        $xp : DateAdd()
+        _granularity : Object() from $xp.granularity
+        Link( $xp, $ind ; )
+        Link( _granularity, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:granularity", $ind, $val ) );
+    end
+
+    rule "Expression DateAdd_date"
+    when
+        $xp : DateAdd()
+        _date : Object() from $xp.date
+        Link( $xp, $ind ; )
+        Link( _date, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:date", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Date"
+    when
+        $xp : Date(  _minute : minute , _second : second , _millisecond : millisecond , _month : month , _year : year , _day : day , _hour : hour  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:minute", $ind, "" + _minute );
+        
+            helper.assertNullSafeDataProperty( drools, "a:second", $ind, "" + _second );
+        
+            helper.assertNullSafeDataProperty( drools, "a:millisecond", $ind, "" + _millisecond );
+        
+            helper.assertNullSafeDataProperty( drools, "a:month", $ind, "" + _month );
+        
+            helper.assertNullSafeDataProperty( drools, "a:year", $ind, "" + _year );
+        
+            helper.assertNullSafeDataProperty( drools, "a:day", $ind, "" + _day );
+        
+            helper.assertNullSafeDataProperty( drools, "a:hour", $ind, "" + _hour );
+        
+    end
+
+
+
+
+
+
+    rule "Expression List"
+    when
+        $xp : List(  _key : key  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:key", $ind, "" + _key );
+        
+    end
+
+
+    rule "Expression List_element"
+    when
+        $xp : List()
+        _element : Object() from $xp.elements
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Contains_element"
+    when
+        $xp : Contains()
+        _element : Object() from $xp.element
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
+    end
+
+    rule "Expression Contains_source"
+    when
+        $xp : Contains()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ValueSet"
+    when
+        $xp : ValueSet(  _id : id , _authority : authority , _version : version  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:id", $ind, "" + _id );
+        
+            helper.assertNullSafeDataProperty( drools, "a:authority", $ind, "" + _authority );
+        
+            helper.assertNullSafeDataProperty( drools, "a:version", $ind, "" + _version );
+        
+    end
+
+
+
+
+
+
+    rule "Expression ParameterRef"
+    when
+        $xp : ParameterRef(  _name : name  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name );
+        
+    end
+
+
+
+
+
+
+
+    rule "Expression Split_stringToSplit"
+    when
+        $xp : Split()
+        _stringToSplit : Object() from $xp.stringToSplit
+        Link( $xp, $ind ; )
+        Link( _stringToSplit, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:stringToSplit", $ind, $val ) );
+    end
+
+    rule "Expression Split_separator"
+    when
+        $xp : Split()
+        _separator : Object() from $xp.separator
+        Link( $xp, $ind ; )
+        Link( _separator, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:separator", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Null"
+    when
+        $xp : Null(  _valueType : valueType  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:valueType", $ind, "" + _valueType );
+        
+    end
+
+
+
+
+
+
+
+    rule "Expression In_element"
+    when
+        $xp : In()
+        _element : Object() from $xp.element
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
+    end
+
+    rule "Expression In_collection"
+    when
+        $xp : In()
+        _collection : Object() from $xp.collection
+        Link( $xp, $ind ; )
+        Link( _collection, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:collection", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression First"
+    when
+        $xp : First(  _orderBy : orderBy  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+        
+    end
+
+
+    rule "Expression First_source"
+    when
+        $xp : First()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Conditional_else"
+    when
+        $xp : Conditional()
+        _else : Object() from $xp.else
+        Link( $xp, $ind ; )
+        Link( _else, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:else", $ind, $val ) );
+    end
+
+    rule "Expression Conditional_condition"
+    when
+        $xp : Conditional()
+        _condition : Object() from $xp.condition
+        Link( $xp, $ind ; )
+        Link( _condition, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:condition", $ind, $val ) );
+    end
+
+    rule "Expression Conditional_then"
+    when
+        $xp : Conditional()
+        _then : Object() from $xp.then
+        Link( $xp, $ind ; )
+        Link( _then, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:then", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression DataRequest"
+    when
+        $xp : DataRequest(  _templateId : templateId , _scope : scope , _isInitial : isInitial , _triggerType : triggerType , _cardinality : cardinality  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId );
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial );
+        
+            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType );
+        
+            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality );
+        
+    end
+
+
+    rule "Expression DataRequest_dataType"
+    when
+        $xp : DataRequest()
+        _dataType : Object() from $xp.dataType
+        Link( $xp, $ind ; )
+        Link( _dataType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:dataType", $ind, $val ) );
+    end
+
+    rule "Expression DataRequest_timeOffset"
+    when
+        $xp : DataRequest()
+        _timeOffset : Object() from $xp.timeOffset
+        Link( $xp, $ind ; )
+        Link( _timeOffset, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:timeOffset", $ind, $val ) );
+    end
+
+    rule "Expression DataRequest_idProperty"
+    when
+        $xp : DataRequest()
+        _idProperty : Object() from $xp.idProperty
+        Link( $xp, $ind ; )
+        Link( _idProperty, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:idProperty", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ClinicalRequest"
+    when
+        $xp : ClinicalRequest(  _templateId : templateId , _useValueSets : useValueSets , _scope : scope , _isInitial : isInitial , _useSubsumption : useSubsumption , _triggerType : triggerType , _cardinality : cardinality  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId );
+        
+            helper.assertNullSafeDataProperty( drools, "a:useValueSets", $ind, "" + _useValueSets );
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial );
+        
+            helper.assertNullSafeDataProperty( drools, "a:useSubsumption", $ind, "" + _useSubsumption );
+        
+            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType );
+        
+            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality );
+        
+    end
+
+
+    rule "Expression ClinicalRequest_dateRange"
+    when
+        $xp : ClinicalRequest()
+        _dateRange : Object() from $xp.dateRange
+        Link( $xp, $ind ; )
+        Link( _dateRange, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:dateRange", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_dataType"
+    when
+        $xp : ClinicalRequest()
+        _dataType : Object() from $xp.dataType
+        Link( $xp, $ind ; )
+        Link( _dataType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:dataType", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_subjectProperty"
+    when
+        $xp : ClinicalRequest()
+        _subjectProperty : Object() from $xp.subjectProperty
+        Link( $xp, $ind ; )
+        Link( _subjectProperty, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:subjectProperty", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_subject"
+    when
+        $xp : ClinicalRequest()
+        _subject : Object() from $xp.subject
+        Link( $xp, $ind ; )
+        Link( _subject, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:subject", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_dateProperty"
+    when
+        $xp : ClinicalRequest()
+        _dateProperty : Object() from $xp.dateProperty
+        Link( $xp, $ind ; )
+        Link( _dateProperty, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:dateProperty", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_timeOffset"
+    when
+        $xp : ClinicalRequest()
+        _timeOffset : Object() from $xp.timeOffset
+        Link( $xp, $ind ; )
+        Link( _timeOffset, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:timeOffset", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_codeProperty"
+    when
+        $xp : ClinicalRequest()
+        _codeProperty : Object() from $xp.codeProperty
+        Link( $xp, $ind ; )
+        Link( _codeProperty, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:codeProperty", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_codes"
+    when
+        $xp : ClinicalRequest()
+        _codes : Object() from $xp.codes
+        Link( $xp, $ind ; )
+        Link( _codes, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:codes", $ind, $val ) );
+    end
+
+    rule "Expression ClinicalRequest_idProperty"
+    when
+        $xp : ClinicalRequest()
+        _idProperty : Object() from $xp.idProperty
+        Link( $xp, $ind ; )
+        Link( _idProperty, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:idProperty", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Case_else"
+    when
+        $xp : Case()
+        _else : Object() from $xp.else
+        Link( $xp, $ind ; )
+        Link( _else, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:else", $ind, $val ) );
+    end
+
+    rule "Expression Case_comparand"
+    when
+        $xp : Case()
+        _comparand : Object() from $xp.comparand
+        Link( $xp, $ind ; )
+        Link( _comparand, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:comparand", $ind, $val ) );
+    end
+
+    rule "Expression Case_caseItem"
+    when
+        $xp : Case()
+        _caseItem : Object() from $xp.caseItems
+        Link( $xp, $ind ; )
+        Link( _caseItem, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:caseItem", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ForEach"
+    when
+        $xp : ForEach(  _scope : scope  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+    end
+
+
+    rule "Expression ForEach_element"
+    when
+        $xp : ForEach()
+        _element : Object() from $xp.element
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
+    end
+
+    rule "Expression ForEach_source"
+    when
+        $xp : ForEach()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Pos"
+    when
+        $xp : Pos(  _pattern : pattern  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:pattern", $ind, "" + _pattern );
+        
+    end
+
+
+    rule "Expression Pos_string"
+    when
+        $xp : Pos()
+        _string : Object() from $xp.string
+        Link( $xp, $ind ; )
+        Link( _string, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:string", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression IndexOf_element"
+    when
+        $xp : IndexOf()
+        _element : Object() from $xp.element
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
+    end
+
+    rule "Expression IndexOf_source"
+    when
+        $xp : IndexOf()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ObjectRedefine"
+    when
+        $xp : ObjectRedefine(  _scope : scope  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+    end
+
+
+    rule "Expression ObjectRedefine_source"
+    when
+        $xp : ObjectRedefine()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_Object", $ind, $val ) );
+    end
+
+    rule "Expression ObjectRedefine_property"
+    when
+        $xp : ObjectRedefine()
+        _property : Object() from $xp.properties
+        Link( $xp, $ind ; )
+        Link( _property, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:property", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Property"
+    when
+        $xp : Property(  _scope : scope  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+    end
+
+
+    rule "Expression Property_source"
+    when
+        $xp : Property()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_Object", $ind, $val ) );
+    end
+
+    rule "Expression Property_path"
+    when
+        $xp : Property()
+        _path : Object() from $xp.path
+        Link( $xp, $ind ; )
+        Link( _path, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:path", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Within_element"
+    when
+        $xp : Within()
+        _element : Object() from $xp.element
+        Link( $xp, $ind ; )
+        Link( _element, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:element_Ordinal", $ind, $val ) );
+    end
+
+    rule "Expression Within_interval"
+    when
+        $xp : Within()
+        _interval : Object() from $xp.interval
+        Link( $xp, $ind ; )
+        Link( _interval, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:interval", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression ObjectDescriptor_property"
+    when
+        $xp : ObjectDescriptor()
+        _property : Object() from $xp.properties
+        Link( $xp, $ind ; )
+        Link( _property, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:property", $ind, $val ) );
+    end
+
+    rule "Expression ObjectDescriptor_objectType"
+    when
+        $xp : ObjectDescriptor()
+        _objectType : Object() from $xp.objectType
+        Link( $xp, $ind ; )
+        Link( _objectType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:objectType", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression SetSubsumes_descendents"
+    when
+        $xp : SetSubsumes()
+        _descendents : Object() from $xp.descendents
+        Link( $xp, $ind ; )
+        Link( _descendents, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:descendents", $ind, $val ) );
+    end
+
+    rule "Expression SetSubsumes_ancestors"
+    when
+        $xp : SetSubsumes()
+        _ancestors : Object() from $xp.ancestors
+        Link( $xp, $ind ; )
+        Link( _ancestors, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:ancestors", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Combine_source"
+    when
+        $xp : Combine()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_String", $ind, $val ) );
+    end
+
+    rule "Expression Combine_separator"
+    when
+        $xp : Combine()
+        _separator : Object() from $xp.separator
+        Link( $xp, $ind ; )
+        Link( _separator, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:separator", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Filter"
+    when
+        $xp : Filter(  _scope : scope  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+        
+    end
+
+
+    rule "Expression Filter_source"
+    when
+        $xp : Filter()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+    rule "Expression Filter_condition"
+    when
+        $xp : Filter()
+        _condition : Object() from $xp.condition
+        Link( $xp, $ind ; )
+        Link( _condition, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:condition", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression ExpressionRef"
+    when
+        $xp : ExpressionRef(  _name : name  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name );
+        
+    end
+
+
+
+
+
+
+
+    rule "Expression DateDiff_startDate"
+    when
+        $xp : DateDiff()
+        _startDate : Object() from $xp.startDate
+        Link( $xp, $ind ; )
+        Link( _startDate, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:startDate", $ind, $val ) );
+    end
+
+    rule "Expression DateDiff_granularity"
+    when
+        $xp : DateDiff()
+        _granularity : Object() from $xp.granularity
+        Link( $xp, $ind ; )
+        Link( _granularity, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:granularity_String", $ind, $val ) );
+    end
+
+    rule "Expression DateDiff_endDate"
+    when
+        $xp : DateDiff()
+        _endDate : Object() from $xp.endDate
+        Link( $xp, $ind ; )
+        Link( _endDate, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:endDate", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Avg"
+    when
+        $xp : Avg(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression Avg_source"
+    when
+        $xp : Avg()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Count"
+    when
+        $xp : Count(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression Count_source"
+    when
+        $xp : Count()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression AnyTrue"
+    when
+        $xp : AnyTrue(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression AnyTrue_source"
+    when
+        $xp : AnyTrue()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression AllTrue"
+    when
+        $xp : AllTrue(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression AllTrue_source"
+    when
+        $xp : AllTrue()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Min"
+    when
+        $xp : Min(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression Min_source"
+    when
+        $xp : Min()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Sum"
+    when
+        $xp : Sum(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression Sum_source"
+    when
+        $xp : Sum()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Max"
+    when
+        $xp : Max(  _path : path  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+        
+    end
+
+
+    rule "Expression Max_source"
+    when
+        $xp : Max()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression ObjectExpression_property"
+    when
+        $xp : ObjectExpression()
+        _property : Object() from $xp.properties
+        Link( $xp, $ind ; )
+        Link( _property, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:property", $ind, $val ) );
+    end
+
+    rule "Expression ObjectExpression_objectType"
+    when
+        $xp : ObjectExpression()
+        _objectType : Object() from $xp.objectType
+        Link( $xp, $ind ; )
+        Link( _objectType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:objectType", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Subsumes_descendent"
+    when
+        $xp : Subsumes()
+        _descendent : Object() from $xp.descendent
+        Link( $xp, $ind ; )
+        Link( _descendent, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:descendent", $ind, $val ) );
+    end
+
+    rule "Expression Subsumes_ancestor"
+    when
+        $xp : Subsumes()
+        _ancestor : Object() from $xp.ancestor
+        Link( $xp, $ind ; )
+        Link( _ancestor, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:ancestor", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Last"
+    when
+        $xp : Last(  _orderBy : orderBy  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+        
+    end
+
+
+    rule "Expression Last_source"
+    when
+        $xp : Last()
+        _source : Object() from $xp.source
+        Link( $xp, $ind ; )
+        Link( _source, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
+    end
+
+
+
+
+
+
+    rule "Expression Substring_startIndex"
+    when
+        $xp : Substring()
+        _startIndex : Object() from $xp.startIndex
+        Link( $xp, $ind ; )
+        Link( _startIndex, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:startIndex", $ind, $val ) );
+    end
+
+    rule "Expression Substring_length"
+    when
+        $xp : Substring()
+        _length : Object() from $xp.length
+        Link( $xp, $ind ; )
+        Link( _length, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:length", $ind, $val ) );
+    end
+
+    rule "Expression Substring_stringToSub"
+    when
+        $xp : Substring()
+        _stringToSub : Object() from $xp.stringToSub
+        Link( $xp, $ind ; )
+        Link( _stringToSub, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:stringToSub", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression DatePart"
+    when
+        $xp : DatePart(  _granularity : granularity  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:granularity_string", $ind, "" + _granularity );
+        
+    end
+
+
+    rule "Expression DatePart_date"
+    when
+        $xp : DatePart()
+        _date : Object() from $xp.date
+        Link( $xp, $ind ; )
+        Link( _date, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:date", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression Interval"
+    when
+        $xp : Interval(  _endOpen : endOpen , _beginOpen : beginOpen  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:endOpen", $ind, "" + _endOpen );
+        
+            helper.assertNullSafeDataProperty( drools, "a:beginOpen", $ind, "" + _beginOpen );
+        
+    end
+
+
+    rule "Expression Interval_end"
+    when
+        $xp : Interval()
+        _end : Object() from $xp.end
+        Link( $xp, $ind ; )
+        Link( _end, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:end", $ind, $val ) );
+    end
+
+    rule "Expression Interval_begin"
+    when
+        $xp : Interval()
+        _begin : Object() from $xp.begin
+        Link( $xp, $ind ; )
+        Link( _begin, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:begin", $ind, $val ) );
+    end
+
+

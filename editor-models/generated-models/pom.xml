@@ -177,6 +177,7 @@
           <hedSourceOntologyPath>${pom.basedir}/target/generated-sources/knowledgedocument.xsd.ttl</hedSourceOntologyPath>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/sharp_operators.ofn</outputOntologyFile>
           <outputBlocklyDir>${pom.basedir}/target/generated-sources/blockly</outputBlocklyDir>
+          <outputRuleDir>${pom.basedir}/target/generated-sources/rules</outputRuleDir>
           <outputOntologyIriString>http://asu.edu/sharpc2b/ops-set</outputOntologyIriString>
 	        <!-- The plugin can also generate the SPREADSHEET (operatorDefinitionFile above) which requires manual editing to fill the information not present in the schema -->
 	        <generationTarget>ONTOLOGY</generationTarget>
@@ -223,6 +224,13 @@
                   <directory>${project.build.outputDirectory}/../generated-sources/ontologies/editor_models</directory>
                   <includes>
                     <include>domain-vmr.ofn</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <targetPath>${basedir}/../../import-export/src/main/resources/edu/asu/sharpc2b/transform/drl</targetPath>
+                  <directory>${project.build.outputDirectory}/../generated-sources/rules</directory>
+                  <includes>
+                    <include>*.drl</include>
                   </includes>
                 </resource>
               </resources>

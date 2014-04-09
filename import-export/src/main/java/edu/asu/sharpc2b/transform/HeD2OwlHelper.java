@@ -97,23 +97,17 @@ public class HeD2OwlHelper {
                 tgt );
     }
 
+    public void assertNullSafeDataProperty( KnowledgeHelper drools, String property, OWLNamedIndividual src, String tgt ) {
+        if ( ! "null".equals( tgt ) ) {
+            drools.insert( assertDataProperty( property, src, tgt ) );
+        }
+    }
+
     public OWLDataPropertyAssertionAxiom assertDataProperty( String property, OWLNamedIndividual src, String tgt ) {
         return factory.getOWLDataPropertyAssertionAxiom(
                 factory.getOWLDataProperty( property, prefixManager ),
                 src,
                 factory.getOWLLiteral( tgt ) );
-    }
-
-    public OWLNamedIndividual assertLiteralAttribute( KnowledgeHelper kh, OWLNamedIndividual literal, String name, Object value ) {
-        if ( value != null ) {
-            OWLNamedIndividual attr = asIndividual( new Object() );
-            kh.insert( assertObjectProperty( "ops:hasAttribute", literal, attr ) );
-            kh.insert( assertType( attr, "ops:Attribute" ) );
-            kh.insert( assertDataProperty( "ops:attributeName", attr, name ) );
-            kh.insert( assertDataProperty( "ops:attributeValue", attr, value.toString() ) );
-            return attr;
-        }
-        return null;
     }
 
     public void assertCD( KnowledgeHelper kh, String property, OWLNamedIndividual src, Object code ) {

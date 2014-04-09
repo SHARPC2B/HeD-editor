@@ -7,6 +7,7 @@ public class TestHeD {
     private static String targetFolder =  null;
 
     @Test
+    @Ignore
     public void testLoadHeD() {
 
         try {

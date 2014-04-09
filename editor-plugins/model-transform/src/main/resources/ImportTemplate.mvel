@@ -1,0 +1,112 @@
+
+
+@declare{"rule"}
+
+@if{ ! dataProperties.empty }
+    rule "Expression @{name}"
+    when
+        $xp : @{name}( @foreach{ prop : dataProperties.keySet() } _@{prop} : @{accessors[ prop ]} @end{','} )
+        Link( $xp, $ind ; )
+    then
+        @foreach{ prop : dataProperties.keySet() }
+            helper.assertNullSafeDataProperty( drools, "a:@{dataProperties[ prop ]}", $ind, "" + _@{prop} );
+        @end{}
+    end
+@end{}
+@foreach{ prop : objectProperties.keySet() }
+    rule "Expression @{name}_@{prop}"
+    when
+        $xp : @{name}()
+        _@{prop} : Object() from $xp.@{accessors[ prop ]}
+        Link( $xp, $ind ; )
+        Link( _@{prop}, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:@{objectProperties[ prop ]}", $ind, $val ) );
+    end
+@end{}
+
+@end{}
+
+
+
+
+
+@declare{"header"}
+package edu.asu.sharpc2b;
+
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.*;
+import uk.ac.manchester.cs.owl.owlapi.*;
+
+import edu.asu.sharpc2b.transform.HeD2OwlHelper;
+
+import org.hl7.knowledgeartifact.r1.*;
+import org.hl7.cdsdt.r2.*;
+
+import javax.xml.bind.*;
+import java.util.Set;
+import java.util.HashSet;
+
+global String tns;
+global HeD2OwlHelper helper;
+@end{}
+
+
+
+
+
+@declare{"basicRules"}
+
+
+rule "Nary operands"
+when
+    $nx : NaryExpression( $ops : operands )
+    Link( $nx, $ind ; )
+    Link( $xp, $op ; exp memberOf $ops )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op ) );
+end
+
+rule "Unary operands"
+when
+    $nx : UnaryExpression( $ops1 : operand )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ;)
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+end
+
+rule "BiNary operands"
+when
+    $nx : BinaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ) )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+end
+
+rule "TerNary operands"
+when
+    $nx : TernaryExpression( $ops1 : operands.get( 0 ), $ops2 : operands.get( 1 ), $ops3 : operands.get( 2 ) )
+    Link( $nx, $ind ; )
+    Link( $ops1, $op1 ; )
+    Link( $ops2, $op2 ; )
+    Link( $ops3, $op3 ; )
+then
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
+    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
+    insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
+end
+
+
+
+@end{}
+

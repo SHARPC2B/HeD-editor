@@ -62,6 +62,7 @@ public class HeD2OwlDumper {
     private void initKBase() {
         KnowledgeBuilder kBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
         kBuilder.add( new ClassPathResource( "edu/asu/sharpc2b/transform/drl/hed2owl.drl" ), ResourceType.DRL );
+        kBuilder.add( new ClassPathResource( "edu/asu/sharpc2b/transform/drl/hedExpressions2owl.drl" ), ResourceType.DRL );
         if ( kBuilder.hasErrors() ) {
             throw new RuntimeDroolsException( kBuilder.getErrors().toString() );
         }
