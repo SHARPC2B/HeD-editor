@@ -313,23 +313,9 @@ angular.module('ruleApp.controllers', [])
                 { cellTemplate: '<a href="" ng-click="removeEvidence(row)"><i class="icon-trash"></i></a><a href="" ng-click="openRowDetail(row)"><i class="icon-zoom-in"></i></a>', width: 24}
             ]
         };
-<<<<<<< HEAD
-
-=======
-        $scope.tinymceOptions = {
-            menubar: false,
-            plugins: ["image spellchecker emoticons"],
-            toolbar: "bold italic underline spellchecker styleselect bullist numlist | undo redo  | image emoticons",
-            statusbar: false
-        };
         $scope.saveDocumentation = function(documentation) {
         	console.log(documentation);
         };
-        $scope.rights = [{"Name":"Mayo Clinic",
-            "Type":"Company",
-            "Permissions":"Author"
-        }];
->>>>>>> 2d22c1f... Updated the background information screen (adding individual save
         $scope.gridRight = {
             data: 'rights',
             enableRowSelection: false,
