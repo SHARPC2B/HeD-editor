@@ -151,6 +151,7 @@ public class ImportRuleGenerator {
         Arity arity = Arity.parse( (int) row.getCell( 1 ).getNumericCellValue() );
         if ( arity == Arity.LITERAL || arity == Arity.MIXED ) {
             Map<String,String> dataProperties = new HashMap<String,String>();
+            Map<String,String> dataTypes = new HashMap<String,String>();
             Map<String,String> objectProperties = new HashMap<String,String>();
             Map<String,String> accessors = new HashMap<String,String>();
 
@@ -174,6 +175,7 @@ public class ImportRuleGenerator {
                     dataProperties.put( propName, actualName );
                     String accessor = checkAccessor( opName, propName, sourceOntology, false );
                     accessors.put( propName, accessor );
+                    dataTypes.put( propName, propType );
                 } else {
                     objectProperties.put( propName, actualName );
                     String accessor = checkAccessor( opName, propName, sourceOntology, true );
@@ -185,6 +187,7 @@ public class ImportRuleGenerator {
             map.put( "name", opName );
             map.put( "objectProperties", objectProperties );
             map.put( "dataProperties", dataProperties );
+            map.put( "dataTypes", dataTypes );
             map.put( "accessors", accessors );
             String rules = (String) TemplateRuntime.execute( registry.getNamedTemplate( "rule" ), null, map, registry );
             builder.append( rules );
@@ -276,6 +279,7 @@ public class ImportRuleGenerator {
         }
         return candidate;
     }
+
 
 
     private Sheet getExcelOperatorsSheet (File excelFile) {

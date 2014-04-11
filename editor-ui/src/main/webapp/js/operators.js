@@ -29,7 +29,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MaxExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Max \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Max \n Return type : [Num] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -64,7 +64,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Is \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  isType : [Dom] \n  ' );
+    this.setTooltip( ' HeD expression : Is \n Return type : [Boo] \n Allowed types : \n  firstOperand : [any] \n  isType : [Dom] \n  ' );
   }
   
 };
@@ -99,7 +99,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Less \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Less \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -134,7 +134,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SetSubsumesExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : SetSubsumes \n Return type : [Boo] \n Allowed types :  ancestors : [Int, Lis, Tim] \n  descendents : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : SetSubsumes \n Return type : [Boo] \n Allowed types : \n  ancestors : [Int, Lis, Tim] \n  descendents : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -201,7 +201,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PeriodLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : PeriodLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  isFlexible : [boolean] \n  count : [int] \n  alignment : [string] \n  frequency : [Rat] \n  period : [Phy] \n  phase : [Tim] \n  ' );
+    this.setTooltip( ' HeD expression : PeriodLiteral \n Return type : [Col, Int, Lis] \n Allowed types : \n  isFlexible : [boolean] \n  count : [int] \n  alignment : [string] \n  frequency : [Rat] \n  period : [Phy] \n  phase : [Tim] \n  ' );
   }
   
 };
@@ -236,7 +236,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ContainsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Contains \n Return type : [Boo] \n Allowed types :  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Contains \n Return type : [Boo] \n Allowed types : \n  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -271,7 +271,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SortExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Sort \n Return type : [Col, Lis] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Sort \n Return type : [Col, Lis] \n Allowed types : \n  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -314,7 +314,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : As \n Return type : [any] \n Allowed types :  strict : [boolean] \n  firstOperand : [any] \n  asType : [Dom] \n  ' );
+    this.setTooltip( ' HeD expression : As \n Return type : [any] \n Allowed types : \n  strict : [boolean] \n  firstOperand : [any] \n  asType : [Dom] \n  ' );
   }
   
 };
@@ -341,7 +341,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Ln \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Ln \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -376,7 +376,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : AllTrue \n Return type : [Boo] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : AllTrue \n Return type : [Boo] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -427,7 +427,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntegerIntervalLiteralExpression
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IntegerIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  lowClosed : [boolean] \n  low : [int] \n  highClosed : [boolean] \n  high : [int] \n  ' );
+    this.setTooltip( ' HeD expression : IntegerIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types : \n  lowClosed : [boolean] \n  low : [int] \n  highClosed : [boolean] \n  high : [int] \n  ' );
   }
   
 };
@@ -462,7 +462,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Add \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Add \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -497,7 +497,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubsumesExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Subsumes \n Return type : [Boo] \n Allowed types :  ancestor : [Cod] \n  descendent : [Cod] \n  ' );
+    this.setTooltip( ' HeD expression : Subsumes \n Return type : [Boo] \n Allowed types : \n  ancestor : [Cod] \n  descendent : [Cod] \n  ' );
   }
   
 };
@@ -548,7 +548,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CodeLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : CodeLiteral \n Return type : [Cod] \n Allowed types :  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
+    this.setTooltip( ' HeD expression : CodeLiteral \n Return type : [Cod] \n Allowed types : \n  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
   }
   
 };
@@ -578,7 +578,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Coalesce \n Return type : [any] \n Allowed types :  hasOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Coalesce \n Return type : [any] \n Allowed types : \n  hasOperand : [any] \n  ' );
   }
   ,
         
@@ -684,7 +684,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : And \n Return type : [Boo] \n Allowed types :  hasOperand : [Boo] \n  ' );
+    this.setTooltip( ' HeD expression : And \n Return type : [Boo] \n Allowed types : \n  hasOperand : [Boo] \n  ' );
   }
   ,
         
@@ -795,7 +795,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PhysicalQuantityLiteralExpressio
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : PhysicalQuantityLiteral \n Return type : [Phy] \n Allowed types :  value_double : [double] \n  unit : [string] \n  ' );
+    this.setTooltip( ' HeD expression : PhysicalQuantityLiteral \n Return type : [Phy] \n Allowed types : \n  value_double : [double] \n  unit : [string] \n  ' );
   }
   
 };
@@ -830,7 +830,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AfterExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : After \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : After \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -865,7 +865,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MultiplyExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Multiply \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Multiply \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -892,7 +892,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CeilingExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Ceiling \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Ceiling \n Return type : [Rea, Num, Int] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -927,7 +927,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OverlapsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Overlaps \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Overlaps \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -978,7 +978,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PhysicalQuantityIntervalLiteralE
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : PhysicalQuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  lowClosed : [boolean] \n  highClosed : [boolean] \n  high_PhysicalQuantity : [Phy] \n  low_PhysicalQuantity : [Phy] \n  ' );
+    this.setTooltip( ' HeD expression : PhysicalQuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types : \n  lowClosed : [boolean] \n  highClosed : [boolean] \n  high_PhysicalQuantity : [Phy] \n  low_PhysicalQuantity : [Phy] \n  ' );
   }
   
 };
@@ -1005,7 +1005,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PredExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Pred \n Return type : [any] \n Allowed types :  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Pred \n Return type : [any] \n Allowed types : \n  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
   
 };
@@ -1064,7 +1064,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CodedOrdinalLiteralExpression'] 
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : CodedOrdinalLiteral \n Return type : [Cod] \n Allowed types :  value_double : [double] \n  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
+    this.setTooltip( ' HeD expression : CodedOrdinalLiteral \n Return type : [Cod] \n Allowed types : \n  value_double : [double] \n  displayName : [string] \n  codeSystemName : [string] \n  codeSystem : [string] \n  code : [string] \n  ' );
   }
   
 };
@@ -1099,7 +1099,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ModuloExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Modulo \n Return type : [Num] \n Allowed types :  firstOperand : [Int] \n  secondOperand : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : Modulo \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int] \n  secondOperand : [Int] \n  ' );
   }
   
 };
@@ -1126,7 +1126,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TimestampLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : TimestampLiteral \n Return type : [Dat] \n Allowed types :  value_dateTime : [dateTime] \n  ' );
+    this.setTooltip( ' HeD expression : TimestampLiteral \n Return type : [Dat] \n Allowed types : \n  value_dateTime : [dateTime] \n  ' );
   }
   
 };
@@ -1177,7 +1177,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntervalExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Interval \n Return type : [Col, Int, Lis] \n Allowed types :  endOpen : [boolean] \n  beginOpen : [boolean] \n  begin : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  end : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Interval \n Return type : [Col, Int, Lis] \n Allowed types : \n  endOpen : [boolean] \n  beginOpen : [boolean] \n  begin : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  end : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
   
 };
@@ -1212,7 +1212,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperContainsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ProperContains \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : ProperContains \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -1239,7 +1239,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ComplexLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types :  value_string : [string] \n  ' );
+    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types : \n  value_string : [string] \n  ' );
   }
   
 };
@@ -1274,7 +1274,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterOrEqualExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : GreaterOrEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : GreaterOrEqual \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -1293,7 +1293,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NowExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Now \n Return type : [Dat] \n Allowed types :  ' );
+    this.setTooltip( ' HeD expression : Now \n Return type : [Dat] \n Allowed types : \n  ' );
   }
   
 };
@@ -1320,7 +1320,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DistinctExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Distinct \n Return type : [Col, Lis] \n Allowed types :  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Distinct \n Return type : [Col, Lis] \n Allowed types : \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -1350,7 +1350,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Or \n Return type : [Boo] \n Allowed types :  hasOperand : [Boo] \n  ' );
+    this.setTooltip( ' HeD expression : Or \n Return type : [Boo] \n Allowed types : \n  hasOperand : [Boo] \n  ' );
   }
   ,
         
@@ -1461,7 +1461,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DivideExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Divide \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Divide \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -1488,7 +1488,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BooleanLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : BooleanLiteral \n Return type : [Boo] \n Allowed types :  value_boolean : [boolean] \n  ' );
+    this.setTooltip( ' HeD expression : BooleanLiteral \n Return type : [Boo] \n Allowed types : \n  value_boolean : [boolean] \n  ' );
   }
   
 };
@@ -1635,7 +1635,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ClinicalRequestExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ClinicalRequest \n Return type : [Col] \n Allowed types :  useValueSets : [boolean] \n  useSubsumption : [boolean] \n  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  codeProperty : [Dom] \n  codes : [Int, Lis, Tim] \n  dataType : [Dom] \n  dateProperty : [Dom] \n  dateRange : [Int, Tim] \n  idProperty : [Dom] \n  subject : [any] \n  subjectProperty : [Dom] \n  timeOffset : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : ClinicalRequest \n Return type : [Col] \n Allowed types : \n  useValueSets : [boolean] \n  useSubsumption : [boolean] \n  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  codeProperty : [Dom] \n  codes : [Int, Lis, Tim] \n  dataType : [Dom] \n  dateProperty : [Dom] \n  dateRange : [Int, Tim] \n  idProperty : [Dom] \n  subject : [any] \n  subjectProperty : [Dom] \n  timeOffset : [Int] \n  ' );
   }
   
 };
@@ -1673,7 +1673,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectExpressionExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ObjectExpression \n Return type : [Obj] \n Allowed types :  objectType : [Dom] \n  property : [Pro] \n  ' );
+    this.setTooltip( ' HeD expression : ObjectExpression \n Return type : [Obj] \n Allowed types : \n  objectType : [Dom] \n  property : [Pro] \n  ' );
   }
   ,
         
@@ -1784,7 +1784,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LastExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Last \n Return type : [any] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Last \n Return type : [any] \n Allowed types : \n  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -1819,7 +1819,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CountExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Count \n Return type : [Rea, Num, Int] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Count \n Return type : [Rea, Num, Int] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -1854,7 +1854,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : LessOrEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : LessOrEqual \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -1889,7 +1889,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Set \n Return type : [Pro] \n Allowed types :  firstOperand : [Boo, Cla, Cod, Col, Dat, Dom, Dom, Int, Int, Lis, Num, Obj, Phy, Pro, Rat, Rea, Set, Str, Tim, Tim] \n  secondOperand : [Dom] \n  ' );
+    this.setTooltip( ' HeD expression : Set \n Return type : [Pro] \n Allowed types : \n  firstOperand : [Boo, Cla, Cod, Col, Dat, Dom, Dom, Int, Int, Lis, Num, Obj, Phy, Pro, Rat, Rea, Set, Str, Tim, Tim] \n  secondOperand : [Dom] \n  ' );
   }
   
 };
@@ -1916,7 +1916,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeginExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Begin \n Return type : [any] \n Allowed types :  firstOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Begin \n Return type : [any] \n Allowed types : \n  firstOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -1943,7 +1943,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LowerExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Lower \n Return type : [Str] \n Allowed types :  firstOperand : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Lower \n Return type : [Str] \n Allowed types : \n  firstOperand : [Str] \n  ' );
   }
   
 };
@@ -1994,7 +1994,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RealIntervalLiteralExpression'] 
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : RealIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
+    this.setTooltip( ' HeD expression : RealIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types : \n  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
   }
   
 };
@@ -2029,7 +2029,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IdentifierLiteralExpression'] = 
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IdentifierLiteral \n Return type : [Str] \n Allowed types :  root : [string] \n  extension : [string] \n  ' );
+    this.setTooltip( ' HeD expression : IdentifierLiteral \n Return type : [Str] \n Allowed types : \n  root : [string] \n  extension : [string] \n  ' );
   }
   
 };
@@ -2075,7 +2075,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ObjectRedefine \n Return type : [Obj] \n Allowed types :  scope : [string] \n  property : [Pro] \n  source_Object : [Obj] \n  ' );
+    this.setTooltip( ' HeD expression : ObjectRedefine \n Return type : [Obj] \n Allowed types : \n  scope : [string] \n  property : [Pro] \n  source_Object : [Obj] \n  ' );
   }
   ,
         
@@ -2186,7 +2186,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MeetsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Meets \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Meets \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -2216,7 +2216,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Intersect \n Return type : [Col, Lis] \n Allowed types :  hasOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Intersect \n Return type : [Col, Lis] \n Allowed types : \n  hasOperand : [Int, Tim] \n  ' );
   }
   ,
         
@@ -2319,7 +2319,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNotEmptyExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IsNotEmpty \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : IsNotEmpty \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -2346,7 +2346,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RealLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : RealLiteral \n Return type : [Rea, Num] \n Allowed types :  value_double : [double] \n  ' );
+    this.setTooltip( ' HeD expression : RealLiteral \n Return type : [Rea, Num] \n Allowed types : \n  value_double : [double] \n  ' );
   }
   
 };
@@ -2381,7 +2381,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IfNullExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IfNull \n Return type : [any] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : IfNull \n Return type : [any] \n Allowed types : \n  firstOperand : [any] \n  secondOperand : [any] \n  ' );
   }
   
 };
@@ -2408,7 +2408,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ExpressionRefExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ExpressionRef \n Return type : [any] \n Allowed types :  name : [string] \n  ' );
+    this.setTooltip( ' HeD expression : ExpressionRef \n Return type : [any] \n Allowed types : \n  name : [string] \n  ' );
   }
   
 };
@@ -2432,7 +2432,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
     
         
     this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
-                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendField( 'valueType' );
     
@@ -2443,7 +2443,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types :  value_string : [string] \n  valueType : [anyURI] \n  ' );
+    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types : \n  value_string : [string] \n  valueType : [string] \n  ' );
   }
   
 };
@@ -2486,7 +2486,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PropertyExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Property \n Return type : [any] \n Allowed types :  scope : [string] \n  path : [Dom] \n  source_Object : [Obj] \n  ' );
+    this.setTooltip( ' HeD expression : Property \n Return type : [any] \n Allowed types : \n  scope : [string] \n  path : [Dom] \n  source_Object : [Obj] \n  ' );
   }
   
 };
@@ -2521,7 +2521,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithinExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Within \n Return type : [Boo] \n Allowed types :  element_Ordinal : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  interval : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Within \n Return type : [Boo] \n Allowed types : \n  element_Ordinal : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  interval : [Int, Tim] \n  ' );
   }
   
 };
@@ -2556,7 +2556,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : TruncatedDivide \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : TruncatedDivide \n Return type : [Rea, Num, Int] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -2599,7 +2599,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ValueSetExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ValueSet \n Return type : [Col, Lis] \n Allowed types :  version : [string] \n  id : [string] \n  authority : [string] \n  ' );
+    this.setTooltip( ' HeD expression : ValueSet \n Return type : [Col, Lis] \n Allowed types : \n  version : [string] \n  id : [string] \n  authority : [string] \n  ' );
   }
   
 };
@@ -2637,7 +2637,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : List \n Return type : [Col, Lis] \n Allowed types :  key : [string] \n  element : [any] \n  ' );
+    this.setTooltip( ' HeD expression : List \n Return type : [Col, Lis] \n Allowed types : \n  key : [string] \n  element : [any] \n  ' );
   }
   ,
         
@@ -2748,7 +2748,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexerExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Indexer \n Return type : [any] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  index : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : Indexer \n Return type : [any] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  index : [Int] \n  ' );
   }
   
 };
@@ -2783,7 +2783,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SumExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Sum \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Sum \n Return type : [Num] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -2807,7 +2807,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
     
         
     this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
-                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendField( 'valueType' );
     
@@ -2818,7 +2818,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types :  value_string : [string] \n  valueType : [anyURI] \n  ' );
+    this.setTooltip( ' HeD expression : Literal \n Return type : [any] \n Allowed types : \n  value_string : [string] \n  valueType : [string] \n  ' );
   }
   
 };
@@ -2853,7 +2853,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EqualExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Equal \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Equal \n Return type : [Boo] \n Allowed types : \n  firstOperand : [any] \n  secondOperand : [any] \n  ' );
   }
   
 };
@@ -2896,7 +2896,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CaseExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Case \n Return type : [any] \n Allowed types :  caseItem : [any] \n  comparand : [any] \n  else : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Case \n Return type : [any] \n Allowed types : \n  caseItem : [any] \n  comparand : [any] \n  else : [any] \n  ' );
   }
   
 };
@@ -2931,7 +2931,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EntityNameLiteralExpression'] = 
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : EntityNameLiteral \n Return type : [Str] \n Allowed types :  use : [string] \n  part : [string] \n  ' );
+    this.setTooltip( ' HeD expression : EntityNameLiteral \n Return type : [Str] \n Allowed types : \n  use : [string] \n  part : [string] \n  ' );
   }
   
 };
@@ -2974,7 +2974,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateDiffExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : DateDiff \n Return type : [Rea, Num, Int] \n Allowed types :  endDate : [Dat] \n  granularity_String : [Str] \n  startDate : [Dat] \n  ' );
+    this.setTooltip( ' HeD expression : DateDiff \n Return type : [Rea, Num, Int] \n Allowed types : \n  endDate : [Dat] \n  granularity_String : [Str] \n  startDate : [Dat] \n  ' );
   }
   
 };
@@ -3009,7 +3009,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Log \n Return type : [Rea, Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Log \n Return type : [Rea, Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -3044,7 +3044,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FirstExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : First \n Return type : [any] \n Allowed types :  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : First \n Return type : [any] \n Allowed types : \n  orderBy : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -3071,7 +3071,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LengthExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Length \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Length \n Return type : [Rea, Num, Int] \n Allowed types : \n  firstOperand : [any] \n  ' );
   }
   
 };
@@ -3122,7 +3122,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#QuantityIntervalLiteralExpressio
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : QuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types :  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
+    this.setTooltip( ' HeD expression : QuantityIntervalLiteral \n Return type : [Col, Int, Lis] \n Allowed types : \n  low_double : [double] \n  lowClosed : [boolean] \n  high_double : [double] \n  highClosed : [boolean] \n  ' );
   }
   
 };
@@ -3149,7 +3149,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#EndExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : End \n Return type : [any] \n Allowed types :  firstOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : End \n Return type : [any] \n Allowed types : \n  firstOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -3192,7 +3192,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FilterExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Filter \n Return type : [Col, Lis] \n Allowed types :  scope : [string] \n  condition : [Boo] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Filter \n Return type : [Col, Lis] \n Allowed types : \n  scope : [string] \n  condition : [Boo] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -3219,7 +3219,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AbsExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Abs \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Abs \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -3254,7 +3254,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RatioLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : RatioLiteral \n Return type : [Rea, Num, Rat] \n Allowed types :  numerator : [double] \n  denominator : [double] \n  ' );
+    this.setTooltip( ' HeD expression : RatioLiteral \n Return type : [Rea, Num, Rat] \n Allowed types : \n  numerator : [double] \n  denominator : [double] \n  ' );
   }
   
 };
@@ -3289,7 +3289,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotEqualExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : NotEqual \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  secondOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : NotEqual \n Return type : [Boo] \n Allowed types : \n  firstOperand : [any] \n  secondOperand : [any] \n  ' );
   }
   
 };
@@ -3316,7 +3316,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CurrentExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Current \n Return type : [Obj] \n Allowed types :  scope : [string] \n  ' );
+    this.setTooltip( ' HeD expression : Current \n Return type : [Obj] \n Allowed types : \n  scope : [string] \n  ' );
   }
   
 };
@@ -3346,7 +3346,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Concat \n Return type : [Str] \n Allowed types :  hasOperand : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Concat \n Return type : [Str] \n Allowed types : \n  hasOperand : [Str] \n  ' );
   }
   ,
         
@@ -3465,7 +3465,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UrlLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : UrlLiteral \n Return type : [Str] \n Allowed types :  value_anyURI : [anyURI] \n  use : [string] \n  capabilities : [string] \n  ' );
+    this.setTooltip( ' HeD expression : UrlLiteral \n Return type : [Str] \n Allowed types : \n  value_anyURI : [anyURI] \n  use : [string] \n  capabilities : [string] \n  ' );
   }
   
 };
@@ -3480,10 +3480,10 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NullExpression'] = {
 
     
         
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType' )
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType_anyURI' )
                          .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'valueType' );
+                         .appendField( 'valueType_anyURI' );
     
 
     
@@ -3492,7 +3492,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NullExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Null \n Return type : [any] \n Allowed types :  valueType : [anyURI] \n  ' );
+    this.setTooltip( ' HeD expression : Null \n Return type : [any] \n Allowed types : \n  valueType_anyURI : [anyURI] \n  ' );
   }
   
 };
@@ -3519,7 +3519,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UpperExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Upper \n Return type : [Str] \n Allowed types :  firstOperand : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Upper \n Return type : [Str] \n Allowed types : \n  firstOperand : [Str] \n  ' );
   }
   
 };
@@ -3554,7 +3554,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IndexOfExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IndexOf \n Return type : [Rea, Num, Int] \n Allowed types :  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : IndexOf \n Return type : [Rea, Num, Int] \n Allowed types : \n  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -3589,7 +3589,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#RoundExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Round \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  precision : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : Round \n Return type : [Rea, Num, Int] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  precision : [Int] \n  ' );
   }
   
 };
@@ -3624,7 +3624,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AddressLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : AddressLiteral \n Return type : [Str] \n Allowed types :  use : [string] \n  part : [string] \n  ' );
+    this.setTooltip( ' HeD expression : AddressLiteral \n Return type : [Str] \n Allowed types : \n  use : [string] \n  part : [string] \n  ' );
   }
   
 };
@@ -3659,7 +3659,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CombineExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Combine \n Return type : [Str] \n Allowed types :  separator : [Str] \n  source_String : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Combine \n Return type : [Str] \n Allowed types : \n  separator : [Str] \n  source_String : [Str] \n  ' );
   }
   
 };
@@ -3686,7 +3686,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntegerLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IntegerLiteral \n Return type : [Rea, Num, Int] \n Allowed types :  value : [int] \n  ' );
+    this.setTooltip( ' HeD expression : IntegerLiteral \n Return type : [Rea, Num, Int] \n Allowed types : \n  value : [int] \n  ' );
   }
   
 };
@@ -3705,7 +3705,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TodayExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Today \n Return type : [Dat] \n Allowed types :  ' );
+    this.setTooltip( ' HeD expression : Today \n Return type : [Dat] \n Allowed types : \n  ' );
   }
   
 };
@@ -3732,7 +3732,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#FloorExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Floor \n Return type : [Rea, Num, Int] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Floor \n Return type : [Rea, Num, Int] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -3767,7 +3767,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PosExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Pos \n Return type : [Rea, Num, Int] \n Allowed types :  pattern : [string] \n  string : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Pos \n Return type : [Rea, Num, Int] \n Allowed types : \n  pattern : [string] \n  string : [Str] \n  ' );
   }
   
 };
@@ -3794,7 +3794,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ParameterRefExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ParameterRef \n Return type : [any] \n Allowed types :  name : [string] \n  ' );
+    this.setTooltip( ' HeD expression : ParameterRef \n Return type : [any] \n Allowed types : \n  name : [string] \n  ' );
   }
   
 };
@@ -3829,7 +3829,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubtractExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Subtract \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Subtract \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -3880,7 +3880,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TimestampIntervalLiteralExpressi
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : TimestampIntervalLiteral \n Return type : [Col, Tim, Int, Lis] \n Allowed types :  low_dateTime : [dateTime] \n  lowClosed : [boolean] \n  high_dateTime : [dateTime] \n  highClosed : [boolean] \n  ' );
+    this.setTooltip( ' HeD expression : TimestampIntervalLiteral \n Return type : [Col, Tim, Int, Lis] \n Allowed types : \n  low_dateTime : [dateTime] \n  lowClosed : [boolean] \n  high_dateTime : [dateTime] \n  highClosed : [boolean] \n  ' );
   }
   
 };
@@ -3907,7 +3907,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ComplexLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types :  value_string : [string] \n  ' );
+    this.setTooltip( ' HeD expression : ComplexLiteral \n Return type : [any] \n Allowed types : \n  value_string : [string] \n  ' );
   }
   
 };
@@ -3934,7 +3934,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NegateExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Negate \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Negate \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -3969,7 +3969,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AvgExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Avg \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Avg \n Return type : [Num] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -4004,7 +4004,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SplitExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Split \n Return type : [Col, Lis] \n Allowed types :  separator : [Str] \n  stringToSplit : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Split \n Return type : [Col, Lis] \n Allowed types : \n  separator : [Str] \n  stringToSplit : [Str] \n  ' );
   }
   
 };
@@ -4039,7 +4039,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#BeforeExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Before \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Before \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Tim] \n  secondOperand : [Int, Tim] \n  ' );
   }
   
 };
@@ -4090,7 +4090,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InValueSetExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : InValueSet \n Return type : [Boo] \n Allowed types :  version : [string] \n  id : [string] \n  authority : [string] \n  firstOperand : [Cod] \n  ' );
+    this.setTooltip( ' HeD expression : InValueSet \n Return type : [Boo] \n Allowed types : \n  version : [string] \n  id : [string] \n  authority : [string] \n  firstOperand : [Cod] \n  ' );
   }
   
 };
@@ -4125,7 +4125,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AnyTrueExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : AnyTrue \n Return type : [Boo] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : AnyTrue \n Return type : [Boo] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -4200,7 +4200,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Date \n Return type : [Dat] \n Allowed types :  year : [int] \n  second : [int] \n  month : [int] \n  minute : [int] \n  millisecond : [double] \n  hour : [int] \n  day : [int] \n  ' );
+    this.setTooltip( ' HeD expression : Date \n Return type : [Dat] \n Allowed types : \n  year : [int] \n  second : [int] \n  month : [int] \n  minute : [int] \n  millisecond : [double] \n  hour : [int] \n  day : [int] \n  ' );
   }
   
 };
@@ -4243,7 +4243,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConditionalExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Conditional \n Return type : [any] \n Allowed types :  condition : [Boo] \n  else : [any] \n  then : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Conditional \n Return type : [any] \n Allowed types : \n  condition : [Boo] \n  else : [any] \n  then : [any] \n  ' );
   }
   
 };
@@ -4281,7 +4281,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectDescriptorExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ObjectDescriptor \n Return type : [Obj] \n Allowed types :  objectType : [Dom] \n  property : [Pro] \n  ' );
+    this.setTooltip( ' HeD expression : ObjectDescriptor \n Return type : [Obj] \n Allowed types : \n  objectType : [Dom] \n  property : [Pro] \n  ' );
   }
   ,
         
@@ -4392,7 +4392,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#MinExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Min \n Return type : [Num] \n Allowed types :  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Min \n Return type : [Num] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -4419,7 +4419,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NotExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Not \n Return type : [Boo] \n Allowed types :  firstOperand : [Boo] \n  ' );
+    this.setTooltip( ' HeD expression : Not \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Boo] \n  ' );
   }
   
 };
@@ -4462,7 +4462,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SubstringExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Substring \n Return type : [Str] \n Allowed types :  length : [Int] \n  startIndex : [Int] \n  stringToSub : [Str] \n  ' );
+    this.setTooltip( ' HeD expression : Substring \n Return type : [Str] \n Allowed types : \n  length : [Int] \n  startIndex : [Int] \n  stringToSub : [Str] \n  ' );
   }
   
 };
@@ -4545,7 +4545,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DataRequestExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : DataRequest \n Return type : [Col] \n Allowed types :  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  dataType : [Dom] \n  idProperty : [Dom] \n  timeOffset : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : DataRequest \n Return type : [Col] \n Allowed types : \n  triggerType : [string] \n  templateId : [string] \n  scope : [string] \n  isInitial : [boolean] \n  cardinality : [string] \n  dataType : [Dom] \n  idProperty : [Dom] \n  timeOffset : [Int] \n  ' );
   }
   
 };
@@ -4572,7 +4572,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SimpleCodeLiteralExpression'] = 
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : SimpleCodeLiteral \n Return type : [Cod] \n Allowed types :  code : [string] \n  ' );
+    this.setTooltip( ' HeD expression : SimpleCodeLiteral \n Return type : [Cod] \n Allowed types : \n  code : [string] \n  ' );
   }
   
 };
@@ -4607,7 +4607,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#PowerExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Power \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Power \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -4650,7 +4650,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ForEachExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ForEach \n Return type : [Col, Lis] \n Allowed types :  scope : [string] \n  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : ForEach \n Return type : [Col, Lis] \n Allowed types : \n  scope : [string] \n  element : [any] \n  source_List : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -4665,10 +4665,10 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
 
     
         
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity' )
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity_string' )
                          .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'granularity' );
+                         .appendField( 'granularity_string' );
     
 
     
@@ -4685,7 +4685,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DatePartExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : DatePart \n Return type : [Rea, Num, Int] \n Allowed types :  granularity : [string] \n  date : [Dat] \n  ' );
+    this.setTooltip( ' HeD expression : DatePart \n Return type : [Rea, Num, Int] \n Allowed types : \n  granularity_string : [string] \n  date : [Dat] \n  ' );
   }
   
 };
@@ -4720,7 +4720,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#InExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : In \n Return type : [Boo] \n Allowed types :  collection : [Int, Lis, Tim] \n  element : [any] \n  ' );
+    this.setTooltip( ' HeD expression : In \n Return type : [Boo] \n Allowed types : \n  collection : [Int, Lis, Tim] \n  element : [any] \n  ' );
   }
   
 };
@@ -4755,7 +4755,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DifferenceExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Difference \n Return type : [Num] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Difference \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -4785,7 +4785,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Union \n Return type : [Col, Lis] \n Allowed types :  hasOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Union \n Return type : [Col, Lis] \n Allowed types : \n  hasOperand : [Int, Lis, Tim] \n  ' );
   }
   ,
         
@@ -4888,7 +4888,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#SuccExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Succ \n Return type : [any] \n Allowed types :  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : Succ \n Return type : [any] \n Allowed types : \n  firstOperand : [Dat, Int, Num, Rat, Rea, Str, Tim] \n  ' );
   }
   
 };
@@ -4915,7 +4915,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#StringLiteralExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : StringLiteral \n Return type : [Str] \n Allowed types :  value_string : [string] \n  ' );
+    this.setTooltip( ' HeD expression : StringLiteral \n Return type : [Str] \n Allowed types : \n  value_string : [string] \n  ' );
   }
   
 };
@@ -4950,7 +4950,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#GreaterExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Greater \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
+    this.setTooltip( ' HeD expression : Greater \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };
@@ -4965,18 +4965,18 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
 
     
         
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity' )
-                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#string' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'granularity' );
-    
-
-    
-        
     this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#date' )
                          .setCheck( [ 'http://asu.edu/sharpc2b/ops#DateType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendField( 'date' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#granularity' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'granularity' );
     
 
     
@@ -4993,7 +4993,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DateAddExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : DateAdd \n Return type : [Dat] \n Allowed types :  granularity : [string] \n  date : [Dat] \n  numberOfPeriods : [Int] \n  ' );
+    this.setTooltip( ' HeD expression : DateAdd \n Return type : [Dat] \n Allowed types : \n  date : [Dat] \n  granularity : [any] \n  numberOfPeriods : [Int] \n  ' );
   }
   
 };
@@ -5020,7 +5020,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsEmptyExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IsEmpty \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : IsEmpty \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -5055,7 +5055,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ProperInExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : ProperIn \n Return type : [Boo] \n Allowed types :  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
+    this.setTooltip( ' HeD expression : ProperIn \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Lis, Tim] \n  secondOperand : [Int, Lis, Tim] \n  ' );
   }
   
 };
@@ -5082,7 +5082,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IsNullExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : IsNull \n Return type : [Boo] \n Allowed types :  firstOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : IsNull \n Return type : [Boo] \n Allowed types : \n  firstOperand : [any] \n  ' );
   }
   
 };
@@ -5117,7 +5117,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConvertExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Convert \n Return type : [any] \n Allowed types :  toType : [anyURI] \n  firstOperand : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Convert \n Return type : [any] \n Allowed types : \n  toType : [anyURI] \n  firstOperand : [any] \n  ' );
   }
   
 };

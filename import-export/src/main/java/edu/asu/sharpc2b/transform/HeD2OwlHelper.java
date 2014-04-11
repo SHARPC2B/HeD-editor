@@ -17,8 +17,12 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import uk.ac.manchester.cs.owl.owlapi.OWLDatatypeImpl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -97,10 +101,23 @@ public class HeD2OwlHelper {
                 tgt );
     }
 
-    public void assertNullSafeDataProperty( KnowledgeHelper drools, String property, OWLNamedIndividual src, String tgt ) {
+    public void assertNullSafeDataProperty( KnowledgeHelper drools, String property, OWLNamedIndividual src, String tgt, String type ) {
         if ( ! "null".equals( tgt ) ) {
-            drools.insert( assertDataProperty( property, src, tgt ) );
+            if ( type.startsWith( "xsd:" ) ) {
+                // hack: using the short form
+                type = IRI.create( "http://www.w3.org/2001/XMLSchema#" + type.substring( 4 ) ).toString();
+            } else {
+                System.out.println( "Unkokwn type");
+            }
+            drools.insert( assertTypedDataProperty( property, src, tgt, type ) );
         }
+    }
+
+    public OWLDataPropertyAssertionAxiom assertTypedDataProperty( String property, OWLNamedIndividual src, String tgt, String type ) {
+        return factory.getOWLDataPropertyAssertionAxiom(
+                factory.getOWLDataProperty( property, prefixManager ),
+                src,
+                factory.getOWLTypedLiteral( tgt, new OWLDatatypeImpl( IRI.create( type ) ) ) );
     }
 
     public OWLDataPropertyAssertionAxiom assertDataProperty( String property, OWLNamedIndividual src, String tgt ) {
@@ -115,55 +132,33 @@ public class HeD2OwlHelper {
         kh.insert( assertObjectProperty( property, src, cd ) );
         kh.insert( assertType( cd, "skos-ext:ConceptCode" ) );
 
-        String codeVal = getCode( code );
+        String codeVal = extractStringProperty( "getCode", code );
         if ( codeVal != null ) {
             kh.insert( assertDataProperty( "skos-ext:code", cd, codeVal ) );
         }
-        String codeSystem = getCodeSystem( code );
+        String codeSystem = extractStringProperty( "getCodeSystem", code );
         if ( codeSystem != null ) {
             kh.insert( assertDataProperty( "skos-ext:codeSystem", cd, codeSystem ) );
         }
-        String text = getOriginalText( code );
+        String codeSystemName = extractStringProperty( "getCodeSystemName", code );
+        if ( codeSystemName != null ) {
+            kh.insert( assertDataProperty( "skos-ext:codeSystemName", cd, codeSystemName ) );
+        }
+        String text = extractStringProperty( "getOriginalText", code );
         if ( text != null ) {
             kh.insert( assertDataProperty( "skos-ext:label", cd, text ) );
         }
     }
 
-    private String getCode( Object code ) {
+    private String extractStringProperty( String propName, Object code ) {
         try {
-            return (String) code.getClass().getMethod( "getCode" ).invoke( code );
+            return (String) code.getClass().getMethod( propName ).invoke( code );
         } catch ( IllegalAccessException e ) {
             e.printStackTrace();
         } catch ( InvocationTargetException e ) {
             e.printStackTrace();
         } catch ( NoSuchMethodException e ) {
             e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String getCodeSystem( Object code ) {
-        try {
-            return (String) code.getClass().getMethod( "getCodeSystem" ).invoke( code );
-        } catch ( IllegalAccessException e ) {
-            e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
-            e.printStackTrace();
-        } catch ( NoSuchMethodException e ) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String getOriginalText( Object code ) {
-        try {
-            return (String) code.getClass().getMethod( "getLabel" ).invoke( code );
-        } catch ( IllegalAccessException e ) {
-            //e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
-            //e.printStackTrace();
-        } catch ( NoSuchMethodException e ) {
-            //e.printStackTrace();
         }
         return null;
     }
@@ -173,26 +168,14 @@ public class HeD2OwlHelper {
         OWLNamedIndividual opCode = asIndividual( "ops:Op_" + op );
         kh.insert( assertObjectProperty( "ops:opCode", expr, opCode ) );
         kh.insert( assertDataProperty( "skos-ext:code", opCode, op ) );
-        if ( ! op.endsWith( "Literal" ) ) {
             String actualOp = mapOperation( op );
             if ( actualOp != null ) {
                 kh.insert( assertType( expr, determineNamespace( actualOp ) + actualOp + "Expression" ) );
             }
-        } else {
-            kh.insert( assertType( expr, "ops:" + op ) );
-        }
         return expr;
     }
 
     private String mapOperation( String op ) {
-        if ( "Property".equals( op ) ) {
-            return "PropertyGet";
-        } else if ( "ClinicalRequest".equals( op ) ) {
-            // actually mapped as a specific type of IteratorExpression elsewhere
-            return null;
-        } else if ( "ObjectExpression".equals( op ) ) {
-            return "Create";
-        }
         return op;
     }
    
@@ -208,23 +191,28 @@ public class HeD2OwlHelper {
     }
 
     public OWLNamedIndividual assertPropertyChain( KnowledgeHelper kh, String path, OWLNamedIndividual srcVar, String modelNS ) {
-        OWLNamedIndividual src = srcVar;
         StringTokenizer tok = new StringTokenizer( path, "." );
-
+        List<String> chain = new ArrayList<String>( tok.countTokens() );
         while ( tok.hasMoreTokens() ) {
-            String prop = tok.nextToken();
-            OWLNamedIndividual expr = asIndividual( "tns:PropertyExpr_" + System.identityHashCode( prop ) );
-            OWLNamedIndividual propCode = asIndividual( modelNS + prop );
-            kh.insert( assertObjectProperty( "ops:propCode", expr, propCode ) );
-            kh.insert( assertDataProperty( "skos-ext:code", propCode, modelNS + prop ) );
-            if ( src != null ) {
-                //TODO not sure that src can be null in a valid case
-                kh.insert( assertObjectProperty( "ops:source", expr, src ) );
-            }
-            kh.insert( assertType( expr, "ops:PropertyExpression" ) );
-            src = expr;
+            chain.add( tok.nextToken() );
         }
-        return src;
+        Collections.reverse( chain );
+
+        OWLNamedIndividual current = srcVar;
+        for ( int j = 0; j < chain.size(); j++ ) {
+            String prop = chain.get( j );
+            OWLNamedIndividual propCode = asIndividual( modelNS + prop );
+            kh.insert( assertObjectProperty( "ops:propCode", current, propCode ) );
+            kh.insert( assertDataProperty( "skos-ext:code", propCode, modelNS + prop ) );
+            kh.insert( assertType( current, "ops:DomainPropertyExpression" ) );
+
+            if ( j != chain.size() -1 ) {
+                OWLNamedIndividual expr = asIndividual( "tns:PropertyExpr_" + System.identityHashCode( prop ) );
+                kh.insert( assertObjectProperty( "ops:source", current, expr ) );
+                current = expr;
+            }
+        }
+        return current;
     }
 
 

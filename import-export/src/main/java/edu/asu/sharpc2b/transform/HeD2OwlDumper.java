@@ -124,7 +124,7 @@ public class HeD2OwlDumper {
         prefixManager.setPrefix( "skos:", "http://www.w3.org/2004/02/skos/core#" );
         prefixManager.setPrefix( "skos-ext:", "http://asu.edu/sharpc2b/skos-ext#" );
         prefixManager.setPrefix( "dcterms:", "http://purl.org/dc/terms/" );
-        prefixManager.setPrefix( "vmr:", "urn:hl7-org:vmr:r2" );
+        prefixManager.setPrefix( "vmr:", "urn:hl7-org:vmr:r2#" );
         if ( ! root.startsWith( "http://" ) ) {
             root = "http://" + root;
         }

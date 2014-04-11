@@ -454,7 +454,7 @@ public class ModelManagerOwlAPIHermit
             @Override
             protected Object getLiteralNode (OWLLiteral literal)
             {
-                return new LiteralImpl( literal.getLiteral(), literal.getLang() );
+                return new LiteralImpl( literal.getLiteral(), new URIImpl( literal.getDatatype().getIRI().toString() ) );
             }
 
             @Override

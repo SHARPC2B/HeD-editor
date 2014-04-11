@@ -22,7 +22,7 @@ global HeD2OwlHelper helper;
 /***********************************************************************************************/
 
 declare Link
-    exp : Expression
+    exp : Object
     ind : OWLNamedIndividual
 end
 
@@ -81,7 +81,7 @@ rule "KnowledgeDocument Rule Variables"
 when
     $kd : KnowledgeDocument( $meta : metadata.artifactType, metadata.artifactType.value == "Rule",
                              $ext : externalData, $defs : externalData.deves, $xprs : expressions.deves )
-    $rv : ExpressionDef( this memberOf $defs || this memberOf $xprs, $name : name, $xp : expression )
+    $rv : ExpressionDef( this memberOf $defs, $name : name, $xp : expression )
     $cr : ClinicalRequest( this == $xp, $type : dataType, $initial : isInitial, $descr : description, $card : cardinality.value )
 then
     OWLNamedIndividual r = helper.asIndividual( $meta );
@@ -89,8 +89,8 @@ then
     OWLNamedIndividual type = helper.asIndividual( $type );
     OWLNamedIndividual expr = helper.asIndividual( "tns:prrExpr_" + $cr.hashCode() );
     OWLNamedIndividual ext = helper.asIndividual( $ext );
-    OWLNamedIndividual iter = helper.asExpressionIndividual( "ClinicalRequest", $cr );
-    OWLNamedIndividual extVar = helper.asIndividual( "tns:ExtVar_" + $cr.hashCode() );
+    OWLNamedIndividual iter = helper.asIndividual( "tns:Iter_" + $cr.hashCode() );
+    OWLNamedIndividual req = helper.asIndividual( $cr );
     OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
 
     insert( helper.assertType( rv, "prr:RuleVariable" ) );
@@ -104,20 +104,19 @@ then
     insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, iter ) );
 
     insert( helper.assertType( iter, "Single".equals( $card ) ? "ops:SingleIteratorExpression" : "ops:AggregateIteratorExpression" ) );
-    insert( helper.assertType( extVar, "ops:VariableExpression" ) );
     insert( helper.assertType( ext, "prr:Variable" ) );
     insert( helper.assertType( innVar, "ops:Variable" ) );
 
 
     if ( $defs.contains( $rv ) ) {
-        insert( helper.assertObjectProperty( "ops:source", iter, extVar ) );
-        insert( helper.assertObjectProperty( "ops:referredVariable", extVar, ext ) );
+        insert( helper.assertObjectProperty( "ops:source", iter, req ) );
         insert( helper.assertDataProperty( "prr:name", ext, "$contextData"  ) );
     }
 
     insert( helper.assertObjectProperty( "ops:iterator", iter, innVar ) );
     //TODO - lowest priority : add source that gets the elements of type datatype
 
+    insert( helper.assertDataProperty( "a:scope", req, "external"  ) );
 end
 
 
@@ -544,6 +543,7 @@ then
 end
 
 rule "Process ObjectExpression Properties"
+// not an expr in HeD, so we need to fix it here
 when
     $new : ObjectExpression( $props : properties )
     $set : PropertyExpression( this memberOf $props, $exp : value, $name : name )
@@ -551,31 +551,77 @@ when
     Link( $exp, $setXp ; )
 then
     OWLNamedIndividual setter = helper.asIndividual( $set );
-    OWLNamedIndividual domProp = helper.asIndividual( "vmr:" + $name );
-    OWLNamedIndividual domPropConcept = helper.asIndividual( new CD() );
 
     insert( helper.assertType( setter, "ops:PropertySetExpression" ) );
-    insert( helper.assertType( domProp, "ops:DomainPropertyExpression" ) );
-    insert( helper.assertType( domPropConcept, "ops:DomainProperty" ) );
+    insert( helper.assertObjectProperty( "a:property", $obj, setter ) );
 
-    insert( helper.assertObjectProperty( "ops:extraOperand", $obj, setter ) );
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $name.hashCode() );
+    insert( new Link( $name, type ) );
+    helper.assertPropertyChain( drools, $name, type, "vmr:" );
 
-    insert( helper.assertObjectProperty( "ops:firstOperand", setter, $setXp ) );
-    insert( helper.assertObjectProperty( "ops:secondOperand", setter, domProp ) );
-    insert( helper.assertObjectProperty( "ops:returns", domProp, domPropConcept ) );
-
-    insert( helper.assertDataProperty( "skos:notation", domPropConcept, $name.toString() ) );
+    insert( helper.assertObjectProperty( "ops:firstOperand", setter, type ) );
+    insert( helper.assertObjectProperty( "ops:secondOperand", setter, $setXp ) );
 end
 
 rule "Process ObjectExpression Type"
 when
     $new : ObjectExpression( $type : objectType )
-    Link( $new, $obj ; )
 then
-    OWLNamedIndividual type = helper.asIndividual( $type );
-    insert( helper.assertType( type, "ops:DomainClass" ) );
-    insert( helper.assertDataProperty( "skos:notation", type, $type.toString() ) );
-    insert( helper.assertObjectProperty( "ops:firstOperand", $obj, type ) );
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainClass_" + $type.hashCode() );
+    insert( new Link( $type, type ) );
+    insert( helper.assertType( type, "ops:DomainClassExpression" ) );
+    OWLNamedIndividual cd = helper.asIndividual( "tns:CD_" + new Object().hashCode() );
+    insert( helper.assertObjectProperty( "ops:hasCode", type, cd ) );
+    insert( helper.assertDataProperty( "skos-ext:code", cd, $type.toString() ) );
+end
+
+rule "Expression Property DomainClass "
+when
+    $xp : Property( $path : path )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $path.hashCode() );
+    insert( new Link( $path, type ) );
+    helper.assertPropertyChain( drools, $path, type, "vmr:" );
+end
+
+
+rule "Clinical Request DomainClass "
+when
+    $xp : ClinicalRequest( $type : dataType )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainClass_" + $type.hashCode() );
+    insert( new Link( $type, type ) );
+    OWLNamedIndividual cd = helper.asIndividual( "tns:CD_" + new Object().hashCode() );
+    insert( helper.assertType( type, "ops:DomainClassExpression" ) );
+    insert( helper.assertObjectProperty( "ops:hasCode", type, cd ) );
+    insert( helper.assertDataProperty( "skos-ext:code", cd, $type.toString() ) );
+end
+
+rule "Clinical Request Code Property "
+when
+    $xp : ClinicalRequest( $code : codeProperty != null )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $code.hashCode() );
+    insert( new Link( $code, type ) );
+    helper.assertPropertyChain( drools, $code, type, "vmr:" );
+end
+
+rule "Clinical Request Date Property "
+when
+    $xp : ClinicalRequest( $date : dateProperty != null )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $date.hashCode() );
+    insert( new Link( $date, type ) );
+    helper.assertPropertyChain( drools, $date, type, "vmr:" );
+end
+
+rule "Clinical Request Subject Property "
+when
+    $xp : ClinicalRequest( $sub : subjectProperty != null )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $sub.hashCode() );
+    insert( new Link( $sub, type ) );
+    helper.assertPropertyChain( drools, $sub, type, "vmr:" );
 end
 
 

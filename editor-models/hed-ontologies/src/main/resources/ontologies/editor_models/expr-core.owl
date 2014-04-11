@@ -478,5 +478,4 @@ SubObjectPropertyOf(ObjectPropertyChain(:classCode <http://asu.edu/sharpc2b/skos
 DisjointClasses(:SharpExpression <http://www.w3.org/2004/02/skos/core#Collection> <http://www.w3.org/2004/02/skos/core#ConceptScheme>)
 SubObjectPropertyOf(ObjectPropertyChain(:opCode <http://asu.edu/sharpc2b/skos-ext#denotesConcept>) :hasOperator)
 SubObjectPropertyOf(ObjectPropertyChain(:propCode <http://asu.edu/sharpc2b/skos-ext#denotesConcept> :evaluatesAs) :returns)
-DisjointClasses(:LiteralExpression :PropertyExpression :VariableExpression)
 )

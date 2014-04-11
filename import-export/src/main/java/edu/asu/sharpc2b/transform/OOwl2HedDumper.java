@@ -1,5 +1,7 @@
 package edu.asu.sharpc2b.transform;
 
+import com.clarkparsia.empire.annotation.RdfProperty;
+import com.hp.hpl.jena.sparql.lib.iterator.Iter;
 import edu.asu.sharpc2b.actions.AtomicAction;
 import edu.asu.sharpc2b.actions.CompositeAction;
 import edu.asu.sharpc2b.metadata.Coverage;
@@ -8,12 +10,16 @@ import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.Site;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.BinaryExpression;
+import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
+import edu.asu.sharpc2b.ops.ClinicalRequestExpressionImpl;
 import edu.asu.sharpc2b.ops.CreateExpression;
 import edu.asu.sharpc2b.ops.DomainClass;
+import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
 import edu.asu.sharpc2b.ops.LiteralExpression;
 import edu.asu.sharpc2b.ops.NAryExpression;
+import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertyExpression;
 import edu.asu.sharpc2b.ops.PropertyGetExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
@@ -24,6 +30,7 @@ import edu.asu.sharpc2b.ops.UnaryExpression;
 import edu.asu.sharpc2b.ops.VariableExpression;
 import edu.asu.sharpc2b.ops_set.AndExpression;
 import edu.asu.sharpc2b.ops_set.ListExpression;
+import edu.asu.sharpc2b.ops_set.ObjectExpressionExpression;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.NamedElement;
@@ -35,10 +42,16 @@ import edu.asu.sharpc2b.prr.TypedElement;
 import edu.asu.sharpc2b.prr.VariableImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
+import org.hl7.knowledgeartifact.r1.ClinicalRequest;
 import org.ontologydesignpatterns.ont.dul.dul.Agent;
 import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
 import org.ontologydesignpatterns.ont.dul.dul.Organization;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
+import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
+import org.openrdf.model.Value;
+import org.openrdf.sail.memory.model.MemURI;
+import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -56,11 +69,17 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 
 public class OOwl2HedDumper implements HeDExporter {
+
+    private static final String exprNS = "http://asu.edu/sharpc2b/ops-set#";
 
     public OOwl2HedDumper() {
         super();
@@ -219,8 +238,8 @@ public class OOwl2HedDumper implements HeDExporter {
         // only true external requests point to the contextdata variable as a source
         if ( sexpr instanceof IteratorExpression ) {
             IteratorExpression iter = (IteratorExpression) sexpr;
-            if ( ! iter.getSource().isEmpty() && iter.getSource().get( 0 ) instanceof VariableExpression &&
-                 (( VariableImpl )( (VariableExpression) iter.getSource().get( 0 ) ).getReferredVariable().get( 0 )).getName().contains( "$contextData" ) ) {
+            if ( ! iter.getSource().isEmpty() && iter.getSource().get( 0 ) instanceof edu.asu.sharpc2b.ops_set.ClinicalRequestExpression &&
+                 ( (edu.asu.sharpc2b.ops_set.ClinicalRequestExpression) iter.getSource().get( 0 ) ).getScope().contains( "external" ) ) {
                 return true;
             }
         }
@@ -235,6 +254,8 @@ public class OOwl2HedDumper implements HeDExporter {
                 visitExternalRequest( var, dox, external, (IteratorExpression) sexpr );
             }
         }
+
+
         root.appendChild( external );
     }
 
@@ -250,78 +271,97 @@ public class OOwl2HedDumper implements HeDExporter {
     }
 
     private void visitClinicalRequest( TypedElement var, Element expr, IteratorExpression iter, Document dox ) {
+        edu.asu.sharpc2b.ops_set.ClinicalRequestExpression req = (edu.asu.sharpc2b.ops_set.ClinicalRequestExpression) iter.getSource().get( 0 );
+
         expr.setAttribute( "xsi:type", "ClinicalRequest" );
-        expr.setAttribute( "cardinality", iter instanceof SingleIteratorExpression ? "Single" : "Multiple" );
-
-        expr.setAttribute( "dataType", var.getElementType().get( 0 ).getNotation().get( 0 ) );
-
-        if ( ! iter.getBody().isEmpty() ) {
-            AndExpression body = (AndExpression) iter.getBody().get( 0 );
-            if ( ! body.getFirstOperand().isEmpty() ) {
-                NAryExpression bin = (NAryExpression) body.getFirstOperand().get( 0 );
-                PropertyExpression pro = (PropertyExpression) bin.getFirstOperand().get( 0 );
-
-                expr.setAttribute( "codeProperty", traversePropChain( pro ) );
-                visitExpression( var, bin.getSecondOperand().get( 0 ), expr, "codes", dox );
-            }
-            if ( ! body.getSecondOperand().isEmpty() ) {
-                NAryExpression bin = (NAryExpression) body.getSecondOperand().get( 0 );
-                PropertyExpression pro = (PropertyExpression) bin.getFirstOperand().get( 0 );
-
-                expr.setAttribute( "dateProperty", traversePropChain( pro ) );
-                visitExpression( var, bin.getSecondOperand().get( 0 ), expr, "dateRange", dox );
-            }
-            if ( ! body.getThirdOperand().isEmpty() ) {
-                NAryExpression bin = (NAryExpression) body.getThirdOperand().get( 0 );
-                PropertyExpression pro = (PropertyExpression) bin.getFirstOperand().get( 0 );
-
-                expr.setAttribute( "subjectProperty", traversePropChain( pro ) );
-                visitExpression( var, bin.getSecondOperand().get( 0 ), expr, "subject", dox );
-            }
+        try {
+            fillProperties( expr, req, dox );
+        } catch ( Exception e ) {
+            e.printStackTrace();
         }
 
     }
 
-    private void visitExpression( TypedElement var, SharpExpression expr, Element parent, String tagName, Document dox ) {
-        Element x = dox.createElement( tagName );
-        String exprType = mapExprType( extractExpressionType( expr.getClass() ) );
-        x.setAttribute( "xsi:type", exprType );
+    private void fillProperties( Element elem, OperatorExpression expr, Document dox ) {
+        try {
+            Iterator<Statement> iter = expr.getInstanceTriples().iterator();
+            while ( iter.hasNext() ) {
+                Statement triple = iter.next();
+                URI prop = triple.getPredicate();
+                if ( exprNS.equals( prop.getNamespace() ) ) {
+                    for ( Method m : expr.getClass().getMethods() ) {
+                        if ( m.getAnnotation( RdfProperty.class ) != null && prop.toString().equals( m.getAnnotation( RdfProperty.class ).value() ) ) {
+                            if ( Collection.class.isAssignableFrom( m.getReturnType() ) ) {
+                                Collection coll = (Collection) m.invoke( expr );
+                                for ( Object o : coll ) {
+                                    fillArgument( elem, triple, o, dox );
+                                }
+                            } else {
+                                Object o = m.invoke( expr );
+                                fillArgument( elem, triple, o, dox );
+                            }
+                        }
+                    }
+                }
+            }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
 
-
-        if ( expr instanceof LiteralExpression ) {
-            visitLiteral( expr, x, dox );
+    private void fillArgument( Element elem, Statement triple, Object o, Document dox ) {
+        if ( triple.getObject() instanceof MemURI ) {
+            if ( o instanceof Thing ) {
+                String oid = ((Thing) o).getRdfId().value().toString();
+                String tid = triple.getObject().stringValue();
+                if ( oid.equals( tid ) && o instanceof SharpExpression ) {
+                    visitExpression( null, (SharpExpression) o, elem, removeOverrides( triple.getPredicate().getLocalName() ), dox );
+                }
+            } else {
+                System.err.println( "WARNING Found uri triple with non thing " + triple );
+            }
+        } else {
+            elem.setAttribute( removeOverrides( triple.getPredicate().getLocalName() ), o.toString() );
         }
 
-        if ( expr instanceof ListExpression ) {
-            ListExpression list = (ListExpression) expr;
-            for ( SharpExpression el : list.getHasOperand() ) {
-                visitExpression( var, el, x, "element", dox );
-            }
-        } else if ( expr instanceof PropertyGetExpression ) {
-            PropertyGetExpression prop = ( PropertyGetExpression ) expr;
-            x.setAttribute( "path", traversePropChain( (PropertyExpression) prop.getSource().get( 0 ) )  );
-            visitExpression( var, prop.getFirstOperand().get( 0 ), x, "source", dox );
-        } else if ( expr instanceof PropertySetExpression ) {
-            PropertySetExpression setter = (PropertySetExpression) expr;
-            DomainPropertyExpression propXp = (DomainPropertyExpression) setter.getSecondOperand().get( 0 );
-            x.setAttribute( "name", propXp.getReturns().get( 0 ).getNotation().get( 0 ) );
-            visitExpression( var, setter.getFirstOperand().get( 0 ), x, "value", dox );
-        } else if ( expr instanceof VariableExpression ) {
+    }
+
+    private String removeOverrides( String localName ) {
+        if ( localName.indexOf( "_" ) > 1 ) {
+            return localName.substring( 0, localName.lastIndexOf( "_" ) );
+        }
+        return localName;
+    }
+
+    private void visitExpression( TypedElement var, SharpExpression expr, Element parent, String tagName, Document dox ) {
+        Element x = dox.createElement( tagName );
+
+        if ( expr instanceof OperatorExpression && ! ( expr instanceof PropertySetExpression ) ) {
+            // TODO fix this condition...
+            String exprType = mapExprType( extractExpressionType( expr.getClass() ) );
+            x.setAttribute( "xsi:type", exprType );
+        }
+
+
+        if ( expr instanceof VariableExpression ) {
             List vars = ((VariableExpression) expr ).getReferredVariable();
+
             x.setAttribute( "name", ( (NamedElement) vars.get( 0 ) ).getName().get( 0 ) );
         } else if ( expr instanceof IteratorExpression ) {
             visitClinicalRequest( var, x, (IteratorExpression) expr, dox );
-        } else if ( expr instanceof CreateExpression ) {
-            CreateExpression create = (CreateExpression) expr;
-            x.setAttribute( "objectType", (( DomainClass ) create.getFirstOperand().get( 0 ) ).getNotation().get( 0 ) );
-            for ( SharpExpression prop : create.getExtraOperand() ) {
-                visitExpression( var, prop, x, "property", dox );
-            }
-        }
-
-
-
-        else if ( expr instanceof TernaryExpression ) {
+        } else if ( expr instanceof DomainClassExpression ) {
+            parent.setAttribute( tagName, expr.getHasCode().get( 0 ).getCode().get( 0 ) );
+            return;
+        } else if ( expr instanceof DomainPropertyExpression ) {
+            parent.setAttribute( tagName, traversePropChain( (PropertyExpression) expr ) );
+            return;
+        } else if ( expr instanceof PropertySetExpression ) {
+            PropertySetExpression setter = (PropertySetExpression) expr;
+            visitExpression( var, setter.getFirstOperand().get( 0 ), x, "name", dox );
+            visitExpression( var, setter.getSecondOperand().get( 0 ), x, "value", dox );
+            parent.appendChild( x );
+            return;
+        } else if ( expr instanceof TernaryExpression ) {
             TernaryExpression ternary = (TernaryExpression) expr;
             visitExpression( var, ternary.getFirstOperand().get( 0 ), x, "operand", dox );
             visitExpression( var, ternary.getSecondOperand().get( 0 ), x, "operand", dox );
@@ -336,6 +376,14 @@ public class OOwl2HedDumper implements HeDExporter {
         } else if ( expr instanceof NAryExpression ) {
             for ( SharpExpression op : ((NAryExpression) expr).getHasOperand() ) {
                 visitExpression( var, op, x, "operand", dox );
+            }
+        }
+
+        if ( expr instanceof OperatorExpression ) {
+            try {
+                fillProperties( x, (OperatorExpression) expr, dox );
+            } catch ( Exception e ) {
+                e.printStackTrace();
             }
         }
 
@@ -368,12 +416,7 @@ public class OOwl2HedDumper implements HeDExporter {
         return name;
     }
 
-    private void visitLiteral( SharpExpression expr, Element x, Document dox ) {
-//        if ( expr instanceof CodeLiteral ) {
-//            CodeLiteral code = (CodeLiteral) expr;
 
-//        }
-    }
 
     private String traversePropChain( PropertyExpression pro ) {
         String prop = null;
@@ -386,7 +429,11 @@ public class OOwl2HedDumper implements HeDExporter {
             } else {
                 prop = fqn + "." + prop;
             }
-            pro = pro.getSource().get( 0 ) instanceof PropertyExpression ? (PropertyExpression) pro.getSource().get( 0 ) : null;
+            if ( pro.getSource() != null && ! pro.getSource().isEmpty() ) {
+                pro = pro.getSource().get( 0 ) instanceof DomainPropertyExpression ? (DomainPropertyExpression) pro.getSource().get( 0 ) : null;
+            } else {
+                pro = null;
+            }
         } while ( pro != null );
         return prop;
     }
@@ -526,6 +573,9 @@ public class OOwl2HedDumper implements HeDExporter {
         val.setAttribute( "code", conceptCode.getCode().get( 0 ) );
         if ( ! conceptCode.getCodeSystem().isEmpty() ) {
             val.setAttribute( "codeSystem", conceptCode.getCodeSystem().get( 0 ) );
+        }
+        if ( ! conceptCode.getCodeSystemName().isEmpty() ) {
+            val.setAttribute( "codeSystem", conceptCode.getCodeSystemName().get( 0 ) );
         }
         if ( ! conceptCode.getLabel().isEmpty() ) {
             Element lab = dox.createElement( "dt:displayName" );

@@ -9,7 +9,7 @@
         Link( $xp, $ind ; )
     then
         @foreach{ prop : dataProperties.keySet() }
-            helper.assertNullSafeDataProperty( drools, "a:@{dataProperties[ prop ]}", $ind, "" + _@{prop} );
+            helper.assertNullSafeDataProperty( drools, "a:@{dataProperties[ prop ]}", $ind, "" + _@{prop}, "@{ dataTypes[prop] }" );
         @end{}
     end
 @end{}

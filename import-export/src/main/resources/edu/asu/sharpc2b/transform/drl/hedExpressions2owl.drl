@@ -78,13 +78,13 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:high", $ind, "" + _high );
+            helper.assertNullSafeDataProperty( drools, "a:high", $ind, "" + _high, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:low", $ind, "" + _low );
+            helper.assertNullSafeDataProperty( drools, "a:low", $ind, "" + _low, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed, "xsd:boolean" );
         
     end
 
@@ -99,7 +99,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value", $ind, "" + _value, "xsd:int" );
         
     end
 
@@ -114,9 +114,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed, "xsd:boolean" );
         
     end
 
@@ -151,7 +151,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value, "xsd:string" );
         
     end
 
@@ -166,9 +166,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:numerator", $ind, "" + _numerator );
+            helper.assertNullSafeDataProperty( drools, "a:numerator", $ind, "" + _numerator, "xsd:double" );
         
-            helper.assertNullSafeDataProperty( drools, "a:denominator", $ind, "" + _denominator );
+            helper.assertNullSafeDataProperty( drools, "a:denominator", $ind, "" + _denominator, "xsd:double" );
         
     end
 
@@ -183,11 +183,11 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:alignment", $ind, "" + _alignment );
+            helper.assertNullSafeDataProperty( drools, "a:alignment", $ind, "" + _alignment, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:count", $ind, "" + _count );
+            helper.assertNullSafeDataProperty( drools, "a:count", $ind, "" + _count, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:isFlexible", $ind, "" + _isFlexible );
+            helper.assertNullSafeDataProperty( drools, "a:isFlexible", $ind, "" + _isFlexible, "xsd:boolean" );
         
     end
 
@@ -232,7 +232,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value, "xsd:string" );
         
     end
 
@@ -247,13 +247,13 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high );
+            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high, "xsd:double" );
         
-            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low );
+            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low, "xsd:double" );
         
     end
 
@@ -268,13 +268,13 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high );
+            helper.assertNullSafeDataProperty( drools, "a:high_double", $ind, "" + _high, "xsd:double" );
         
-            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low );
+            helper.assertNullSafeDataProperty( drools, "a:low_double", $ind, "" + _low, "xsd:double" );
         
     end
 
@@ -289,7 +289,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part );
+            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part, "xsd:string" );
         
     end
 
@@ -304,13 +304,13 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName );
+            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem );
+            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName );
+            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName, "xsd:string" );
         
     end
 
@@ -325,15 +325,15 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName );
+            helper.assertNullSafeDataProperty( drools, "a:codeSystemName", $ind, "" + _codeSystemName, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem );
+            helper.assertNullSafeDataProperty( drools, "a:codeSystem", $ind, "" + _codeSystem, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value, "xsd:double" );
         
-            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName );
+            helper.assertNullSafeDataProperty( drools, "a:displayName", $ind, "" + _displayName, "xsd:string" );
         
     end
 
@@ -348,7 +348,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part );
+            helper.assertNullSafeDataProperty( drools, "a:part", $ind, "" + _part, "xsd:string" );
         
     end
 
@@ -363,9 +363,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_string", $ind, "" + _value, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:valueType", $ind, "" + _valueType );
+            helper.assertNullSafeDataProperty( drools, "a:valueType", $ind, "" + _valueType, "xsd:string" );
         
     end
 
@@ -380,9 +380,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:unit", $ind, "" + _unit );
+            helper.assertNullSafeDataProperty( drools, "a:unit", $ind, "" + _unit, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value, "xsd:double" );
         
     end
 
@@ -397,9 +397,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_anyURI", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_anyURI", $ind, "" + _value, "xsd:anyURI" );
         
-            helper.assertNullSafeDataProperty( drools, "a:capabilities", $ind, "" + _capabilities );
+            helper.assertNullSafeDataProperty( drools, "a:capabilities", $ind, "" + _capabilities, "xsd:string" );
         
     end
 
@@ -414,7 +414,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_double", $ind, "" + _value, "xsd:double" );
         
     end
 
@@ -429,7 +429,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_dateTime", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_dateTime", $ind, "" + _value, "xsd:dateTime" );
         
     end
 
@@ -444,13 +444,13 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed );
+            helper.assertNullSafeDataProperty( drools, "a:lowClosed", $ind, "" + _lowClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:high_dateTime", $ind, "" + _high );
+            helper.assertNullSafeDataProperty( drools, "a:high_dateTime", $ind, "" + _high, "xsd:dateTime" );
         
-            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed );
+            helper.assertNullSafeDataProperty( drools, "a:highClosed", $ind, "" + _highClosed, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:low_dateTime", $ind, "" + _low );
+            helper.assertNullSafeDataProperty( drools, "a:low_dateTime", $ind, "" + _low, "xsd:dateTime" );
         
     end
 
@@ -465,9 +465,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:extension", $ind, "" + _extension );
+            helper.assertNullSafeDataProperty( drools, "a:extension", $ind, "" + _extension, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:root", $ind, "" + _root );
+            helper.assertNullSafeDataProperty( drools, "a:root", $ind, "" + _root, "xsd:string" );
         
     end
 
@@ -482,7 +482,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:value_boolean", $ind, "" + _value );
+            helper.assertNullSafeDataProperty( drools, "a:value_boolean", $ind, "" + _value, "xsd:boolean" );
         
     end
 
@@ -497,7 +497,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code );
+            helper.assertNullSafeDataProperty( drools, "a:code", $ind, "" + _code, "xsd:string" );
         
     end
 
@@ -512,7 +512,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy, "xsd:string" );
         
     end
 
@@ -552,7 +552,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
     end
 
@@ -602,19 +602,19 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:minute", $ind, "" + _minute );
+            helper.assertNullSafeDataProperty( drools, "a:minute", $ind, "" + _minute, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:second", $ind, "" + _second );
+            helper.assertNullSafeDataProperty( drools, "a:second", $ind, "" + _second, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:millisecond", $ind, "" + _millisecond );
+            helper.assertNullSafeDataProperty( drools, "a:millisecond", $ind, "" + _millisecond, "xsd:double" );
         
-            helper.assertNullSafeDataProperty( drools, "a:month", $ind, "" + _month );
+            helper.assertNullSafeDataProperty( drools, "a:month", $ind, "" + _month, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:year", $ind, "" + _year );
+            helper.assertNullSafeDataProperty( drools, "a:year", $ind, "" + _year, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:day", $ind, "" + _day );
+            helper.assertNullSafeDataProperty( drools, "a:day", $ind, "" + _day, "xsd:int" );
         
-            helper.assertNullSafeDataProperty( drools, "a:hour", $ind, "" + _hour );
+            helper.assertNullSafeDataProperty( drools, "a:hour", $ind, "" + _hour, "xsd:int" );
         
     end
 
@@ -629,7 +629,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:key", $ind, "" + _key );
+            helper.assertNullSafeDataProperty( drools, "a:key", $ind, "" + _key, "xsd:string" );
         
     end
 
@@ -679,11 +679,11 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:id", $ind, "" + _id );
+            helper.assertNullSafeDataProperty( drools, "a:id", $ind, "" + _id, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:authority", $ind, "" + _authority );
+            helper.assertNullSafeDataProperty( drools, "a:authority", $ind, "" + _authority, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:version", $ind, "" + _version );
+            helper.assertNullSafeDataProperty( drools, "a:version", $ind, "" + _version, "xsd:string" );
         
     end
 
@@ -698,7 +698,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name );
+            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name, "xsd:string" );
         
     end
 
@@ -738,7 +738,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:valueType", $ind, "" + _valueType );
+            helper.assertNullSafeDataProperty( drools, "a:valueType_anyURI", $ind, "" + _valueType, "xsd:anyURI" );
         
     end
 
@@ -778,7 +778,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy, "xsd:string" );
         
     end
 
@@ -838,15 +838,15 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId );
+            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial );
+            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType );
+            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality );
+            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality, "xsd:string" );
         
     end
 
@@ -891,19 +891,19 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId );
+            helper.assertNullSafeDataProperty( drools, "a:templateId", $ind, "" + _templateId, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:useValueSets", $ind, "" + _useValueSets );
+            helper.assertNullSafeDataProperty( drools, "a:useValueSets", $ind, "" + _useValueSets, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial );
+            helper.assertNullSafeDataProperty( drools, "a:isInitial", $ind, "" + _isInitial, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:useSubsumption", $ind, "" + _useSubsumption );
+            helper.assertNullSafeDataProperty( drools, "a:useSubsumption", $ind, "" + _useSubsumption, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType );
+            helper.assertNullSafeDataProperty( drools, "a:triggerType", $ind, "" + _triggerType, "xsd:string" );
         
-            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality );
+            helper.assertNullSafeDataProperty( drools, "a:cardinality", $ind, "" + _cardinality, "xsd:string" );
         
     end
 
@@ -1043,7 +1043,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
     end
 
@@ -1078,7 +1078,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:pattern", $ind, "" + _pattern );
+            helper.assertNullSafeDataProperty( drools, "a:pattern", $ind, "" + _pattern, "xsd:string" );
         
     end
 
@@ -1128,7 +1128,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
     end
 
@@ -1163,7 +1163,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
     end
 
@@ -1298,7 +1298,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope );
+            helper.assertNullSafeDataProperty( drools, "a:scope", $ind, "" + _scope, "xsd:string" );
         
     end
 
@@ -1333,7 +1333,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name );
+            helper.assertNullSafeDataProperty( drools, "a:name", $ind, "" + _name, "xsd:string" );
         
     end
 
@@ -1383,7 +1383,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1408,7 +1408,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1433,7 +1433,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1458,7 +1458,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1483,7 +1483,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1508,7 +1508,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1533,7 +1533,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path );
+            helper.assertNullSafeDataProperty( drools, "a:path_string", $ind, "" + _path, "xsd:string" );
         
     end
 
@@ -1608,7 +1608,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy );
+            helper.assertNullSafeDataProperty( drools, "a:orderBy", $ind, "" + _orderBy, "xsd:string" );
         
     end
 
@@ -1668,7 +1668,7 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:granularity_string", $ind, "" + _granularity );
+            helper.assertNullSafeDataProperty( drools, "a:granularity_string", $ind, "" + _granularity, "xsd:string" );
         
     end
 
@@ -1693,9 +1693,9 @@ end
         Link( $xp, $ind ; )
     then
         
-            helper.assertNullSafeDataProperty( drools, "a:endOpen", $ind, "" + _endOpen );
+            helper.assertNullSafeDataProperty( drools, "a:endOpen", $ind, "" + _endOpen, "xsd:boolean" );
         
-            helper.assertNullSafeDataProperty( drools, "a:beginOpen", $ind, "" + _beginOpen );
+            helper.assertNullSafeDataProperty( drools, "a:beginOpen", $ind, "" + _beginOpen, "xsd:boolean" );
         
     end
 
