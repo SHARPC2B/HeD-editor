@@ -12,6 +12,7 @@ import edu.asu.sharpc2b.transform.HeDExporterFactory;
 import edu.asu.sharpc2b.transform.OOwl2HedDumper;
 import org.drools.io.Resource;
 import org.drools.io.impl.ClassPathResource;
+import org.hl7.knowledgeartifact.r1.AtomicAction;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -94,12 +95,48 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     public HeDKnowledgeDocument getArtifact( String id ) {
-        return getArtifactData( id ).getKnowledgeDocument();
+        if ( id == null || "undefined".equals( id ) ) {
+            return null;
+        }
+        HeDArtifactData data = getArtifactData( id );
+        if ( data != null ) {
+            return getArtifactData( id ).getKnowledgeDocument();
+        } else {
+            return null;
+        }
     }
+
+    public HeDArtifactData getCurrentArtifactData() {
+        if ( currentArtifactId == null ) {
+            return null;
+        }
+        return getArtifactData( currentArtifactId );
+    }
+
+    public void updateBasicInfo( String ruleId, String name, String description, String status, String type ) {
+        HeDArtifactData data = getArtifactData( ruleId );
+        if ( data == null ) {
+            return;
+        }
+        HeDKnowledgeDocument dok = data.getKnowledgeDocument();
+
+        dok.getTitle().clear();
+        dok.addTitle( name );
+
+        dok.getDescription().clear();
+        dok.addDescription( description );
+
+        dok.getStatus().clear();
+        dok.addStatus( status );
+    }
+
     public HeDArtifactData getArtifactData( String id ) {
         if ( artifacts.containsKey( id ) ) {
             return artifacts.get( id );
         } else {
+            if ( currentArtifactId == null ) {
+                return null;
+            }
             return artifacts.get( currentArtifactId );
         }
     }
@@ -138,7 +175,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             byte[] owlBytes = baos.toByteArray();
 
             HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( owlBytes );
-            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument, owlBytes );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument,
+                                                            owlBytes,
+                                                            getDomainClasses(),
+                                                            DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis() );
 
             currentArtifactId = artifact.getArtifactId();
 
@@ -163,7 +203,6 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public String openArtifact( String id ) {
-        System.out.println( "Core opens artifact " + id );
         if ( artifacts.containsKey( id ) ) {
             return id;
         }
@@ -173,11 +212,11 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             byte[] data = new byte[ in.available() ];
             in.read( data );
 
-            System.out.println( "Found bytes " + data.length );
-            System.out.println( "Found content " + new String( data ) );
-
             HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( data );
-            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument, data );
+            HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument,
+                                                            data,
+                                                            getDomainClasses(),
+                                                            DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis() );
 
             currentArtifactId = artifact.getArtifactId();
 
@@ -251,7 +290,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         boolean hasExpr = getCurrentArtifact().getNamedExpressions().containsKey( exprId );
         if ( hasExpr ) {
             System.out.println( "Deleted .. " + exprId );
-            getCurrentArtifact().getNamedExpressions().remove( exprId );
+            getCurrentArtifact().deleteExpression( exprId );
             return true;
         } else {
             return false;
@@ -266,14 +305,14 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     @Override
-    public boolean updateNamedExpression( String exprId, String exprName, byte[] doxBytes ) {
+    public String updateNamedExpression( String exprId, String exprName, byte[] doxBytes ) {
         Document dox = null;
         try {
             DocumentBuilder doxBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doxBuilder.parse( new ByteArrayInputStream( doxBytes ) );
         } catch ( Exception e ) {
             e.printStackTrace();
-            return false;
+            return null;
         }
 
         return getCurrentArtifact().updateNamedExpression( exprId, exprName, doxBytes );
@@ -313,6 +352,16 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     @Override
     public String getDomainClassHierarchyDescription() {
         return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomainHierarchy();
+    }
+
+    @Override
+    public void addUsedDomainClass( String id ) {
+        for ( String fqn : getDomainClasses().keySet() ) {
+            String simpleName = getDomainClasses().get( fqn );
+            if ( simpleName.equals( id ) ) {
+                getCurrentArtifactData().addUsedDomainClass( fqn, simpleName );
+            }
+        }
     }
 
 

@@ -99,4 +99,23 @@ public class EditorCoreTest {
 
 
 
+    @Test
+    @Ignore
+    public void testBlocklyGeneration() throws Exception {
+        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+        byte[] hedStream = new byte[ file.getInputStream().available() ];
+        file.getInputStream().read( hedStream );
+
+        EditorCoreImpl core = (EditorCoreImpl) EditorCoreImpl.getInstance();
+
+        String uri = core.importFromStream( hedStream );
+        HeDArtifactData data = core.getCurrentArtifact();
+
+        assertEquals( uri, data.getArtifactId() );
+
+        HeDKnowledgeDocument dok = data.getKnowledgeDocument();
+
+    }
+
+
 }

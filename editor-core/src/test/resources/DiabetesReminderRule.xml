@@ -97,14 +97,14 @@
     </def>
     <def name="Patient">
       <expression xsi:type="ClinicalRequest" cardinality="Single"
-                  dataType="vmr:Patient" isInitial="true"/>
+                  dataType="vmr:EvaluatedPerson" isInitial="true"/>
     </def>
   </externalData>
 
   <expressions>
     <def name="NonGestationalDiabetesMellitus">
       <expression xsi:type="ClinicalRequest" cardinality="Multiple"
-                  codeProperty="problem.code" dataType="vmr:Problem" dateProperty="eventTime">
+                  codeProperty="problemCode" dataType="vmr:Problem" dateProperty="problemEffectiveTime">
         <description>DiabetesProblem</description>
         <codes xsi:type="ValueSet" id="NonGestationalDMValueSet"/>
       </expression>

@@ -13,4 +13,5 @@ public interface DomainModel {
 
     public String getDomainClassHierarchyDescription();
 
+    public void addUsedDomainClass( String id );
 }

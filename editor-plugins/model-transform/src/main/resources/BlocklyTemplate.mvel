@@ -42,7 +42,7 @@ Blockly.Blocks['@{iri}'] = {
 @declare{"mutatorCode"}
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( '@{name}_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -125,7 +125,7 @@ Blockly.Blocks['xsd:string'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[string]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:string' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#string' );
   }
 };
 
@@ -134,7 +134,7 @@ Blockly.Blocks['xsd:anyURI'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[URI]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:anyURI' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#anyURI' );
   }
 };
 
@@ -143,7 +143,7 @@ Blockly.Blocks['xsd:dateTime'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[dateTime]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:dateTimeStamp' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#dateTime' );
   }
 };
 
@@ -152,7 +152,7 @@ Blockly.Blocks['xsd:int'] = {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
     this.appendDummyInput().appendField( '[int]' ).appendField( numInput, 'VALUE' );
-    this.setOutput( true, 'xsd:int' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#int' );
   }
 };
 
@@ -161,7 +161,7 @@ Blockly.Blocks['xsd:boolean'] = {
     this.setColour(152);
     var boolInput = new Blockly.FieldCheckbox('TRUE');
     this.appendDummyInput().appendField( '[bool]' ).appendField( boolInput, 'VALUE' );
-    this.setOutput( true, 'xsd:boolean' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#boolean' );
   }
 };
 
@@ -170,7 +170,7 @@ Blockly.Blocks['xsd:double'] = {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
     this.appendDummyInput().appendField( '[double]' ).appendField( numInput, 'VALUE' );
-    this.setOutput( true, 'xsd:double' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#double' );
   }
 };
 
@@ -181,12 +181,39 @@ Blockly.Blocks['xsd:double'] = {
         	    var thisBlock = this;
         		this.setColour(152);
         		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
-        		this.setOutput(true, 'xsd:string');
+        		this.setOutput(true, 'http://www.w3.org/2001/XMLSchema#string');
         		this.setTooltip(function() {
         			return thisBlock.getFieldValue('TEXT');
         		});
         	}
         };
+
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Set Property');
+
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#value' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value' );
+
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#property' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property' );
+
+    this.setOutput( true, null );
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Setter \n Return type : [any] \n Allowed types : \n  value : [any] \n  property : [Pro] \n  ' );
+  }
+
+};
 
 
 @end{}

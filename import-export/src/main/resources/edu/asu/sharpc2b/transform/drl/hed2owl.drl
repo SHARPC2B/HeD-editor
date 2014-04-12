@@ -559,8 +559,8 @@ then
     insert( new Link( $name, type ) );
     helper.assertPropertyChain( drools, $name, type, "vmr:" );
 
-    insert( helper.assertObjectProperty( "ops:firstOperand", setter, type ) );
-    insert( helper.assertObjectProperty( "ops:secondOperand", setter, $setXp ) );
+    insert( helper.assertObjectProperty( "ops:property", setter, type ) );
+    insert( helper.assertObjectProperty( "ops:value", setter, $setXp ) );
 end
 
 rule "Process ObjectExpression Type"
@@ -623,6 +623,56 @@ then
     insert( new Link( $sub, type ) );
     helper.assertPropertyChain( drools, $sub, type, "vmr:" );
 end
+
+
+
+
+/***********************************************************************************************/
+/*  LITERALS
+/***********************************************************************************************/
+
+
+
+
+
+    rule "Literal PQ"
+    when
+        $xp : PQ(  _unit : unit , _value : value  )
+    then
+        OWLNamedIndividual type = helper.asIndividual( "tns:PQ_" + $xp.hashCode() );
+        insert( new Link( $xp, type ) );
+            insert( helper.assertType( type, "a:PhysicalQuantityLiteralExpression" ) );
+            helper.assertNullSafeDataProperty( drools, "a:unit", type, "" + _unit, "xsd:string" );
+            helper.assertNullSafeDataProperty( drools, "a:value_double", type, "" + _value, "xsd:double" );
+
+    end
+
+    declare RTO
+    @typesafe( false )
+    end
+
+    rule "Literal RTO"
+    when
+        $xp : RTO(  _num : numerator.value , _den : denominator.value  )
+    then
+        OWLNamedIndividual type = helper.asIndividual( "tns:RTO_" + $xp.hashCode() );
+        insert( new Link( $xp, type ) );
+            insert( helper.assertType( type, "a:RatioLiteralExpression" ) );
+            helper.assertNullSafeDataProperty( drools, "a:numerator", type, "" + _num, "xsd:double" );
+            helper.assertNullSafeDataProperty( drools, "a:denominator", type, "" + _den, "xsd:double" );
+
+    end
+
+
+    rule "Literal INT"
+    when
+        $xp : INT( _value : value )
+    then
+        OWLNamedIndividual type = helper.asIndividual( "tns:INT_" + $xp.hashCode() );
+        insert( new Link( $xp, type ) );
+            insert( helper.assertType( type, "a:IntegerLiteralExpression" ) );
+            helper.assertNullSafeDataProperty( drools, "a:value", type, "" + _value, "xsd:int" );
+    end
 
 
 

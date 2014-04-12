@@ -584,7 +584,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CoalesceExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Coalesce_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -690,7 +690,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AndExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'And_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -1356,7 +1356,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#OrExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Or_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -1679,7 +1679,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectExpressionExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'ObjectExpression_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -1855,41 +1855,6 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LessOrEqualExpression'] = {
     this.setInputsInline( false );
 
     this.setTooltip( ' HeD expression : LessOrEqual \n Return type : [Boo] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  secondOperand : [Int, Num, Rat, Rea] \n  ' );
-  }
-  
-};
-
-Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Set');
-
-    
-        
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#BooleanType','http://asu.edu/sharpc2b/ops#ClassType','http://asu.edu/sharpc2b/ops#CodeType','http://asu.edu/sharpc2b/ops#CollectionType','http://asu.edu/sharpc2b/ops#DateType','http://asu.edu/sharpc2b/ops#DomainClass','http://asu.edu/sharpc2b/ops#DomainProperty','http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#IntervalType','http://asu.edu/sharpc2b/ops#List','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#ObjectType','http://asu.edu/sharpc2b/ops#PhysicalQuantityType','http://asu.edu/sharpc2b/ops#PropertyType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType','http://asu.edu/sharpc2b/ops#Set','http://asu.edu/sharpc2b/ops#StringType','http://asu.edu/sharpc2b/ops#TimeIntervalType','http://asu.edu/sharpc2b/ops#TimestampType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'firstOperand' );
-    
-
-    
-        
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#secondOperand' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'secondOperand' );
-    
-
-    
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#PropertyType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( ' HeD expression : Set \n Return type : [Pro] \n Allowed types : \n  firstOperand : [Boo, Cla, Cod, Col, Dat, Dom, Dom, Int, Int, Lis, Num, Obj, Phy, Pro, Rat, Rea, Set, Str, Tim, Tim] \n  secondOperand : [Dom] \n  ' );
   }
   
 };
@@ -2081,7 +2046,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'ObjectRedefine_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -2222,7 +2187,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IntersectExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Intersect_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -2643,7 +2608,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ListExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'List_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -3352,7 +3317,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ConcatExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Concat_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -4287,7 +4252,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectDescriptorExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'ObjectDescriptor_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -4791,7 +4756,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#UnionExpression'] = {
         
 
   mutationToDom: function(workspace) {
-    var container = document.createElement( 'Union_mutation' );
+    var container = document.createElement( 'mutation' );
     container.setAttribute( 'items', this.itemCount_ );
     return container;
   },
@@ -5149,7 +5114,7 @@ Blockly.Blocks['xsd:string'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[string]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:string' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#string' );
   }
 };
 
@@ -5158,7 +5123,7 @@ Blockly.Blocks['xsd:anyURI'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[URI]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:anyURI' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#anyURI' );
   }
 };
 
@@ -5167,7 +5132,7 @@ Blockly.Blocks['xsd:dateTime'] = {
     this.setColour(152);
     var textInput = new Blockly.FieldTextInput('');
     this.appendDummyInput().appendField( '[dateTime]' ).appendField( textInput, 'VALUE' );
-    this.setOutput( true, 'xsd:dateTimeStamp' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#dateTime' );
   }
 };
 
@@ -5176,7 +5141,7 @@ Blockly.Blocks['xsd:int'] = {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
     this.appendDummyInput().appendField( '[int]' ).appendField( numInput, 'VALUE' );
-    this.setOutput( true, 'xsd:int' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#int' );
   }
 };
 
@@ -5185,7 +5150,7 @@ Blockly.Blocks['xsd:boolean'] = {
     this.setColour(152);
     var boolInput = new Blockly.FieldCheckbox('TRUE');
     this.appendDummyInput().appendField( '[bool]' ).appendField( boolInput, 'VALUE' );
-    this.setOutput( true, 'xsd:boolean' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#boolean' );
   }
 };
 
@@ -5194,7 +5159,7 @@ Blockly.Blocks['xsd:double'] = {
     this.setColour(152);
     var numInput = new Blockly.FieldTextInput();
     this.appendDummyInput().appendField( '[double]' ).appendField( numInput, 'VALUE' );
-    this.setOutput( true, 'xsd:double' );
+    this.setOutput( true, 'http://www.w3.org/2001/XMLSchema#double' );
   }
 };
 
@@ -5205,11 +5170,38 @@ Blockly.Blocks['xsd:double'] = {
         	    var thisBlock = this;
         		this.setColour(152);
         		this.appendDummyInput().appendField( '[text]' ).appendField(new Blockly.FieldExternalInput("Click to edit the text", openExternalInput), "TEXT");
-        		this.setOutput(true, 'xsd:string');
+        		this.setOutput(true, 'http://www.w3.org/2001/XMLSchema#string');
         		this.setTooltip(function() {
         			return thisBlock.getFieldValue('TEXT');
         		});
         	}
         };
+
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops#PropertySetExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Set Property');
+
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#value' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'value' );
+
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#property' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'property' );
+
+    this.setOutput( true, null );
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Setter \n Return type : [any] \n Allowed types : \n  value : [any] \n  property : [Pro] \n  ' );
+  }
+
+};
 
 

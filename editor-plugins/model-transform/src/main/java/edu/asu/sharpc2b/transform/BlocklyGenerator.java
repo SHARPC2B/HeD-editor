@@ -125,9 +125,9 @@ public class BlocklyGenerator {
                     primitiveTypes.addAll( types );
                 }
 
-                if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) ) ) ) {
-                    visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
-                }
+                // if ( ! sub.getSuperClass().isAnonymous() && sub.getSuperClass().asOWLClass().equals( factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) ) ) ) {
+                //    visitExpressionDefinition( sub.getSubClass(), operatorOntology, manager, factory, builder );
+                //}
             } catch ( Exception e ) {
                 e.printStackTrace();
             }
@@ -141,6 +141,13 @@ public class BlocklyGenerator {
         getPaletteGroup( domainConceptExpr ).add( domainConceptExpr.getIRI().toString() );
         OWLClass domainPropertyExpr = factory.getOWLClass( IriUtil.opsIRI( "DomainPropertyExpression" ) );
         getPaletteGroup( domainPropertyExpr ).add( domainPropertyExpr.getIRI().toString() );
+
+        OWLClass propertyExpr = factory.getOWLClass( IriUtil.opsIRI( "PropertyExpression" ) );
+        OWLClass setter = factory.getOWLClass( IriUtil.opsIRI( "PropertySetExpression" ) );
+        OWLClass getter = factory.getOWLClass( IRI.create( mainId.getOntologyIRI().toString() + "#", "PropertyExpression" ) );
+        getPaletteGroup( propertyExpr ).add( setter.getIRI().toString() );
+        getPaletteGroup( propertyExpr ).add( getter.getIRI().toString() );
+
 
 
 
@@ -544,6 +551,9 @@ public class BlocklyGenerator {
             block.setAttribute( "type", type );
             cat.appendChild( block );
         }
+        Element block = dox.createElement( "block" );
+        block.setAttribute( "type", "xsd:text" );
+        cat.appendChild( block );
         dox.getDocumentElement().appendChild( cat );
 
         //prettyPrint( dox.getDocumentElement(), System.out );
@@ -584,6 +594,10 @@ public class BlocklyGenerator {
                     cat.appendChild( block );
                     continue;
                 } else if ( "DomainProperty".equals( name ) ) {
+                    Element allPropBlock = dox.createElement( "block" );
+                    allPropBlock.setAttribute( "type", "http://asu.edu/sharpc2b/ops#DomainProperty" );
+                    cat.appendChild( allPropBlock );
+
                     Element block = dox.createElement( "block" );
                     block.setAttribute( "ng-repeat", "block in domainProperties track by $index" );
                     block.setAttribute( "type", "{{block}}/properties" );

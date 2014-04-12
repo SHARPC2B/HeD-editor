@@ -16,6 +16,6 @@ public interface ExpressionSource {
 
     public String cloneNamedExpression( String exprId );
 
-    public boolean updateNamedExpression( String exprId, String exprName, byte[] doxBytes );
+    public String updateNamedExpression( String exprId, String exprName, byte[] doxBytes );
 
 }

@@ -9,6 +9,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -67,31 +68,26 @@ public class ExpressionActions extends Controller {
         Http.RequestBody body = request.body();
 
 
-        ModelHome.updateNamedExpression( expressionIRI, exprName, body.asRaw().asBytes() );
+        String exprId = ModelHome.updateNamedExpression( expressionIRI, exprName, body.asRaw().asBytes() );
         System.out.println( new String( body.asRaw().asBytes() ) );
         setHeaderCORS();
 
-        return ok();
+        return ok(exprId);
     }
 
     private static List<Expression> retrieveExpressions() {
         Map<String,String> namedExpressions = ModelHome.getNamedExpressions();
 
         List<Expression> expressions = new ArrayList<Expression>();
-        for ( String exprIRI : namedExpressions.keySet() ) {
+        List<String> ids = new ArrayList( namedExpressions.keySet() );
+        Collections.sort( ids );
+        for ( String exprIRI : ids ) {
             Expression expr = new Expression( exprIRI, namedExpressions.get( exprIRI ) );
             expressions.add( expr );
         }
         return expressions;
     }
 
-
-    public static Result configExpressionsAccess(String path) {
-        response().setHeader("Access-Control-Allow-Origin", "*");
-        response().setHeader("Access-Control-Allow-Methods", "POST");
-        response().setHeader("Access-Control-Allow-Headers", "accept, origin, Content-type, x-json, x-prototype-version, x-requested-with");
-        return ok();
-    }
 
 
 }

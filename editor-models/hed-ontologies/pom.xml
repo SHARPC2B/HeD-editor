@@ -11,7 +11,7 @@
 
   <groupId>sharpc2b</groupId>
   <artifactId>hed-ontologies</artifactId>
+	<description>SHARPC-2B :: HeD Ontologies</description>
   <version>0.1-SNAPSHOT</version>
-
 
 </project>

@@ -227,7 +227,7 @@ public class ModelManagerOwlAPIHermit
             }
 
             // And then parse it with an RDF reader, which requires an adapter.
-            OWLOntology onto = manager.createOntology( ontoId );
+            OWLOntology onto = getBaseTheory().getOWLOntologyManager().createOntology( ontoId );
             OWLRDFConsumer owlrdfConsumer = new OWLRDFConsumer( onto, new AnonymousNodeChecker() {
                 @Override
                 public boolean isAnonymousNode( IRI iri ) {

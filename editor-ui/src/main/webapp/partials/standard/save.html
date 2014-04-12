@@ -2,18 +2,18 @@
 <div class="row-fluid">
 	<form class="form-inline span4">
 		<label><strong>Artifact Name:</strong></label>
-  		<input class="input-xlarge" type="text">
+        <input class="input-xlarge" type="text" x-ng-model="background.Name" >
   	</form>
   	<form class="text-center form-inline span4">
   		<label><strong>Status:</strong></label>
-		<select ng-model="status" class="input-xlarge">
+		<select class="input-xlarge" x-ng-model="background.Status">
 			<option>Draft</option>
 			<option>InTest</option>
 			<option>Active</option>
 			<option>Inactive</option>
 		</select>
 	</form>
-  	<a href="" class="text-center offset3 span1"><i class="icon-save icon-3x"></i> Save</a>
+  	<a href="" x-ng-click="saveBackground(background)" class="text-center offset3 span1"><i class="icon-save icon-3x"></i> Save</a>
 </div>
 <div class="row-fluid" style="position: absolute; top: 80px; left: 0; right: 0; bottom: 13px;">
 	<pre class="prettyprint span8 offset2" style="height: 100%; overflow: auto" ng-bind-html="xml | prettify"></pre>

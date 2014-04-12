@@ -1,11 +1,15 @@
 package edu.asu.sharpc2b.hed.impl;
 
+import com.clarkparsia.empire.SupportsRdfId;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.SharpExpressionImpl;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ProductionRule;
 import edu.asu.sharpc2b.prr.RuleVariable;
+import edu.asu.sharpc2b.prr.RuleVariableImpl;
+import edu.asu.sharpc2b.prr_sharp.ExpressionInSHARPImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
@@ -26,9 +30,10 @@ public class HeDArtifactData {
     private byte[] owlData;
 
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
+    private Map<String, String> usedDomainClasses = new HashMap<String,String>();
 
 
-    public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData ) {
+    public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
         this.knowledgeDocument = dok;
         this.owlData = owlData;
 
@@ -38,7 +43,7 @@ public class HeDArtifactData {
             dok.getArtifactId().addAll( vid.getArtifactId() );
         }
 
-        cacheBlocklyExpressions( dok );
+        cacheBlocklyExpressions( dok, domainClasses, domainProperties );
     }
 
     public HeDArtifactData() {
@@ -50,6 +55,7 @@ public class HeDArtifactData {
         knowledgeDocument.addArtifactId( artifactId );
         knowledgeDocument.addIdentifier( artifactId );
         knowledgeDocument.addTitle( title );
+        knowledgeDocument.addStatus( "Draft" );
 
         knowledgeDocument.addKeyTerm( new ConceptCodeImpl() );
 
@@ -103,10 +109,15 @@ public class HeDArtifactData {
 //    }
 
 
+    public Map<String, String> getUsedDomainClasses() {
+        return usedDomainClasses;
+    }
 
+    public void addUsedDomainClass( String fqn, String name ) {
+        this.usedDomainClasses.put( fqn, name );
+    }
 
-
-    public void cacheBlocklyExpressions( HeDKnowledgeDocument dok ) {
+    public void cacheBlocklyExpressions( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
@@ -117,7 +128,12 @@ public class HeDArtifactData {
                         if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                             SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
 
-                            blocklyExpressions.put( name, new HeDNamedExpression( prrExpr.getRdfId().toString(), name, BlocklyFactory.fromExpression( name, sharpExpression ) ) );
+                            BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+                            blocklyExpressions.put( uriToId( prrExpr.getRdfId() ), new HeDNamedExpression(
+                                    uriToId( prrExpr.getRdfId() ),
+                                    name,
+                                    factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.EXPRESSION ) ) );
+                            usedDomainClasses.putAll( factory.getRequiredDomainClasses() );
                         }
                     }
 
@@ -138,7 +154,11 @@ public class HeDArtifactData {
         return blocklyExpressions.get( exprId );
     }
 
-    public boolean updateNamedExpression( String exprId, String name, byte[] doxBytes ) {
+    public String updateNamedExpression( String exprId, String name, byte[] doxBytes ) {
+        if ( name.equals( exprId ) ) {
+            exprId = createVariableFromBlocks( exprId, name, doxBytes );
+        }
+
         if ( ! blocklyExpressions.containsKey( exprId ) ) {
             blocklyExpressions.put( exprId, new HeDNamedExpression( exprId, name, doxBytes ) );
         } else {
@@ -146,11 +166,49 @@ public class HeDArtifactData {
             expr.setName( name );
             expr.setDoxBytes( doxBytes );
         }
-        return true;
+        return exprId;
+    }
+
+    private String createVariableFromBlocks( String exprId, String name, byte[] doxBytes ) {
+        // new expression
+        RuleVariable newVar = new RuleVariableImpl();
+        newVar.addName( name );
+
+        // TODO Change this mock
+        Expression mock = new ExpressionInSHARPImpl();
+        newVar.addVariableFilterExpression( mock );
+
+        exprId = uriToId( mock.getRdfId() );
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                ( (ProductionRule) rule ).addProductionRuleBoundRuleVariable( newVar );
+            }
+        }
+        return exprId;
+    }
+
+    private String uriToId( SupportsRdfId.RdfKey rdfId ) {
+        return "id_" + rdfId.toString().hashCode();
     }
 
 
+    public void deleteExpression( String exprId ) {
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    String name = expr.getName().get( 0 );
 
-
+                    if ( ! expr.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = expr.getVariableFilterExpression().get( 0 );
+                        if ( uriToId( prrExpr.getRdfId() ).equals( exprId ) ) {
+                            blocklyExpressions.remove( exprId );
+                            ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( expr );
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

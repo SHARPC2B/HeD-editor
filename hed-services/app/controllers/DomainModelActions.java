@@ -66,9 +66,11 @@ public class DomainModelActions extends Controller {
         Map<String,String> domainClasses = ModelHome.getDomainProperties( klass );
 
         List<NamedConcept> expressions = new ArrayList<NamedConcept>();
-        for ( String propId : domainClasses.keySet() ) {
-            NamedConcept prop = new NamedConcept( propId, domainClasses.get( propId ) );
-            expressions.add( prop );
+        if ( domainClasses != null ) {
+            for ( String propId : domainClasses.keySet() ) {
+                NamedConcept prop = new NamedConcept( propId, domainClasses.get( propId ) );
+                expressions.add( prop );
+            }
         }
 
         JsonNode jsonOut = Json.toJson( expressions );

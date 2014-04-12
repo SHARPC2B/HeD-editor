@@ -1,11 +1,11 @@
 <div class="row-fluid">
-	<div class="borderedBox span4" style="padding: 10px;">
+	<div class="borderedBox span4" style="padding: 10px; ">
 		<p class="text-center">Expressions:</p>
 		<div class="search-prepend">
 			<div class="icon-search icon-white"></div>
 			<input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
 		</div><br>
-		<ul class="nav nav-list borderedBox" style="height: 153px;">
+		<ul class="nav nav-list borderedBox" style="height: 153px; overflow-y:scroll;">
 			<li x-ng-repeat="expression in expressions | filter:search" x-ng-class="{active: currentExpression.name==expression.name}">
 				<div class="span10 pull-left">{{expression.name}}</div>
 				<div class="span2 pull-right">
@@ -22,7 +22,7 @@
 	</div>
 	<div class="span8">
 		<div style="height: 44px;">
-			<div class="pull-left" style="background-color: #ddd; width: 108px; text-align: center; font-size: 17.5px; line-height: 44px;">Blocks</div>
+			<div class="pull-left" style="background-color: #ddd; width: 108px; text-align: center; font-size: 17px; line-height: 44px;">Blocks</div>
 			<div class="pull-right">
 				<button class="btn btn-link btn-large" x-ng-click="save()" ><i class="icon-save" ></i> Save </button>
 				<button class="btn btn-link btn-large" x-ng-click="clear()"><i class="icon-trash"></i> Clear</button>

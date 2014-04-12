@@ -21,7 +21,6 @@
       <block type="http://asu.edu/sharpc2b/ops-set#PowerExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#ProperContainsExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#ProperInExpression"/>
-      <block type="http://asu.edu/sharpc2b/ops#PropertySetExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#SubtractExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#TruncatedDivideExpression"/>
     </category>
@@ -116,6 +115,7 @@
       <block ng-repeat="block in domainClasses track by $index" type="{{block}}" update-toolbox=""/>
     </category>
     <category name="DomainProperty">
+      <block type="http://asu.edu/sharpc2b/ops#DomainProperty"/>
       <block ng-repeat="block in domainProperties track by $index" type="{{block}}/properties" update-toolbox=""/>
     </category>
     <category name="Primitive">
@@ -242,6 +242,7 @@
     <block type="http://asu.edu/sharpc2b/ops-set#WithinExpression"/>
   </category>
   <category name="Property">
+    <block type="http://asu.edu/sharpc2b/ops-set#PropertyExpression"/>
     <block type="http://asu.edu/sharpc2b/ops#PropertySetExpression"/>
   </category>
   <category name="Request">
@@ -382,5 +383,6 @@
     <block type="xsd:dateTime"/>
     <block type="xsd:string"/>
     <block type="xsd:boolean"/>
+    <block type="xsd:text"/>
   </category>
 </xml>

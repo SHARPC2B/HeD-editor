@@ -1,7 +1,6 @@
 package edu.asu.sharpc2b.transform;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
-import com.hp.hpl.jena.sparql.lib.iterator.Iter;
 import edu.asu.sharpc2b.actions.AtomicAction;
 import edu.asu.sharpc2b.actions.CompositeAction;
 import edu.asu.sharpc2b.metadata.Coverage;
@@ -345,7 +344,7 @@ public class OOwl2HedDumper implements HeDExporter {
 
         if ( expr instanceof VariableExpression ) {
             List vars = ((VariableExpression) expr ).getReferredVariable();
-
+            x.setAttribute( "xsi:type", "ExpressionRef" );
             x.setAttribute( "name", ( (NamedElement) vars.get( 0 ) ).getName().get( 0 ) );
         } else if ( expr instanceof IteratorExpression ) {
             visitClinicalRequest( var, x, (IteratorExpression) expr, dox );
@@ -357,8 +356,8 @@ public class OOwl2HedDumper implements HeDExporter {
             return;
         } else if ( expr instanceof PropertySetExpression ) {
             PropertySetExpression setter = (PropertySetExpression) expr;
-            visitExpression( var, setter.getFirstOperand().get( 0 ), x, "name", dox );
-            visitExpression( var, setter.getSecondOperand().get( 0 ), x, "value", dox );
+            visitExpression( var, setter.getProperty().get( 0 ), x, "name", dox );
+            visitExpression( var, setter.getValue().get( 0 ), x, "value", dox );
             parent.appendChild( x );
             return;
         } else if ( expr instanceof TernaryExpression ) {
@@ -393,14 +392,8 @@ public class OOwl2HedDumper implements HeDExporter {
 
 
     private String mapExprType( String exprType ) {
-        if ( "PropertyGet".equals( exprType ) || "PropertySet".equals( exprType ) ) {
-            return "Property";
-        } else if ( "Variable".equals( exprType ) ) {
+        if ( "Variable".equals( exprType ) ) {
             return "ExpressionRef";
-        } else if ( "AggregateIterator".equals( exprType ) || "SingleIterator".equals( exprType ) ) {
-            return "ClinicalRequest";
-        } else if ( "Create".equals( exprType ) ) {
-            return "ObjectExpression";
         }
         return exprType;
     }

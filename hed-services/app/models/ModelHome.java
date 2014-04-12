@@ -5,6 +5,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
+import edu.asu.sharpc2b.hed.impl.HeDArtifactData;
 import edu.asu.sharpc2b.metadata.ClinicalCoverage;
 import edu.asu.sharpc2b.metadata.ClinicalCoverageImpl;
 import edu.asu.sharpc2b.metadata.Coverage;
@@ -78,8 +79,30 @@ public class ModelHome
     }
 
     public static Rule getArtifact( String id ) {
-        return null;
+        final HeDArtifactData dok = core.getArtifactData( id );
+        Rule rule = new Rule();
+        rule.ruleId = dok.getArtifactId();
+        rule.Name = dok.getTitle() != null ? dok.getTitle() : "[no title]";
+        rule.Description = dok.getKnowledgeDocument().getDescription().isEmpty() ? "" : dok.getKnowledgeDocument().getDescription().get( 0 );
+        return rule;
     }
+
+    public static Rule getCurrentArtifact() {
+        final HeDArtifactData dok = core.getCurrentArtifactData();
+        if ( dok == null ) {
+            Rule rule = new Rule();
+            rule.Description = "NO RULE - Open or Create";
+            return rule;
+        } else {
+            Rule rule = new Rule();
+            rule.ruleId = dok.getArtifactId();
+            rule.Name = dok.getTitle() != null ? dok.getTitle() : "[no title]";
+            rule.Description = dok.getKnowledgeDocument().getDescription().isEmpty() ? "" : dok.getKnowledgeDocument().getDescription().get( 0 );
+            rule.Status = dok.getKnowledgeDocument().getStatus().isEmpty() ? "Draft" : dok.getKnowledgeDocument().getStatus().get( 0 );
+            return rule;
+        }
+    }
+
 
     public static String importFromStream( byte[] stream ) {
         return core.importFromStream( stream );
@@ -142,7 +165,6 @@ public class ModelHome
         List<Contributor> contris = new ArrayList<Contributor>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
 
-
         if ( dok.getAuthor() != null ) {
             for ( Agent a : dok.getAuthor() ) {
                 Contributor c = new Contributor();
@@ -198,6 +220,9 @@ public class ModelHome
     public static List<models.metadata.Coverage> getCoverage( String id ) {
         List<models.metadata.Coverage> covers = new ArrayList<models.metadata.Coverage>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
+        if ( dok.getApplicability() == null || dok.getApplicability().isEmpty() ) {
+            return covers;
+        }
         for ( Coverage cover : dok.getApplicability() ) {
             models.metadata.Coverage cov = new models.metadata.Coverage();
             cov.Id = cover.getRdfId().toString();
@@ -225,6 +250,9 @@ public class ModelHome
     public static List<Contributor> getPublishers( String id ) {
         List<Contributor> pubs = new ArrayList<Contributor>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
+        if ( dok.getPublisher() == null || dok.getPublisher().isEmpty() ) {
+            return pubs;
+        }
         for ( Agent agent : dok.getPublisher() ) {
             Contributor publisher = new Contributor();
             fillAgent( agent, publisher );
@@ -236,6 +264,10 @@ public class ModelHome
     public static List<UsageTerm> getUsageRights( String id ) {
         List<UsageTerm> terms = new ArrayList<UsageTerm>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
+        if ( dok.getUsageTerms() == null || dok.getUsageTerms().isEmpty() ) {
+            return terms;
+        }
+
         for ( RightsDeclaration decl : dok.getUsageTerms() ) {
             UsageTerm term = new UsageTerm();
             term.Id = decl.getRdfId().toString();
@@ -282,41 +314,54 @@ public class ModelHome
     public static List<Resource> getRelatedResources( String id ) {
         List<Resource> resources = new ArrayList<Resource>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
-        for ( KnowledgeResource res : dok.getAssociatedResource() ) {
-            Resource r = new Resource();
-            r.Type = "AssociatedResource";
-            fillResource( res, r );
-            resources.add( r );
+
+        if ( dok.getAssociatedResource() != null && ! dok.getAssociatedResource().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getAssociatedResource() ) {
+                Resource r = new Resource();
+                r.Type = "AssociatedResource";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
-        for ( KnowledgeResource res : dok.getAdaptedFrom() ) {
-            Resource r = new Resource();
-            r.Type = "AdaptedFrom";
-            fillResource( res, r );
-            resources.add( r );
+        if ( dok.getAdaptedFrom() != null && ! dok.getAdaptedFrom().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getAdaptedFrom() ) {
+                Resource r = new Resource();
+                r.Type = "AdaptedFrom";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
-        for ( KnowledgeResource res : dok.getDependsOn() ) {
-            Resource r = new Resource();
-            r.Type = "DependsOn";
-            fillResource( res, r );
-            resources.add( r );
+        if ( dok.getDependsOn() != null && ! dok.getDependsOn().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getDependsOn() ) {
+                Resource r = new Resource();
+                r.Type = "DependsOn";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
-        for ( KnowledgeResource res : dok.getDerivedFrom() ) {
-            Resource r = new Resource();
-            r.Type = "DerivedFrom";
-            fillResource( res, r );
-            resources.add( r );
+        if ( dok.getDerivedFrom() != null && ! dok.getDerivedFrom().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getDerivedFrom() ) {
+                Resource r = new Resource();
+                r.Type = "DerivedFrom";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
-        for ( KnowledgeResource res : dok.getSimilarTo() ) {
-            Resource r = new Resource();
-            r.Type = "SimilarTo";
-            fillResource( res, r );
-            resources.add( r );
+        if ( dok.getSimilarTo() != null && ! dok.getSimilarTo().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getSimilarTo() ) {
+                Resource r = new Resource();
+                r.Type = "SimilarTo";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
-        for ( KnowledgeResource res : dok.getVersionOf() ) {
-            Resource r = new Resource();
-            r.Type = "VersionOf";
-            fillResource( res, r );
-            resources.add( r );
+        if ( dok.getVersionOf() != null && ! dok.getVersionOf().isEmpty() ) {
+            for ( KnowledgeResource res : dok.getVersionOf() ) {
+                Resource r = new Resource();
+                r.Type = "VersionOf";
+                fillResource( res, r );
+                resources.add( r );
+            }
         }
         return resources;
     }
@@ -324,6 +369,9 @@ public class ModelHome
     public static List<SupportingResource> getSupportingEvidence( String id ) {
         List<SupportingResource> resources = new ArrayList<SupportingResource>();
         HeDKnowledgeDocument dok = core.getArtifact( id );
+        if ( dok.getSupportingEvidence() == null || dok.getSupportingEvidence().isEmpty() ) {
+            return resources;
+        }
         for ( Evidence ev : dok.getSupportingEvidence() ) {
             SupportingResource supp = new SupportingResource();
             supp.Id = ev.getRdfId().toString();
@@ -704,8 +752,8 @@ public class ModelHome
         return core.cloneNamedExpression( expressionIri );
     }
 
-    public static void updateNamedExpression( String expressionIRI, String exprName, byte[] doxBytes ) {
-        core.updateNamedExpression( expressionIRI, exprName, doxBytes );
+    public static String updateNamedExpression( String expressionIRI, String exprName, byte[] doxBytes ) {
+        return core.updateNamedExpression( expressionIRI, exprName, doxBytes );
     }
 
 
@@ -1013,4 +1061,19 @@ public class ModelHome
     }
 
 
+    public static void updateBasicInfo( Rule rule ) {
+        core.updateBasicInfo( rule.ruleId, rule.Name, rule.Description, rule.Status, rule.Type );
+    }
+
+    public static Map<String,String> getUsedDomainClasses( String id ) {
+        HeDArtifactData data = core.getArtifactData( id );
+        if ( data == null ) {
+            return Collections.emptyMap();
+        }
+        return data.getUsedDomainClasses();
+    }
+
+    public static void addUsedDomainClass( String id ) {
+        core.addUsedDomainClass( id );
+    }
 }

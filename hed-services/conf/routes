@@ -23,10 +23,15 @@ PUT            /template/inst                             controllers.ArtifactAc
 GET            /template/:id                              controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 #GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 
+GET            /rule/current                              controllers.RuleActions.getCurrentInfo()
+POST           /rule/info/:id                             controllers.RuleActions.updateRuleInfo(id)
 GET            /rule/export/:id/:format                   controllers.RuleActions.getExternalFormat(id,format)
 GET            /rule                                      controllers.RuleActions.list()
 POST           /rule                                      controllers.RuleActions.create()
 GET            /rule/:id                                  controllers.RuleActions.get(id)
+GET            /rule/classes/:id                          controllers.RuleActions.getUsedDomainClasses(id)
+POST           /rule/classes/:id                          controllers.RuleActions.addUsedDomainClass(id)
+
 
 #PUT            /rule/:id                              controllers.RuleActions.save(id)
 POST           /rule/:id/template/create/:tid             controllers.RuleActions.createPrimitive(id,tid)
@@ -42,8 +47,6 @@ GET            /rule/expressions/:exprId                  controllers.Expression
 DELETE         /rule/expressions/:exprId                  controllers.ExpressionActions.deleteExpression(exprId:String)
 POST           /rule/expressions/:exprId                  controllers.ExpressionActions.cloneExpression(exprId:String)
 POST           /rule/expressions/:exprId/:exprName        controllers.ExpressionActions.updateExpression(exprId:String, exprName:String)
-
-OPTIONS        /rule/expressions/*path                    controllers.ExpressionActions.configExpressionsAccess(path)
 
 GET            /domain/hierarchy                          controllers.DomainModelActions.getDomainClassHierarchyDescr()
 GET            /domain/classes                            controllers.DomainModelActions.getAvailableClasses()

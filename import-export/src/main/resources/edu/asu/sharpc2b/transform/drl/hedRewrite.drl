@@ -1,0 +1,86 @@
+
+package edu.asu.sharpc2b;
+
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.*;
+import uk.ac.manchester.cs.owl.owlapi.*;
+
+import edu.asu.sharpc2b.transform.HeD2OwlHelper;
+
+import org.hl7.knowledgeartifact.r1.*;
+import org.hl7.cdsdt.r2.*;
+
+import javax.xml.bind.*;
+import java.util.Set;
+import java.util.HashSet;
+
+
+global String tns;
+global HeD2OwlHelper helper;
+
+
+rule "Rewrite Logic Conditions "
+salience 1000
+no-loop
+when
+    $kd : KnowledgeDocument( $cnds : conditions.conditions )
+    $rc : Condition( this memberOf $cnds, $logic : logic  )
+    $rt : And( this == $logic, $ops : operands )
+    exists Expression ( this memberOf $ops, ! ( this instanceof ExpressionRef ) )
+then
+    System.out.println( "Rewrite logic conditions AND" );
+    java.util.List operands = new java.util.ArrayList( $ops );
+
+    for ( Object o : operands ) {
+        Expression $xp = (Expression) o;
+        String name = "Condition_" + $xp.hashCode();
+
+        ExpressionDef def = new ExpressionDef();
+        def.setName( name );
+        def.setExpression( $xp );
+        insert( def );
+        modify ( $kd ) {
+            getExpressions().getDeves().add( def );
+        }
+
+        ExpressionRef ref = new ExpressionRef();
+        ref.setName( name );
+        insert( ref );
+        modify( $rt ) {
+            getOperands().remove( $xp ),
+            getOperands().add( ref );
+        }
+    }
+end
+
+
+
+
+rule "Rewrite Simple Actions"
+salience 1000
+no-loop
+when
+    $kd : KnowledgeDocument( $xprs : expressions.deves )
+    $ca : CreateAction( $expr : actionSentence, ! (actionSentence instanceof ExpressionRef), $id : actionId, $text : textEquivalent )
+then
+    System.out.println( "Rewrite simple actions" );
+    String name = "Create_" + $ca.hashCode();
+    if ( $id != null ) {
+        name = "Create_" + $id.toString();
+    }
+
+    ExpressionDef def = new ExpressionDef();
+    def.setName( name );
+    def.setExpression( $expr );
+    insert( def );
+    modify ( $kd ) {
+        getExpressions().getDeves().add( def );
+    }
+
+    ExpressionRef ref = new ExpressionRef();
+    ref.setName( name );
+    insert( ref );
+    modify( $ca ) {
+        setActionSentence( ref );
+    }
+end
