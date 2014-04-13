@@ -2,31 +2,18 @@ package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
-import com.sun.accessibility.internal.resources.accessibility_zh_CN;
-import edu.asu.sharpc2b.ops.BinaryExpression;
 import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
-import edu.asu.sharpc2b.ops.NAryExpression;
 import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertyExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
-import edu.asu.sharpc2b.ops.TernaryExpression;
-import edu.asu.sharpc2b.ops.UnaryExpression;
-import edu.asu.sharpc2b.ops.Variable;
 import edu.asu.sharpc2b.ops.VariableExpression;
-import edu.asu.sharpc2b.ops_set.ExpressionRefExpression;
 import edu.asu.sharpc2b.prr.NamedElement;
-import edu.asu.sharpc2b.prr.ProductionRule;
-import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
 import org.hl7.knowledgeartifact.r1.ExpressionRef;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.sail.memory.model.MemLiteral;
-import org.openrdf.sail.memory.model.MemURI;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -87,8 +74,6 @@ public class BlocklyFactory {
             visitRoot( name, sharpExpression, dox, type );
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            dump( dox, System.err );
 
             dump( dox, baos );
             return baos.toByteArray();
@@ -151,23 +136,23 @@ public class BlocklyFactory {
 
     private void fillProperties( Element elem, OperatorExpression expr, Document dox ) {
         try {
-            Iterator<Statement> iter = expr.getInstanceTriples().iterator();
-            while ( iter.hasNext() ) {
-                Statement triple = iter.next();
-                URI prop = triple.getPredicate();
-                if ( exprNS.equals( prop.getNamespace() ) ) {
-                    for ( Method m : expr.getClass().getMethods() ) {
-                        if ( m.getAnnotation( RdfProperty.class ) != null && prop.toString().equals( m.getAnnotation( RdfProperty.class ).value() ) ) {
-                            if ( Collection.class.isAssignableFrom( m.getReturnType() ) ) {
-                                Collection coll = (Collection) m.invoke( expr );
-                                int j = 0;
-                                for ( Object o : coll ) {
-                                    fillArgument( elem, triple, o, dox, coll.size(), j++ );
-                                }
-                            } else {
-                                Object o = m.invoke( expr );
-                                fillArgument( elem, triple, o, dox, 1, 0 );
-                            }
+            for ( Method m : expr.getClass().getMethods() ) {
+                if ( m.getAnnotation( RdfProperty.class ) != null ) {
+                    String propIri = m.getAnnotation( RdfProperty.class ).value();
+                    if ( "http://asu.edu/sharpc2b/ops#opCode".equals( propIri ) ) {
+                        continue;
+                    }
+
+                    if ( Collection.class.isAssignableFrom( m.getReturnType() ) ) {
+                        Collection coll = (Collection) m.invoke( expr );
+                        int j = 0;
+                        for ( Object o : coll ) {
+                            fillArgument( elem, propIri, o, dox, coll.size(), j++ );
+                        }
+                    } else {
+                        Object o = m.invoke( expr );
+                        if ( o != null ) {
+                            fillArgument( elem, propIri, o, dox, 1, 0 );
                         }
                     }
                 }
@@ -177,44 +162,38 @@ public class BlocklyFactory {
         }
     }
 
-    private void fillArgument( Element elem, Statement triple, Object o, Document dox, int numRepeats, int currentItem ) {
-        if ( triple.getObject() instanceof MemURI ) {
-            if ( o instanceof Thing ) {
-                String oid = ((Thing) o).getRdfId().value().toString();
-                String tid = triple.getObject().stringValue();
-                if ( oid.equals( tid ) && o instanceof SharpExpression ) {
+    private void fillArgument( Element elem, String propIri, Object o, Document dox, int numRepeats, int currentItem ) {
+        if ( o instanceof Thing ) {
+            String oid = ((Thing) o).getRdfId().value().toString();
+            if ( o instanceof SharpExpression ) {
 
-                    if ( isMultiple( triple.getPredicate() ) && currentItem == 0 ) {
-                        String type = elem.getAttribute( "type" );
-                        type = type.substring( type.indexOf( "#" ) + 1 );
-                        type = type.replaceFirst( "Expression", "" ).toLowerCase();
-                        Element mutate = dox.createElement( "mutation" );
-                        mutate.setAttribute( "items", "" + numRepeats );
-                        elem.appendChild( mutate );
-                    }
-
-
-                    Element value = dox.createElement( "value" );
-                    value.setAttribute( "name",
-                                        triple.getPredicate().toString()
-                                        + ( ( isMultiple( triple.getPredicate() ) ) ? ("_" + currentItem) : "" )
-                    );
-                    visitExpression( null, (SharpExpression) o, value, "block", dox );
-                    elem.appendChild( value );
+                if ( isMultiple( propIri ) && currentItem == 0 ) {
+                    String type = elem.getAttribute( "type" );
+                    type = type.substring( type.indexOf( "#" ) + 1 );
+                    type = type.replaceFirst( "Expression", "" ).toLowerCase();
+                    Element mutate = dox.createElement( "mutation" );
+                    mutate.setAttribute( "items", "" + numRepeats );
+                    elem.appendChild( mutate );
                 }
-            } else {
-                System.err.println( "WARNING Found uri triple with non thing " + triple );
+
+
+                Element value = dox.createElement( "value" );
+                value.setAttribute( "name",
+                                    propIri
+                                    + ( ( isMultiple( propIri ) ) ? ("_" + currentItem) : "" )
+                );
+                visitExpression( null, (SharpExpression) o, value, "block", dox );
+                elem.appendChild( value );
             }
         } else {
-            String literalValue = triple.getObject().stringValue();
-            String literalType = "xsd:" + (( MemLiteral) triple.getObject() ).getDatatype().getLocalName();
+            String literalValue = o.toString();
+            String literalType = mapLiteral( o );
             if ( "xsd:boolean".equals( literalType ) ) {
                 literalValue = literalValue.toUpperCase();
             }
 
-
             Element value = dox.createElement( "value" );
-            value.setAttribute( "name", triple.getPredicate().toString() );
+            value.setAttribute( "name", propIri );
 
             Element block = dox.createElement( "block" );
             block.setAttribute( "type", literalType );
@@ -227,15 +206,30 @@ public class BlocklyFactory {
             block.appendChild( field );
             value.appendChild( block );
             elem.appendChild( value );
-        }
 
+        }
     }
 
-    private boolean isMultiple( URI predicate ) {
+    private String mapLiteral( Object o ) {
+        if ( o instanceof String ) {
+            return "xsd:string";
+        } else if ( o instanceof Boolean ) {
+            return "xsd:boolean";
+        } else if ( o instanceof Integer ) {
+            return "xsd:int";
+        } else if ( o instanceof Double ) {
+            return "xsd:double";
+        } else {
+            throw new UnsupportedOperationException( "Unable to deal with DR " + o.getClass() );
+        }
+    }
+
+
+    private boolean isMultiple( String predicate ) {
         //TODO
-        return predicate.toString().equals( exprNS + "property" )
-                || predicate.toString().equals( exprNS + "element" )
-                || predicate.toString().equals( exprNS.replace( "ops-set", "ops" ) + "property" );
+        return predicate.equals( exprNS + "property" )
+                || predicate.equals( exprNS + "element" )
+                || predicate.equals( exprNS.replace( "ops-set", "ops" ) + "property" );
     }
 
     private void traversePropChain( PropertyExpression pro, Element parent, Document dox ) {
@@ -343,55 +337,6 @@ public class BlocklyFactory {
 
             parent.appendChild( x );
             return;
-        } else if ( expr instanceof TernaryExpression ) {
-            TernaryExpression ternary = (TernaryExpression) expr;
-
-            Element v1 = dox.createElement( "value" );
-            v1.setAttribute( "inline", "false" );
-            v1.setAttribute( "name", "http://asu.edu/sharpc2b/ops#firstOperand" );
-                visitExpression( var, ternary.getFirstOperand().get( 0 ), v1, "block", dox );
-            x.appendChild( v1 );
-
-            Element v2 = dox.createElement( "value" );
-            v2.setAttribute( "inline", "false" );
-            v2.setAttribute( "name", "http://asu.edu/sharpc2b/ops#secondOperand" );
-                visitExpression( var, ternary.getSecondOperand().get( 0 ), v2, "block", dox );
-            x.appendChild( v2 );
-
-            Element v3 = dox.createElement( "value" );
-            v3.setAttribute( "inline", "false" );
-            v3.setAttribute( "name", "http://asu.edu/sharpc2b/ops#thirdOperand" );
-                visitExpression( var, ternary.getThirdOperand().get( 0 ), v3, "block", dox );
-            x.appendChild( v3 );
-
-        } else if ( expr instanceof BinaryExpression ) {
-            BinaryExpression binary = (BinaryExpression) expr;
-            Element v1 = dox.createElement( "value" );
-            v1.setAttribute( "inline", "false" );
-            v1.setAttribute( "name", "http://asu.edu/sharpc2b/ops#firstOperand" );
-            visitExpression( var, binary.getFirstOperand().get( 0 ), v1, "block", dox );
-            x.appendChild( v1 );
-
-            Element v2 = dox.createElement( "value" );
-            v2.setAttribute( "inline", "false" );
-            v2.setAttribute( "name", "http://asu.edu/sharpc2b/ops#secondOperand" );
-            visitExpression( var, binary.getSecondOperand().get( 0 ), v2, "block", dox );
-            x.appendChild( v2 );
-        } else if ( expr instanceof UnaryExpression ) {
-            UnaryExpression unary = (UnaryExpression) expr;
-            Element v1 = dox.createElement( "value" );
-            v1.setAttribute( "inline", "false" );
-            v1.setAttribute( "name", "http://asu.edu/sharpc2b/ops#firstOperand" );
-            visitExpression( var, unary.getFirstOperand().get( 0 ), v1, "block", dox );
-            x.appendChild( v1 );
-        } else if ( expr instanceof NAryExpression ) {
-            for ( SharpExpression op : ((NAryExpression) expr).getHasOperand() ) {
-                Element v = dox.createElement( "value" );
-                v.setAttribute( "inline", "false" );
-                v.setAttribute( "name", "http://asu.edu/sharpc2b/ops#hasOperand" );
-                visitExpression( var, op, v, "block", dox );
-                x.appendChild( v );
-            }
         }
 
         if ( expr instanceof OperatorExpression ) {
@@ -454,7 +399,7 @@ public class BlocklyFactory {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
             transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "1");
             StreamResult result = new StreamResult( stream );
             DOMSource source = new DOMSource( dox );
             transformer.transform( source, result );

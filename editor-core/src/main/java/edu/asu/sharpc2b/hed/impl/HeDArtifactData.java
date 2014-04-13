@@ -4,9 +4,11 @@ import com.clarkparsia.empire.SupportsRdfId;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops.SharpExpressionImpl;
+import edu.asu.sharpc2b.ops_set.ExpressionRefExpression;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ProductionRule;
+import edu.asu.sharpc2b.prr.ProductionRuleImpl;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
 import edu.asu.sharpc2b.prr_sharp.ExpressionInSHARPImpl;
@@ -16,13 +18,11 @@ import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class HeDArtifactData {
 
@@ -58,6 +58,9 @@ public class HeDArtifactData {
         knowledgeDocument.addStatus( "Draft" );
 
         knowledgeDocument.addKeyTerm( new ConceptCodeImpl() );
+
+        ProductionRule innerRule = new ProductionRuleImpl();
+        knowledgeDocument.addContains( innerRule );
 
         refreshOwlData();
     }
@@ -97,16 +100,6 @@ public class HeDArtifactData {
         }
         return owlData;
     }
-
-
-
-
-
-
-    //    private void initDemoExpressions() {
-//        String req1 = "<xml><block type=\"logic_root\" inline=\"false\" deletable=\"false\" movable=\"false\" x=\"0\" y=\"0\"><field name=\"NAME\">request</field><value name=\"NAME\"><block type=\"http://asu.edu/sharpc2b/ops#ClinicalRequestExpression\" inline=\"false\"><value name=\"ARG_0\"><block type=\"ObservationProposal\"></block></value><value name=\"ARG_2\"><block type=\"http://asu.edu/sharpc2b/ops#DomainPropertyExpression\" inline=\"false\"><field name=\"DomainProperty\">http://asu.edu/sharpc2b/vmr-clean-A#substanceCode</field></block></value><value name=\"ARG_3\"><block type=\"http://asu.edu/sharpc2b/ops-set#ListExpression\" inline=\"false\"><list_mutation items=\"2\"></list_mutation></block></value><value name=\"ARG_5\"><block type=\"xsd:boolean\"><field name=\"VALUE\">FALSE</field></block></value><value name=\"ARG_6\"><block type=\"xsd:boolean\"><field name=\"VALUE\">TRUE</field></block></value></block></value></block></xml>";
-//        updateNamedExpression( "HemoglobinA1cResultsFromLast12Months", "HemoglobinA1cResultsFromLast12Months", req1.getBytes() );
-//    }
 
 
     public Map<String, String> getUsedDomainClasses() {
@@ -174,11 +167,12 @@ public class HeDArtifactData {
         RuleVariable newVar = new RuleVariableImpl();
         newVar.addName( name );
 
-        // TODO Change this mock
-        Expression mock = new ExpressionInSHARPImpl();
-        newVar.addVariableFilterExpression( mock );
 
-        exprId = uriToId( mock.getRdfId() );
+        Expression shExp = new ExpressionInSHARPImpl();
+        shExp.addBodyExpression( new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION ) );
+        newVar.addVariableFilterExpression( shExp );
+
+        exprId = uriToId( shExp.getRdfId() );
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 ( (ProductionRule) rule ).addProductionRuleBoundRuleVariable( newVar );

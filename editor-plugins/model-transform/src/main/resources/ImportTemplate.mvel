@@ -73,7 +73,6 @@ when
     Link( $nx, $ind ; )
     Link( $ops1, $op1 ;)
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
 end
 
@@ -84,9 +83,7 @@ when
     Link( $ops1, $op1 ; )
     Link( $ops2, $op2 ; )
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
     insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
 end
 
@@ -98,11 +95,8 @@ when
     Link( $ops2, $op2 ; )
     Link( $ops3, $op3 ; )
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
     insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
     insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
 end
 

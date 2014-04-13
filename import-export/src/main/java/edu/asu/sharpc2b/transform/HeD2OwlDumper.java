@@ -43,14 +43,14 @@ import java.util.UUID;
 public class HeD2OwlDumper {
 
 
-    private static KnowledgeBase kBase;
+    private static KnowledgeBase kBase = initKBase();;
     private static final String HED = "org.hl7.knowledgeartifact.r1";
     private PrefixOWLOntologyFormat outputFormat = new OWLFunctionalSyntaxOntologyFormat();
 
 
     public HeD2OwlDumper() {
         super();
-        initKBase();
+
     }
 
     public HeD2OwlDumper( PrefixOWLOntologyFormat format ) {
@@ -59,7 +59,7 @@ public class HeD2OwlDumper {
     }
 
 
-    private void initKBase() {
+    private static KnowledgeBase initKBase() {
         KnowledgeBuilder kBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
         kBuilder.add( new ClassPathResource( "edu/asu/sharpc2b/transform/drl/hed2owl.drl" ), ResourceType.DRL );
         kBuilder.add( new ClassPathResource( "edu/asu/sharpc2b/transform/drl/hedRewrite.drl" ), ResourceType.DRL );
@@ -67,9 +67,9 @@ public class HeD2OwlDumper {
         if ( kBuilder.hasErrors() ) {
             throw new RuntimeDroolsException( kBuilder.getErrors().toString() );
         }
-        kBase = KnowledgeBaseFactory.newKnowledgeBase();
+        KnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
         kBase.addKnowledgePackages( kBuilder.getKnowledgePackages() );
-
+        return kBase;
     }
 
     public void compile( String inputFile, String targetFile ) throws FileNotFoundException {
@@ -104,12 +104,14 @@ public class HeD2OwlDumper {
                 format
         );
 
+        /*
         PrefixOWLOntologyFormat format2 = new ManchesterOWLSyntaxOntologyFormat();
         format2.copyPrefixesFrom( prefixManager );
         stream( result,
                 System.out,
                 format2
         );
+        */
     }
 
     private PrefixManager mapNamespaces( String root ) {
@@ -147,10 +149,6 @@ public class HeD2OwlDumper {
                     IRI.create( root ),
                     IRI.create( root + "/" + version ) ) );
 
-//            kSession.setGlobal( "ontology", ontology );
-//            kSession.setGlobal( "manager", manager );
-//            kSession.setGlobal( "factory", factory );
-//            kSession.setGlobal( "prefixManager", prefixManager );
             kSession.setGlobal( "helper", new HeD2OwlHelper( ontology, manager, factory, prefixManager ) );
 
             kSession.setGlobal( "tns", root + "#" );
@@ -168,8 +166,6 @@ public class HeD2OwlDumper {
         } finally {
             kSession.dispose();
         }
-
-        System.out.println( "DONE!" );
 
         return ontology;
     }
@@ -251,13 +247,6 @@ public class HeD2OwlDumper {
             e.printStackTrace();
         }
         return "http://" + UUID.randomUUID().toString() + "/1.0" ;
-    }
-
-
-
-    public void test() {
-        OWLDataFactory f;
-
     }
 
 

@@ -286,10 +286,8 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public boolean deleteNamedExpression( String exprId ) {
-        System.out.println( "Deleting .. " + exprId );
         boolean hasExpr = getCurrentArtifact().getNamedExpressions().containsKey( exprId );
         if ( hasExpr ) {
-            System.out.println( "Deleted .. " + exprId );
             getCurrentArtifact().deleteExpression( exprId );
             return true;
         } else {

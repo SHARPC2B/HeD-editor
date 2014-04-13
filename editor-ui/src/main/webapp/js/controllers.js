@@ -142,6 +142,17 @@ angular.module('ruleApp.controllers', [])
                         url: serviceUrl + '/rule/info/' + $scope.currentRuleId,
                         data: background
                     }).success(function(data) {
+                            $http({
+                                method: 'GET',
+                                url: serviceUrl + '/rule/current'
+                            }).success(function(data) {
+                                        $scope.background = data;
+                                        $scope.currentRuleId = data.ruleId;
+                                        $scope.currentRuleTitle = data.Name;
+                                        $scope.$parent.title = 'Background Information ' + data.Name;
+                                    }
+                            )
+
                         });
                 };
 

@@ -1,74 +1,41 @@
 package edu.asu.sharpc2b.transform;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.drools.semantics.utils.NameUtils;
 import org.mvel2.templates.CompiledTemplate;
 import org.mvel2.templates.SimpleTemplateRegistry;
 import org.mvel2.templates.TemplateCompiler;
 import org.mvel2.templates.TemplateRegistry;
 import org.mvel2.templates.TemplateRuntime;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataHasValue;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDataRange;
-import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 public class ImportRuleGenerator {
 
@@ -147,6 +114,7 @@ public class ImportRuleGenerator {
 
     private void createRule( Row row, StringBuilder builder, OWLOntology operatorOntology, OWLOntology sourceOntology ) {
         String opName = row.getCell( 0 ).getStringCellValue();
+        String packName = NameUtils.nameSpaceURIToPackage( URI.create( sourceOntology.getOntologyID().getOntologyIRI().toString() ) );
 
         Arity arity = Arity.parse( (int) row.getCell( 1 ).getNumericCellValue() );
         if ( arity == Arity.LITERAL || arity == Arity.MIXED ) {
@@ -184,7 +152,7 @@ public class ImportRuleGenerator {
             }
 
             Map map = new HashMap();
-            map.put( "name", opName );
+            map.put( "name", packName + "." + opName );
             map.put( "objectProperties", objectProperties );
             map.put( "dataProperties", dataProperties );
             map.put( "dataTypes", dataTypes );

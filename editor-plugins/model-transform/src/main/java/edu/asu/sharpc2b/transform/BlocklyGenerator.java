@@ -158,8 +158,6 @@ public class BlocklyGenerator {
         builder.append( basicBlocks );
 
 
-        System.out.println( builder.toString() );
-
         File operatorsOputput = new File( outputBlocklyDir.getPath() + File.separator + "operators.js" );
         try {
             if ( ! operatorsOputput.exists() ) {

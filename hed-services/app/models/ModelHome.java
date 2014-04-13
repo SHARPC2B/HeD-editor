@@ -168,25 +168,25 @@ public class ModelHome
         if ( dok.getAuthor() != null ) {
             for ( Agent a : dok.getAuthor() ) {
                 Contributor c = new Contributor();
-                c.Type = "Author";
+                c.Role = "Author";
                 fillAgent( a, c );
                 contris.add( c );
             }
             for ( Agent a : dok.getEditor() ) {
                 Contributor c = new Contributor();
-                c.Type = "Editor";
+                c.Role = "Editor";
                 fillAgent( a, c );
                 contris.add( c );
             }
             for ( Agent a : dok.getEndorser() ) {
                 Contributor c = new Contributor();
-                c.Type = "Endorser";
+                c.Role = "Endorser";
                 fillAgent( a, c );
                 contris.add( c );
             }
             for ( Agent a : dok.getReviewer() ) {
                 Contributor c = new Contributor();
-                c.Type = "Reviewer";
+                c.Role = "Reviewer";
                 fillAgent( a, c );
                 contris.add( c );
             }

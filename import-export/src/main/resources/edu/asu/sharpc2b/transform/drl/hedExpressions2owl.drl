@@ -34,7 +34,6 @@ when
     Link( $nx, $ind ; )
     Link( $ops1, $op1 ;)
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
 end
 
@@ -45,9 +44,7 @@ when
     Link( $ops1, $op1 ; )
     Link( $ops2, $op2 ; )
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
     insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
 end
 
@@ -59,11 +56,8 @@ when
     Link( $ops2, $op2 ; )
     Link( $ops3, $op3 ; )
 then
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op1 ) );
     insert( helper.assertObjectProperty( "ops:firstOperand", $ind, $op1 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op2 ) );
     insert( helper.assertObjectProperty( "ops:secondOperand", $ind, $op2 ) );
-    insert( helper.assertObjectProperty( "ops:hasOperand", $ind, $op3 ) );
     insert( helper.assertObjectProperty( "ops:thirdOperand", $ind, $op3 ) );
 end
 
@@ -72,9 +66,9 @@ end
 
 
 
-    rule "Expression IntegerIntervalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.IntegerIntervalLiteral"
     when
-        $xp : IntegerIntervalLiteral(  _lowClosed : lowClosed , _high : high , _low : low , _highClosed : highClosed  )
+        $xp : org.hl7.knowledgeartifact.r1.IntegerIntervalLiteral(  _lowClosed : lowClosed , _high : high , _low : low , _highClosed : highClosed  )
         Link( $xp, $ind ; )
     then
         
@@ -93,9 +87,9 @@ end
 
 
 
-    rule "Expression IntegerLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.IntegerLiteral"
     when
-        $xp : IntegerLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.IntegerLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -108,9 +102,9 @@ end
 
 
 
-    rule "Expression PhysicalQuantityIntervalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral"
     when
-        $xp : PhysicalQuantityIntervalLiteral(  _lowClosed : lowClosed , _highClosed : highClosed  )
+        $xp : org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral(  _lowClosed : lowClosed , _highClosed : highClosed  )
         Link( $xp, $ind ; )
     then
         
@@ -121,9 +115,9 @@ end
     end
 
 
-    rule "Expression PhysicalQuantityIntervalLiteral_high"
+    rule "Expression org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral_high"
     when
-        $xp : PhysicalQuantityIntervalLiteral()
+        $xp : org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral()
         _high : Object() from $xp.high
         Link( $xp, $ind ; )
         Link( _high, $val ; )
@@ -131,9 +125,9 @@ end
         insert( helper.assertObjectProperty( "a:high_PhysicalQuantity", $ind, $val ) );
     end
 
-    rule "Expression PhysicalQuantityIntervalLiteral_low"
+    rule "Expression org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral_low"
     when
-        $xp : PhysicalQuantityIntervalLiteral()
+        $xp : org.hl7.knowledgeartifact.r1.PhysicalQuantityIntervalLiteral()
         _low : Object() from $xp.low
         Link( $xp, $ind ; )
         Link( _low, $val ; )
@@ -145,9 +139,9 @@ end
 
 
 
-    rule "Expression ComplexLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.ComplexLiteral"
     when
-        $xp : ComplexLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.ComplexLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -160,9 +154,9 @@ end
 
 
 
-    rule "Expression RatioLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.RatioLiteral"
     when
-        $xp : RatioLiteral(  _numerator : numerator , _denominator : denominator  )
+        $xp : org.hl7.knowledgeartifact.r1.RatioLiteral(  _numerator : numerator , _denominator : denominator  )
         Link( $xp, $ind ; )
     then
         
@@ -177,9 +171,9 @@ end
 
 
 
-    rule "Expression PeriodLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.PeriodLiteral"
     when
-        $xp : PeriodLiteral(  _alignment : alignment , _count : count , _isFlexible : isFlexible  )
+        $xp : org.hl7.knowledgeartifact.r1.PeriodLiteral(  _alignment : alignment , _count : count , _isFlexible : isFlexible  )
         Link( $xp, $ind ; )
     then
         
@@ -192,9 +186,9 @@ end
     end
 
 
-    rule "Expression PeriodLiteral_frequency"
+    rule "Expression org.hl7.knowledgeartifact.r1.PeriodLiteral_frequency"
     when
-        $xp : PeriodLiteral()
+        $xp : org.hl7.knowledgeartifact.r1.PeriodLiteral()
         _frequency : Object() from $xp.frequency
         Link( $xp, $ind ; )
         Link( _frequency, $val ; )
@@ -202,9 +196,9 @@ end
         insert( helper.assertObjectProperty( "a:frequency", $ind, $val ) );
     end
 
-    rule "Expression PeriodLiteral_period"
+    rule "Expression org.hl7.knowledgeartifact.r1.PeriodLiteral_period"
     when
-        $xp : PeriodLiteral()
+        $xp : org.hl7.knowledgeartifact.r1.PeriodLiteral()
         _period : Object() from $xp.period
         Link( $xp, $ind ; )
         Link( _period, $val ; )
@@ -212,9 +206,9 @@ end
         insert( helper.assertObjectProperty( "a:period", $ind, $val ) );
     end
 
-    rule "Expression PeriodLiteral_phase"
+    rule "Expression org.hl7.knowledgeartifact.r1.PeriodLiteral_phase"
     when
-        $xp : PeriodLiteral()
+        $xp : org.hl7.knowledgeartifact.r1.PeriodLiteral()
         _phase : Object() from $xp.phase
         Link( $xp, $ind ; )
         Link( _phase, $val ; )
@@ -226,9 +220,9 @@ end
 
 
 
-    rule "Expression StringLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.StringLiteral"
     when
-        $xp : StringLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.StringLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -241,9 +235,9 @@ end
 
 
 
-    rule "Expression QuantityIntervalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.QuantityIntervalLiteral"
     when
-        $xp : QuantityIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        $xp : org.hl7.knowledgeartifact.r1.QuantityIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
         Link( $xp, $ind ; )
     then
         
@@ -262,9 +256,9 @@ end
 
 
 
-    rule "Expression RealIntervalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.RealIntervalLiteral"
     when
-        $xp : RealIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        $xp : org.hl7.knowledgeartifact.r1.RealIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
         Link( $xp, $ind ; )
     then
         
@@ -283,9 +277,9 @@ end
 
 
 
-    rule "Expression AddressLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.AddressLiteral"
     when
-        $xp : AddressLiteral(  _part : parts[ 0 ]  )
+        $xp : org.hl7.knowledgeartifact.r1.AddressLiteral(  _part : parts[ 0 ]  )
         Link( $xp, $ind ; )
     then
         
@@ -298,9 +292,9 @@ end
 
 
 
-    rule "Expression CodeLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.CodeLiteral"
     when
-        $xp : CodeLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _code : code , _displayName : displayName  )
+        $xp : org.hl7.knowledgeartifact.r1.CodeLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _code : code , _displayName : displayName  )
         Link( $xp, $ind ; )
     then
         
@@ -319,9 +313,9 @@ end
 
 
 
-    rule "Expression CodedOrdinalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.CodedOrdinalLiteral"
     when
-        $xp : CodedOrdinalLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _value : value , _code : code , _displayName : displayName  )
+        $xp : org.hl7.knowledgeartifact.r1.CodedOrdinalLiteral(  _codeSystemName : codeSystemName , _codeSystem : codeSystem , _value : value , _code : code , _displayName : displayName  )
         Link( $xp, $ind ; )
     then
         
@@ -342,9 +336,9 @@ end
 
 
 
-    rule "Expression EntityNameLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.EntityNameLiteral"
     when
-        $xp : EntityNameLiteral(  _part : parts[ 0 ]  )
+        $xp : org.hl7.knowledgeartifact.r1.EntityNameLiteral(  _part : parts[ 0 ]  )
         Link( $xp, $ind ; )
     then
         
@@ -357,9 +351,9 @@ end
 
 
 
-    rule "Expression Literal"
+    rule "Expression org.hl7.knowledgeartifact.r1.Literal"
     when
-        $xp : Literal(  _value : value , _valueType : valueType  )
+        $xp : org.hl7.knowledgeartifact.r1.Literal(  _value : value , _valueType : valueType  )
         Link( $xp, $ind ; )
     then
         
@@ -374,9 +368,9 @@ end
 
 
 
-    rule "Expression PhysicalQuantityLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.PhysicalQuantityLiteral"
     when
-        $xp : PhysicalQuantityLiteral(  _unit : unit , _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.PhysicalQuantityLiteral(  _unit : unit , _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -391,9 +385,9 @@ end
 
 
 
-    rule "Expression UrlLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.UrlLiteral"
     when
-        $xp : UrlLiteral(  _value : value , _capabilities : capabilities  )
+        $xp : org.hl7.knowledgeartifact.r1.UrlLiteral(  _value : value , _capabilities : capabilities  )
         Link( $xp, $ind ; )
     then
         
@@ -408,9 +402,9 @@ end
 
 
 
-    rule "Expression RealLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.RealLiteral"
     when
-        $xp : RealLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.RealLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -423,9 +417,9 @@ end
 
 
 
-    rule "Expression TimestampLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.TimestampLiteral"
     when
-        $xp : TimestampLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.TimestampLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -438,9 +432,9 @@ end
 
 
 
-    rule "Expression TimestampIntervalLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.TimestampIntervalLiteral"
     when
-        $xp : TimestampIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
+        $xp : org.hl7.knowledgeartifact.r1.TimestampIntervalLiteral(  _lowClosed : lowClosed , _high : high , _highClosed : highClosed , _low : low  )
         Link( $xp, $ind ; )
     then
         
@@ -459,9 +453,9 @@ end
 
 
 
-    rule "Expression IdentifierLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.IdentifierLiteral"
     when
-        $xp : IdentifierLiteral(  _extension : extension , _root : root  )
+        $xp : org.hl7.knowledgeartifact.r1.IdentifierLiteral(  _extension : extension , _root : root  )
         Link( $xp, $ind ; )
     then
         
@@ -476,9 +470,9 @@ end
 
 
 
-    rule "Expression BooleanLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.BooleanLiteral"
     when
-        $xp : BooleanLiteral(  _value : value  )
+        $xp : org.hl7.knowledgeartifact.r1.BooleanLiteral(  _value : value  )
         Link( $xp, $ind ; )
     then
         
@@ -491,9 +485,9 @@ end
 
 
 
-    rule "Expression SimpleCodeLiteral"
+    rule "Expression org.hl7.knowledgeartifact.r1.SimpleCodeLiteral"
     when
-        $xp : SimpleCodeLiteral(  _code : code  )
+        $xp : org.hl7.knowledgeartifact.r1.SimpleCodeLiteral(  _code : code  )
         Link( $xp, $ind ; )
     then
         
@@ -506,9 +500,9 @@ end
 
 
 
-    rule "Expression Sort"
+    rule "Expression org.hl7.knowledgeartifact.r1.Sort"
     when
-        $xp : Sort(  _orderBy : orderBy  )
+        $xp : org.hl7.knowledgeartifact.r1.Sort(  _orderBy : orderBy  )
         Link( $xp, $ind ; )
     then
         
@@ -517,9 +511,9 @@ end
     end
 
 
-    rule "Expression Sort_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Sort_source"
     when
-        $xp : Sort()
+        $xp : org.hl7.knowledgeartifact.r1.Sort()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -532,9 +526,9 @@ end
 
 
 
-    rule "Expression Distinct_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Distinct_source"
     when
-        $xp : Distinct()
+        $xp : org.hl7.knowledgeartifact.r1.Distinct()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -546,9 +540,9 @@ end
 
 
 
-    rule "Expression Current"
+    rule "Expression org.hl7.knowledgeartifact.r1.Current"
     when
-        $xp : Current(  _scope : scope  )
+        $xp : org.hl7.knowledgeartifact.r1.Current(  _scope : scope  )
         Link( $xp, $ind ; )
     then
         
@@ -562,9 +556,9 @@ end
 
 
 
-    rule "Expression DateAdd_numberOfPeriods"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateAdd_numberOfPeriods"
     when
-        $xp : DateAdd()
+        $xp : org.hl7.knowledgeartifact.r1.DateAdd()
         _numberOfPeriods : Object() from $xp.numberOfPeriods
         Link( $xp, $ind ; )
         Link( _numberOfPeriods, $val ; )
@@ -572,9 +566,9 @@ end
         insert( helper.assertObjectProperty( "a:numberOfPeriods", $ind, $val ) );
     end
 
-    rule "Expression DateAdd_granularity"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateAdd_granularity"
     when
-        $xp : DateAdd()
+        $xp : org.hl7.knowledgeartifact.r1.DateAdd()
         _granularity : Object() from $xp.granularity
         Link( $xp, $ind ; )
         Link( _granularity, $val ; )
@@ -582,9 +576,9 @@ end
         insert( helper.assertObjectProperty( "a:granularity", $ind, $val ) );
     end
 
-    rule "Expression DateAdd_date"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateAdd_date"
     when
-        $xp : DateAdd()
+        $xp : org.hl7.knowledgeartifact.r1.DateAdd()
         _date : Object() from $xp.date
         Link( $xp, $ind ; )
         Link( _date, $val ; )
@@ -596,9 +590,9 @@ end
 
 
 
-    rule "Expression Date"
+    rule "Expression org.hl7.knowledgeartifact.r1.Date"
     when
-        $xp : Date(  _minute : minute , _second : second , _millisecond : millisecond , _month : month , _year : year , _day : day , _hour : hour  )
+        $xp : org.hl7.knowledgeartifact.r1.Date(  _minute : minute , _second : second , _millisecond : millisecond , _month : month , _year : year , _day : day , _hour : hour  )
         Link( $xp, $ind ; )
     then
         
@@ -623,9 +617,9 @@ end
 
 
 
-    rule "Expression List"
+    rule "Expression org.hl7.knowledgeartifact.r1.List"
     when
-        $xp : List(  _key : key  )
+        $xp : org.hl7.knowledgeartifact.r1.List(  _key : key  )
         Link( $xp, $ind ; )
     then
         
@@ -634,9 +628,9 @@ end
     end
 
 
-    rule "Expression List_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.List_element"
     when
-        $xp : List()
+        $xp : org.hl7.knowledgeartifact.r1.List()
         _element : Object() from $xp.elements
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -649,9 +643,9 @@ end
 
 
 
-    rule "Expression Contains_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.Contains_element"
     when
-        $xp : Contains()
+        $xp : org.hl7.knowledgeartifact.r1.Contains()
         _element : Object() from $xp.element
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -659,9 +653,9 @@ end
         insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
     end
 
-    rule "Expression Contains_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Contains_source"
     when
-        $xp : Contains()
+        $xp : org.hl7.knowledgeartifact.r1.Contains()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -673,9 +667,9 @@ end
 
 
 
-    rule "Expression ValueSet"
+    rule "Expression org.hl7.knowledgeartifact.r1.ValueSet"
     when
-        $xp : ValueSet(  _id : id , _authority : authority , _version : version  )
+        $xp : org.hl7.knowledgeartifact.r1.ValueSet(  _id : id , _authority : authority , _version : version  )
         Link( $xp, $ind ; )
     then
         
@@ -692,9 +686,9 @@ end
 
 
 
-    rule "Expression ParameterRef"
+    rule "Expression org.hl7.knowledgeartifact.r1.ParameterRef"
     when
-        $xp : ParameterRef(  _name : name  )
+        $xp : org.hl7.knowledgeartifact.r1.ParameterRef(  _name : name  )
         Link( $xp, $ind ; )
     then
         
@@ -708,9 +702,9 @@ end
 
 
 
-    rule "Expression Split_stringToSplit"
+    rule "Expression org.hl7.knowledgeartifact.r1.Split_stringToSplit"
     when
-        $xp : Split()
+        $xp : org.hl7.knowledgeartifact.r1.Split()
         _stringToSplit : Object() from $xp.stringToSplit
         Link( $xp, $ind ; )
         Link( _stringToSplit, $val ; )
@@ -718,9 +712,9 @@ end
         insert( helper.assertObjectProperty( "a:stringToSplit", $ind, $val ) );
     end
 
-    rule "Expression Split_separator"
+    rule "Expression org.hl7.knowledgeartifact.r1.Split_separator"
     when
-        $xp : Split()
+        $xp : org.hl7.knowledgeartifact.r1.Split()
         _separator : Object() from $xp.separator
         Link( $xp, $ind ; )
         Link( _separator, $val ; )
@@ -732,9 +726,9 @@ end
 
 
 
-    rule "Expression Null"
+    rule "Expression org.hl7.knowledgeartifact.r1.Null"
     when
-        $xp : Null(  _valueType : valueType  )
+        $xp : org.hl7.knowledgeartifact.r1.Null(  _valueType : valueType  )
         Link( $xp, $ind ; )
     then
         
@@ -748,9 +742,9 @@ end
 
 
 
-    rule "Expression In_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.In_element"
     when
-        $xp : In()
+        $xp : org.hl7.knowledgeartifact.r1.In()
         _element : Object() from $xp.element
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -758,9 +752,9 @@ end
         insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
     end
 
-    rule "Expression In_collection"
+    rule "Expression org.hl7.knowledgeartifact.r1.In_collection"
     when
-        $xp : In()
+        $xp : org.hl7.knowledgeartifact.r1.In()
         _collection : Object() from $xp.collection
         Link( $xp, $ind ; )
         Link( _collection, $val ; )
@@ -772,9 +766,9 @@ end
 
 
 
-    rule "Expression First"
+    rule "Expression org.hl7.knowledgeartifact.r1.First"
     when
-        $xp : First(  _orderBy : orderBy  )
+        $xp : org.hl7.knowledgeartifact.r1.First(  _orderBy : orderBy  )
         Link( $xp, $ind ; )
     then
         
@@ -783,9 +777,9 @@ end
     end
 
 
-    rule "Expression First_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.First_source"
     when
-        $xp : First()
+        $xp : org.hl7.knowledgeartifact.r1.First()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -798,9 +792,9 @@ end
 
 
 
-    rule "Expression Conditional_else"
+    rule "Expression org.hl7.knowledgeartifact.r1.Conditional_else"
     when
-        $xp : Conditional()
+        $xp : org.hl7.knowledgeartifact.r1.Conditional()
         _else : Object() from $xp.else
         Link( $xp, $ind ; )
         Link( _else, $val ; )
@@ -808,9 +802,9 @@ end
         insert( helper.assertObjectProperty( "a:else", $ind, $val ) );
     end
 
-    rule "Expression Conditional_condition"
+    rule "Expression org.hl7.knowledgeartifact.r1.Conditional_condition"
     when
-        $xp : Conditional()
+        $xp : org.hl7.knowledgeartifact.r1.Conditional()
         _condition : Object() from $xp.condition
         Link( $xp, $ind ; )
         Link( _condition, $val ; )
@@ -818,9 +812,9 @@ end
         insert( helper.assertObjectProperty( "a:condition", $ind, $val ) );
     end
 
-    rule "Expression Conditional_then"
+    rule "Expression org.hl7.knowledgeartifact.r1.Conditional_then"
     when
-        $xp : Conditional()
+        $xp : org.hl7.knowledgeartifact.r1.Conditional()
         _then : Object() from $xp.then
         Link( $xp, $ind ; )
         Link( _then, $val ; )
@@ -832,9 +826,9 @@ end
 
 
 
-    rule "Expression DataRequest"
+    rule "Expression org.hl7.knowledgeartifact.r1.DataRequest"
     when
-        $xp : DataRequest(  _templateId : templateId , _scope : scope , _isInitial : isInitial , _triggerType : triggerType , _cardinality : cardinality  )
+        $xp : org.hl7.knowledgeartifact.r1.DataRequest(  _templateId : templateId , _scope : scope , _isInitial : isInitial , _triggerType : triggerType , _cardinality : cardinality  )
         Link( $xp, $ind ; )
     then
         
@@ -851,9 +845,9 @@ end
     end
 
 
-    rule "Expression DataRequest_dataType"
+    rule "Expression org.hl7.knowledgeartifact.r1.DataRequest_dataType"
     when
-        $xp : DataRequest()
+        $xp : org.hl7.knowledgeartifact.r1.DataRequest()
         _dataType : Object() from $xp.dataType
         Link( $xp, $ind ; )
         Link( _dataType, $val ; )
@@ -861,9 +855,9 @@ end
         insert( helper.assertObjectProperty( "a:dataType", $ind, $val ) );
     end
 
-    rule "Expression DataRequest_timeOffset"
+    rule "Expression org.hl7.knowledgeartifact.r1.DataRequest_timeOffset"
     when
-        $xp : DataRequest()
+        $xp : org.hl7.knowledgeartifact.r1.DataRequest()
         _timeOffset : Object() from $xp.timeOffset
         Link( $xp, $ind ; )
         Link( _timeOffset, $val ; )
@@ -871,9 +865,9 @@ end
         insert( helper.assertObjectProperty( "a:timeOffset", $ind, $val ) );
     end
 
-    rule "Expression DataRequest_idProperty"
+    rule "Expression org.hl7.knowledgeartifact.r1.DataRequest_idProperty"
     when
-        $xp : DataRequest()
+        $xp : org.hl7.knowledgeartifact.r1.DataRequest()
         _idProperty : Object() from $xp.idProperty
         Link( $xp, $ind ; )
         Link( _idProperty, $val ; )
@@ -885,9 +879,9 @@ end
 
 
 
-    rule "Expression ClinicalRequest"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest"
     when
-        $xp : ClinicalRequest(  _templateId : templateId , _useValueSets : useValueSets , _scope : scope , _isInitial : isInitial , _useSubsumption : useSubsumption , _triggerType : triggerType , _cardinality : cardinality  )
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest(  _templateId : templateId , _useValueSets : useValueSets , _scope : scope , _isInitial : isInitial , _useSubsumption : useSubsumption , _triggerType : triggerType , _cardinality : cardinality  )
         Link( $xp, $ind ; )
     then
         
@@ -908,9 +902,9 @@ end
     end
 
 
-    rule "Expression ClinicalRequest_dateRange"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_dateRange"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _dateRange : Object() from $xp.dateRange
         Link( $xp, $ind ; )
         Link( _dateRange, $val ; )
@@ -918,9 +912,9 @@ end
         insert( helper.assertObjectProperty( "a:dateRange", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_dataType"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_dataType"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _dataType : Object() from $xp.dataType
         Link( $xp, $ind ; )
         Link( _dataType, $val ; )
@@ -928,9 +922,9 @@ end
         insert( helper.assertObjectProperty( "a:dataType", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_subjectProperty"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_subjectProperty"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _subjectProperty : Object() from $xp.subjectProperty
         Link( $xp, $ind ; )
         Link( _subjectProperty, $val ; )
@@ -938,9 +932,9 @@ end
         insert( helper.assertObjectProperty( "a:subjectProperty", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_subject"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_subject"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _subject : Object() from $xp.subject
         Link( $xp, $ind ; )
         Link( _subject, $val ; )
@@ -948,9 +942,9 @@ end
         insert( helper.assertObjectProperty( "a:subject", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_dateProperty"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_dateProperty"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _dateProperty : Object() from $xp.dateProperty
         Link( $xp, $ind ; )
         Link( _dateProperty, $val ; )
@@ -958,9 +952,9 @@ end
         insert( helper.assertObjectProperty( "a:dateProperty", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_timeOffset"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_timeOffset"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _timeOffset : Object() from $xp.timeOffset
         Link( $xp, $ind ; )
         Link( _timeOffset, $val ; )
@@ -968,9 +962,9 @@ end
         insert( helper.assertObjectProperty( "a:timeOffset", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_codeProperty"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_codeProperty"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _codeProperty : Object() from $xp.codeProperty
         Link( $xp, $ind ; )
         Link( _codeProperty, $val ; )
@@ -978,9 +972,9 @@ end
         insert( helper.assertObjectProperty( "a:codeProperty", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_codes"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_codes"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _codes : Object() from $xp.codes
         Link( $xp, $ind ; )
         Link( _codes, $val ; )
@@ -988,9 +982,9 @@ end
         insert( helper.assertObjectProperty( "a:codes", $ind, $val ) );
     end
 
-    rule "Expression ClinicalRequest_idProperty"
+    rule "Expression org.hl7.knowledgeartifact.r1.ClinicalRequest_idProperty"
     when
-        $xp : ClinicalRequest()
+        $xp : org.hl7.knowledgeartifact.r1.ClinicalRequest()
         _idProperty : Object() from $xp.idProperty
         Link( $xp, $ind ; )
         Link( _idProperty, $val ; )
@@ -1003,9 +997,9 @@ end
 
 
 
-    rule "Expression Case_else"
+    rule "Expression org.hl7.knowledgeartifact.r1.Case_else"
     when
-        $xp : Case()
+        $xp : org.hl7.knowledgeartifact.r1.Case()
         _else : Object() from $xp.else
         Link( $xp, $ind ; )
         Link( _else, $val ; )
@@ -1013,9 +1007,9 @@ end
         insert( helper.assertObjectProperty( "a:else", $ind, $val ) );
     end
 
-    rule "Expression Case_comparand"
+    rule "Expression org.hl7.knowledgeartifact.r1.Case_comparand"
     when
-        $xp : Case()
+        $xp : org.hl7.knowledgeartifact.r1.Case()
         _comparand : Object() from $xp.comparand
         Link( $xp, $ind ; )
         Link( _comparand, $val ; )
@@ -1023,9 +1017,9 @@ end
         insert( helper.assertObjectProperty( "a:comparand", $ind, $val ) );
     end
 
-    rule "Expression Case_caseItem"
+    rule "Expression org.hl7.knowledgeartifact.r1.Case_caseItem"
     when
-        $xp : Case()
+        $xp : org.hl7.knowledgeartifact.r1.Case()
         _caseItem : Object() from $xp.caseItems
         Link( $xp, $ind ; )
         Link( _caseItem, $val ; )
@@ -1037,9 +1031,9 @@ end
 
 
 
-    rule "Expression ForEach"
+    rule "Expression org.hl7.knowledgeartifact.r1.ForEach"
     when
-        $xp : ForEach(  _scope : scope  )
+        $xp : org.hl7.knowledgeartifact.r1.ForEach(  _scope : scope  )
         Link( $xp, $ind ; )
     then
         
@@ -1048,9 +1042,9 @@ end
     end
 
 
-    rule "Expression ForEach_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.ForEach_element"
     when
-        $xp : ForEach()
+        $xp : org.hl7.knowledgeartifact.r1.ForEach()
         _element : Object() from $xp.element
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -1058,9 +1052,9 @@ end
         insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
     end
 
-    rule "Expression ForEach_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.ForEach_source"
     when
-        $xp : ForEach()
+        $xp : org.hl7.knowledgeartifact.r1.ForEach()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1072,9 +1066,9 @@ end
 
 
 
-    rule "Expression Pos"
+    rule "Expression org.hl7.knowledgeartifact.r1.Pos"
     when
-        $xp : Pos(  _pattern : pattern  )
+        $xp : org.hl7.knowledgeartifact.r1.Pos(  _pattern : pattern  )
         Link( $xp, $ind ; )
     then
         
@@ -1083,9 +1077,9 @@ end
     end
 
 
-    rule "Expression Pos_string"
+    rule "Expression org.hl7.knowledgeartifact.r1.Pos_string"
     when
-        $xp : Pos()
+        $xp : org.hl7.knowledgeartifact.r1.Pos()
         _string : Object() from $xp.string
         Link( $xp, $ind ; )
         Link( _string, $val ; )
@@ -1098,9 +1092,9 @@ end
 
 
 
-    rule "Expression IndexOf_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.IndexOf_element"
     when
-        $xp : IndexOf()
+        $xp : org.hl7.knowledgeartifact.r1.IndexOf()
         _element : Object() from $xp.element
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -1108,9 +1102,9 @@ end
         insert( helper.assertObjectProperty( "a:element", $ind, $val ) );
     end
 
-    rule "Expression IndexOf_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.IndexOf_source"
     when
-        $xp : IndexOf()
+        $xp : org.hl7.knowledgeartifact.r1.IndexOf()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1122,9 +1116,9 @@ end
 
 
 
-    rule "Expression ObjectRedefine"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectRedefine"
     when
-        $xp : ObjectRedefine(  _scope : scope  )
+        $xp : org.hl7.knowledgeartifact.r1.ObjectRedefine(  _scope : scope  )
         Link( $xp, $ind ; )
     then
         
@@ -1133,9 +1127,9 @@ end
     end
 
 
-    rule "Expression ObjectRedefine_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectRedefine_source"
     when
-        $xp : ObjectRedefine()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectRedefine()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1143,9 +1137,9 @@ end
         insert( helper.assertObjectProperty( "a:source_Object", $ind, $val ) );
     end
 
-    rule "Expression ObjectRedefine_property"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectRedefine_property"
     when
-        $xp : ObjectRedefine()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectRedefine()
         _property : Object() from $xp.properties
         Link( $xp, $ind ; )
         Link( _property, $val ; )
@@ -1157,9 +1151,9 @@ end
 
 
 
-    rule "Expression Property"
+    rule "Expression org.hl7.knowledgeartifact.r1.Property"
     when
-        $xp : Property(  _scope : scope  )
+        $xp : org.hl7.knowledgeartifact.r1.Property(  _scope : scope  )
         Link( $xp, $ind ; )
     then
         
@@ -1168,9 +1162,9 @@ end
     end
 
 
-    rule "Expression Property_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Property_source"
     when
-        $xp : Property()
+        $xp : org.hl7.knowledgeartifact.r1.Property()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1178,9 +1172,9 @@ end
         insert( helper.assertObjectProperty( "a:source_Object", $ind, $val ) );
     end
 
-    rule "Expression Property_path"
+    rule "Expression org.hl7.knowledgeartifact.r1.Property_path"
     when
-        $xp : Property()
+        $xp : org.hl7.knowledgeartifact.r1.Property()
         _path : Object() from $xp.path
         Link( $xp, $ind ; )
         Link( _path, $val ; )
@@ -1193,9 +1187,9 @@ end
 
 
 
-    rule "Expression Within_element"
+    rule "Expression org.hl7.knowledgeartifact.r1.Within_element"
     when
-        $xp : Within()
+        $xp : org.hl7.knowledgeartifact.r1.Within()
         _element : Object() from $xp.element
         Link( $xp, $ind ; )
         Link( _element, $val ; )
@@ -1203,9 +1197,9 @@ end
         insert( helper.assertObjectProperty( "a:element_Ordinal", $ind, $val ) );
     end
 
-    rule "Expression Within_interval"
+    rule "Expression org.hl7.knowledgeartifact.r1.Within_interval"
     when
-        $xp : Within()
+        $xp : org.hl7.knowledgeartifact.r1.Within()
         _interval : Object() from $xp.interval
         Link( $xp, $ind ; )
         Link( _interval, $val ; )
@@ -1218,9 +1212,9 @@ end
 
 
 
-    rule "Expression ObjectDescriptor_property"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectDescriptor_property"
     when
-        $xp : ObjectDescriptor()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectDescriptor()
         _property : Object() from $xp.properties
         Link( $xp, $ind ; )
         Link( _property, $val ; )
@@ -1228,9 +1222,9 @@ end
         insert( helper.assertObjectProperty( "a:property", $ind, $val ) );
     end
 
-    rule "Expression ObjectDescriptor_objectType"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectDescriptor_objectType"
     when
-        $xp : ObjectDescriptor()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectDescriptor()
         _objectType : Object() from $xp.objectType
         Link( $xp, $ind ; )
         Link( _objectType, $val ; )
@@ -1243,9 +1237,9 @@ end
 
 
 
-    rule "Expression SetSubsumes_descendents"
+    rule "Expression org.hl7.knowledgeartifact.r1.SetSubsumes_descendents"
     when
-        $xp : SetSubsumes()
+        $xp : org.hl7.knowledgeartifact.r1.SetSubsumes()
         _descendents : Object() from $xp.descendents
         Link( $xp, $ind ; )
         Link( _descendents, $val ; )
@@ -1253,9 +1247,9 @@ end
         insert( helper.assertObjectProperty( "a:descendents", $ind, $val ) );
     end
 
-    rule "Expression SetSubsumes_ancestors"
+    rule "Expression org.hl7.knowledgeartifact.r1.SetSubsumes_ancestors"
     when
-        $xp : SetSubsumes()
+        $xp : org.hl7.knowledgeartifact.r1.SetSubsumes()
         _ancestors : Object() from $xp.ancestors
         Link( $xp, $ind ; )
         Link( _ancestors, $val ; )
@@ -1268,9 +1262,9 @@ end
 
 
 
-    rule "Expression Combine_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Combine_source"
     when
-        $xp : Combine()
+        $xp : org.hl7.knowledgeartifact.r1.Combine()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1278,9 +1272,9 @@ end
         insert( helper.assertObjectProperty( "a:source_String", $ind, $val ) );
     end
 
-    rule "Expression Combine_separator"
+    rule "Expression org.hl7.knowledgeartifact.r1.Combine_separator"
     when
-        $xp : Combine()
+        $xp : org.hl7.knowledgeartifact.r1.Combine()
         _separator : Object() from $xp.separator
         Link( $xp, $ind ; )
         Link( _separator, $val ; )
@@ -1292,9 +1286,9 @@ end
 
 
 
-    rule "Expression Filter"
+    rule "Expression org.hl7.knowledgeartifact.r1.Filter"
     when
-        $xp : Filter(  _scope : scope  )
+        $xp : org.hl7.knowledgeartifact.r1.Filter(  _scope : scope  )
         Link( $xp, $ind ; )
     then
         
@@ -1303,9 +1297,9 @@ end
     end
 
 
-    rule "Expression Filter_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Filter_source"
     when
-        $xp : Filter()
+        $xp : org.hl7.knowledgeartifact.r1.Filter()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1313,9 +1307,9 @@ end
         insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
     end
 
-    rule "Expression Filter_condition"
+    rule "Expression org.hl7.knowledgeartifact.r1.Filter_condition"
     when
-        $xp : Filter()
+        $xp : org.hl7.knowledgeartifact.r1.Filter()
         _condition : Object() from $xp.condition
         Link( $xp, $ind ; )
         Link( _condition, $val ; )
@@ -1327,9 +1321,9 @@ end
 
 
 
-    rule "Expression ExpressionRef"
+    rule "Expression org.hl7.knowledgeartifact.r1.ExpressionRef"
     when
-        $xp : ExpressionRef(  _name : name  )
+        $xp : org.hl7.knowledgeartifact.r1.ExpressionRef(  _name : name  )
         Link( $xp, $ind ; )
     then
         
@@ -1343,9 +1337,9 @@ end
 
 
 
-    rule "Expression DateDiff_startDate"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateDiff_startDate"
     when
-        $xp : DateDiff()
+        $xp : org.hl7.knowledgeartifact.r1.DateDiff()
         _startDate : Object() from $xp.startDate
         Link( $xp, $ind ; )
         Link( _startDate, $val ; )
@@ -1353,9 +1347,9 @@ end
         insert( helper.assertObjectProperty( "a:startDate", $ind, $val ) );
     end
 
-    rule "Expression DateDiff_granularity"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateDiff_granularity"
     when
-        $xp : DateDiff()
+        $xp : org.hl7.knowledgeartifact.r1.DateDiff()
         _granularity : Object() from $xp.granularity
         Link( $xp, $ind ; )
         Link( _granularity, $val ; )
@@ -1363,9 +1357,9 @@ end
         insert( helper.assertObjectProperty( "a:granularity_String", $ind, $val ) );
     end
 
-    rule "Expression DateDiff_endDate"
+    rule "Expression org.hl7.knowledgeartifact.r1.DateDiff_endDate"
     when
-        $xp : DateDiff()
+        $xp : org.hl7.knowledgeartifact.r1.DateDiff()
         _endDate : Object() from $xp.endDate
         Link( $xp, $ind ; )
         Link( _endDate, $val ; )
@@ -1377,9 +1371,9 @@ end
 
 
 
-    rule "Expression Avg"
+    rule "Expression org.hl7.knowledgeartifact.r1.Avg"
     when
-        $xp : Avg(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.Avg(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1388,9 +1382,9 @@ end
     end
 
 
-    rule "Expression Avg_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Avg_source"
     when
-        $xp : Avg()
+        $xp : org.hl7.knowledgeartifact.r1.Avg()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1402,9 +1396,9 @@ end
 
 
 
-    rule "Expression Count"
+    rule "Expression org.hl7.knowledgeartifact.r1.Count"
     when
-        $xp : Count(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.Count(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1413,9 +1407,9 @@ end
     end
 
 
-    rule "Expression Count_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Count_source"
     when
-        $xp : Count()
+        $xp : org.hl7.knowledgeartifact.r1.Count()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1427,9 +1421,9 @@ end
 
 
 
-    rule "Expression AnyTrue"
+    rule "Expression org.hl7.knowledgeartifact.r1.AnyTrue"
     when
-        $xp : AnyTrue(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.AnyTrue(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1438,9 +1432,9 @@ end
     end
 
 
-    rule "Expression AnyTrue_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.AnyTrue_source"
     when
-        $xp : AnyTrue()
+        $xp : org.hl7.knowledgeartifact.r1.AnyTrue()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1452,9 +1446,9 @@ end
 
 
 
-    rule "Expression AllTrue"
+    rule "Expression org.hl7.knowledgeartifact.r1.AllTrue"
     when
-        $xp : AllTrue(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.AllTrue(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1463,9 +1457,9 @@ end
     end
 
 
-    rule "Expression AllTrue_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.AllTrue_source"
     when
-        $xp : AllTrue()
+        $xp : org.hl7.knowledgeartifact.r1.AllTrue()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1477,9 +1471,9 @@ end
 
 
 
-    rule "Expression Min"
+    rule "Expression org.hl7.knowledgeartifact.r1.Min"
     when
-        $xp : Min(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.Min(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1488,9 +1482,9 @@ end
     end
 
 
-    rule "Expression Min_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Min_source"
     when
-        $xp : Min()
+        $xp : org.hl7.knowledgeartifact.r1.Min()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1502,9 +1496,9 @@ end
 
 
 
-    rule "Expression Sum"
+    rule "Expression org.hl7.knowledgeartifact.r1.Sum"
     when
-        $xp : Sum(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.Sum(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1513,9 +1507,9 @@ end
     end
 
 
-    rule "Expression Sum_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Sum_source"
     when
-        $xp : Sum()
+        $xp : org.hl7.knowledgeartifact.r1.Sum()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1527,9 +1521,9 @@ end
 
 
 
-    rule "Expression Max"
+    rule "Expression org.hl7.knowledgeartifact.r1.Max"
     when
-        $xp : Max(  _path : path  )
+        $xp : org.hl7.knowledgeartifact.r1.Max(  _path : path  )
         Link( $xp, $ind ; )
     then
         
@@ -1538,9 +1532,9 @@ end
     end
 
 
-    rule "Expression Max_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Max_source"
     when
-        $xp : Max()
+        $xp : org.hl7.knowledgeartifact.r1.Max()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1553,9 +1547,9 @@ end
 
 
 
-    rule "Expression ObjectExpression_property"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectExpression_property"
     when
-        $xp : ObjectExpression()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectExpression()
         _property : Object() from $xp.properties
         Link( $xp, $ind ; )
         Link( _property, $val ; )
@@ -1563,9 +1557,9 @@ end
         insert( helper.assertObjectProperty( "a:property", $ind, $val ) );
     end
 
-    rule "Expression ObjectExpression_objectType"
+    rule "Expression org.hl7.knowledgeartifact.r1.ObjectExpression_objectType"
     when
-        $xp : ObjectExpression()
+        $xp : org.hl7.knowledgeartifact.r1.ObjectExpression()
         _objectType : Object() from $xp.objectType
         Link( $xp, $ind ; )
         Link( _objectType, $val ; )
@@ -1578,9 +1572,9 @@ end
 
 
 
-    rule "Expression Subsumes_descendent"
+    rule "Expression org.hl7.knowledgeartifact.r1.Subsumes_descendent"
     when
-        $xp : Subsumes()
+        $xp : org.hl7.knowledgeartifact.r1.Subsumes()
         _descendent : Object() from $xp.descendent
         Link( $xp, $ind ; )
         Link( _descendent, $val ; )
@@ -1588,9 +1582,9 @@ end
         insert( helper.assertObjectProperty( "a:descendent", $ind, $val ) );
     end
 
-    rule "Expression Subsumes_ancestor"
+    rule "Expression org.hl7.knowledgeartifact.r1.Subsumes_ancestor"
     when
-        $xp : Subsumes()
+        $xp : org.hl7.knowledgeartifact.r1.Subsumes()
         _ancestor : Object() from $xp.ancestor
         Link( $xp, $ind ; )
         Link( _ancestor, $val ; )
@@ -1602,9 +1596,9 @@ end
 
 
 
-    rule "Expression Last"
+    rule "Expression org.hl7.knowledgeartifact.r1.Last"
     when
-        $xp : Last(  _orderBy : orderBy  )
+        $xp : org.hl7.knowledgeartifact.r1.Last(  _orderBy : orderBy  )
         Link( $xp, $ind ; )
     then
         
@@ -1613,9 +1607,9 @@ end
     end
 
 
-    rule "Expression Last_source"
+    rule "Expression org.hl7.knowledgeartifact.r1.Last_source"
     when
-        $xp : Last()
+        $xp : org.hl7.knowledgeartifact.r1.Last()
         _source : Object() from $xp.source
         Link( $xp, $ind ; )
         Link( _source, $val ; )
@@ -1628,9 +1622,9 @@ end
 
 
 
-    rule "Expression Substring_startIndex"
+    rule "Expression org.hl7.knowledgeartifact.r1.Substring_startIndex"
     when
-        $xp : Substring()
+        $xp : org.hl7.knowledgeartifact.r1.Substring()
         _startIndex : Object() from $xp.startIndex
         Link( $xp, $ind ; )
         Link( _startIndex, $val ; )
@@ -1638,9 +1632,9 @@ end
         insert( helper.assertObjectProperty( "a:startIndex", $ind, $val ) );
     end
 
-    rule "Expression Substring_length"
+    rule "Expression org.hl7.knowledgeartifact.r1.Substring_length"
     when
-        $xp : Substring()
+        $xp : org.hl7.knowledgeartifact.r1.Substring()
         _length : Object() from $xp.length
         Link( $xp, $ind ; )
         Link( _length, $val ; )
@@ -1648,9 +1642,9 @@ end
         insert( helper.assertObjectProperty( "a:length", $ind, $val ) );
     end
 
-    rule "Expression Substring_stringToSub"
+    rule "Expression org.hl7.knowledgeartifact.r1.Substring_stringToSub"
     when
-        $xp : Substring()
+        $xp : org.hl7.knowledgeartifact.r1.Substring()
         _stringToSub : Object() from $xp.stringToSub
         Link( $xp, $ind ; )
         Link( _stringToSub, $val ; )
@@ -1662,9 +1656,9 @@ end
 
 
 
-    rule "Expression DatePart"
+    rule "Expression org.hl7.knowledgeartifact.r1.DatePart"
     when
-        $xp : DatePart(  _granularity : granularity  )
+        $xp : org.hl7.knowledgeartifact.r1.DatePart(  _granularity : granularity  )
         Link( $xp, $ind ; )
     then
         
@@ -1673,9 +1667,9 @@ end
     end
 
 
-    rule "Expression DatePart_date"
+    rule "Expression org.hl7.knowledgeartifact.r1.DatePart_date"
     when
-        $xp : DatePart()
+        $xp : org.hl7.knowledgeartifact.r1.DatePart()
         _date : Object() from $xp.date
         Link( $xp, $ind ; )
         Link( _date, $val ; )
@@ -1687,9 +1681,9 @@ end
 
 
 
-    rule "Expression Interval"
+    rule "Expression org.hl7.knowledgeartifact.r1.Interval"
     when
-        $xp : Interval(  _endOpen : endOpen , _beginOpen : beginOpen  )
+        $xp : org.hl7.knowledgeartifact.r1.Interval(  _endOpen : endOpen , _beginOpen : beginOpen  )
         Link( $xp, $ind ; )
     then
         
@@ -1700,9 +1694,9 @@ end
     end
 
 
-    rule "Expression Interval_end"
+    rule "Expression org.hl7.knowledgeartifact.r1.Interval_end"
     when
-        $xp : Interval()
+        $xp : org.hl7.knowledgeartifact.r1.Interval()
         _end : Object() from $xp.end
         Link( $xp, $ind ; )
         Link( _end, $val ; )
@@ -1710,9 +1704,9 @@ end
         insert( helper.assertObjectProperty( "a:end", $ind, $val ) );
     end
 
-    rule "Expression Interval_begin"
+    rule "Expression org.hl7.knowledgeartifact.r1.Interval_begin"
     when
-        $xp : Interval()
+        $xp : org.hl7.knowledgeartifact.r1.Interval()
         _begin : Object() from $xp.begin
         Link( $xp, $ind ; )
         Link( _begin, $val ; )

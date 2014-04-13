@@ -1,5 +1,6 @@
 package edu.asu.sharpc2b.hed.impl;
 
+import com.clarkparsia.common.base.SystemUtil;
 import com.clarkparsia.empire.Empire;
 import com.clarkparsia.empire.EmpireOptions;
 import com.clarkparsia.empire.annotation.InvalidRdfException;
@@ -17,6 +18,7 @@ import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import edu.asu.sharpc2b.transform.SharpAnnotationProvider;
+import info.aduna.iteration.CloseableIteration;
 import org.coode.owlapi.rdf.model.AbstractTranslator;
 import org.coode.owlapi.rdf.model.RDFGraph;
 import org.coode.owlapi.rdf.model.RDFTranslator;
@@ -34,12 +36,14 @@ import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.event.base.NotifyingRepositoryWrapper;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
 import org.openrdf.rio.turtle.TurtleWriter;
 import org.openrdf.sail.Sail;
+import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -70,6 +74,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
+import org.semanticweb.owlapi.util.OWLOntologyMerger;
 import org.w3._2002._07.owl.Thing;
 import org.w3._2002._07.owl.ThingImpl;
 import org.xml.sax.InputSource;
@@ -109,8 +114,11 @@ public class ModelManagerOwlAPIHermit
 
     private static final String EXAMPLE_root = EXAMPLE1 + "#" + "ruleSet1";
 
-    private OWLOntology baseTheory;
-    private OWLOntologyManager manager;
+    private static final OWLOntology baseTheory = getBaseTheory();
+    private static OWLOntologyManager manager;
+    private static Set<OWLDeclarationAxiom> cachedBaseAxioms = baseTheory.getAxioms( AxiomType.DECLARATION, true );
+
+    private static PersistenceProvider provider = initEmpire();
 
     private static ModelManagerOwlAPIHermit instance = new ModelManagerOwlAPIHermit();
 
@@ -120,11 +128,44 @@ public class ModelManagerOwlAPIHermit
 
 
     protected ModelManagerOwlAPIHermit() {
-        baseTheory = getBaseTheory();
     }
 
 
-    protected OWLOntology getBaseTheory() {
+    protected OWLRDFConsumer createConsumer( OWLOntology onto ) {
+        OWLRDFConsumer consumer = new OWLRDFConsumer( onto, new AnonymousNodeChecker() {
+            @Override
+            public boolean isAnonymousNode( IRI iri ) {
+                return false;
+            }
+
+            @Override
+            public boolean isAnonymousNode( String iri ) {
+                return false;
+            }
+
+            @Override
+            public boolean isAnonymousSharedNode( String iri ) {
+                return false;
+            }
+        }, new OWLOntologyLoaderConfiguration() );
+
+        Set<OWLDeclarationAxiom> props = cachedBaseAxioms;
+        for ( OWLDeclarationAxiom dat : props ) {
+            if ( dat.getEntity().isOWLDataProperty() ) {
+                consumer.addDataProperty( dat.getEntity().getIRI(), true );
+            } else if ( dat.getEntity().isOWLObjectProperty() ) {
+                if ( dat.getEntity().getIRI().toQuotedString().contains( "author" ) ) {
+                }
+                consumer.addObjectProperty( dat.getEntity().getIRI(), true );
+            } else if ( dat.getEntity().isOWLClass() ) {
+                consumer.addClassExpression( dat.getEntity().getIRI(), true );
+            }
+        }
+        return consumer;
+    }
+
+    protected static OWLOntology getBaseTheory() {
+        long now = System.currentTimeMillis();
         org.drools.io.Resource[] res = new org.drools.io.Resource[] {
                 ResourceFactory.newClassPathResource( "ontologies/editor_models/DUL.owl" ),
                 ResourceFactory.newClassPathResource( "ontologies/editor_models/IOLite.owl" ),
@@ -159,7 +200,17 @@ public class ModelManagerOwlAPIHermit
                 e.printStackTrace();
             }
         }
-        return manager.getOntology( IRI.create( "http://asu.edu/sharpc2b/sharp" ) );
+
+        IRI ontoId = IRI.create( "http://asu.edu/sharpc2b/sharp_merged" );
+        try {
+            OWLOntology onto = new OWLOntologyMerger( manager ).createMergedOntology( manager, ontoId );
+            now = System.currentTimeMillis() - now;
+            System.err.println( "Base theory load took " + now );
+            return onto;
+        } catch( OWLOntologyCreationException e ){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -187,7 +238,7 @@ public class ModelManagerOwlAPIHermit
         convertToOwlAPI_RDF( onto );
         Repository repo = dumpInSailRDFStore( onto );
 
-        EntityManager em = getEmpireEM( repo );
+        EntityManager em = getEmpireEM( provider, repo );
 
         long now = System.currentTimeMillis();
         HeDKnowledgeDocument o;
@@ -205,70 +256,57 @@ public class ModelManagerOwlAPIHermit
     }
 
 
-    //TODO
     public OWLOntology objectGraphToHeDOntology( HeDKnowledgeDocument dok ) {
         try {
-            // this method could use some serious improvement
+            long now = System.currentTimeMillis();
             OWLOntologyID ontoId = new OWLOntologyID( IRI.create( dok.getArtifactId().get( 0 ) ) );
 
-            // Empire can give us RDF triples, now an OWL theory
-            // So, we have to create a RDF stream first
-            org.openrdf.model.Graph triples = RdfGenerator.asRdf( dok );
+            Sail sail = new MemoryStore();
+            Repository repo = new SailRepository( sail );
+            repo.initialize();
+            final RepositoryConnection conn = repo.getConnection();
+
+            EntityManager em = getEmpireEM( provider, repo );
+            em.persist( dok );
+
+            RepositoryResult<Statement> result = conn.getStatements( null, null, null, true, (Resource) null );
             ByteArrayOutputStream baos = new ByteArrayOutputStream( );
             RDFXMLWriter writer = new RDFXMLWriter( baos );
             try {
                 writer.startRDF();
-                for ( Statement stat : triples ) {
+                while ( result.hasNext() ) {
+                    Statement stat = result.next();
                     writer.handleStatement( stat );
                 }
                 writer.endRDF();
             } catch ( RDFHandlerException e ) {
                 e.printStackTrace();
             }
-
+            conn.close();
+            repo.shutDown();
             // And then parse it with an RDF reader, which requires an adapter.
-            OWLOntology onto = getBaseTheory().getOWLOntologyManager().createOntology( ontoId );
-            OWLRDFConsumer owlrdfConsumer = new OWLRDFConsumer( onto, new AnonymousNodeChecker() {
-                @Override
-                public boolean isAnonymousNode( IRI iri ) {
-                    return false;
-                }
 
-                @Override
-                public boolean isAnonymousNode( String iri ) {
-                    return false;
-                }
+            OWLOntology onto = baseTheory.getOWLOntologyManager().createOntology( ontoId );
+            OWLRDFConsumer consumer = createConsumer( onto );
 
-                @Override
-                public boolean isAnonymousSharedNode( String iri ) {
-                    return false;
-                }
-            }, new OWLOntologyLoaderConfiguration() );
-
-            // The adapter needs to know the classes, data and object properties in the target ontology
-            Set<OWLDeclarationAxiom> props = baseTheory.getAxioms( AxiomType.DECLARATION, true );
-            for ( OWLDeclarationAxiom dat : props ) {
-                if ( dat.getEntity().isOWLDataProperty() ) {
-                    owlrdfConsumer.addDataProperty( dat.getEntity().getIRI(), true );
-                } else if ( dat.getEntity().isOWLObjectProperty() ) {
-                    owlrdfConsumer.addObjectProperty( dat.getEntity().getIRI(), true );
-                } else if ( dat.getEntity().isOWLClass() ) {
-                    owlrdfConsumer.addClassExpression( dat.getEntity().getIRI(), true );
-                }
-            }
+            // The adapter needs to know the classes, data and obj
+            // rect properties in the target ontology
             RDFParser rdfParser = new RDFParser();
             InputSource src = new InputSource( new ByteArrayInputStream( baos.toByteArray() ) );
             src.setSystemId( ontoId.getOntologyIRI().toString() );
-            rdfParser.parse( src, owlrdfConsumer );
+            rdfParser.parse( src, consumer );
 
+            baseTheory.getOWLOntologyManager().removeOntology( ontoId );
 
+            System.err.println( "EMPIRE frosting took " + (System.currentTimeMillis()-now) );
             return onto;
+
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-
         return null;
     }
+
 
     private String getOntoId( org.drools.io.Resource res ) throws IOException {
         InputStream is = res.getInputStream();
@@ -424,8 +462,8 @@ public class ModelManagerOwlAPIHermit
 
         long now = new Date().getTime();
         Sail sail = new MemoryStore();
-        Repository repo = new NotifyingRepositoryWrapper( new SailRepository( sail ) );
-        final com.tinkerpop.blueprints.Graph sailGraph = new SailGraph( sail );
+        Repository repo = new SailRepository( sail );
+        repo.initialize();
         Set<OWLNamedIndividual> inds = onto.getIndividualsInSignature( false );
 
         final RepositoryConnection conn = repo.getConnection();
@@ -551,12 +589,8 @@ public class ModelManagerOwlAPIHermit
     }
 
 
-    public EntityManager getEmpireEM( Repository repo ) {
-        Map<String, Object> aMap = new HashMap<String, Object>();
-        aMap.put( ConfigKeys.FACTORY, RepositoryDataSourceFactory.class.getName() );
-        aMap.put( RepositoryDataSourceFactory.REPO_HANDLE, repo );
-
-        URL rx = getClass().getResource( "/empire.configuration.file" );
+    protected static PersistenceProvider initEmpire() {
+        URL rx = ModelManagerOwlAPIHermit.class.getResource( "/empire.configuration.file" );
         System.setProperty( "empire.configuration.file", rx.getPath() );
 
         OpenRdfEmpireModule mod = new OpenRdfEmpireModule();
@@ -567,10 +601,19 @@ public class ModelManagerOwlAPIHermit
         EmpireOptions.STRICT_MODE = false;
         EmpireOptions.ENFORCE_ENTITY_ANNOTATION = false;
 
-        PersistenceProvider aProvider = Empire.get().persistenceProvider();
-        EntityManagerFactory emf = aProvider.createEntityManagerFactory(
+        return Empire.get().persistenceProvider();
+    }
+
+    public EntityManager getEmpireEM( PersistenceProvider provider, Repository repo ) {
+        Map<String, Object> aMap = new HashMap<String, Object>();
+        aMap.put( ConfigKeys.FACTORY, RepositoryDataSourceFactory.class.getName() );
+        aMap.put( RepositoryDataSourceFactory.REPO_HANDLE, repo );
+//        aMap.put( RepositoryDataSourceFactory.QUERY_LANG, RepositoryDataSourceFactory.LANG_SERQL );
+
+        EntityManagerFactory emf = provider.createEntityManagerFactory(
                 "HeD",
                 aMap );
+
         EntityManager em = emf.createEntityManager();
         return em;
     }

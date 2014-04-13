@@ -9,27 +9,17 @@ import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.Site;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.BinaryExpression;
-import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
-import edu.asu.sharpc2b.ops.ClinicalRequestExpressionImpl;
-import edu.asu.sharpc2b.ops.CreateExpression;
-import edu.asu.sharpc2b.ops.DomainClass;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
-import edu.asu.sharpc2b.ops.LiteralExpression;
 import edu.asu.sharpc2b.ops.NAryExpression;
 import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertyExpression;
-import edu.asu.sharpc2b.ops.PropertyGetExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
-import edu.asu.sharpc2b.ops.SingleIteratorExpression;
 import edu.asu.sharpc2b.ops.TernaryExpression;
 import edu.asu.sharpc2b.ops.UnaryExpression;
 import edu.asu.sharpc2b.ops.VariableExpression;
-import edu.asu.sharpc2b.ops_set.AndExpression;
-import edu.asu.sharpc2b.ops_set.ListExpression;
-import edu.asu.sharpc2b.ops_set.ObjectExpressionExpression;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.NamedElement;
@@ -283,23 +273,25 @@ public class OOwl2HedDumper implements HeDExporter {
 
     private void fillProperties( Element elem, OperatorExpression expr, Document dox ) {
         try {
-            Iterator<Statement> iter = expr.getInstanceTriples().iterator();
-            while ( iter.hasNext() ) {
-                Statement triple = iter.next();
-                URI prop = triple.getPredicate();
-                if ( exprNS.equals( prop.getNamespace() ) ) {
-                    for ( Method m : expr.getClass().getMethods() ) {
-                        if ( m.getAnnotation( RdfProperty.class ) != null && prop.toString().equals( m.getAnnotation( RdfProperty.class ).value() ) ) {
-                            if ( Collection.class.isAssignableFrom( m.getReturnType() ) ) {
-                                Collection coll = (Collection) m.invoke( expr );
-                                for ( Object o : coll ) {
-                                    fillArgument( elem, triple, o, dox );
-                                }
-                            } else {
-                                Object o = m.invoke( expr );
-                                fillArgument( elem, triple, o, dox );
-                            }
+            for ( Method m : expr.getClass().getMethods() ) {
+                if ( m.getAnnotation( RdfProperty.class ) != null ) {
+                    String propIri = m.getAnnotation( RdfProperty.class ).value();
+                    if ( "http://asu.edu/sharpc2b/ops#opCode".equals( propIri )
+                         || "http://asu.edu/sharpc2b/ops#firstOperand".equals( propIri )
+                         || "http://asu.edu/sharpc2b/ops#secondOperand".equals( propIri )
+                         || "http://asu.edu/sharpc2b/ops#thirdOperand".equals( propIri )
+                         || "http://asu.edu/sharpc2b/ops#hasOperand".equals( propIri )
+                    ) {
+                        continue;
+                    }
+                    if ( Collection.class.isAssignableFrom( m.getReturnType() ) ) {
+                        Collection coll = (Collection) m.invoke( expr );
+                        for ( Object o : coll ) {
+                            fillArgument( elem, propIri, o, dox );
                         }
+                    } else {
+                        Object o = m.invoke( expr );
+                        fillArgument( elem, propIri, o, dox );
                     }
                 }
             }
@@ -308,21 +300,19 @@ public class OOwl2HedDumper implements HeDExporter {
         }
     }
 
-    private void fillArgument( Element elem, Statement triple, Object o, Document dox ) {
-        if ( triple.getObject() instanceof MemURI ) {
-            if ( o instanceof Thing ) {
-                String oid = ((Thing) o).getRdfId().value().toString();
-                String tid = triple.getObject().stringValue();
-                if ( oid.equals( tid ) && o instanceof SharpExpression ) {
-                    visitExpression( null, (SharpExpression) o, elem, removeOverrides( triple.getPredicate().getLocalName() ), dox );
-                }
-            } else {
-                System.err.println( "WARNING Found uri triple with non thing " + triple );
+    private void fillArgument( Element elem, String propertyIri, Object o, Document dox ) {
+        String localName = propertyIri.substring( propertyIri.indexOf( "#" ) + 1 );
+
+        if ( o instanceof Thing ) {
+            String oid = ((Thing) o).getRdfId().value().toString();
+            if ( o instanceof SharpExpression ) {
+                visitExpression( null, (SharpExpression) o, elem, removeOverrides( localName ), dox );
             }
         } else {
-            elem.setAttribute( removeOverrides( triple.getPredicate().getLocalName() ), o.toString() );
+            if ( o != null ) {
+                elem.setAttribute( removeOverrides( localName ), o.toString() );
+            }
         }
-
     }
 
     private String removeOverrides( String localName ) {
