@@ -1,6 +1,8 @@
 package edu.asu.sharpc2b.hed.impl;
 
 
+import edu.asu.sharpc2b.ops.SharpExpression;
+
 public class HeDNamedExpression {
 
     private String id;
@@ -11,9 +13,12 @@ public class HeDNamedExpression {
     
     private byte[] doxBytes;
 
-    public HeDNamedExpression( String id, String name, byte[] doxBytes ) {
+    private SharpExpression expression;
+
+    public HeDNamedExpression( String id, String name, SharpExpression sharpExpression, byte[] doxBytes ) {
         this.id = id;
         this.name = name;
+        this.expression = sharpExpression;
         this.doxBytes = doxBytes;
     }
 
@@ -39,6 +44,14 @@ public class HeDNamedExpression {
 
     public void setDoxBytes( byte[] dox ) {
         this.doxBytes = dox;
+    }
+
+    public SharpExpression getExpression() {
+        return expression;
+    }
+
+    public void setExpression( SharpExpression expression ) {
+        this.expression = expression;
     }
 
     @Override

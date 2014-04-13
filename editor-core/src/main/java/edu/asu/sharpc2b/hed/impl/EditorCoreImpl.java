@@ -2,17 +2,12 @@ package edu.asu.sharpc2b.hed.impl;
 
 import edu.asu.sharpc2b.hed.ArtifactRepository;
 import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
-import edu.asu.sharpc2b.hed.FilesystemArtifactRepository;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.transform.HeDExporterFactory;
-import edu.asu.sharpc2b.transform.OOwl2HedDumper;
-import org.drools.io.Resource;
-import org.drools.io.impl.ClassPathResource;
-import org.hl7.knowledgeartifact.r1.AtomicAction;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -41,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -270,13 +264,14 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     /**************************************************************************************************************************/
     /* EXPRESSIONS */
-    /**************************************************************************************************************************/
+    /**
+     * @param returnType************************************************************************************************************************/
 
 
 
     @Override
-    public Map<String,String> getNamedExpressions() {
-        return getCurrentArtifact().getNamedExpressions();
+    public Map<String,String> getNamedExpressions( String returnType ) {
+        return getCurrentArtifact().getNamedExpressions( returnType );
     }
 
     @Override
@@ -286,7 +281,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public boolean deleteNamedExpression( String exprId ) {
-        boolean hasExpr = getCurrentArtifact().getNamedExpressions().containsKey( exprId );
+        boolean hasExpr = getCurrentArtifact().getNamedExpressions( null ).containsKey( exprId );
         if ( hasExpr ) {
             getCurrentArtifact().deleteExpression( exprId );
             return true;
@@ -316,6 +311,9 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         return getCurrentArtifact().updateNamedExpression( exprId, exprName, doxBytes );
     }
 
+    public byte[] getLogicExpression() {
+        return getCurrentArtifact().getLogicExpression().getDoxBytes();
+    }
 
 
 
@@ -409,9 +407,9 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     @Override
     public Set<String> getTemplateIds( String category ) {
         System.out.println( "Called core getTemplateIds with " + category );
-        if ( templates == null ) {
-            loadTemplateOntology();
-        }
+//        if ( templates == null ) {
+//            loadTemplateOntology();
+//        }
         OWLDataFactory odf = templates.getOWLOntologyManager().getOWLDataFactory();
         Set<OWLNamedIndividual> individuals = templates.getIndividualsInSignature( true );
         Set<String> individualIds = new HashSet<String>();
@@ -442,9 +440,9 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public Map<String, Object> getTemplateInfo( String templateId ) {
-        if ( templates == null ) {
-            loadTemplateOntology();
-        }
+//        if ( templates == null ) {
+//            loadTemplateOntology();
+//        }
         System.out.println( "Requesting info about " + templateId );
         OWLDataFactory odf = templates.getOWLOntologyManager().getOWLDataFactory();
         Map<String,Object> info = new HashMap<String,Object>();
@@ -472,7 +470,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             details.put( "label", name );
             details.put( "description", getDataPropertyValue( param, "description", odf ) );
             details.put( "typeName", getDataPropertyValue( param, "typeName", odf ) );
-            details.put( "expressions", new ArrayList( getNamedExpressions().keySet() ) );
+            details.put( "expressions", new ArrayList( getNamedExpressions( null ).keySet() ) );
 
             paramData.put( pid, details );
         }
@@ -520,9 +518,9 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     public String instantiateTemplate( String tId, String name, Map<String,Map<String,Object>> parameterValues ) {
         System.out.println( "Core init " + tId + " with name " + name + " using " + parameterValues );
-        if ( templates == null ) {
-            loadTemplateOntology();
-        }
+//        if ( templates == null ) {
+//            loadTemplateOntology();
+//        }
 
         OWLDataFactory odf = templates.getOWLOntologyManager().getOWLDataFactory();
         OWLNamedIndividual root = odf.getOWLNamedIndividual( templateDataIRI( tId ) );

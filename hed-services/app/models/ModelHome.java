@@ -730,14 +730,15 @@ public class ModelHome
 
     /************************************************************************************************************/
     /* EXPRESSION APIs */
-    /************************************************************************************************************/
+    /**
+     * @param type**********************************************************************************************************/
 
 
 
 
 
-    public static Map<String,String> getNamedExpressions() {
-        return core.getNamedExpressions();
+    public static Map<String,String> getNamedExpressions( String returnType ) {
+        return core.getNamedExpressions( returnType );
     }
 
     public static byte[] getNamedExpression( String expressionIri ) {
@@ -755,6 +756,15 @@ public class ModelHome
     public static String updateNamedExpression( String expressionIRI, String exprName, byte[] doxBytes ) {
         return core.updateNamedExpression( expressionIRI, exprName, doxBytes );
     }
+
+    public static byte[] getConditionExpression() {
+        return core.getLogicExpression();
+    }
+
+
+
+
+
 
 
 
@@ -1076,4 +1086,5 @@ public class ModelHome
     public static void addUsedDomainClass( String id ) {
         core.addUsedDomainClass( id );
     }
+
 }

@@ -2,13 +2,13 @@ package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.SupportsRdfId;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
+import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
-import edu.asu.sharpc2b.ops.SharpExpressionImpl;
-import edu.asu.sharpc2b.ops_set.ExpressionRefExpression;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ProductionRule;
 import edu.asu.sharpc2b.prr.ProductionRuleImpl;
+import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
 import edu.asu.sharpc2b.prr_sharp.ExpressionInSHARPImpl;
@@ -30,7 +30,9 @@ public class HeDArtifactData {
     private byte[] owlData;
 
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
+    private HeDNamedExpression logicExpression;
     private Map<String, String> usedDomainClasses = new HashMap<String,String>();
+
 
 
     public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
@@ -44,6 +46,7 @@ public class HeDArtifactData {
         }
 
         cacheBlocklyExpressions( dok, domainClasses, domainProperties );
+        cacheLogicExpression( dok, domainClasses, domainProperties );
     }
 
     public HeDArtifactData() {
@@ -113,34 +116,47 @@ public class HeDArtifactData {
     public void cacheBlocklyExpressions( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {
-                for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
-                    String name = expr.getName().get( 0 );
+                for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    String name = var.getName().get( 0 );
 
-                    if ( ! expr.getVariableFilterExpression().isEmpty() ) {
-                        Expression prrExpr = expr.getVariableFilterExpression().get( 0 );
+                    if ( ! var.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = var.getVariableFilterExpression().get( 0 );
                         if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                             SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
 
                             BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
                             blocklyExpressions.put( uriToId( prrExpr.getRdfId() ), new HeDNamedExpression(
-                                    uriToId( prrExpr.getRdfId() ),
+                                    uriToId( var.getRdfId() ),
                                     name,
+                                    sharpExpression,
                                     factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.EXPRESSION ) ) );
                             usedDomainClasses.putAll( factory.getRequiredDomainClasses() );
                         }
                     }
-
                 }
             }
         }
     }
 
-    public Map<String,String> getNamedExpressions() {
+    public Map<String,String> getNamedExpressions( String returnType ) {
         HashMap<String,String> expressions = new HashMap<String,String>( blocklyExpressions.size() );
         for ( String exprId : blocklyExpressions.keySet() ) {
-            expressions.put( exprId, blocklyExpressions.get( exprId ).getName() );
+            if ( returnType == null || isReturnTypeCompatible( blocklyExpressions.get( exprId ), returnType ) ) {
+                expressions.put( exprId, blocklyExpressions.get( exprId ).getName() );
+            }
         }
         return expressions;
+    }
+
+    private boolean isReturnTypeCompatible( HeDNamedExpression heDNamedExpression, String returnType ) {
+        if ( returnType == null ) {
+            return true;
+        }
+        //TODO replace with enum or URI
+        if ( "logic".equals( returnType ) ) {
+            return heDNamedExpression.getExpression() instanceof BooleanExpression;
+        }
+        return true;
     }
 
     public HeDNamedExpression getNamedExpression( String exprId ) {
@@ -148,40 +164,89 @@ public class HeDArtifactData {
     }
 
     public String updateNamedExpression( String exprId, String name, byte[] doxBytes ) {
-        if ( name.equals( exprId ) ) {
-            exprId = createVariableFromBlocks( exprId, name, doxBytes );
-        }
-
+        HeDNamedExpression namedExpression;
         if ( ! blocklyExpressions.containsKey( exprId ) ) {
-            blocklyExpressions.put( exprId, new HeDNamedExpression( exprId, name, doxBytes ) );
+            namedExpression = createVariableFromBlocks( exprId, name, doxBytes );
+            blocklyExpressions.put( exprId, namedExpression  );
         } else {
-            HeDNamedExpression expr = blocklyExpressions.get( exprId );
-            expr.setName( name );
-            expr.setDoxBytes( doxBytes );
+            namedExpression = blocklyExpressions.get( exprId );
+            namedExpression.setName( name );
+            namedExpression.setDoxBytes( doxBytes );
+            replaceExpression( knowledgeDocument, namedExpression );
         }
         return exprId;
     }
 
-    private String createVariableFromBlocks( String exprId, String name, byte[] doxBytes ) {
+    private void replaceExpression( HeDKnowledgeDocument dok, HeDNamedExpression namedExpression ) {
+        for ( ComputerExecutableRule rule : dok.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    String name = expr.getName().get( 0 );
+
+                    if ( ! expr.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = expr.getVariableFilterExpression().get( 0 );
+                        if ( ! prrExpr.getBodyExpression().isEmpty() ) {
+                            SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
+                            if ( namedExpression.getExpression() == sharpExpression ) {
+                                SharpExpression rebuiltExpression = new ExpressionFactory().parseBlockly( namedExpression.getDoxBytes(), BlocklyFactory.ExpressionRootType.EXPRESSION );
+
+                                prrExpr.getBodyExpression().clear();
+                                expr.getName().clear();
+
+                                expr.addName( namedExpression.getName() );
+                                prrExpr.addBodyExpression( rebuiltExpression );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private HeDNamedExpression createVariableFromBlocks( String exprId, String name, byte[] doxBytes ) {
         // new expression
         RuleVariable newVar = new RuleVariableImpl();
         newVar.addName( name );
 
-
         Expression shExp = new ExpressionInSHARPImpl();
-        shExp.addBodyExpression( new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION ) );
+        SharpExpression sharpExpression = new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION );
+        shExp.addBodyExpression( sharpExpression );
         newVar.addVariableFilterExpression( shExp );
 
-        exprId = uriToId( shExp.getRdfId() );
+        exprId = uriToId( newVar.getRdfId() );
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 ( (ProductionRule) rule ).addProductionRuleBoundRuleVariable( newVar );
             }
         }
-        return exprId;
+        return new HeDNamedExpression( exprId, name, sharpExpression, doxBytes );
     }
 
-    private String uriToId( SupportsRdfId.RdfKey rdfId ) {
+    public HeDNamedExpression getLogicExpression() {
+        return logicExpression;
+    }
+
+    public void cacheLogicExpression( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+        String name = "PREMISE";
+        for ( ComputerExecutableRule rule : dok.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
+                Expression prrExpr = premise.getConditionRepresentation().get( 0 );
+                if ( ! prrExpr.getBodyExpression().isEmpty() ) {
+                    SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
+                    BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+                    logicExpression = new HeDNamedExpression(
+                        uriToId( prrExpr.getRdfId() ),
+                        name,
+                        sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
+                }
+            }
+        }
+    }
+
+
+
+    public static String uriToId( SupportsRdfId.RdfKey rdfId ) {
         return "id_" + rdfId.toString().hashCode();
     }
 
@@ -189,14 +254,12 @@ public class HeDArtifactData {
     public void deleteExpression( String exprId ) {
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
-                for ( RuleVariable expr : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
-                    String name = expr.getName().get( 0 );
-
-                    if ( ! expr.getVariableFilterExpression().isEmpty() ) {
-                        Expression prrExpr = expr.getVariableFilterExpression().get( 0 );
-                        if ( uriToId( prrExpr.getRdfId() ).equals( exprId ) ) {
+                for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    if ( ! var.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = var.getVariableFilterExpression().get( 0 );
+                        if ( uriToId( var.getRdfId() ).equals( exprId ) ) {
                             blocklyExpressions.remove( exprId );
-                            ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( expr );
+                            ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( var );
                             return;
                         }
                     }

@@ -28,9 +28,9 @@ POST           /rule/info/:id                             controllers.RuleAction
 GET            /rule/export/:id/:format                   controllers.RuleActions.getExternalFormat(id,format)
 GET            /rule                                      controllers.RuleActions.list()
 POST           /rule                                      controllers.RuleActions.create()
-GET            /rule/:id                                  controllers.RuleActions.get(id)
-GET            /rule/classes/:id                          controllers.RuleActions.getUsedDomainClasses(id)
-POST           /rule/classes/:id                          controllers.RuleActions.addUsedDomainClass(id)
+GET            /rule/:id                                  controllers.RuleActions.get(id:String)
+GET            /rule/classes/:id                          controllers.RuleActions.getUsedDomainClasses(id:String)
+POST           /rule/classes/:id                          controllers.RuleActions.addUsedDomainClass(id:String)
 
 
 #PUT            /rule/:id                              controllers.RuleActions.save(id)
@@ -42,7 +42,10 @@ GET            /fwd/cts2/*path                            controllers.CtsActions
 
 ########################################################
 
-GET            /rule/expressions/list                     controllers.ExpressionActions.getExpressions()
+GET            /rule/current/logic                        controllers.ExpressionActions.getConditionExpression()
+POST           /rule/current/logic                        controllers.ExpressionActions.updateConditionExpression()
+
+GET            /rule/expressions/list/:returnType         controllers.ExpressionActions.getExpressions(returnType:String)
 GET            /rule/expressions/:exprId                  controllers.ExpressionActions.getExpression(exprId:String)
 DELETE         /rule/expressions/:exprId                  controllers.ExpressionActions.deleteExpression(exprId:String)
 POST           /rule/expressions/:exprId                  controllers.ExpressionActions.cloneExpression(exprId:String)

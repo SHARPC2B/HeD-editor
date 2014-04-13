@@ -19,8 +19,12 @@ public class ExpressionActions extends Controller {
 
 
     public static Result getExpressions() {
+        return getExpressions( null );
+    }
 
-        List<Expression> expressions = retrieveExpressions();
+    public static Result getExpressions(String type) {
+
+        List<Expression> expressions = retrieveExpressions(type);
 
         JsonNode jsonOut = Json.toJson( expressions );
 
@@ -45,7 +49,7 @@ public class ExpressionActions extends Controller {
         System.out.println(" Trying to delete exprid " + exprId );
         ModelHome.deleteNamedExpression( exprId );
 
-        List<Expression> expressions = retrieveExpressions();
+        List<Expression> expressions = retrieveExpressions( null );
 
         JsonNode jsonOut = Json.toJson( expressions );
 
@@ -75,8 +79,8 @@ public class ExpressionActions extends Controller {
         return ok(exprId);
     }
 
-    private static List<Expression> retrieveExpressions() {
-        Map<String,String> namedExpressions = ModelHome.getNamedExpressions();
+    private static List<Expression> retrieveExpressions( String type ) {
+        Map<String,String> namedExpressions = ModelHome.getNamedExpressions( type );
 
         List<Expression> expressions = new ArrayList<Expression>();
         List<String> ids = new ArrayList( namedExpressions.keySet() );
@@ -89,5 +93,15 @@ public class ExpressionActions extends Controller {
     }
 
 
+    public static Result getConditionExpression() {
+        System.out.println( "Trying to retrieve rule premise");
+        byte[] logic = ModelHome.getConditionExpression();
+        setHeaderCORS();
+        return ok( logic );
+    }
 
+    public static Result updateConditionExpression() {
+        setHeaderCORS();
+        return play.mvc.Results.TODO;
+    }
 }

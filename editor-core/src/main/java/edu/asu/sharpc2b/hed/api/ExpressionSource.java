@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ExpressionSource {
 
-    public Map<String,String> getNamedExpressions();
+    public Map<String,String> getNamedExpressions( String returnType );
 
     public byte[] getNamedExpression( String exprId );
 
@@ -18,4 +18,5 @@ public interface ExpressionSource {
 
     public String updateNamedExpression( String exprId, String exprName, byte[] doxBytes );
 
+    public byte[] getLogicExpression();
 }
