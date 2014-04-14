@@ -373,7 +373,9 @@ public class BlocklyFactory {
             for ( Method m : expr.getClass().getMethods() ) {
                 if ( m.getAnnotation( RdfProperty.class ) != null ) {
                     String propIri = m.getAnnotation( RdfProperty.class ).value();
-                    if ( "http://asu.edu/sharpc2b/ops#opCode".equals( propIri ) ) {
+                    if ( "http://asu.edu/sharpc2b/ops#opCode".equals( propIri )
+                      || "http://asu.edu/sharpc2b/ops#exprDescription".equals( propIri )
+                    ) {
                         continue;
                     }
 

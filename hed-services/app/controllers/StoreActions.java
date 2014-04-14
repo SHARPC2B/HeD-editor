@@ -63,6 +63,7 @@ public class StoreActions
 
     public static Result importFromStream(String fileName) {
         final Http.Request request = request();
+        System.out.println( "Starting import process" );
 
         Http.RequestBody body = request.body();
         byte[] data = body.asRaw().asBytes();

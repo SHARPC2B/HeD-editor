@@ -1,118 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?schematron-schema href="../main/schematron/knowledgeartifact.sch"?>
-<?schematron-schema href="../main/schematron/ecarules.sch"?>
-<knowledgeDocument xmlns="urn:hl7-org:knowledgeartifact:r1"
-	xmlns:vmr="urn:hl7-org:vmr:r2" xmlns:dt="urn:hl7-org:cdsdt:r2"
-	xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xml="http://www.w3.org/XML/1998/namespace"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../schema/knowledgeartifact/knowledgedocument.xsd
-		urn:hl7-org:vmr:r2  ../schema/vmr/vmr.xsd">
-	<!-- Created as part of the HeD Pilot for the CDC by Aziz Boxwala on 4/1/2013 -->
-	<!-- updated on 4/11/2013 -->
-	<!-- updated on 4/16/2013 -->
-	<!-- updated on 5/1/2013 -->
-	<!-- updated on 5/20/2013 with documentation and minor tweaks -->
+<knowledgeDocument xmlns="urn:hl7-org:knowledgeartifact:r1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vmr="urn:hl7-org:vmr:r2" xmlns:dt="urn:hl7-org:cdsdt:r2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xml="http://www.w3.org/XML/1998/namespace" xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../schema/knowledgeartifact/knowledgedocument.xsd  urn:hl7-org:vmr:r2  ../schema/vmr/vmr.xsd">
 	<metadata>
 		<identifiers>
-			<identifier root="SDCOID_PertussisClinicanNoLabs" version="1" />
+			<identifier root="SDCOID_PertussisClinicanNoLabs" version="1"></identifier>
 		</identifiers>
-		<artifactType value="Rule" />
+		<artifactType value="Rule"></artifactType>
 
-		<schemaIdentifier root="urn:hl7-org:knowledgeartifact:r1"
-			version="1" />
+		<schemaIdentifier root="urn:hl7-org:knowledgeartifact:r1" version="1"></schemaIdentifier>
 
 		<dataModels>
 			<modelReference>
-				<description value="Virtual Medical Record model release 2 candidate" />
-				<referencedModel value="urn:hl7-org:vmr:r2" />
+				<description value="Virtual Medical Record model release 2 candidate"></description>
+				<referencedModel value="urn:hl7-org:vmr:r2"></referencedModel>
 			</modelReference>
 		</dataModels>
 
-		<title
-			value="San Diego County Public Health Reporting for Pertussis: Clinician Reporting " />
-		<description
-			value="This document describes the reporting requirements for Clinician
-		Reporting for Pertussis with and without Lab Data in San Diego County." />
+		<title value="San Diego County Public Health Reporting for Pertussis: Clinician Reporting "></title>
+		<description value="This document describes the reporting requirements for Clinician   Reporting for Pertussis with and without Lab Data in San Diego County."></description>
 		<relatedResources>
 			<relatedResource>
-				<relationship value="AssociatedResource" />
+				<relationship value="AssociatedResource"></relationship>
 				<resources>
 					<resource>
-						<title value="Disease Reporting Requirements for Health Care Providers" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html" />
+						<title value="Disease Reporting Requirements for Health Care Providers"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html"></location>
 					</resource>
 					<resource>
-						<title
-							value="Clinical Laboratory Reporting and Specimen Submission Guidelines" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_laboratorians.html" />
+						<title value="Clinical Laboratory Reporting and Specimen Submission Guidelines"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_laboratorians.html"></location>
 					</resource>
 					<resource>
-						<title value="California Reportable Diseases and Conditions" />
-						<location
-							value="http://www.cdph.ca.gov/HealthInfo/Pages/ReportableDiseases.aspx" />
+						<title value="California Reportable Diseases and Conditions"></title>
+						<location value="http://www.cdph.ca.gov/HealthInfo/Pages/ReportableDiseases.aspx"></location>
 					</resource>
 					<resource>
-						<title
-							value="Clinical Laboratory Reporting and Specimen Submission Guidelines" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/documents/SDCPHL_2011_Lab_Reporting.pdf" />
+						<title value="Clinical Laboratory Reporting and Specimen Submission Guidelines"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/documents/SDCPHL_2011_Lab_Reporting.pdf"></location>
 					</resource>
 					<resource>
-						<title value="San Diego County Public Health Laboratory" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/phs_laboratory/index.html" />
+						<title value="San Diego County Public Health Laboratory"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/phs_laboratory/index.html"></location>
 					</resource>
 
 					<resource>
-						<title value="San Diego County Epidemiology Program" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/" />
+						<title value="San Diego County Epidemiology Program"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/"></location>
 					</resource>
 				</resources>
 			</relatedResource>
 		</relatedResources>
 		<applicability>
 			<coverage>
-				<focus value="ClinicalFocus" />
-				<value code="033.0" codeSystem="2.16.840.1.113883.6.103"
-					codeSystemName="ICD9-CM">
-					<dt:displayName value="Whooping cough due to bordetella pertussis" />
+				<focus value="ClinicalFocus"></focus>
+				<value code="033.0" codeSystem="2.16.840.1.113883.6.103" codeSystemName="ICD9-CM">
+					<dt:displayName xmlns:dt="urn:hl7-org:cdsdt:r2" value="Whooping cough due to bordetella pertussis"></dt:displayName>
 				</value>
 			</coverage>
-			<!-- Review: Two examples added. Need many more -->
-			<!-- Discuss with HeD Terminology Team -->
+			
+			
 			<coverage>
-				<focus value="ClinicalVenue" />
-				<value code="261Q00000X" codeSystem="2.16.840.1.113883.1.11.19465"
-					codeSystemName="NUCC non-individual providers">
-					<dt:displayName value="Clinic/Center" />
+				<focus value="ClinicalVenue"></focus>
+				<value code="261Q00000X" codeSystem="2.16.840.1.113883.1.11.19465" codeSystemName="NUCC non-individual providers">
+					<dt:displayName xmlns:dt="urn:hl7-org:cdsdt:r2" value="Clinic/Center"></dt:displayName>
 				</value>
 			</coverage>
 			<coverage>
-				<focus value="ClinicalVenue" />
-				<value code="282N00000X" codeSystem="2.16.840.1.113883.1.11.19465"
-					codeSystemName="NUCC non-individual providers">
-					<dt:displayName value="General Acute Care Hospital" />
+				<focus value="ClinicalVenue"></focus>
+				<value code="282N00000X" codeSystem="2.16.840.1.113883.1.11.19465" codeSystemName="NUCC non-individual providers">
+					<dt:displayName xmlns:dt="urn:hl7-org:cdsdt:r2" value="General Acute Care Hospital"></dt:displayName>
 				</value>
 			</coverage>
 		</applicability>
 		<categories>
 			<category>
-				<dt:displayName value="Public health notifiable condition" />
+				<dt:displayName xmlns:dt="urn:hl7-org:cdsdt:r2" value="Public health notifiable condition"></dt:displayName>
 			</category>
 		</categories>
 
-		<status value="Active" />
+		<status value="Active"></status>
 		<eventHistory>
 			<artifactLifeCycleEvent>
-				<eventType value="Created" />
-				<eventDateTime value="20130401" />
+				<eventType value="Created"></eventType>
+				<eventDateTime value="20130401"></eventDateTime>
 			</artifactLifeCycleEvent>
 			<artifactLifeCycleEvent>
-				<eventType value="Published" />
-				<eventDateTime value="20130617" />
+				<eventType value="Published"></eventType>
+				<eventDateTime value="20130617"></eventDateTime>
 			</artifactLifeCycleEvent>
 		</eventHistory>
 		<contributions>
@@ -120,141 +92,118 @@
 				<contributor xsi:type="Organization">
 					<addresses>
 						<address>
-							<dt:part type="SAL" value="3851 Rosecrans Street" />
-							<dt:part type="ADL" value="Mailstop P577" />
-							<dt:part type="CTY" value="San Diego" />
-							<dt:part type="ZIP" value="92110" />
-							<dt:part type="STA" value="CA" />
-							<dt:part type="CNT" value="USA" />
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="SAL" value="3851 Rosecrans Street"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ADL" value="Mailstop P577"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CTY" value="San Diego"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ZIP" value="92110"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="STA" value="CA"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CNT" value="USA"></dt:part>
 						</address>
 					</addresses>
 					<contacts>
-						<contact value="tel:619-692-8499" use="WP" capabilities="voice" />
-						<contact value="tel:858-715-6458" use="WP" capabilities="fax" />
+						<contact capabilities="voice" use="WP" value="tel:619-692-8499"></contact>
+						<contact capabilities="fax" use="WP" value="tel:858-715-6458"></contact>
 					</contacts>
-					<name
-						value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program" />
+					<name value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program"></name>
 				</contributor>
-				<role value="Author" />
+				<role value="Author"></role>
 			</contribution>
 		</contributions>
 		<publishers>
 			<publisher xsi:type="Organization">
 				<addresses>
 					<address>
-						<dt:part type="SAL" value="3851 Rosecrans Street" />
-						<dt:part type="ADL" value="Mailstop P577" />
-						<dt:part type="CTY" value="San Diego" />
-						<dt:part type="ZIP" value="92110" />
-						<dt:part type="STA" value="CA" />
-						<dt:part type="CNT" value="USA" />
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="SAL" value="3851 Rosecrans Street"></dt:part>
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ADL" value="Mailstop P577"></dt:part>
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CTY" value="San Diego"></dt:part>
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ZIP" value="92110"></dt:part>
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="STA" value="CA"></dt:part>
+						<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CNT" value="USA"></dt:part>
 					</address>
 				</addresses>
 				<contacts>
-					<contact value="tel:619-692-8499" use="WP" capabilities="voice" />
-					<contact value="tel:858-715-6458" use="WP" capabilities="fax" />
+					<contact capabilities="voice" use="WP" value="tel:619-692-8499"></contact>
+					<contact capabilities="fax" use="WP" value="tel:858-715-6458"></contact>
 				</contacts>
-				<name
-					value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program" />
+				<name value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program"></name>
 			</publisher>
 		</publishers>
 		<usageTerms>
-			<!-- Review -->
+			
 			<rightsDeclaration>
-				<assertedRights value="Copyright (2012)" />
+				<assertedRights value="Copyright (2012)"></assertedRights>
 				<rightsHolder xsi:type="Organization">
 					<addresses>
 						<address>
-							<dt:part type="SAL" value="3851 Rosecrans Street" />
-							<dt:part type="ADL" value="Mailstop P577" />
-							<dt:part type="CTY" value="San Diego" />
-							<dt:part type="ZIP" value="92110" />
-							<dt:part type="STA" value="CA" />
-							<dt:part type="CNT" value="USA" />
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="SAL" value="3851 Rosecrans Street"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ADL" value="Mailstop P577"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CTY" value="San Diego"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ZIP" value="92110"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="STA" value="CA"></dt:part>
+							<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CNT" value="USA"></dt:part>
 						</address>
 					</addresses>
 					<contacts>
-						<contact value="tel:619-692-8499" use="WP" capabilities="voice" />
-						<contact value="tel:858-715-6458" use="WP" capabilities="fax" />
+						<contact capabilities="voice" use="WP" value="tel:619-692-8499"></contact>
+						<contact capabilities="fax" use="WP" value="tel:858-715-6458"></contact>
 					</contacts>
-					<name
-						value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program" />
+					<name value="San Diego County Health and Human Services Agency Epidemiology and Immunization Services Branch/ Immunization Program"></name>
 				</rightsHolder>
 			</rightsDeclaration>
 		</usageTerms>
 	</metadata>
 	<externalData>
 		<def name="Patient">
-			<expression xsi:type="ClinicalRequest" cardinality="Single"
-				dataType="vmr:EvaluatedPerson" isInitial="true">
+			<expression cardinality="Single" dataType="vmr:EvaluatedPerson" isInitial="true" xsi:type="ClinicalRequest">
 				<description>Get patient data object</description>
 			</expression>
 		</def>
 		<def name="PertussisProblems">
-			<expression xsi:type="ClinicalRequest" cardinality="Multiple"
-				dataType="vmr:Problem" isInitial="true" useValueSets="true"
-				dateProperty="diagnosticEventTime.begin" codeProperty="problemCode"
-				triggerType="DataElementAdded">
+			<expression cardinality="Multiple" codeProperty="problemCode" dataType="vmr:Problem" dateProperty="diagnosticEventTime.begin" isInitial="true" triggerType="DataElementAdded" useValueSets="true" xsi:type="ClinicalRequest">
 				<description>Pertussis problem - addition of this data element is a
-					trigger for the rule</description>
-				<codes xsi:type="ValueSet" id="2.16.840.1.114222.4.11.7005"
-					version="1" />
+					trigger for the rule
+				</description>
+				<codes id="2.16.840.1.114222.4.11.7005" version="1" xsi:type="ValueSet"></codes>
 			</expression>
 		</def>
 
 		<def name="PertussisProblemsWithDeathVS">
-			<expression xsi:type="ClinicalRequest" cardinality="Multiple"
-				dataType="vmr:Problem" isInitial="true" useValueSets="true"
-				dateProperty="diagnosticEventTime.begin" codeProperty="problemCode"
-				triggerType="DataElementAdded">
+			<expression cardinality="Multiple" codeProperty="problemCode" dataType="vmr:Problem" dateProperty="diagnosticEventTime.begin" isInitial="true" triggerType="DataElementAdded" useValueSets="true" xsi:type="ClinicalRequest">
 				<description>Pertussis problem - addition of this data element is a
 					trigger for the rule.
 					This problem code maps to a different value set than the previous one.
 				</description>
-				<codes xsi:type="ValueSet" id="2.16.840.1.114222.4.11.7004"
-					version="1" />
+				<codes id="2.16.840.1.114222.4.11.7004" version="1" xsi:type="ValueSet"></codes>
 			</expression>
 
 		</def>
 
 		<def name="BPertussisCultureTests">
-			<expression xsi:type="ClinicalRequest" cardinality="Multiple"
-				dataType="vmr:ObservationResult" isInitial="true" useValueSets="true"
-				dateProperty="observationEventTime.begin" codeProperty="observationFocus"
-				triggerType="DataElementAdded">
+			<expression cardinality="Multiple" codeProperty="observationFocus" dataType="vmr:ObservationResult" dateProperty="observationEventTime.begin" isInitial="true" triggerType="DataElementAdded" useValueSets="true" xsi:type="ClinicalRequest">
 				<description>Result of Bordetella pertussis culture from a clinical
 					specimen
 					- addition of this data element is a trigger for the rule
 				</description>
-				<codes xsi:type="ValueSet" id="2.16.840.1.114222.4.11.7035"
-					version="1" />
+				<codes id="2.16.840.1.114222.4.11.7035" version="1" xsi:type="ValueSet"></codes>
 			</expression>
 		</def>
 
 		<def name="BPertussisTestResults">
-			<expression xsi:type="ClinicalRequest" cardinality="Multiple"
-				dataType="vmr:ObservationResult" isInitial="true" useValueSets="true"
-				dateProperty="observationEventTime.begin" codeProperty="observationFocus"
-				triggerType="DataElementAdded">
+			<expression cardinality="Multiple" codeProperty="observationFocus" dataType="vmr:ObservationResult" dateProperty="observationEventTime.begin" isInitial="true" triggerType="DataElementAdded" useValueSets="true" xsi:type="ClinicalRequest">
 				<description>Results from any test specific for pertussis
 					- Pertussis problem - addition of this data element is a trigger for
 					the rule
 				</description>
-				<codes xsi:type="ValueSet" id="2.16.840.1.114222.4.11.7034"
-					version="1" />
+				<codes id="2.16.840.1.114222.4.11.7034" version="1" xsi:type="ValueSet"></codes>
 			</expression>
 		</def>
 
 		<def name="GeneralCultureTests">
-			<expression xsi:type="ClinicalRequest" cardinality="Multiple"
-				dataType="vmr:ObservationResult" isInitial="true" useValueSets="true"
-				dateProperty="observationEventTime.begin" codeProperty="observationFocus"
-				triggerType="DataElementAdded">
+			<expression cardinality="Multiple" codeProperty="observationFocus" dataType="vmr:ObservationResult" dateProperty="observationEventTime.begin" isInitial="true" triggerType="DataElementAdded" useValueSets="true" xsi:type="ClinicalRequest">
 				<description>Culture test that is not specific to an organism -
 					addition of this data element is a trigger for the rule
 				</description>
-				<codes xsi:type="ValueSet" id="2.16.840.1.114222.4.11.TBD"
-					version="1" />
+				<codes id="2.16.840.1.114222.4.11.TBD" version="1" xsi:type="ValueSet"></codes>
 			</expression>
 		</def>
 
@@ -266,38 +215,39 @@
 		<def name="PatientLivesInSDCounty">
 			<expression xsi:type="IsNotEmpty">
 				<description>Returns true if there are any primary home addresses in
-					San Diego county</description>
+					San Diego county
+				</description>
 				<operand xsi:type="Filter">
 					<description>From the set of addresses for the patient, get all
 						that are
 						marked as primary home and for which the county is San Diego
 					</description>
-					<source xsi:type="Property" path="address">
+					<source path="address" xsi:type="Property">
 						<description>All the patient addresses</description>
-						<source xsi:type="ExpressionRef" name="Patient" />
+						<source name="Patient" xsi:type="ExpressionRef"></source>
 					</source>
 					<condition xsi:type="And">
 						<operand xsi:type="Equal">
 							<description>Is San Diego the county</description>
-							<operand xsi:type="Property" path="value">
+							<operand path="value" xsi:type="Property">
 								<source xsi:type="First">
 									<source xsi:type="Filter">
 										<description>Get the county part of the address</description>
-										<source xsi:type="Property" path="part" />
+										<source path="part" xsi:type="Property"></source>
 										<condition xsi:type="Equal">
-											<operand xsi:type="Property" path="type" />
-											<operand xsi:type="StringLiteral" value="CNT" />
+											<operand path="type" xsi:type="Property"></operand>
+											<operand value="CNT" xsi:type="StringLiteral"></operand>
 										</condition>
 									</source>
 								</source>
 							</operand>
-							<operand xsi:type="StringLiteral" value="San Diego" />
+							<operand value="San Diego" xsi:type="StringLiteral"></operand>
 						</operand>
 						<operand xsi:type="Contains">
 							<description>Is the address identified as primary home address
 							</description>
-							<source xsi:type="Property" path="use" />
-							<element xsi:type="StringLiteral" value="HP" />
+							<source path="use" xsi:type="Property"></source>
+							<element value="HP" xsi:type="StringLiteral"></element>
 						</operand>
 					</condition>
 				</operand>
@@ -311,16 +261,14 @@
 					other words, the problem is active or status
 					is not specified
 				</description>
-				<source xsi:type="ExpressionRef" name="PertussisProblems" />
+				<source name="PertussisProblems" xsi:type="ExpressionRef"></source>
 				<condition xsi:type="Not">
 					<operand xsi:type="In">
-						<element xsi:type="Property" path="problemStatus">
+						<element path="problemStatus" xsi:type="Property">
 						</element>
 						<collection xsi:type="List">
-							<element xsi:type="CodeLiteral" codeSystem="2.16.840.1.113883.6.96"
-								code="73425007" displayName="Inactive" />
-							<element xsi:type="CodeLiteral" codeSystem="2.16.840.1.113883.6.96"
-								code="413322009" displayName="Resolved" />
+							<element code="73425007" codeSystem="2.16.840.1.113883.6.96" displayName="Inactive" xsi:type="CodeLiteral"></element>
+							<element code="413322009" codeSystem="2.16.840.1.113883.6.96" displayName="Resolved" xsi:type="CodeLiteral"></element>
 						</collection>
 					</operand>
 				</condition>
@@ -329,33 +277,34 @@
 
 		<def name="HasActivePertussisProblems">
 			<expression xsi:type="IsNotEmpty">
-				<operand xsi:type="ExpressionRef" name="ActivePertussisProblems" />
+				<operand name="ActivePertussisProblems" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
 		<def name="PertussisProblemsAsCauseOfDeath">
 			<expression xsi:type="Filter">
 				<description>Select those problems that have been marked as cause of
-					death</description>
-				<source xsi:type="ExpressionRef" name="PertussisProblemsWithDeathVS" />
+					death
+				</description>
+				<source name="PertussisProblemsWithDeathVS" xsi:type="ExpressionRef"></source>
 				<condition xsi:type="Equal">
-					<operand xsi:type="Property" path="wasCauseOfDeath" />
-					<operand xsi:type="BooleanLiteral" value="true" />
+					<operand path="wasCauseOfDeath" xsi:type="Property"></operand>
+					<operand value="true" xsi:type="BooleanLiteral"></operand>
 				</condition>
 			</expression>
 		</def>
 
 		<def name="DeathWasCausedByPertussis">
 			<expression xsi:type="IsNotEmpty">
-				<operand xsi:type="ExpressionRef" name="PertussisProblemsAsCauseOfDeath" />
+				<operand name="PertussisProblemsAsCauseOfDeath" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
-		<!-- TODO: Check status field for preliminary results -->
-		<!-- VMR does not appear to have a field for result status -->
+		
+		
 		<def name="PertussisCultureResultsPositive">
 			<expression xsi:type="Filter">
-				<source xsi:type="ExpressionRef" name="BPertussisCultureTests" />
+				<source name="BPertussisCultureTests" xsi:type="ExpressionRef"></source>
 				<condition xsi:type="Or">
 					<description>Either the result interpretation is positive or the
 						result value is from the
@@ -366,23 +315,21 @@
 					</description>
 					<operand xsi:type="In">
 						<description>The interpretation is positive</description>
-						<element xsi:type="CodeLiteral" code="POS"
-							codeSystem=" 2.16.840.1.113883.5.83" displayName="Positive" />
-						<collection xsi:type="Property" path="interpretation" />
+						<element code="POS" codeSystem=" 2.16.840.1.113883.5.83" displayName="Positive" xsi:type="CodeLiteral"></element>
+						<collection path="interpretation" xsi:type="Property"></collection>
 					</operand>
-					<operand xsi:type="InValueSet" id="TBD-PositiveResultsValueSet"
-						version="1">
+					<operand id="TBD-PositiveResultsValueSet" version="1" xsi:type="InValueSet">
 						<description>The result is marked as positive</description>
-						<operand xsi:type="As" asType="dt:CD">
-							<operand xsi:type="Property" path="observationValue" />
+						<operand asType="dt:CD" xsi:type="As">
+							<operand path="observationValue" xsi:type="Property"></operand>
 						</operand>
 					</operand>
-					<operand xsi:type="InValueSet" id="2.16.840.1.114222.4.11.7014"
-						version="1">
+					<operand id="2.16.840.1.114222.4.11.7014" version="1" xsi:type="InValueSet">
 						<description>The result contains the organism that was identified
-							- B Pertussis</description>
-						<operand xsi:type="As" asType="dt:CD">
-							<operand xsi:type="Property" path="observationValue" />
+							- B Pertussis
+						</description>
+						<operand asType="dt:CD" xsi:type="As">
+							<operand path="observationValue" xsi:type="Property"></operand>
 						</operand>
 					</operand>
 				</condition>
@@ -391,7 +338,7 @@
 
 		<def name="HasPertussisCultureResultsPositive">
 			<expression xsi:type="IsNotEmpty">
-				<operand xsi:type="ExpressionRef" name="PertussisCultureResultsPositive" />
+				<operand name="PertussisCultureResultsPositive" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
@@ -401,12 +348,11 @@
 					result value. Since this is a general culture
 					test, we do not test for "positive" results or interpretation.
 				</description>
-				<source xsi:type="ExpressionRef" name="GeneralCultureTests" />
-				<condition xsi:type="InValueSet" id="2.16.840.1.114222.4.11.7014"
-					version="1">
-					<!-- Review: Is this the correct value set -->
-					<operand xsi:type="As" asType="dt:CD">
-						<operand xsi:type="Property" path="observationValue" />
+				<source name="GeneralCultureTests" xsi:type="ExpressionRef"></source>
+				<condition id="2.16.840.1.114222.4.11.7014" version="1" xsi:type="InValueSet">
+					
+					<operand asType="dt:CD" xsi:type="As">
+						<operand path="observationValue" xsi:type="Property"></operand>
 					</operand>
 				</condition>
 			</expression>
@@ -414,23 +360,19 @@
 
 		<def name="HasGeneralCultureResultsPositiveForPertussis">
 			<expression xsi:type="IsNotEmpty">
-				<operand xsi:type="ExpressionRef"
-					name="GeneralCultureResultsPositiveForPertussis" />
+				<operand name="GeneralCultureResultsPositiveForPertussis" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
 		<def name="HasBPertussisTestResults">
 			<expression xsi:type="IsNotEmpty">
-				<operand xsi:type="ExpressionRef" name="BPertussisTestResults" />
+				<operand name="BPertussisTestResults" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
 		<def name="ReportingTopic">
-			<!-- TODO: This cast is incorrect, as it may be a Problem or an ObservationResult, 
-				but since relatedClinicalStatement is only defined on the leaf classes (not 
-				the base ClinicalStatement class), it makes the subsequent use of this expression 
-				much more difficult. This should be modified on the vMR to resolve. -->
-			<expression xsi:type="As" asType="vmr:Problem">
+			
+			<expression asType="vmr:Problem" xsi:type="As">
 				<description>ReportingTopic in essence maps to the data element that
 					triggered the rule. It does
 					so by looking at which of the data elements have a value associated
@@ -442,48 +384,43 @@
 					<description>Select the item that has a non-empty value.
 					</description>
 					<caseItem>
-						<when xsi:type="ExpressionRef" name="HasActivePertussisProblems" />
-						<!-- filter to the most recent problem -->
-						<then xsi:type="As" asType="vmr:ClinicalStatement">
-							<operand xsi:type="Last" orderBy="problemEffectiveTime.begin">
-								<source xsi:type="ExpressionRef" name="ActivePertussisProblems" />
+						<when name="HasActivePertussisProblems" xsi:type="ExpressionRef"></when>
+						
+						<then asType="vmr:ClinicalStatement" xsi:type="As">
+							<operand orderBy="problemEffectiveTime.begin" xsi:type="Last">
+								<source name="ActivePertussisProblems" xsi:type="ExpressionRef"></source>
 							</operand>
 						</then>
 					</caseItem>
 					<caseItem>
-						<when xsi:type="ExpressionRef" name="DeathWasCausedByPertussis" />
-						<!-- filter it to the most recent problem - the PertussisProblemsAsCauseOfDeath 
-							expressions maps to a collection -->
-						<then xsi:type="Last" orderBy="problemEffectiveTime.begin">
-							<source xsi:type="ExpressionRef" name="PertussisProblemsAsCauseOfDeath" />
+						<when name="DeathWasCausedByPertussis" xsi:type="ExpressionRef"></when>
+						
+						<then orderBy="problemEffectiveTime.begin" xsi:type="Last">
+							<source name="PertussisProblemsAsCauseOfDeath" xsi:type="ExpressionRef"></source>
 						</then>
 					</caseItem>
 					<caseItem>
-						<when xsi:type="ExpressionRef" name="HasPertussisCultureResultsPositive" />
-						<!-- filter it to the most recent result - the PertussisCultureResultsPositive 
-							expression maps to a collection -->
-						<then xsi:type="Last" orderBy="observationEventTime.low">
-							<source xsi:type="ExpressionRef" name="PertussisCultureResultsPositive" />
+						<when name="HasPertussisCultureResultsPositive" xsi:type="ExpressionRef"></when>
+						
+						<then orderBy="observationEventTime.low" xsi:type="Last">
+							<source name="PertussisCultureResultsPositive" xsi:type="ExpressionRef"></source>
 						</then>
 					</caseItem>
 					<caseItem>
-						<when xsi:type="ExpressionRef" name="HasGeneralCultureResultsPositiveForPertussis" />
-						<!-- filter it to the most recent result - the GeneralCultureResultsPositiveForPertussis 
-							expressions maps to a collection -->
-						<then xsi:type="Last" orderBy="observationEventTime.begin">
-							<source xsi:type="ExpressionRef"
-								name="GeneralCultureResultsPositiveForPertussis" />
+						<when name="HasGeneralCultureResultsPositiveForPertussis" xsi:type="ExpressionRef"></when>
+						
+						<then orderBy="observationEventTime.begin" xsi:type="Last">
+							<source name="GeneralCultureResultsPositiveForPertussis" xsi:type="ExpressionRef"></source>
 						</then>
 					</caseItem>
 					<caseItem>
-						<when xsi:type="ExpressionRef" name="HasBPertussisTestResults" />
-						<!-- filter it to the most recent result - the BPertussisTestResults 
-							expressions maps to a collection -->
-						<then xsi:type="Last" orderBy="observationEventTime.begin">
-							<source xsi:type="ExpressionRef" name="BPertussisTestResults" />
+						<when name="HasBPertussisTestResults" xsi:type="ExpressionRef"></when>
+						
+						<then orderBy="observationEventTime.begin" xsi:type="Last">
+							<source name="BPertussisTestResults" xsi:type="ExpressionRef"></source>
 						</then>
 					</caseItem>
-					<else xsi:type="Null" valueType="vmr:ClinicalStatement">
+					<else valueType="vmr:ClinicalStatement" xsi:type="Null">
 						<description>Return null object, if none of the above are true
 						</description>
 					</else>
@@ -492,13 +429,8 @@
 		</def>
 
 
-		<!-- The next set of expressions aim to identify the related encounter 
-			in which the reporting topic was created. One reporting criterion is that 
-			the encounter should have occured in San Diego County. For problems, the 
-			encounter is within the related clinical statement. For test results, first 
-			identify the order for the test, then find the related encounter. -->
-		<!-- ReportingTopic.relatedClinicalStatement[trs="COMP"].encounterEvent, 
-			where encounter event is not null -->
+		
+		
 		<def name="ProblemEncounter">
 			<expression xsi:type="Conditional">
 				<description>Get encounter related to problem. Using the First
@@ -509,11 +441,11 @@
 				<condition xsi:type="Or">
 					<description>Applies only if the reporting topic was a problem
 					</description>
-					<operand xsi:type="ExpressionRef" name="HasActivePertussisProblems" />
-					<operand xsi:type="ExpressionRef" name="DeathWasCausedByPertussis" />
+					<operand name="HasActivePertussisProblems" xsi:type="ExpressionRef"></operand>
+					<operand name="DeathWasCausedByPertussis" xsi:type="ExpressionRef"></operand>
 				</condition>
-				<!-- <then xsi:type="Property" path="encounterEvent"> <source xsi:type="First"> -->
-				<then xsi:type="As" asType="vmr:EncounterEvent">
+				
+				<then asType="vmr:EncounterEvent" xsi:type="As">
 					<description>Filter should return a collection with only one
 						encounter; use First to transform the
 						collection into a single
@@ -521,19 +453,18 @@
 					</description>
 					<operand xsi:type="First">
 						<source xsi:type="Filter">
-							<source xsi:type="Property" path="relatedClinicalStatement">
-								<source xsi:type="ExpressionRef" name="ReportingTopic" />
+							<source path="relatedClinicalStatement" xsi:type="Property">
+								<source name="ReportingTopic" xsi:type="ExpressionRef"></source>
 							</source>
 							<condition xsi:type="Equal">
-								<operand xsi:type="Property" path="targetRole" />
-								<operand xsi:type="CodeLiteral" code="COMP" displayName="has component"
-									codeSystem="2.16.840.1.113883.5.1002" />
+								<operand path="targetRole" xsi:type="Property"></operand>
+								<operand code="COMP" codeSystem="2.16.840.1.113883.5.1002" displayName="has component" xsi:type="CodeLiteral"></operand>
 							</condition>
 						</source>
 					</operand>
-					<!-- </source> -->
+					
 				</then>
-				<else xsi:type="Null" valueType="vmr:EncounterEvent" />
+				<else valueType="vmr:EncounterEvent" xsi:type="Null"></else>
 			</expression>
 		</def>
 
@@ -542,33 +473,31 @@
 				<condition xsi:type="Or">
 					<description>Applies only if the reporting topic was a test result
 					</description>
-					<operand xsi:type="ExpressionRef" name="HasPertussisCultureResultsPositive" />
-					<operand xsi:type="ExpressionRef"
-						name="HasGeneralCultureResultsPositiveForPertussis" />
-					<operand xsi:type="ExpressionRef" name="HasBPertussisTestResults" />
+					<operand name="HasPertussisCultureResultsPositive" xsi:type="ExpressionRef"></operand>
+					<operand name="HasGeneralCultureResultsPositiveForPertussis" xsi:type="ExpressionRef"></operand>
+					<operand name="HasBPertussisTestResults" xsi:type="ExpressionRef"></operand>
 				</condition>
-				<then xsi:type="As" asType="vmr:ObservationOrder">
+				<then asType="vmr:ObservationOrder" xsi:type="As">
 					<operand xsi:type="First">
 						<description>convert from collection to object</description>
 						<source xsi:type="Filter">
 							<description>find related order</description>
-							<source xsi:type="Property" path="relatedClinicalStatement">
-								<source xsi:type="ExpressionRef" name="ReportingTopic" />
+							<source path="relatedClinicalStatement" xsi:type="Property">
+								<source name="ReportingTopic" xsi:type="ExpressionRef"></source>
 							</source>
 							<condition xsi:type="Equal">
-								<operand xsi:type="Property" path="targetRole" />
-								<operand xsi:type="CodeLiteral" code="FLFS" displayName="fulfills"
-									codeSystem="2.16.840.1.113883.5.1002" />
+								<operand path="targetRole" xsi:type="Property"></operand>
+								<operand code="FLFS" codeSystem="2.16.840.1.113883.5.1002" displayName="fulfills" xsi:type="CodeLiteral"></operand>
 							</condition>
 						</source>
 					</operand>
 				</then>
-				<else xsi:type="Null" valueType="vmr:ObservationOrder" />
+				<else valueType="vmr:ObservationOrder" xsi:type="Null"></else>
 			</expression>
 		</def>
 
 		<def name="TestOrderEncounter">
-			<expression xsi:type="As" asType="vmr:EncounterEvent">
+			<expression asType="vmr:EncounterEvent" xsi:type="As">
 				<description>Get encounter related to test order. Using the First
 					expression to
 					convert a collection to a single object. The Filter should return a
@@ -576,13 +505,12 @@
 				</description>
 				<operand xsi:type="First">
 					<source xsi:type="Filter">
-						<source xsi:type="Property" path="relatedClinicalStatement">
-							<source xsi:type="ExpressionRef" name="OrderForTest" />
+						<source path="relatedClinicalStatement" xsi:type="Property">
+							<source name="OrderForTest" xsi:type="ExpressionRef"></source>
 						</source>
 						<condition xsi:type="Equal">
-							<operand xsi:type="Property" path="targetRole" />
-							<operand xsi:type="CodeLiteral" code="COMP" displayName="has component"
-								codeSystem="2.16.840.1.113883.5.1002" />
+							<operand path="targetRole" xsi:type="Property"></operand>
+							<operand code="COMP" codeSystem="2.16.840.1.113883.5.1002" displayName="has component" xsi:type="CodeLiteral"></operand>
 						</condition>
 					</source>
 				</operand>
@@ -591,13 +519,13 @@
 
 		<def name="RelatedEncounter">
 			<expression xsi:type="IfNull">
-				<operand xsi:type="ExpressionRef" name="ProblemEncounter" />
-				<operand xsi:type="ExpressionRef" name="TestOrderEncounter" />
+				<operand name="ProblemEncounter" xsi:type="ExpressionRef"></operand>
+				<operand name="TestOrderEncounter" xsi:type="ExpressionRef"></operand>
 			</expression>
 		</def>
 
 		<def name="RelatedEncounterLocation">
-			<expression xsi:type="As" asType="vmr:Facility">
+			<expression asType="vmr:Facility" xsi:type="As">
 				<description>Get the facility for the related encounter
 				</description>
 				<operand xsi:type="Last">
@@ -606,13 +534,12 @@
 							selecting those relatedEntities that have a target role of
 							location
 						</description>
-						<source xsi:type="Property" path="relatedEntity">
-							<source xsi:type="ExpressionRef" name="RelatedEncounter" />
+						<source path="relatedEntity" xsi:type="Property">
+							<source name="RelatedEncounter" xsi:type="ExpressionRef"></source>
 						</source>
 						<condition xsi:type="Equal">
-							<operand xsi:type="Property" path="targetRole" />
-							<operand xsi:type="CodeLiteral" code="LOC"
-								codeSystem="2.16.840.1.113883.5.90" codeSystemName="HL7 ParticipationType" />
+							<operand path="targetRole" xsi:type="Property"></operand>
+							<operand code="LOC" codeSystem="2.16.840.1.113883.5.90" codeSystemName="HL7 ParticipationType" xsi:type="CodeLiteral"></operand>
 						</condition>
 					</source>
 				</operand>
@@ -622,39 +549,38 @@
 		<def name="RelatedEncounterWasInSDCounty">
 			<expression xsi:type="Equal">
 				<description>Is San Diego the county</description>
-				<operand xsi:type="Property" path="value">
+				<operand path="value" xsi:type="Property">
 					<source xsi:type="First">
 						<source xsi:type="Filter">
 							<description>Get the county part of the address</description>
-							<source xsi:type="Property" path="part">
+							<source path="part" xsi:type="Property">
 								<source xsi:type="First">
 									<source xsi:type="Filter">
-										<source xsi:type="Property" path="address">
-											<source xsi:type="ExpressionRef" name="RelatedEncounterLocation" />
+										<source path="address" xsi:type="Property">
+											<source name="RelatedEncounterLocation" xsi:type="ExpressionRef"></source>
 										</source>
 										<condition xsi:type="Contains">
 											<description>Physical address</description>
-											<source xsi:type="Property" path="use" />
-											<element xsi:type="StringLiteral" value="PHYS" />
+											<source path="use" xsi:type="Property"></source>
+											<element value="PHYS" xsi:type="StringLiteral"></element>
 										</condition>
 									</source>
 								</source>
 							</source>
 							<condition xsi:type="Equal">
-								<operand xsi:type="Property" path="type" />
-								<operand xsi:type="StringLiteral" value="CNT" />
+								<operand path="type" xsi:type="Property"></operand>
+								<operand value="CNT" xsi:type="StringLiteral"></operand>
 							</condition>
 						</source>
 					</source>
 				</operand>
-				<operand xsi:type="StringLiteral" value="San Diego" />
+				<operand value="San Diego" xsi:type="StringLiteral"></operand>
 			</expression>
 		</def>
 
 		<def name="CommunicateTopicToRecipient">
-			<!-- Creates a reusable communication action. This is used with each of 
-				the different communication methods -->
-			<expression xsi:type="ObjectExpression" objectType="vmr:CommunicationProposal">
+			
+			<expression objectType="vmr:CommunicationProposal" xsi:type="ObjectExpression">
 				<description>This expression is the action object to notify the
 					health agency. The base action
 					is defined here. Within the actions section, the expression is
@@ -662,31 +588,28 @@
 					the communication method.
 				</description>
 				<property name="reason">
-					<value xsi:type="CodeLiteral" codeSystem="2.16.840.1.113883.6.96"
-						code="170516003" displayName="Notification of disease" />
+					<value code="170516003" codeSystem="2.16.840.1.113883.6.96" displayName="Notification of disease" xsi:type="CodeLiteral"></value>
 				</property>
 				<property name="topic">
-					<value xsi:type="ExpressionRef" name="ReportingTopic" />
+					<value name="ReportingTopic" xsi:type="ExpressionRef"></value>
 				</property>
 				<property name="proposedCommunicationTime">
 					<value xsi:type="Interval">
 						<description>The disease notification must occur within one day
 						</description>
-						<begin xsi:type="Today" />
+						<begin xsi:type="Today"></begin>
 						<end xsi:type="DateAdd">
-							<date xsi:type="Today" />
-							<granularity xsi:type="Literal" valueType="DateGranularity"
-								value="Day" />
-							<numberOfPeriods xsi:type="IntegerLiteral" value="1" />
+							<date xsi:type="Today"></date>
+							<granularity value="Day" valueType="DateGranularity" xsi:type="Literal"></granularity>
+							<numberOfPeriods value="1" xsi:type="IntegerLiteral"></numberOfPeriods>
 						</end>
 					</value>
 				</property>
 				<property name="recipient">
 					<value xsi:type="ComplexLiteral">
 						<value xsi:type="vmr:Organization">
-							<vmr:name>
-								<dt:part type="TITLE"
-									value="County of San Diego Health and Human Services Agency" />
+							<vmr:name xmlns:vmr="urn:hl7-org:vmr:r2">
+								<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="TITLE" value="County of San Diego Health and Human Services Agency"></dt:part>
 							</vmr:name>
 						</value>
 					</value>
@@ -699,31 +622,28 @@
 	<triggers>
 		<trigger>
 			<eventType>DataEvent</eventType>
-			<expression xsi:type="ExpressionRef" name="PertussisProblems" />
+			<expression name="PertussisProblems" xsi:type="ExpressionRef"></expression>
 		</trigger>
 		<trigger>
 			<eventType>DataEvent</eventType>
-			<expression xsi:type="ExpressionRef" name="PertussisProblemsWithDeathVS" />
+			<expression name="PertussisProblemsWithDeathVS" xsi:type="ExpressionRef"></expression>
 		</trigger>
 		<trigger>
 			<eventType>DataEvent</eventType>
-			<expression xsi:type="ExpressionRef" name="BPertussisTestResults" />
+			<expression name="BPertussisTestResults" xsi:type="ExpressionRef"></expression>
 		</trigger>
 		<trigger>
 			<eventType>DataEvent</eventType>
-			<expression xsi:type="ExpressionRef" name="BPertussisCultureTests" />
+			<expression name="BPertussisCultureTests" xsi:type="ExpressionRef"></expression>
 		</trigger>
 		<trigger>
 			<eventType>DataEvent</eventType>
-			<expression xsi:type="ExpressionRef" name="GeneralCultureTests" />
+			<expression name="GeneralCultureTests" xsi:type="ExpressionRef"></expression>
 		</trigger>
 	</triggers>
 
 	<conditions>
-		<!-- These are the reporting criteria Patient lives in San Diego county 
-			and Care encounter was in San Diego county yesterday or today and (Problem 
-			List shows Pertussis or Death caused by Pertussis - time range) TO DO: Death 
-			contributed to by Pertussis -->
+		
 		<condition>
 			<logic xsi:type="And">
 				<description>(Patient lives in SD or Care encounter was in SD) and
@@ -732,35 +652,30 @@
 					positive for pertussis)
 				</description>
 				<operand xsi:type="Or">
-					<operand xsi:type="ExpressionRef" name="PatientLivesInSDCounty" />
-					<operand xsi:type="ExpressionRef" name="RelatedEncounterWasInSDCounty" />
+					<operand name="PatientLivesInSDCounty" xsi:type="ExpressionRef"></operand>
+					<operand name="RelatedEncounterWasInSDCounty" xsi:type="ExpressionRef"></operand>
 				</operand>
 				<operand xsi:type="Or">
-					<!-- Necessary clinical conditions -->
-					<operand xsi:type="ExpressionRef" name="HasActivePertussisProblems" />
-					<operand xsi:type="ExpressionRef" name="DeathWasCausedByPertussis" />
-					<operand xsi:type="ExpressionRef" name="HasPertussisCultureResultsPositive" />
-					<operand xsi:type="ExpressionRef"
-						name="HasGeneralCultureResultsPositiveForPertussis" />
-					<operand xsi:type="ExpressionRef" name="HasBPertussisTestResults" />
+					
+					<operand name="HasActivePertussisProblems" xsi:type="ExpressionRef"></operand>
+					<operand name="DeathWasCausedByPertussis" xsi:type="ExpressionRef"></operand>
+					<operand name="HasPertussisCultureResultsPositive" xsi:type="ExpressionRef"></operand>
+					<operand name="HasGeneralCultureResultsPositiveForPertussis" xsi:type="ExpressionRef"></operand>
+					<operand name="HasBPertussisTestResults" xsi:type="ExpressionRef"></operand>
 				</operand>
 			</logic>
-			<conditionRole value="ApplicableScenario" />
+			<conditionRole value="ApplicableScenario"></conditionRole>
 		</condition>
 	</conditions>
 	<actionGroup>
 		<subElements>
-			<!-- The first action is a message to the recipient alerting them to a 
-				notifiable case -->
-			<!-- The second action (group)is the action to communicate the case to 
-				the public health agency -->
+			
+			
 			<simpleAction xsi:type="CreateAction">
-				<actionSentence xsi:type="ObjectExpression"
-					objectType="vmr:CommunicationProposal">
+				<actionSentence objectType="vmr:CommunicationProposal" xsi:type="ObjectExpression">
 					<property name="message">
 						<value xsi:type="ComplexLiteral">
-							<value xsi:type="dt:ED"
-								value="This patient has or is suspected of having pertussis. Patients diagnosed with or suspected of having pertussis must be reported to County of San Diego Health and Human Services Agency within one working day of identification or suspicion" />
+							<value value="This patient has or is suspected of having pertussis. Patients diagnosed with or suspected of having pertussis must be reported to County of San Diego Health and Human Services Agency within one working day of identification or suspicion" xsi:type="dt:ED"></value>
 						</value>
 					</property>
 				</actionSentence>
@@ -768,41 +683,37 @@
 			<actionGroup>
 				<supportingResources>
 					<resource>
-						<title value="Reporting/submission form" />
-						<location
-							value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html" />
+						<title value="Reporting/submission form"></title>
+						<location value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html"></location>
 					</resource>
 				</supportingResources>
 
-				<!-- Each method to communicate the case is created as a separate action 
-					in this subgroup. Since the actions only vary in the method to communicate, 
-					this group is marked as a sentence group. -->
+				
 				<behaviors>
-					<behavior xsi:type="GroupOrganizationBehavior" value="SentenceGroup" />
+					<behavior value="SentenceGroup" xsi:type="GroupOrganizationBehavior"></behavior>
 				</behaviors>
-				<title value="Notify County of San Diego Health and Human Services Agency" />
+				<title value="Notify County of San Diego Health and Human Services Agency"></title>
 				<subElements>
 					<simpleAction xsi:type="CreateAction">
 						<behaviors>
-							<behavior xsi:type="PrecheckBehavior" value="No" />
+							<behavior value="No" xsi:type="PrecheckBehavior"></behavior>
 						</behaviors>
-						<textEquivalent value="mail to epi program at SDDHHS" />
+						<textEquivalent value="mail to epi program at SDDHHS"></textEquivalent>
 						<actionSentence xsi:type="ObjectRedefine">
-							<source xsi:type="ExpressionRef" name="CommunicateTopicToRecipient" />
+							<source name="CommunicateTopicToRecipient" xsi:type="ExpressionRef"></source>
 							<property name="recipient">
 								<value xsi:type="ComplexLiteral">
 									<value xsi:type="vmr:Organization">
-										<vmr:name>
-											<dt:part type="TITLE"
-												value="County of San Diego Health and Human Services Agency" />
+										<vmr:name xmlns:vmr="urn:hl7-org:vmr:r2">
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="TITLE" value="County of San Diego Health and Human Services Agency"></dt:part>
 										</vmr:name>
-										<vmr:address>
-											<dt:part type="SAL" value="3851 Rosecrans Street" />
-											<dt:part type="ADL" value="Mailstop P577" />
-											<dt:part type="CTY" value="San Diego" />
-											<dt:part type="ZIP" value="92110" />
-											<dt:part type="STA" value="CA" />
-											<dt:part type="CNT" value="USA" />
+										<vmr:address xmlns:vmr="urn:hl7-org:vmr:r2">
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="SAL" value="3851 Rosecrans Street"></dt:part>
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ADL" value="Mailstop P577"></dt:part>
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CTY" value="San Diego"></dt:part>
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="ZIP" value="92110"></dt:part>
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="STA" value="CA"></dt:part>
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="CNT" value="USA"></dt:part>
 										</vmr:address>
 
 									</value>
@@ -812,21 +723,19 @@
 					</simpleAction>
 					<simpleAction xsi:type="CreateAction">
 						<behaviors>
-							<behavior xsi:type="PrecheckBehavior" value="No" />
+							<behavior value="No" xsi:type="PrecheckBehavior"></behavior>
 						</behaviors>
-						<textEquivalent value="phone epi program at SDDHHS" />
+						<textEquivalent value="phone epi program at SDDHHS"></textEquivalent>
 						<actionSentence xsi:type="ObjectRedefine">
-							<source xsi:type="ExpressionRef" name="CommunicateTopicToRecipient" />
+							<source name="CommunicateTopicToRecipient" xsi:type="ExpressionRef"></source>
 							<property name="recipient">
 								<value xsi:type="ComplexLiteral">
 									<value xsi:type="vmr:Organization">
-										<vmr:name>
-											<dt:part type="TITLE"
-												value="County of San Diego Health and Human Services Agency" />
+										<vmr:name xmlns:vmr="urn:hl7-org:vmr:r2">
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="TITLE" value="County of San Diego Health and Human Services Agency"></dt:part>
 										</vmr:name>
 
-										<vmr:telecom value="tel:619-692-8499" use="WP"
-											capabilities="voice" />
+										<vmr:telecom xmlns:vmr="urn:hl7-org:vmr:r2" capabilities="voice" use="WP" value="tel:619-692-8499"></vmr:telecom>
 									</value>
 								</value>
 							</property>
@@ -834,20 +743,18 @@
 					</simpleAction>
 					<simpleAction xsi:type="CreateAction">
 						<behaviors>
-							<behavior xsi:type="PrecheckBehavior" value="No" />
+							<behavior value="No" xsi:type="PrecheckBehavior"></behavior>
 						</behaviors>
-						<textEquivalent value="fax epi program at SDDHHS" />
+						<textEquivalent value="fax epi program at SDDHHS"></textEquivalent>
 						<actionSentence xsi:type="ObjectRedefine">
-							<source xsi:type="ExpressionRef" name="CommunicateTopicToRecipient" />
+							<source name="CommunicateTopicToRecipient" xsi:type="ExpressionRef"></source>
 							<property name="recipient">
 								<value xsi:type="ComplexLiteral">
 									<value xsi:type="vmr:Organization">
-										<vmr:name>
-											<dt:part type="TITLE"
-												value="County of San Diego Health and Human Services Agency" />
+										<vmr:name xmlns:vmr="urn:hl7-org:vmr:r2">
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="TITLE" value="County of San Diego Health and Human Services Agency"></dt:part>
 										</vmr:name>
-										<vmr:telecom value="tel:858-715-6458" use="WP"
-											capabilities="fax" />
+										<vmr:telecom xmlns:vmr="urn:hl7-org:vmr:r2" capabilities="fax" use="WP" value="tel:858-715-6458"></vmr:telecom>
 									</value>
 								</value>
 							</property>
@@ -855,21 +762,18 @@
 					</simpleAction>
 					<simpleAction xsi:type="CreateAction">
 						<behaviors>
-							<behavior xsi:type="PrecheckBehavior" value="Yes" />
+							<behavior value="Yes" xsi:type="PrecheckBehavior"></behavior>
 						</behaviors>
-						<textEquivalent value="report via web to epi program at SDDHHS" />
+						<textEquivalent value="report via web to epi program at SDDHHS"></textEquivalent>
 						<actionSentence xsi:type="ObjectRedefine">
-							<source xsi:type="ExpressionRef" name="CommunicateTopicToRecipient" />
+							<source name="CommunicateTopicToRecipient" xsi:type="ExpressionRef"></source>
 							<property name="recipient">
 								<value xsi:type="ComplexLiteral">
 									<value xsi:type="vmr:Organization">
-										<vmr:name>
-											<dt:part type="TITLE"
-												value="County of San Diego Health and Human Services Agency" />
+										<vmr:name xmlns:vmr="urn:hl7-org:vmr:r2">
+											<dt:part xmlns:dt="urn:hl7-org:cdsdt:r2" type="TITLE" value="County of San Diego Health and Human Services Agency"></dt:part>
 										</vmr:name>
-										<vmr:telecom
-											value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html"
-											capabilities="data" />
+										<vmr:telecom xmlns:vmr="urn:hl7-org:vmr:r2" capabilities="data" value="http://www.sdcounty.ca.gov/hhsa/programs/phs/community_epidemiology/disease_reporting_requirements_for_health_care_providers.html"></vmr:telecom>
 									</value>
 								</value>
 							</property>

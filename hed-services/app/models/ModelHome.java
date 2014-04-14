@@ -285,13 +285,13 @@ public class ModelHome
             }
             if ( decl.getAccessRights() != null && ! decl.getAccessRights().isEmpty() ) {
                 RightsStatement stat = decl.getAccessRights().get( 0 );
-                if ( stat.getLicenseTerms().isEmpty() ) {
+                if ( ! stat.getLicenseTerms().isEmpty() ) {
                     term.Permissions = stat.getLicenseTerms().get( 0 );
                 }
             }
             if ( decl.getRights() != null && ! decl.getRights().isEmpty() ) {
                 RightsStatement stat = decl.getRights().get( 0 );
-                if ( stat.getLicenseTerms().isEmpty() ) {
+                if ( ! stat.getLicenseTerms().isEmpty() ) {
                     term.AssertedRights = stat.getLicenseTerms().get( 0 );
                 }
             }
