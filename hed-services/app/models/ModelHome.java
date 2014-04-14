@@ -67,7 +67,7 @@ public class ModelHome
 
 
     private static EditorCore core = EditorCoreImpl.getInstance();
-    private static Map<String, String> domainClasses;
+
 
 
     /************************************************************************************************************/
@@ -731,7 +731,7 @@ public class ModelHome
     /************************************************************************************************************/
     /* EXPRESSION APIs */
     /**
-     * @param type**********************************************************************************************************/
+     ***********************************************************************************************************/
 
 
 
@@ -759,6 +759,10 @@ public class ModelHome
 
     public static byte[] getConditionExpression() {
         return core.getLogicExpression();
+    }
+
+    public static byte[] setConditionExpression( byte[] conditionExpression ) {
+        return core.updateLogicExpression( conditionExpression );
     }
 
 

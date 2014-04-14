@@ -5,18 +5,19 @@ import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpressionImpl;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpressionImpl;
-import edu.asu.sharpc2b.ops.PropertySetExpression;
-import edu.asu.sharpc2b.ops.PropertySetExpressionImpl;
+import edu.asu.sharpc2b.ops.NAryExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops.SharpExpressionImpl;
+import edu.asu.sharpc2b.ops.Variable;
 import edu.asu.sharpc2b.ops.VariableExpression;
 import edu.asu.sharpc2b.ops.VariableExpressionImpl;
-import edu.asu.sharpc2b.ops_set.PhysicalQuantityLiteralExpression;
-import edu.asu.sharpc2b.ops_set.PropertyExpression;
-import edu.asu.sharpc2b.ops_set.StringLiteralExpression;
-import edu.asu.sharpc2b.ops_set.StringLiteralExpressionImpl;
-import edu.asu.sharpc2b.prr.Variable;
-import edu.asu.sharpc2b.prr.VariableImpl;
+import edu.asu.sharpc2b.ops.VariableImpl;
+import edu.asu.sharpc2b.ops_set.AndExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
+import edu.asu.sharpc2b.ops_set.IsNotEmptyExpressionImpl;
+import edu.asu.sharpc2b.ops_set.NotExpression;
+import edu.asu.sharpc2b.ops_set.NotExpressionImpl;
+import edu.asu.sharpc2b.ops_set.OrExpressionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
 import org.drools.semantics.utils.NameUtils;
@@ -25,7 +26,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLCollection;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -33,7 +33,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.text.ParseException;
@@ -65,10 +64,109 @@ public class ExpressionFactory {
 
     public SharpExpression parseBlockly( Document dox, BlocklyFactory.ExpressionRootType type ) {
         switch ( type ) {
+            case CONDITION:
+                return (SharpExpression) parseCondition( dox );
             case EXPRESSION:
             default :
                 return (SharpExpression) parseGenericExpression( dox );
         }
+    }
+
+    private SharpExpression parseCondition( Document dox ) {
+        Element xml = dox.getDocumentElement();
+        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
+        Element value = getChildrenByTagName( root, "value" ).iterator().next();
+        Element expr = getChildrenByTagName( value, "block" ).iterator().next();
+
+        return visitConditionBlock( expr );
+    }
+
+    private SharpExpression visitConditionBlock( Element block ) {
+        String blockType = block.getAttribute( "type" );
+        SharpExpression sharp = new AndExpressionImpl();
+        SharpExpression root = null;
+        if ( "logic_compare".equals( blockType ) ) {
+            List<Element> fields = getChildrenByTagName( block, "field" );
+            for ( Element e : fields ) {
+                String name = e.getAttribute( "name" );
+                if ( "dropdown".equals( name ) ) {
+                    String mode = e.getTextContent();
+                    if ( "ALL".equals( mode ) ) {
+                        sharp = new AndExpressionImpl();
+                        root = sharp;
+                    } else if ( "ONE".equals( mode ) ) {
+                        sharp = new OrExpressionImpl();
+                        root = sharp;
+                    } else if ( "NONE".equals( mode ) ) {
+                        root = new NotExpressionImpl();
+                        sharp = new OrExpressionImpl();
+                        (( NotExpression) root).addFirstOperand( sharp );
+                    } else if ( "ONEPLUS".equals( mode ) ) {
+                        sharp = new OrExpressionImpl();
+                        root = sharp;
+                    } else {
+                        throw new IllegalStateException( "Invalid logic type value " + name );
+                    }
+                }
+            }
+
+            int numargs = 0;
+            List<Element> arity = getChildrenByTagName( block, "mutation" );
+            if ( ! arity.isEmpty() ) {
+                numargs = Integer.parseInt( arity.iterator().next().getAttribute( "types" ) );
+            }
+
+            List<Element> values = getChildrenByTagName( block, "value" );
+            SharpExpression[] args = new SharpExpression[ numargs ];
+            for ( Element value : values ) {
+                String clauseName = value.getAttribute( "name" );
+                int index = Integer.parseInt( clauseName.replace( "CLAUSE", "" ) );
+
+                List<Element> elements = getChildrenByTagName( value, "block" );
+                if ( ! elements.isEmpty() ) {
+                    Element child = elements.iterator().next();
+                    args[ index ] = visitConditionBlock( child );
+                }
+            }
+            for ( SharpExpression expr : args ) {
+                (( NAryExpression ) sharp ).addHasOperand( expr );
+            }
+        } else if ( "logic_negate".equals( blockType ) ) {
+            List<Element> values = getChildrenByTagName( block, "value" );
+            root = new NotExpressionImpl();
+            for ( Element value : values ) {
+                List<Element> elements = getChildrenByTagName( value, "block" );
+                if ( ! elements.isEmpty() ) {
+                    Element child = elements.iterator().next();
+                    sharp = visitConditionBlock( child );
+                }
+            }
+            ((NotExpression) root).addFirstOperand( sharp );
+        } else if ( "logic_boolean".equals( blockType  ) || "logic_any".equals( blockType ) ) {
+            List<Element> fields = getChildrenByTagName( block, "field" );
+            if ( ! fields.isEmpty() ) {
+                String varName = fields.iterator().next().getTextContent();
+                VariableExpression varexp = new VariableExpressionImpl();
+                Variable var = new VariableImpl();
+                var.addName( varName );
+                varexp.addReferredVariable( var );
+                root = varexp;
+            }
+        } else if ( "logic_exists".equals( blockType ) ) {
+            List<Element> values = getChildrenByTagName( block, "value" );
+            root = new IsNotEmptyExpressionImpl();
+            for ( Element value : values ) {
+                List<Element> elements = getChildrenByTagName( value, "block" );
+                if ( ! elements.isEmpty() ) {
+                    Element child = elements.iterator().next();
+                    sharp = visitConditionBlock( child );
+                }
+            }
+            ((IsNotEmptyExpression) root).addFirstOperand( sharp );
+        } else {
+            throw new UnsupportedOperationException( "Unable to determine logic block type, not expected " + blockType );
+        }
+        return root;
     }
 
     private Object parseGenericExpression( Document dox ) {

@@ -2,6 +2,7 @@ package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
+import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
@@ -11,7 +12,6 @@ import edu.asu.sharpc2b.ops.PropertyExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops.VariableExpression;
-import edu.asu.sharpc2b.ops_set.AllTrueExpression;
 import edu.asu.sharpc2b.ops_set.AndExpression;
 import edu.asu.sharpc2b.ops_set.IsEmptyExpression;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
@@ -21,7 +21,6 @@ import edu.asu.sharpc2b.prr.NamedElement;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
 import org.hl7.knowledgeartifact.r1.ExpressionRef;
-import org.hl7.knowledgeartifact.r1.Or;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -98,7 +97,7 @@ public class BlocklyFactory {
         switch ( type ) {
             case CONDITION:
                 exprRoot = createLogicRoot( name, root, dox );
-                visitCondition( sharpExpression, exprRoot, dox );
+                visitCondition( sharpExpression, null, exprRoot, dox );
                 break;
             case EXPRESSION:
             default:
@@ -423,7 +422,7 @@ public class BlocklyFactory {
 
 
 
-    private void visitCondition( SharpExpression sharpExpression, Element exprRoot, Document dox ) {
+    private void visitCondition( SharpExpression sharpExpression, SharpExpression parent, Element exprRoot, Document dox ) {
         if ( sharpExpression instanceof AndExpression ) {
             AndExpression and = (AndExpression) sharpExpression;
 
@@ -447,7 +446,7 @@ public class BlocklyFactory {
             for ( SharpExpression operand : and.getHasOperand() ) {
                 Element clause = dox.createElement( "value" );
                 clause.setAttribute( "name", "CLAUSE" + (j++) );
-                visitCondition( operand, clause, dox );
+                visitCondition( operand, and, clause, dox );
                 block.appendChild( clause );
             }
 
@@ -475,7 +474,7 @@ public class BlocklyFactory {
             for ( SharpExpression operand : or.getHasOperand() ) {
                 Element clause = dox.createElement( "value" );
                 clause.setAttribute( "name", "CLAUSE" + (j++) );
-                visitCondition( operand, clause, dox );
+                visitCondition( operand, or, clause, dox );
                 block.appendChild( clause );
             }
 
@@ -490,7 +489,7 @@ public class BlocklyFactory {
             if ( ! not.getFirstOperand().isEmpty() ) {
                 Element clause = dox.createElement( "value" );
                 clause.setAttribute( "name", "NOT" );
-                visitCondition( not.getFirstOperand().get( 0 ), clause, dox );
+                visitCondition( not.getFirstOperand().get( 0 ), not, clause, dox );
                 block.appendChild( clause );
             }
 
@@ -501,11 +500,12 @@ public class BlocklyFactory {
 
             Element block = dox.createElement( "block" );
             block.setAttribute( "inline", "false" );
-            block.setAttribute( "type", "logic_boolean" );
+            block.setAttribute( "type", isParentBoolean( parent ) ? "logic_boolean" : "logic_any" );
 
             Element var = dox.createElement( "field" );
             var.setAttribute( "name", "Clauses" );
-            var.setTextContent( HeDArtifactData.uriToId( ruleVariable.getRdfId() ) );
+            var.setTextContent( HeDArtifactData.idFromName( ruleVariable.getName().get( 0 ) ) );
+            block.appendChild( var );
 
             exprRoot.appendChild( block );
         } else if ( sharpExpression instanceof IsEmptyExpression ) {
@@ -527,7 +527,7 @@ public class BlocklyFactory {
             if ( ! nexists.getFirstOperand().isEmpty() ) {
                 Element clause = dox.createElement( "value" );
                 clause.setAttribute( "name", "EXISTS" );
-                visitCondition( nexists.getFirstOperand().get( 0 ), clause, dox );
+                visitCondition( nexists.getFirstOperand().get( 0 ), nexists, clause, dox );
                 exists.appendChild( clause );
             }
 
@@ -543,7 +543,7 @@ public class BlocklyFactory {
             if ( ! exists.getFirstOperand().isEmpty() ) {
                 Element clause = dox.createElement( "value" );
                 clause.setAttribute( "name", "EXISTS" );
-                visitCondition( exists.getFirstOperand().get( 0 ), clause, dox );
+                visitCondition( exists.getFirstOperand().get( 0 ), exists, clause, dox );
                 block.appendChild( clause );
             }
 
@@ -553,7 +553,11 @@ public class BlocklyFactory {
         }
     }
 
-
+    private boolean isParentBoolean( SharpExpression parent ) {
+        return parent != null
+               && ! ( parent instanceof IsNotEmptyExpression )
+               && ! ( parent instanceof IsEmptyExpression );
+    }
 
 
     protected void dump( Document dox, OutputStream stream ) {

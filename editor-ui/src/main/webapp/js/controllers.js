@@ -538,29 +538,35 @@ angular.module('ruleApp.controllers', [])
             console.log($scope.currentExpression.xml);
             var  xmlDoc=new DOMParser().parseFromString($scope.currentExpression.xml,"text/xml");
 
-            var blocks=xmlDoc.getElementsByTagName('block');
-            angular.forEach(blocks, function(block) {
-                if (block.getAttribute('type') == 'logic_root')
-                    $scope.currentExpression.name = block.getElementsByTagName("field")[0].childNodes[0].nodeValue;
-            });
-
             if (expressionIndex === null) {
+                //alert( "On save, trying to resolve expr index for name " + $scope.currentExpression.name );
                 for (var int = 0; int < $scope.expressions.length; int++) {
                     if ($scope.expressions[int].name == $scope.currentExpression.name) {
                         expressionIndex = int;
+                        //alert("On save, expression Index was detected as " + expressionIndex);
+                        break;
                     }
                 }
-                if ( expressionIndex == null ) {
-                    $scope.currentExpression.expressionIRI = $scope.currentExpression.name;
-                }
-                //$scope.expressions.push(angular.copy($scope.currentExpression));
-            } else {
-                if (confirm("Want to override the already stored expression?")) {
-                    $scope.expressions[expressionIndex] = angular.copy($scope.currentExpression);
-                }
+
             }
-            if (Blockly.mainWorkspace.getTopBlocks().length > 1)
+
+            var blocks=xmlDoc.getElementsByTagName('block');
+            angular.forEach(blocks, function(block) {
+                if (block.getAttribute('type') == 'logic_root') {
+                    $scope.currentExpression.name = block.getElementsByTagName("field")[0].childNodes[0].nodeValue;
+                    //alert( "On save, the current name is " + $scope.currentExpression.name );
+                }
+            });
+
+
+            if ( expressionIndex == null ) {
+                $scope.currentExpression.expressionIRI = $scope.currentExpression.name;
+                //alert( "On save, no index was detected, so this is a new expression. Iri set to " + $scope.currentExpression.name );
+            }
+
+            if (Blockly.mainWorkspace.getTopBlocks().length > 1) {
                 alert('This expression has more than one top level');
+            }
 
             $http({
                 method : 'POST',
@@ -586,7 +592,8 @@ angular.module('ruleApp.controllers', [])
                     headers : { 'Content-Type':'application/html' }
                 }).success( function( data ) {
                         $scope.currentExpression.expressionIRI = expression.expressionIRI;
-                        $scope.currentExpression.expressionName = expression.expressionName;
+                        $scope.currentExpression.name = expression.name;
+                        //alert( "On open, set expr Name to " + $scope.currentExpression.name );
 
                         $scope.currentExpression.xml = data;
                         Blockly.mainWorkspace.clear();
@@ -691,7 +698,7 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Choose Expression...)" ) ), "Variables");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Choose Expression...)", "any" ) ), "Variables");
                 this.setOutput(true, null);
                 this.setTooltip('');
             }
@@ -855,14 +862,14 @@ angular.module('ruleApp.controllers', [])
 
 
         $scope.save = function() {
-            alert( "replace logic");
             $scope.logic.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
             console.log($scope.logic.xml);
 
             $http({
                 method : 'POST',
-                url : serviceUrl + '/rule/current/logic',
-                data : $scope.logic.xml
+                url : serviceUrl + '/rule/logic',
+                data : $scope.logic.xml,
+                headers : { 'Content-Type':'application/html' }
             }).success( function( data ) {
                     alert( 'Updated rule logic' );
                 });
@@ -1036,8 +1043,18 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)", "logic" ) ), "Clauses");
                 this.setOutput(true, "Boolean");
+                this.setTooltip('');
+            }
+        };
+        Blockly.Blocks.logic_any = {
+            helpUrl: 'http://www.example.com/',
+            init: function() {
+                this.setColour(60);
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Expression...)", "any" ) ), "Clauses");
+                this.setOutput(true, "Any");
                 this.setTooltip('');
             }
         };
@@ -1047,6 +1064,7 @@ angular.module('ruleApp.controllers', [])
                 this.setColour(210);
                 this.appendValueInput( 'NOT' )
                     .appendField( "Not" )
+                    .setCheck( "Boolean")
                     .setAlign( Blockly.ALIGN_RIGHT );
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
@@ -1058,6 +1076,7 @@ angular.module('ruleApp.controllers', [])
                 this.setColour(210);
                 this.appendValueInput( 'EXISTS' )
                     .appendField( "Exists" )
+                    .setCheck( "Any" )
                     .setAlign( Blockly.ALIGN_RIGHT );
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
@@ -1160,7 +1179,7 @@ angular.module('ruleApp.controllers', [])
                 this.appendDummyInput()
                     .appendField("Temporal");
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Period Expression...)" ) ), "PeriodExpression");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Period Expression...)", "timed" ) ), "PeriodExpression");
                 this.setPreviousStatement(true, "trigger");
                 this.setNextStatement(true, "trigger");
             }
@@ -1171,7 +1190,7 @@ angular.module('ruleApp.controllers', [])
                 this.appendDummyInput()
                     .appendField("Typed Trigger");
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)" ) ), "TypedExpression");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)", "any" ) ), "TypedExpression");
                 this.setPreviousStatement(true, "trigger");
                 this.setNextStatement(true, "trigger");
             }
@@ -1412,7 +1431,7 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)" ) ), "Clauses");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)", "logic") ), "Clauses");
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
             }
@@ -1421,7 +1440,7 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(290);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)" ) ), "AS");
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)", "action" ) ), "AS");
                 this.setOutput(true, "ActionSentence");
                 this.setTooltip('');
             }
@@ -1606,7 +1625,6 @@ angular.module('ruleApp.controllers', [])
                     data : { 'bytes' : byteData },
                     headers : { 'Content-Type' : 'appplication/xml' }
                 }).success( function( data ) {
-
                         $http({
                             method: 'GET',
                             url: serviceUrl + '/rule/current'
@@ -1685,9 +1703,9 @@ function standardMenuItems(position) {
     return menuItems;
 };
 
-function availableExpressions( httpContext, initMessage ) {
+function availableExpressions( httpContext, initMessage, type ) {
     var map = [ [initMessage, "" ] ];
-    httpContext.get(serviceUrl + '/rule/expressions/list/logic').success(function(data) {
+    httpContext.get(serviceUrl + '/rule/expressions/list/' +type ).success(function(data) {
         var expressions = data;
         for ( var j = 0; j < expressions.length; j++ ) {
             var expr = expressions[ j ];

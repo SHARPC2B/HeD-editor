@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,9 @@ public class HeDArtifactData {
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
     private HeDNamedExpression logicExpression;
     private Map<String, String> usedDomainClasses = new HashMap<String,String>();
+    private Map<String, String> domainClasses;
+    private Map<String, Map<String, String>> domainProperties;
+
 
 
 
@@ -44,6 +48,9 @@ public class HeDArtifactData {
             VersionedIdentifier vid = dok.getArtifactVersion().get( 0 );
             dok.getArtifactId().addAll( vid.getArtifactId() );
         }
+
+        this.domainClasses = Collections.unmodifiableMap( domainClasses );
+        this.domainProperties = Collections.unmodifiableMap( domainProperties );
 
         cacheBlocklyExpressions( dok, domainClasses, domainProperties );
         cacheLogicExpression( dok, domainClasses, domainProperties );
@@ -125,8 +132,8 @@ public class HeDArtifactData {
                             SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
 
                             BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
-                            blocklyExpressions.put( uriToId( prrExpr.getRdfId() ), new HeDNamedExpression(
-                                    uriToId( var.getRdfId() ),
+                            blocklyExpressions.put( idFromName( name ), new HeDNamedExpression(
+                                    idFromName( name ),
                                     name,
                                     sharpExpression,
                                     factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.EXPRESSION ) ) );
@@ -170,11 +177,41 @@ public class HeDArtifactData {
             blocklyExpressions.put( exprId, namedExpression  );
         } else {
             namedExpression = blocklyExpressions.get( exprId );
+            String candidateId = idFromName( name );
+
             namedExpression.setName( name );
             namedExpression.setDoxBytes( doxBytes );
             replaceExpression( knowledgeDocument, namedExpression );
+
+            if ( ! exprId.equals( candidateId ) ) {
+                namedExpression.setId( candidateId );
+                blocklyExpressions.remove( exprId );
+                blocklyExpressions.put( candidateId, namedExpression );
+                replaceReferences( exprId, name );
+            }
         }
         return exprId;
+    }
+
+    private void replaceReferences( String oldName, String newName ) {
+        for ( HeDNamedExpression expr : blocklyExpressions.values() ) {
+            boolean found = replaceReferences( oldName, newName, expr.getExpression() );
+            if ( found ) {
+                expr.setDoxBytes(
+                        new BlocklyFactory( domainClasses, domainProperties ).fromExpression( expr.getName(), expr.getExpression(), BlocklyFactory.ExpressionRootType.EXPRESSION )
+                );
+            }
+        }
+        boolean found = replaceReferences( oldName, newName, logicExpression.getExpression() );
+            if ( found ) {
+                logicExpression.setDoxBytes(
+                        new BlocklyFactory( domainClasses, domainProperties ).fromExpression( logicExpression.getName(), logicExpression.getExpression(), BlocklyFactory.ExpressionRootType.CONDITION )
+                );
+            }
+    }
+
+    private boolean replaceReferences( String oldName, String newName, SharpExpression expression ) {
+        return new ReferenceHunter( expression ).replace( oldName, newName );
     }
 
     private void replaceExpression( HeDKnowledgeDocument dok, HeDNamedExpression namedExpression ) {
@@ -213,7 +250,7 @@ public class HeDArtifactData {
         shExp.addBodyExpression( sharpExpression );
         newVar.addVariableFilterExpression( shExp );
 
-        exprId = uriToId( newVar.getRdfId() );
+        exprId = idFromName( newVar.getName().get( 0 ) );
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 ( (ProductionRule) rule ).addProductionRuleBoundRuleVariable( newVar );
@@ -226,8 +263,26 @@ public class HeDArtifactData {
         return logicExpression;
     }
 
+    public byte[] updateLogicExpression( byte[] doxBytes ) {
+        SharpExpression logic = new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.CONDITION );
+
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
+                Expression prrExpr = premise.getConditionRepresentation().get( 0 );
+                if ( ! prrExpr.getBodyExpression().isEmpty() ) {
+                    prrExpr.getBodyExpression().clear();
+                    prrExpr.getBodyExpression().add( logic );
+                }
+            }
+        }
+        logicExpression.setDoxBytes( doxBytes );
+        logicExpression.setExpression( logic );
+        return doxBytes;
+    }
+
     public void cacheLogicExpression( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
-        String name = "PREMISE";
+        String name = "$$$_LOGIC_PREMISE";
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
@@ -236,7 +291,7 @@ public class HeDArtifactData {
                     SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
                     BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
                     logicExpression = new HeDNamedExpression(
-                        uriToId( prrExpr.getRdfId() ),
+                        idFromName( name ),
                         name,
                         sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
                 }
@@ -246,8 +301,8 @@ public class HeDArtifactData {
 
 
 
-    public static String uriToId( SupportsRdfId.RdfKey rdfId ) {
-        return "id_" + rdfId.toString().hashCode();
+    public static String idFromName( String id ) {
+        return id;
     }
 
 
@@ -257,7 +312,7 @@ public class HeDArtifactData {
                 for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
                     if ( ! var.getVariableFilterExpression().isEmpty() ) {
                         Expression prrExpr = var.getVariableFilterExpression().get( 0 );
-                        if ( uriToId( var.getRdfId() ).equals( exprId ) ) {
+                        if ( idFromName( var.getName().get( 0 ) ).equals( exprId ) ) {
                             blocklyExpressions.remove( exprId );
                             ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( var );
                             return;

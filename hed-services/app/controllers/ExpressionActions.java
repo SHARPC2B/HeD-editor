@@ -94,14 +94,18 @@ public class ExpressionActions extends Controller {
 
 
     public static Result getConditionExpression() {
-        System.out.println( "Trying to retrieve rule premise");
         byte[] logic = ModelHome.getConditionExpression();
         setHeaderCORS();
         return ok( logic );
     }
 
     public static Result updateConditionExpression() {
+        final Http.Request request = request();
+        Http.RequestBody body = request.body();
+
+        byte[] logic = ModelHome.setConditionExpression( body.asRaw().asBytes() );
+
         setHeaderCORS();
-        return play.mvc.Results.TODO;
+        return ok( logic );
     }
 }

@@ -19,4 +19,6 @@ public interface ExpressionSource {
     public String updateNamedExpression( String exprId, String exprName, byte[] doxBytes );
 
     public byte[] getLogicExpression();
+
+    public byte[] updateLogicExpression( byte[] conditionDoxBytes );
 }
