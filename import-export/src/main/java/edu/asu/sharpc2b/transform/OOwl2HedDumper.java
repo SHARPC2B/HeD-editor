@@ -3,6 +3,7 @@ package edu.asu.sharpc2b.transform;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import edu.asu.sharpc2b.actions.AtomicAction;
 import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.metadata.Coverage;
 import edu.asu.sharpc2b.metadata.Evidence;
 import edu.asu.sharpc2b.metadata.KnowledgeResource;
@@ -157,6 +158,8 @@ public class OOwl2HedDumper implements HeDExporter {
         visitDescription( action, dox, actions );
         visitEvidence( action, dox, actions );
 
+        visitActionLogic( action, dox, actions );
+
         if ( ! action.getGroupSelection().isEmpty() ) {
             Element behavs = dox.createElement( "behaviors" );
                 Element behav = dox.createElement( "behavior" );
@@ -172,6 +175,26 @@ public class OOwl2HedDumper implements HeDExporter {
 
         actions.appendChild( sub );
         root.appendChild( actions );
+    }
+
+    private void visitActionLogic( SharpAction action, Document dox, Element root ) {
+        if ( ! action.getLocalCondition().isEmpty() ) {
+            Element conds = dox.createElement( "conditions" );
+
+            for ( RuleCondition cond : action.getLocalCondition() ) {
+                Element condEl = dox.createElement( "condition" );
+                Element role = dox.createElement( "conditionRole" );
+                Element logic = dox.createElement( "logic" );
+
+                visitCondition( cond, dox, logic );
+
+                condEl.appendChild( logic );
+                condEl.appendChild( role );
+                conds.appendChild( condEl );
+            }
+
+            root.appendChild( conds );
+        }
     }
 
     private void visitEvidence( InformationRealization info, Document dox, Element root ) {
@@ -200,7 +223,7 @@ public class OOwl2HedDumper implements HeDExporter {
         visitDescription( action, dox, act );
         visitEvidence( action, dox, act );
 
-
+        visitActionLogic( action, dox, act );
 
         visitExpression( null, sentence, act, "actionSentence", dox  );
 
@@ -210,19 +233,23 @@ public class OOwl2HedDumper implements HeDExporter {
     private void visitConditions( ProductionRule rule, Document dox, Element root ) {
         Element conds = dox.createElement( "conditions" );
         for ( RuleCondition cond : rule.getProductionRuleCondition() ) {
-            Expression expr = cond.getConditionRepresentation().get( 0 );
-            Element condElem = dox.createElement( "condition" );
-            Element role = dox.createElement( "conditionRole" );
-
-            SharpExpression sexpr = expr.getBodyExpression().get( 0 );
-
-            visitExpression( null, sexpr, condElem, "logic", dox );
-
-            role.setAttribute( "value", "ApplicableScenario" );
-            condElem.appendChild( role );
-            conds.appendChild( condElem );
+            visitCondition( cond, dox, conds );
         }
         root.appendChild( conds );
+    }
+
+    private void visitCondition( RuleCondition cond, Document dox, Element parent ) {
+        Expression expr = cond.getConditionRepresentation().get( 0 );
+        Element condElem = dox.createElement( "condition" );
+        Element role = dox.createElement( "conditionRole" );
+
+        SharpExpression sexpr = expr.getBodyExpression().get( 0 );
+
+        visitExpression( null, sexpr, condElem, "logic", dox );
+
+        role.setAttribute( "value", "ApplicableScenario" );
+        condElem.appendChild( role );
+        parent.appendChild( condElem );
     }
 
     private void visitExpressions( ProductionRule rule, Document dox, Element root ) {

@@ -1,9 +1,11 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.SupportsRdfId;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
+import edu.asu.sharpc2b.ops.ObjectExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops_set.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops_set.OrExpression;
@@ -14,6 +16,7 @@ import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ExpressionImpl;
 import edu.asu.sharpc2b.prr.ProductionRule;
 import edu.asu.sharpc2b.prr.ProductionRuleImpl;
+import edu.asu.sharpc2b.prr.RuleAction;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
@@ -46,6 +49,7 @@ public class HeDArtifactData {
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
     private HeDNamedExpression logicExpression;
     private HeDNamedExpression triggerExpression;
+    private HeDAction actionExpression;
     private Map<String, String> usedDomainClasses = new HashMap<String,String>();
     private Map<String, String> domainClasses;
     private Map<String, Map<String, String>> domainProperties;
@@ -69,6 +73,7 @@ public class HeDArtifactData {
         cacheBlocklyExpressions( dok, domainClasses, domainProperties );
         cacheLogicExpression( dok, domainClasses, domainProperties );
         cacheTriggers( dok, domainClasses, domainProperties );
+        cacheActions( dok, domainClasses, domainProperties );
     }
 
     public HeDArtifactData() {
@@ -179,6 +184,8 @@ public class HeDArtifactData {
             return heDNamedExpression.getExpression() instanceof BooleanExpression;
         } else if ( "Request".equalsIgnoreCase( returnType ) ) {
             return heDNamedExpression.getExpression() instanceof IteratorExpression || heDNamedExpression.getExpression() instanceof ClinicalRequestExpression;
+        } else if ( "action".equalsIgnoreCase( returnType ) ) {
+            return heDNamedExpression.getExpression() instanceof ObjectExpression;
         }
         return true;
     }
@@ -219,18 +226,29 @@ public class HeDArtifactData {
                 );
             }
         }
-        boolean found = replaceReferences( oldName, newName, logicExpression.getExpression() );
-            if ( found ) {
+        boolean foundExpr = replaceReferences( oldName, newName, logicExpression.getExpression() );
+            if ( foundExpr ) {
                 logicExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( logicExpression.getName(), logicExpression.getExpression(), BlocklyFactory.ExpressionRootType.CONDITION )
                 );
             }
-        found = replaceReferences( oldName, newName, triggerExpression.getExpression() );
-            if ( found ) {
+        boolean foundTrig = replaceReferences( oldName, newName, triggerExpression.getExpression() );
+            if ( foundTrig ) {
                 triggerExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( triggerExpression.getName(), triggerExpression.getExpression(), BlocklyFactory.ExpressionRootType.TRIGGER )
                 );
             }
+
+        boolean foundAct = replaceReferences( oldName, newName, actionExpression.getAction() );
+            if ( foundAct ) {
+                actionExpression.setDoxBytes(
+                        new BlocklyFactory( domainClasses, domainProperties ).fromExpression( actionExpression.getName(), actionExpression.getAction(), BlocklyFactory.ExpressionRootType.ACTION )
+                );
+            }
+    }
+
+    private boolean replaceReferences( String oldName, String newName, SharpAction action ) {
+        return new ReferenceHunter( action ).replace( oldName, newName );
     }
 
     private boolean replaceReferences( String oldName, String newName, SharpExpression expression ) {
@@ -248,7 +266,7 @@ public class HeDArtifactData {
                         if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                             SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
                             if ( namedExpression.getExpression() == sharpExpression ) {
-                                SharpExpression rebuiltExpression = new ExpressionFactory().parseBlockly( namedExpression.getDoxBytes(), BlocklyFactory.ExpressionRootType.EXPRESSION );
+                                SharpExpression rebuiltExpression = new ExpressionFactory<SharpExpression>().parseBlockly( namedExpression.getDoxBytes(), BlocklyFactory.ExpressionRootType.EXPRESSION );
 
                                 prrExpr.getBodyExpression().clear();
                                 expr.getName().clear();
@@ -263,13 +281,31 @@ public class HeDArtifactData {
         }
     }
 
+
+    public void deleteExpression( String exprId ) {
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
+                    if ( ! var.getVariableFilterExpression().isEmpty() ) {
+                        Expression prrExpr = var.getVariableFilterExpression().get( 0 );
+                        if ( idFromName( var.getName().get( 0 ) ).equals( exprId ) ) {
+                            blocklyExpressions.remove( exprId );
+                            ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( var );
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private HeDNamedExpression createVariableFromBlocks( String exprId, String name, byte[] doxBytes ) {
         // new expression
         RuleVariable newVar = new RuleVariableImpl();
         newVar.addName( name );
 
         Expression shExp = new ExpressionInSHARPImpl();
-        SharpExpression sharpExpression = new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION );
+        SharpExpression sharpExpression = new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION );
         shExp.addBodyExpression( sharpExpression );
         newVar.addVariableFilterExpression( shExp );
 
@@ -287,7 +323,7 @@ public class HeDArtifactData {
     }
 
     public byte[] updateLogicExpression( byte[] doxBytes ) {
-        SharpExpression logic = new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.CONDITION );
+        SharpExpression logic = new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.CONDITION );
 
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
@@ -379,27 +415,49 @@ public class HeDArtifactData {
 
 
 
+    private void cacheActions( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+        String name = "$$$_ACTIONS";
+        for ( ComputerExecutableRule rule : dok.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                List<RuleAction> actions = ( (ProductionRule) rule ).getProductionRuleAction();
+                if ( ! actions.isEmpty() ) {
+                    SharpAction topAction = (SharpAction) actions.get( 0 );
+
+                    BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+                    actionExpression = new HeDAction(
+                            idFromName( name ),
+                            name,
+                            topAction, factory.fromExpression( name, topAction, BlocklyFactory.ExpressionRootType.ACTION ) );
+                }
+            }
+        }
+    }
+
+
+    public HeDAction getActions() {
+        return actionExpression;
+    }
+
+    public byte[] updateActions( byte[] doxBytes ) {
+        SharpAction action = new ExpressionFactory<SharpAction>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.ACTION );
+
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                ( (ProductionRule) rule ).getProductionRuleAction().clear();
+                ( (ProductionRule) rule ).getProductionRuleAction().add( action );
+            }
+        }
+
+        actionExpression.setDoxBytes( doxBytes );
+        actionExpression.setAction( action );
+        return doxBytes;
+    }
+
+
 
     public static String idFromName( String id ) {
         return id;
     }
 
-
-    public void deleteExpression( String exprId ) {
-        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
-            if ( rule instanceof ProductionRule ) {
-                for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
-                    if ( ! var.getVariableFilterExpression().isEmpty() ) {
-                        Expression prrExpr = var.getVariableFilterExpression().get( 0 );
-                        if ( idFromName( var.getName().get( 0 ) ).equals( exprId ) ) {
-                            blocklyExpressions.remove( exprId );
-                            ( (ProductionRule) rule ).removeProductionRuleBoundRuleVariable( var );
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
 }

@@ -26,4 +26,8 @@ public interface ExpressionSource {
 
     public byte[] updateTriggers( byte[] triggerDoxBytes );
 
+    public byte[] getActions();
+
+    public byte[] updateActions( byte[] triggerDoxBytes );
+
 }

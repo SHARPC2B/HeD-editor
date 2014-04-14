@@ -1,6 +1,16 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
+import edu.asu.sharpc2b.actions.AtomicAction;
+import edu.asu.sharpc2b.actions.AtomicActionImpl;
+import edu.asu.sharpc2b.actions.CancelActionImpl;
+import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.CompositeActionImpl;
+import edu.asu.sharpc2b.actions.CreateActionImpl;
+import edu.asu.sharpc2b.actions.FireEventActionImpl;
+import edu.asu.sharpc2b.actions.ModifyAction;
+import edu.asu.sharpc2b.actions.ModifyActionImpl;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpressionImpl;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
@@ -19,8 +29,13 @@ import edu.asu.sharpc2b.ops_set.NotExpression;
 import edu.asu.sharpc2b.ops_set.NotExpressionImpl;
 import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.ops_set.OrExpressionImpl;
+import edu.asu.sharpc2b.prr.Expression;
+import edu.asu.sharpc2b.prr.ExpressionImpl;
+import edu.asu.sharpc2b.prr.RuleCondition;
+import edu.asu.sharpc2b.prr.RuleConditionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import org.drools.lang.dsl.DSLMapParser;
 import org.drools.semantics.utils.NameUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.w3c.dom.Document;
@@ -42,12 +57,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ExpressionFactory {
+public class ExpressionFactory<T> {
 
     private static final String exprNS = "http://asu.edu/sharpc2b/ops-set#";
 
 
-    public SharpExpression parseBlockly( byte[] data, BlocklyFactory.ExpressionRootType type ) {
+    public T parseBlockly( byte[] data, BlocklyFactory.ExpressionRootType type ) {
         DocumentBuilder builder = null;
         try {
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -63,17 +78,136 @@ public class ExpressionFactory {
         return null;
     }
 
-    public SharpExpression parseBlockly( Document dox, BlocklyFactory.ExpressionRootType type ) {
+    public T parseBlockly( Document dox, BlocklyFactory.ExpressionRootType type ) {
         switch ( type ) {
+            case ACTION :
+                return (T) parseAction( dox );
             case TRIGGER :
-                return parseTrigger( dox );
+                return (T) parseTrigger( dox );
             case CONDITION:
-                return (SharpExpression) parseCondition( dox );
+                return (T) parseCondition( dox );
             case EXPRESSION:
             default :
-                return (SharpExpression) parseGenericExpression( dox );
+                return (T) parseGenericExpression( dox );
         }
     }
+
+    private SharpAction parseAction( Document dox ) {
+        Element xml = dox.getDocumentElement();
+        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
+        Element stat = getChildrenByTagName( root, "statement" ).iterator().next();
+
+        CompositeAction parent = new CompositeActionImpl();
+
+        visitAction( stat, parent );
+
+        return parent;
+    }
+
+
+    private void visitAction( Element root, CompositeAction actionGroup ) {
+        List<Element> blocks = getChildrenByTagName( root, "block" );
+        if ( blocks.isEmpty() ) {
+            return;
+        }
+
+        Element block = blocks.get( 0 );
+        SharpAction action = null;
+        String type = block.getAttribute( "type" );
+        String title = "";
+        String mode = null;
+
+        List<Element> meta = getChildrenByTagName( block, "field" );
+        for ( Element elem : meta ) {
+            String name = elem.getAttribute( "name" );
+            if ( "TITLE".equals( name ) ) {
+                title = elem.getTextContent();
+            } else if ( "NAME".equals( name ) ) {
+                mode = elem.getTextContent();
+            }
+        }
+
+        if ( "action_group".equals( type ) ) {
+            action = new CompositeActionImpl();
+        } else {
+            if ( "CreateAction".equals( mode ) ) {
+                action = new CreateActionImpl();
+            } else if ( "RemoveAction".equals( mode ) ) {
+                action = new CancelActionImpl();
+            } else if ( "UpdateAction".equals( mode ) ) {
+                action = new ModifyActionImpl();
+            } else if ( "RemoveAction".equals( mode ) ) {
+                action = new CancelActionImpl();
+            } else if ( "Fire Event".equals( mode ) )  {
+                action = new FireEventActionImpl();
+            } else if ( "Declare".equals( mode ) ) {
+                // TODO ! Fix hierarchy
+                action = new AtomicActionImpl();
+            } else if ( "Collect".equals( mode ) ) {
+                action = new AtomicActionImpl();
+            }
+        }
+
+        action.addTitle( title );
+
+
+        List<Element> values = getChildrenByTagName( block, "value" );
+        for ( Element val : values ) {
+            if ( "Condition".equals( val.getAttribute( "name" ) ) ) {
+                Element sub = getChildrenByTagName( val, "block" ).get( 0 );
+                Element field = getChildrenByTagName( sub, "field" ).get( 0 );
+                String varName = field.getTextContent();
+                String id = HeDArtifactData.idFromName( varName );
+
+                VariableExpression varexp = new VariableExpressionImpl();
+                Variable var = new VariableImpl();
+                var.addName( varName );
+                varexp.addReferredVariable( var );
+
+                RuleCondition condition = new RuleConditionImpl();
+                Expression prrExpr = new ExpressionImpl();
+                prrExpr.addBodyExpression( varexp );
+                condition.addConditionRepresentation( prrExpr );
+                action.addLocalCondition( condition );
+            }
+        }
+
+        if ( "action_group".equals( type ) ) {
+            List<Element> stats = getChildrenByTagName( block, "statement" );
+            if ( ! stats.isEmpty() ) {
+                Element statement = stats.get( 0 );
+                visitAction( statement, (CompositeAction) action );
+            }
+        } else if ( "atomic_action".equals( type ) ) {
+            for ( Element val : values ) {
+                if ( "ActionSentence".equals( val.getAttribute( "name" ) ) ) {
+                    Element sub = getChildrenByTagName( val, "block" ).get( 0 );
+                    Element field = getChildrenByTagName( sub, "field" ).get( 0 );
+                    String varName = field.getTextContent();
+                    String id = HeDArtifactData.idFromName( varName );
+
+                    VariableExpression varexp = new VariableExpressionImpl();
+                    Variable var = new VariableImpl();
+                    var.addName( varName );
+                    varexp.addReferredVariable( var );
+
+                    Expression prrExpr = new ExpressionImpl();
+                    prrExpr.addBodyExpression( varexp );
+                    (( AtomicAction) action).addActionExpression( prrExpr );
+                }
+            }
+
+        }
+
+        actionGroup.addMemberAction( action );
+
+        List<Element> nexts = getChildrenByTagName( block, "next" );
+        if ( ! nexts.isEmpty() ) {
+            Element next = nexts.get( 0 );
+            visitAction( next, actionGroup );
+        }
+    }
+
 
     private SharpExpression parseTrigger( Document dox ) {
         Element xml = dox.getDocumentElement();

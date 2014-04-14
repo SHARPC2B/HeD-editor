@@ -1,0 +1,50 @@
+<xml>
+	<block type="action_root" deletable="false" movable="false" x="0" y="0">
+		<statement name="ROOT">
+			<block type="action_group" inline="false">
+				<field name="NAME"></field>
+				<field name="TITLE"></field>
+				<statement name="NestedAction">
+					<block type="action_group" inline="false">
+						<field name="NAME">All</field>
+						<field name="TITLE">Hemoglobin A1c Overdue</field>
+						<statement name="NestedAction">
+							<block type="atomic_action" inline="false">
+								<field name="NAME">CreateAction</field>
+								<field name="TITLE"></field>
+								<value name="Condition">
+									<block type="action_condition">
+										<field name="Clauses">Create_2056175534_logic</field>
+									</block>
+								</value>
+								<value name="ActionSentence">
+									<block type="action_sentence">
+										<field name="AS">Create_311989333</field>
+									</block>
+								</value>
+								<next>
+									<block type="action_group" inline="false">
+										<field name="NAME">all</field>
+										<field name="TITLE">title</field>
+										<next>
+											<block type="atomic_action" inline="false">
+												<field name="NAME">CreateAction</field>
+												<field name="TITLE">title</field>
+											</block>
+										</next>
+									</block>
+								</next>
+							</block>
+						</statement>
+						<next>
+							<block type="atomic_action" inline="false">
+								<field name="NAME">CreateAction</field>
+								<field name="TITLE">title</field>
+							</block>
+						</next>
+					</block>
+				</statement>
+			</block>
+		</statement>
+	</block>
+</xml>

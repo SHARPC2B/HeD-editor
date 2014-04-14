@@ -125,4 +125,21 @@ public class ExpressionActions extends Controller {
         setHeaderCORS();
         return ok( triggers );
     }
+
+    public static Result getActions() {
+        byte[] triggers = ModelHome.getActions();
+        System.out.println( new String( triggers ) );
+        setHeaderCORS();
+        return ok( triggers );
+    }
+
+    public static Result updateActions() {
+        final Http.Request request = request();
+        Http.RequestBody body = request.body();
+
+        byte[] triggers = ModelHome.setActions( body.asRaw().asBytes() );
+
+        setHeaderCORS();
+        return ok( triggers );
+    }
 }

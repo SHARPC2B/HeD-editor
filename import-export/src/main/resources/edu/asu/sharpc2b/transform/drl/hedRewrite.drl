@@ -84,3 +84,36 @@ then
         setActionSentence( ref );
     }
 end
+
+
+rule "Rewrite Action Conditions"
+salience 1000
+no-loop
+when
+    $kd : KnowledgeDocument( $xprs : expressions.deves )
+    $ab : ActionBase( $conds : conditions!.conditions, $id : actionId )
+    $cd : Condition( $expr : logic, this memberOf $conds, ! (logic instanceof ExpressionRef) )
+then
+    System.out.println( "Rewrite action condition" );
+    String name = "Create_" + $cd.hashCode() + "_logic";
+    if ( $id != null ) {
+        name = "Create_" + $id.toString() + "_logic";
+    }
+
+    ExpressionDef def = new ExpressionDef();
+    def.setName( name );
+    def.setExpression( $expr );
+    insert( def );
+    modify ( $kd ) {
+        getExpressions().getDeves().add( def );
+    }
+
+    ExpressionRef ref = new ExpressionRef();
+    ref.setName( name );
+    insert( ref );
+    modify( $cd ) {
+        setLogic( ref );
+    }
+end
+
+

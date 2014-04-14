@@ -48,6 +48,9 @@ POST           /rule/logic                                controllers.Expression
 GET            /rule/current/triggers                     controllers.ExpressionActions.getTriggers()
 POST           /rule/triggers                             controllers.ExpressionActions.updateTriggers()
 
+GET            /rule/current/actions                      controllers.ExpressionActions.getActions()
+POST           /rule/actions                              controllers.ExpressionActions.updateActions()
+
 GET            /rule/expressions/list/:returnType         controllers.ExpressionActions.getExpressions(returnType:String)
 GET            /rule/expressions/:exprId                  controllers.ExpressionActions.getExpression(exprId:String)
 DELETE         /rule/expressions/:exprId                  controllers.ExpressionActions.deleteExpression(exprId:String)

@@ -1266,12 +1266,62 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('ActionCtrl', [ '$http', '$scope', '$modal','$log', function($http, $scope, $modal,$log) {
-        $scope.$parent.title = 'Choose Actions to be Executed';
         $scope.$parent.menuItems = standardMenuItems(4);
-        $http.get(serviceUrl + '/template/list/Action').success(function(data) {
-            $scope.actions = data;
-        });
+        $scope.actions = {};
 
+        $http({
+            method: 'GET',
+            url: serviceUrl + '/rule/current'
+        }).success(function(data) {
+                if ( data != null ) {
+                    $scope.currentRuleId = data.ruleId;
+                    $scope.currentRuleTitle = data.Name;
+                    $scope.$parent.title = 'Actions : ' + data.Name;
+                } else {
+                    delete $scope.currentRuleId;
+                    delete $scope.currentRuleTitle;
+                    $scope.$parent.title = 'Actions (no rule active)';
+                }
+                $http({
+                    method : 'GET',
+                    url : serviceUrl + '/rule/current/actions'
+                }).success(function(acts) {
+                        $scope.actions.xml = acts;
+                        Blockly.mainWorkspace.clear();
+                        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.actions.xml));
+                    });
+
+            });
+
+        $scope.save = function() {
+            $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+            console.log($scope.actions.xml);
+
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/rule/actions',
+                data : $scope.actions.xml,
+                headers : { 'Content-Type':'application/html' }
+            }).success( function( data ) {
+                    alert( 'Updated actions' );
+                });
+        };
+
+        $scope.clear = function() {
+            if (confirm("Clear Actions?")) {
+                Blockly.mainWorkspace.clear();
+                var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'action_root');
+                rootBlock.initSvg();
+                rootBlock.render();
+                rootBlock.setMovable(false);
+                rootBlock.setDeletable(false);
+            }
+        };
+
+
+        $http.get(serviceUrl + '/template/list/Action').success(function(data) {
+            $scope.actionsTemplates = data;
+        });
 
         $scope.openClauseEditor = function(clause) {
             var d = $modal.open({
@@ -1292,9 +1342,11 @@ angular.module('ruleApp.controllers', [])
                 this.appendDummyInput()
                 	.appendField("Tittle")
                 	.appendField(new Blockly.FieldTextInput("title"), "TITLE");
+                /*
                 this.appendValueInput("Documentation")
                     .setCheck("Documentation")
                     .appendField("Documentation");
+                */
                 this.appendValueInput("Condition")
                     .setCheck("Boolean")
                     .appendField("Condition");
@@ -1312,9 +1364,11 @@ angular.module('ruleApp.controllers', [])
                 this.appendDummyInput()
                 	.appendField("Tittle")
                 	.appendField(new Blockly.FieldTextInput("title"), "TITLE");
+                /*
                 this.appendValueInput("Documentation")
                     .setCheck("Documentation")
                     .appendField("Documentation");
+                */
                 this.appendValueInput("Condition")
                     .setCheck("Boolean")
                     .appendField("Condition");
@@ -1399,7 +1453,7 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
-        Blockly.Blocks.logic_root = {
+        Blockly.Blocks.action_root = {
                 init: function() {
                     this.setColour(10);
                     this.appendStatementInput("ROOT")
@@ -1411,17 +1465,17 @@ angular.module('ruleApp.controllers', [])
         Blockly.HSV_VALUE=0.85;
         Blockly.inject(document.getElementById('blocklyDiv'),
             {path: './lib/blockly/', toolbox: document.getElementById('toolbox')});
-        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'logic_root');
+        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'action_root');
         rootBlock.initSvg();
         rootBlock.render();
         rootBlock.setMovable(false);
         rootBlock.setDeletable(false);
 
-        $scope.save = function() {
-        	var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-        	console.log(Blockly.Xml.domToText(xml));
-        };
     }])
+
+
+
+
 
     .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
         $http({

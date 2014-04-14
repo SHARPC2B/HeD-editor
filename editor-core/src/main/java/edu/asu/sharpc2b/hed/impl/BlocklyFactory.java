@@ -2,6 +2,9 @@ package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
+import edu.asu.sharpc2b.actions.AtomicAction;
+import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
@@ -18,7 +21,9 @@ import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
 import edu.asu.sharpc2b.ops_set.NotExpression;
 import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
+import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.NamedElement;
+import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
 import org.hl7.knowledgeartifact.r1.ExpressionRef;
@@ -75,7 +80,8 @@ public class BlocklyFactory {
     }
 
 
-    public byte[] fromExpression( String name, SharpExpression sharpExpression, ExpressionRootType type ) {
+    //TODO fix hierarchy of SharpAction and SharpExpression
+    public byte[] fromExpression( String name, Object sharpExpression, ExpressionRootType type ) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         try {
             Document dox = builderFactory.newDocumentBuilder().newDocument();
@@ -92,23 +98,27 @@ public class BlocklyFactory {
         }
     }
 
-    private Element visitRoot( String name, SharpExpression sharpExpression, Document dox, ExpressionRootType type ) {
+    private Element visitRoot( String name, Object sharpExpression, Document dox, ExpressionRootType type ) {
         Element root = dox.createElement( "xml" );
 
         Element exprRoot;
         switch ( type ) {
+            case ACTION:
+                exprRoot = createActionRoot( name, root, dox );
+                visitActions( Arrays.asList( (SharpAction) sharpExpression ), exprRoot, dox );
+                break;
             case TRIGGER :
                 exprRoot = createTriggerRoot( name, root, dox );
-                visitTriggers( sharpExpression, exprRoot, dox );
+                visitTriggers( (SharpExpression) sharpExpression, exprRoot, dox );
                 break;
             case CONDITION:
                 exprRoot = createLogicRoot( name, root, dox );
-                visitCondition( sharpExpression, null, exprRoot, dox );
+                visitCondition( (SharpExpression) sharpExpression, null, exprRoot, dox );
                 break;
             case EXPRESSION:
             default:
                 exprRoot = createExpressionRoot( name, root, dox );
-                visit( sharpExpression, exprRoot, dox );
+                visit( (SharpExpression) sharpExpression, exprRoot, dox );
                 break;
         }
 
@@ -116,8 +126,114 @@ public class BlocklyFactory {
         return root;
     }
 
-    
-    
+    private void visitActions( List<SharpAction> sharpActions, Element root, Document dox ) {
+
+        Element parent = root;
+        int max = sharpActions.size();
+        for ( int j = 0; j < max; j++ ) {
+            SharpAction sharpAction = sharpActions.get( j );
+
+            Element block = dox.createElement( "block" );
+            block.setAttribute( "inline", "false" );
+            parent.appendChild( block );
+
+            Element title = dox.createElement( "field" );
+            title.setAttribute( "name", "TITLE" );
+            if ( ! sharpAction.getTitle().isEmpty() ) {
+                title.setTextContent( sharpAction.getTitle().get( 0 ) );
+            }
+            block.appendChild( title );
+
+            if ( ! sharpAction.getLocalCondition().isEmpty() ) {
+                RuleCondition cond = sharpAction.getLocalCondition().get( 0 );
+                Expression expr = cond.getConditionRepresentation().get( 0 );
+                SharpExpression sharpCondition = expr.getBodyExpression().get( 0 );
+                if ( sharpCondition instanceof VariableExpression ) {
+                    VariableExpression var = (VariableExpression) sharpCondition;
+                    String varName = var.getReferredVariable().get( 0 ).getName().get( 0 );
+                    String varId = HeDArtifactData.idFromName( varName );
+
+                    Element condElem = dox.createElement( "value" );
+                    condElem.setAttribute( "name", "Condition" );
+
+                    Element ac = dox.createElement( "block" );
+                    ac.setAttribute( "type", "action_condition" );
+
+                    Element field = dox.createElement( "field" );
+                    field.setAttribute( "name", "Clauses" );
+                    field.setTextContent( varId );
+
+                    ac.appendChild( field );
+                    condElem.appendChild( ac );
+                    block.appendChild( condElem );
+                } else {
+                    throw new UnsupportedOperationException( "Only references are supported as action conditions, found " + sharpCondition.getClass() );
+                }
+            }
+
+            if ( sharpAction instanceof CompositeAction ) {
+                CompositeAction combo = (CompositeAction) sharpAction;
+                block.setAttribute( "type", "action_group" );
+
+                Element mode = dox.createElement( "field" );
+                mode.setAttribute( "name", "NAME" );
+                if ( ! combo.getGroupSelection().isEmpty() ) {
+                    mode.setTextContent( combo.getGroupSelection().get( 0 ) );
+                }
+                block.appendChild( mode );
+
+                if ( ! combo.getMemberAction().isEmpty() ) {
+                    Element stat = dox.createElement( "statement" );
+                    stat.setAttribute( "name", "NestedAction" );
+                    block.appendChild( stat );
+                    visitActions( combo.getMemberAction(), stat, dox );
+                }
+            } else {
+                AtomicAction atom = (AtomicAction) sharpAction;
+                block.setAttribute( "type", "atomic_action" );
+
+                Element mode = dox.createElement( "field" );
+                mode.setAttribute( "name", "NAME" );
+                mode.setTextContent( atom.getClass().getSimpleName().replace( "Impl", "" ) );
+                block.appendChild( mode );
+
+                if ( ! atom.getActionExpression().isEmpty() ) {
+                    Expression expr = atom.getActionExpression().get( 0 );
+                    SharpExpression sharpCondition = expr.getBodyExpression().get( 0 );
+                    if ( sharpCondition instanceof VariableExpression ) {
+                        VariableExpression var = (VariableExpression) sharpCondition;
+                        String varName = var.getReferredVariable().get( 0 ).getName().get( 0 );
+                        String varId = HeDArtifactData.idFromName( varName );
+
+                        Element condElem = dox.createElement( "value" );
+                        condElem.setAttribute( "name", "ActionSentence" );
+
+                        Element ac = dox.createElement( "block" );
+                        ac.setAttribute( "type", "action_sentence" );
+
+                        Element field = dox.createElement( "field" );
+                        field.setAttribute( "name", "AS" );
+                        field.setTextContent( varId );
+
+                        ac.appendChild( field );
+                        condElem.appendChild( ac );
+                        block.appendChild( condElem );
+                    } else {
+                        throw new UnsupportedOperationException( "Only references are supported as action sentences, found " + sharpCondition.getClass() );
+                    }
+                }
+            }
+
+            if ( j != max -1 ) {
+                Element next = dox.createElement( "next" );
+                block.appendChild( next );
+                parent = next;
+            }
+
+        }
+    }
+
+
     private void visitTriggers( SharpExpression sharpExpression, Element root, Document dox ) {
         OrExpression or = (OrExpression) sharpExpression;
         Element parent = root;
@@ -186,6 +302,23 @@ public class BlocklyFactory {
 
         root.appendChild( block );
         return value;
+    }
+
+    private Element createActionRoot( String exprName, Element root, Document dox ) {
+        Element block = dox.createElement( "block" );
+        block.setAttribute( "type", "action_root" );
+        block.setAttribute( "inline", "false" );
+        block.setAttribute( "deletable", "false" );
+        block.setAttribute( "movable", "false" );
+        block.setAttribute( "x", "0" );
+        block.setAttribute( "y", "0" );
+
+        Element statement = dox.createElement( "statement" );
+        statement.setAttribute( "name", "ROOT" );
+        block.appendChild( statement );
+
+        root.appendChild( block );
+        return statement;
     }
 
     private Element createTriggerRoot( String exprName, Element root, Document dox ) {

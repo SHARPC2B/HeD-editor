@@ -204,6 +204,15 @@
                 </resources>
               </evidence>
             </supportingEvidence>
+	          <conditions>
+		          <condition>
+			          <logic xsi:type="Equal">
+				          <operand xsi:type="IntegerLiteral" value="3" />
+				          <operand xsi:type="IntegerLiteral" value="3" />
+			          </logic>
+			          <conditionRole/>
+		          </condition>
+	          </conditions>
             <textEquivalent value="Order Hemoglobin A1c within the next 3 days"/>
 
             <!--

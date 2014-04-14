@@ -829,6 +829,24 @@ then
     if ( $str != null ) { helper.assertCD( drools, "meta:strengthOfRecommendation", ev, $str ); }
 end
 
+rule "Action Condition"
+when
+    $ab : ActionBase( $conds : conditions!.conditions )
+    $cd : Condition( $expr : logic, this memberOf $conds )
+    Link( $expr, $cond ; )
+then
+    System.out.println(" Found local cond" );
+    OWLNamedIndividual act = helper.asIndividual( $ab );
+    OWLNamedIndividual cond = helper.asIndividual( $cd );
+    OWLNamedIndividual expr = helper.asIndividual( "tns:prrExpr_" + $expr.hashCode() );
+
+    insert( helper.assertType( expr, "prr:Expression" ) );
+
+    insert( helper.assertObjectProperty( "prr-sharp:localCondition", act, cond  ) );
+    insert( helper.assertObjectProperty( "prr:conditionRepresentation", cond, expr  ) );
+    insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, $cond ) );
+end
+
 
 rule "Create Action"
 when

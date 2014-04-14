@@ -1,4 +1,5 @@
 import com.clarkparsia.common.base.SystemUtil;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.hed.impl.BlocklyFactory;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
 import edu.asu.sharpc2b.hed.impl.ExpressionFactory;
@@ -85,6 +86,8 @@ public class EditorCoreTest {
         */
 
         HeDArtifactData data = core.getCurrentArtifact();
+
+        System.out.println( new String( data.getActions().getDoxBytes() ) );
 
         assertEquals( uri, data.getArtifactId() );
 
@@ -190,7 +193,7 @@ public class EditorCoreTest {
         Expression expr = new ExpressionImpl();
         ruleVar.addVariableFilterExpression( expr );
 
-        SharpExpression sharp = new ExpressionFactory().parseBlockly( dox, BlocklyFactory.ExpressionRootType.EXPRESSION );
+        SharpExpression sharp = new ExpressionFactory<SharpExpression>().parseBlockly( dox, BlocklyFactory.ExpressionRootType.EXPRESSION );
         expr.addBodyExpression( sharp );
 
         Document hed = new OOwl2HedDumper().serialize( dok );
@@ -245,12 +248,24 @@ public class EditorCoreTest {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document dox = builder.parse( file.getInputStream() );
 
-        SharpExpression sharp = new ExpressionFactory().parseBlockly( dox, BlocklyFactory.ExpressionRootType.TRIGGER );
+        SharpExpression sharp = new ExpressionFactory<SharpExpression>().parseBlockly( dox, BlocklyFactory.ExpressionRootType.TRIGGER );
 
         assertTrue( sharp instanceof OrExpression );
         assertEquals( 2, ( (OrExpression) sharp ).getHasOperand().size() );
         assertTrue( ( (OrExpression) sharp ).getHasOperand().get( 0 ) instanceof PeriodLiteralExpression );
         assertTrue( ( (OrExpression) sharp ).getHasOperand().get( 1 ) instanceof VariableExpression );
+    }
+
+    @Test
+    @Ignore
+    public void testParseActions() throws Exception {
+        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "actsXample.xml" );
+
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document dox = builder.parse( file.getInputStream() );
+
+        SharpAction sharp = new ExpressionFactory<SharpAction>().parseBlockly( dox, BlocklyFactory.ExpressionRootType.ACTION );
+        System.out.println( sharp );
     }
 
 

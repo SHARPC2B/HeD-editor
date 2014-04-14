@@ -773,6 +773,14 @@ public class ModelHome
         return core.updateTriggers( triggerExpression );
     }
 
+    public static byte[] getActions() {
+        return core.getActions();
+    }
+
+    public static byte[] setActions( byte[] triggerExpression ) {
+        return core.updateActions( triggerExpression );
+    }
+
 
 
 

@@ -1,6 +1,7 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.OperatorExpression;
@@ -16,15 +17,28 @@ import java.util.List;
 public class ReferenceHunter {
 
     private SharpExpression expr;
+    private SharpAction action;
     private boolean found = false;
 
     public ReferenceHunter( SharpExpression expression ) {
         this.expr = expression;
     }
 
+    public ReferenceHunter( SharpAction action ) {
+        this.action = action;
+    }
+
     public boolean replace( String oldName, String newName ) {
-        visit( expr, oldName, newName );
+        if ( expr != null ) {
+            visit( expr, oldName, newName );
+        } else {
+            visit( action, oldName, newName );
+        }
         return found;
+    }
+
+    private void visit( SharpAction action, String oldName, String newName ) {
+        throw new UnsupportedOperationException( "TBD" );
     }
 
 

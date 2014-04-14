@@ -334,6 +334,14 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         return getCurrentArtifact().updateTriggers( doxBytes );
     }
 
+    public byte[] getActions() {
+        return getCurrentArtifact().getActions().getDoxBytes();
+    }
+
+    public byte[] updateActions( byte[] doxBytes ) {
+        return getCurrentArtifact().updateActions( doxBytes );
+    }
+
 
 
     /**************************************************************************************************************************/
