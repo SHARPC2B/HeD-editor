@@ -117,7 +117,7 @@ public class ImportRuleGenerator {
         String packName = NameUtils.nameSpaceURIToPackage( URI.create( sourceOntology.getOntologyID().getOntologyIRI().toString() ) );
 
         Arity arity = Arity.parse( (int) row.getCell( 1 ).getNumericCellValue() );
-        if ( arity == Arity.LITERAL || arity == Arity.MIXED ) {
+        //if ( arity == Arity.LITERAL || arity == Arity.MIXED || true ) {
             Map<String,String> dataProperties = new HashMap<String,String>();
             Map<String,String> dataTypes = new HashMap<String,String>();
             Map<String,String> objectProperties = new HashMap<String,String>();
@@ -159,7 +159,7 @@ public class ImportRuleGenerator {
             map.put( "accessors", accessors );
             String rules = (String) TemplateRuntime.execute( registry.getNamedTemplate( "rule" ), null, map, registry );
             builder.append( rules );
-        }
+        //}
 
     }
 

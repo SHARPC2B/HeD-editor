@@ -29,6 +29,7 @@
       <block type="http://asu.edu/sharpc2b/ops-set#AnyTrueExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#AvgExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#CaseExpression"/>
+      <block type="http://asu.edu/sharpc2b/ops-set#CaseItemExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#ClinicalRequestExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#CombineExpression"/>
       <block type="http://asu.edu/sharpc2b/ops-set#ConditionalExpression"/>
@@ -155,6 +156,7 @@
     <block type="http://asu.edu/sharpc2b/ops-set#BeforeExpression"/>
     <block type="http://asu.edu/sharpc2b/ops-set#BeginExpression"/>
     <block type="http://asu.edu/sharpc2b/ops-set#CaseExpression"/>
+    <block type="http://asu.edu/sharpc2b/ops-set#CaseItemExpression"/>
     <block type="http://asu.edu/sharpc2b/ops-set#CeilingExpression"/>
     <block type="http://asu.edu/sharpc2b/ops-set#ClinicalRequestExpression"/>
     <block type="http://asu.edu/sharpc2b/ops-set#CoalesceExpression"/>
@@ -252,6 +254,9 @@
     </category>
   </category>
   <category name="Typed">
+    <category name="CaseItem">
+      <block type="http://asu.edu/sharpc2b/ops-set#CaseItemExpression"/>
+    </category>
     <category name="Collection">
       <category name="List">
         <block type="http://asu.edu/sharpc2b/ops-set#DistinctExpression"/>

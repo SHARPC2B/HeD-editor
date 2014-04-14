@@ -241,6 +241,7 @@ public class ModelManagerOwlAPIHermit
         EntityManager em = getEmpireEM( provider, repo );
 
         long now = System.currentTimeMillis();
+        System.err.println( "Start de-frosting " );
         HeDKnowledgeDocument o;
         o = em.find( HeDKnowledgeDocumentImpl.class,
                      URI.create( "http://" + id + "#KnowledgeDocument" ) );

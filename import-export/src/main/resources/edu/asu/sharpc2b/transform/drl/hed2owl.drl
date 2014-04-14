@@ -384,7 +384,11 @@ when
     $ev : ArtifactLifeCycleEvent( this memberOf $evs, $date : eventDateTime.value, $type : eventType.value )
 then
     OWLNamedIndividual kd = helper.asIndividual( $kd );
-    insert( helper.assertDataProperty( "meta:" + $type.substring(0,1).toLowerCase() + $type.substring(1), kd, $date ) );
+    insert( helper.assertDataProperty(
+                ( "Created".equals( $type ) ? "dcterms:" : "meta:" )
+                + $type.substring(0,1).toLowerCase() + $type.substring(1),
+            kd,
+            $date ) );
 end
 
 
@@ -528,7 +532,7 @@ when
     $expr : Expression( $descr : description != null )
 then
     OWLNamedIndividual exp = helper.asIndividual( $expr );
-    insert( helper.assertDataProperty( "dcterms:description", exp, $descr ) );
+    insert( helper.assertDataProperty( "ops:exprDescription", exp, $descr ) );
 end
 
 rule "Process ExpressionRef"
@@ -563,6 +567,32 @@ then
     insert( helper.assertObjectProperty( "ops:value", setter, $setXp ) );
 end
 
+rule "Process As Type"
+salience 100
+when
+    $as : As( $type : asType )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainClass_" + $type.hashCode() );
+    insert( new Link( $type, type ) );
+    insert( helper.assertType( type, "ops:DomainClassExpression" ) );
+    OWLNamedIndividual cd = helper.asIndividual( "tns:CD_" + new Object().hashCode() );
+    insert( helper.assertObjectProperty( "ops:hasCode", type, cd ) );
+    insert( helper.assertDataProperty( "skos-ext:code", cd, $type.toString() ) );
+end
+
+rule "Process Null Type"
+when
+    $as : Null( $type : valueType )
+then
+    OWLNamedIndividual type = helper.asIndividual( "tns:DomainClass_" + $type.hashCode() );
+    insert( new Link( $type, type ) );
+    insert( helper.assertType( type, "ops:DomainClassExpression" ) );
+    OWLNamedIndividual cd = helper.asIndividual( "tns:CD_" + new Object().hashCode() );
+    insert( helper.assertObjectProperty( "ops:hasCode", type, cd ) );
+    insert( helper.assertDataProperty( "skos-ext:code", cd, $type.toString() ) );
+end
+
+
 rule "Process ObjectExpression Type"
 when
     $new : ObjectExpression( $type : objectType )
@@ -582,6 +612,15 @@ then
     OWLNamedIndividual type = helper.asIndividual( "tns:DomainProperty_" + $path.hashCode() );
     insert( new Link( $path, type ) );
     helper.assertPropertyChain( drools, $path, type, "vmr:" );
+end
+
+rule "CaseItem Type "
+when
+    $ci : CaseItem( )
+then
+    OWLNamedIndividual item = helper.asIndividual( "tns:CaseItem" + $ci.hashCode() );
+    insert( helper.assertType( item, "a:CaseItemExpression" ) );
+    insert( new Link( $ci, item ) );
 end
 
 

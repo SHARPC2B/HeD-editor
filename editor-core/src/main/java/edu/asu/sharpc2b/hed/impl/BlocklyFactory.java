@@ -257,6 +257,7 @@ public class BlocklyFactory {
         //TODO
         return predicate.equals( exprNS + "property" )
                || predicate.equals( exprNS + "element" )
+               || predicate.equals( exprNS + "caseItem" )
                || predicate.equals( exprNS.replace( "ops-set", "ops" ) + "property" );
     }
 

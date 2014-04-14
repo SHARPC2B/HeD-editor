@@ -1999,6 +1999,41 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#IdentifierLiteralExpression'] = 
   
 };
 
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CaseItemExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('CaseItem');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#then' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'then' );
+    
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#when' )
+                         .setCheck( null )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'when' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#CaseItemType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : CaseItem \n Return type : [Cas] \n Allowed types : \n  then : [any] \n  when : [any] \n  ' );
+  }
+  
+};
+
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#ObjectRedefineExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
@@ -2833,10 +2868,13 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CaseExpression'] = {
 
     
         
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#caseItem' )
-                         .setCheck( null )
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#caseItem_0' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CaseItemType' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
                          .appendField( 'caseItem' );
+    
+        this.setMutator( new Blockly.Mutator( ['argument_group_item'] ) );
+        this.itemCount_ = 1;
     
 
     
@@ -2861,8 +2899,84 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#CaseExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Case \n Return type : [any] \n Allowed types : \n  caseItem : [any] \n  comparand : [any] \n  else : [any] \n  ' );
+    this.setTooltip( ' HeD expression : Case \n Return type : [any] \n Allowed types : \n  caseItem : [Cas] \n  comparand : [any] \n  else : [any] \n  ' );
   }
+  ,
+        
+
+  mutationToDom: function(workspace) {
+    var container = document.createElement( 'mutation' );
+    container.setAttribute( 'items', this.itemCount_ );
+    return container;
+  },
+
+  domToMutation: function(container) {
+    for (var x = 0; x < this.itemCount_; x++) {
+      this.removeInput('http://asu.edu/sharpc2b/ops-set#caseItem_' + x);
+    }
+    this.itemCount_ = parseInt(container.getAttribute('items'), 10);
+    for (var x = 0; x < this.itemCount_; x++) {
+      var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#caseItem_' + x)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CaseItemType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'caseItem [Cas]' );
+    }
+    if (this.itemCount_ == 0) {
+        this.appendDummyInput('EMPTY');
+    }
+  },
+
+  decompose: function(workspace) {
+      var containerBlock = new Blockly.Block(workspace,
+                                             'argument_group_container');
+      containerBlock.initSvg();
+      var connection = containerBlock.getInput('STACK').connection;
+      for (var x = 0; x < this.itemCount_; x++) {
+        var itemBlock = new Blockly.Block(workspace, 'argument_group_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+      return containerBlock;
+    },
+
+  compose: function(containerBlock) {
+      for (var x = this.itemCount_ - 1; x >= 0; x--) {
+           this.removeInput('http://asu.edu/sharpc2b/ops-set#caseItem_' + x);
+         }
+       this.itemCount_ = 0;
+       // Rebuild the block's inputs.
+       var itemBlock = containerBlock.getInputTargetBlock('STACK');
+       while (itemBlock) {
+         var input = this.appendValueInput('http://asu.edu/sharpc2b/ops-set#caseItem_' + this.itemCount_)
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#CaseItemType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'caseItem [Cas]' );
+
+         // Reconnect any child blocks.
+         if (itemBlock.valueConnection_) {
+          input.connection.connect(itemBlock.valueConnection_);
+         }
+         this.itemCount_++;
+         itemBlock = itemBlock.nextConnection &&
+             itemBlock.nextConnection.targetBlock();
+       }
+
+    },
+    
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var x = 0;
+    while (itemBlock) {
+      var input = this.getInput('http://asu.edu/sharpc2b/ops-set#caseItem_' + x);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      x++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  }
+
+
   
 };
 
@@ -3445,10 +3559,10 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NullExpression'] = {
 
     
         
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType_anyURI' )
-                         .setCheck( [ 'http://www.w3.org/2001/XMLSchema#anyURI' ] )
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops-set#valueType_DomainClass' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#DomainClass' ] )
                          .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'valueType_anyURI' );
+                         .appendField( 'valueType_DomainClass' );
     
 
     
@@ -3457,7 +3571,7 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#NullExpression'] = {
 
     this.setInputsInline( false );
 
-    this.setTooltip( ' HeD expression : Null \n Return type : [any] \n Allowed types : \n  valueType_anyURI : [anyURI] \n  ' );
+    this.setTooltip( ' HeD expression : Null \n Return type : [any] \n Allowed types : \n  valueType_DomainClass : [Dom] \n  ' );
   }
   
 };

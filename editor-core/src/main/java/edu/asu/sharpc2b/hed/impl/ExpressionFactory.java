@@ -360,6 +360,7 @@ public class ExpressionFactory {
         //TODO
         return predicate.startsWith( exprNS + "property_" )
                || predicate.startsWith( exprNS + "element_" )
+               || predicate.startsWith( exprNS + "caseeItem_" )
                || predicate.startsWith( exprNS.replace( "ops-set", "ops" ) + "property_" );
     }
 

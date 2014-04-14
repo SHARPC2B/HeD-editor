@@ -227,22 +227,32 @@
         </configuration>
       </plugin>
 
+	    <plugin>
+		    <groupId>com.github.goldin</groupId>
+		    <artifactId>copy-maven-plugin</artifactId>
+		    <version>0.2.5</version>
+		    <executions>
+			    <execution>
+				    <id>install_play_jars</id>
+				    <phase>install</phase>
+				    <goals>
+					    <goal>copy</goal>
+				    </goals>
+				    <configuration>
+					    <resources>
+						    <resource>
+							    <targetPath>${basedir}/../../hed-services/lib</targetPath>
+							    <directory>${project.build.outputDirectory}/..</directory>
+							    <includes>
+								    <include>*.jar</include>
+							    </includes>
+						    </resource>
+					    </resources>
+				    </configuration>
+			    </execution>
+		    </executions>
+	    </plugin>
 
-
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>install</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
 
 

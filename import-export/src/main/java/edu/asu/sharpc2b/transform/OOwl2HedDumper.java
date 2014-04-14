@@ -28,18 +28,12 @@ import edu.asu.sharpc2b.prr.RuleAction;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
-import edu.asu.sharpc2b.prr.VariableImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
-import org.hl7.knowledgeartifact.r1.ClinicalRequest;
 import org.ontologydesignpatterns.ont.dul.dul.Agent;
 import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
 import org.ontologydesignpatterns.ont.dul.dul.Organization;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.sail.memory.model.MemURI;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -281,6 +275,7 @@ public class OOwl2HedDumper implements HeDExporter {
                          || "http://asu.edu/sharpc2b/ops#secondOperand".equals( propIri )
                          || "http://asu.edu/sharpc2b/ops#thirdOperand".equals( propIri )
                          || "http://asu.edu/sharpc2b/ops#hasOperand".equals( propIri )
+                         || "http://asu.edu/sharpc2b/ops#exprDescription".equals( propIri )
                     ) {
                         continue;
                     }
@@ -325,10 +320,18 @@ public class OOwl2HedDumper implements HeDExporter {
     private void visitExpression( TypedElement var, SharpExpression expr, Element parent, String tagName, Document dox ) {
         Element x = dox.createElement( tagName );
 
+
+
         if ( expr instanceof OperatorExpression && ! ( expr instanceof PropertySetExpression ) ) {
             // TODO fix this condition...
             String exprType = mapExprType( extractExpressionType( expr.getClass() ) );
             x.setAttribute( "xsi:type", exprType );
+        }
+
+        if ( ! expr.getExprDescription().isEmpty() ) {
+            Element descr = dox.createElement( "description" );
+            descr.setTextContent( expr.getExprDescription().get( 0 ) );
+            x.appendChild( descr );
         }
 
 
@@ -433,9 +436,41 @@ public class OOwl2HedDumper implements HeDExporter {
 
         visitStatus( hed, dox, metadata );
 
+        visitHistory( hed, dox, metadata );
+
         visitContributors( hed, dox, metadata );
+        visitPublishers( hed, dox, metadata );
 
         root.appendChild( metadata );
+    }
+
+    private void visitHistory( HeDKnowledgeDocument hed, Document dox, Element metadata ) {
+        Element history = dox.createElement( "eventHistory" );
+        if ( ! hed.getCreated().isEmpty() ) {
+            Element event = dox.createElement( "artifactLifeCycleEvent" );
+                Element type = dox.createElement( "eventType" );
+                type.setAttribute( "value", "Created" );
+                event.appendChild( type );
+
+                List dates = hed.getCreated();
+                Element date = dox.createElement( "eventDateTime" );
+                date.setAttribute( "value", dates.iterator().next().toString() );
+                event.appendChild( date );
+            history.appendChild( event );
+        }
+        if ( ! hed.getPublished().isEmpty() ) {
+            Element event = dox.createElement( "artifactLifeCycleEvent" );
+                Element type = dox.createElement( "eventType" );
+                type.setAttribute( "value", "Published" );
+                event.appendChild( type );
+
+                List dates = hed.getPublished();
+                Element date = dox.createElement( "eventDateTime" );
+                date.setAttribute( "value", dates.iterator().next().toString() );
+                event.appendChild( date );
+            history.appendChild( event );
+        }
+        metadata.appendChild( history );
     }
 
     private void visitContributors( HeDKnowledgeDocument hed, Document dox, Element metadata ) {
@@ -444,36 +479,36 @@ public class OOwl2HedDumper implements HeDExporter {
         if ( ! hed.getAuthor().isEmpty() ) {
             for ( Agent ag : hed.getAuthor() ) {
                 if ( ag instanceof SocialPerson ) {
-                    visitAgentPerson( ag, dox, contris, "Author" );
+                    visitAgentPerson( ag, dox, contris, "Author", "contribution" );
                 } else {
-                    visitAgentOrg( ag, dox, contris, "Author" );
+                    visitAgentOrg( ag, dox, contris, "Author", "contribution" );
                 }
             }
         }
         if ( ! hed.getReviewer().isEmpty() ) {
             for ( Agent ag : hed.getReviewer() ) {
                 if ( ag instanceof SocialPerson ) {
-                    visitAgentPerson( ag, dox, contris, "Reviewer" );
+                    visitAgentPerson( ag, dox, contris, "Reviewer", "contribution" );
                 } else {
-                    visitAgentOrg( ag, dox, contris, "Reviewer" );
+                    visitAgentOrg( ag, dox, contris, "Reviewer", "contribution" );
                 }
             }
         }
         if ( ! hed.getEndorser().isEmpty() ) {
             for ( Agent ag : hed.getEndorser() ) {
                 if ( ag instanceof SocialPerson ) {
-                    visitAgentPerson( ag, dox, contris, "Endorser" );
+                    visitAgentPerson( ag, dox, contris, "Endorser", "contribution" );
                 } else {
-                    visitAgentOrg( ag, dox, contris, "Endorser" );
+                    visitAgentOrg( ag, dox, contris, "Endorser", "contribution" );
                 }
             }
         }
         if ( ! hed.getEditor().isEmpty() ) {
             for ( Agent ag : hed.getEditor() ) {
                 if ( ag instanceof SocialPerson ) {
-                    visitAgentPerson( ag, dox, contris, "Editor" );
+                    visitAgentPerson( ag, dox, contris, "Editor", "contribution" );
                 } else {
-                    visitAgentOrg( ag, dox, contris, "Editor" );
+                    visitAgentOrg( ag, dox, contris, "Editor", "contribution" );
                 }
             }
         }
@@ -481,14 +516,62 @@ public class OOwl2HedDumper implements HeDExporter {
 
     }
 
-    private void visitAgentOrg( Agent ag, Document dox, Element contris, String author ) {
+    private void visitPublishers( HeDKnowledgeDocument hed, Document dox, Element metadata ) {
+        Element publishers = dox.createElement( "publishers" );
+
+        if ( ! hed.getPublisher().isEmpty() ) {
+            for ( Agent ag : hed.getAuthor() ) {
+                if ( ag instanceof SocialPerson ) {
+                    visitAgentPerson( ag, dox, publishers, "Author", "publisher" );
+                } else {
+                    visitAgentOrg( ag, dox, publishers, "Author", "publisher" );
+                }
+            }
+        }
+        metadata.appendChild( publishers );
 
     }
 
-    private void visitAgentPerson( Agent ag, Document dox, Element contris, String roleName ) {
-        Element contribution = dox.createElement( "contribution" );
+    private void visitAgentOrg( Agent ag, Document dox, Element contris, String roleName, String tagName ) {
+        Element contribution = dox.createElement( tagName );
 
-        Element con = dox.createElement( "Contributor" );
+        Element con = dox.createElement( "contributor" );
+        con.setAttribute( "xsi:type", ag instanceof SocialPerson ? "Person" : "Organization" );
+
+        if ( ag instanceof Organization ) {
+            Element contacts = dox.createElement( "contacts" );
+            for ( String ct : ( (Organization) ag ).getContactInformation() ) {
+                Element contact = dox.createElement( "contact" );
+                contact.setAttribute( "value", ct );
+                contacts.appendChild( contact );
+            }
+            for ( String ct : ( (Organization) ag ).getAddress() ) {
+                Element address = dox.createElement( "address" );
+                address.setAttribute( "value", ct );
+                con.appendChild( address );
+            }
+            for ( String nm : ( (Organization) ag ).getAgentName() ) {
+                Element name = dox.createElement( "name" );
+                name.setAttribute( "value", nm );
+                con.appendChild( name );
+            }
+
+            con.appendChild( contacts );
+        }
+
+        contribution.appendChild( con );
+
+        Element role = dox.createElement( "role" );
+        role.setAttribute( "value", roleName );
+        contribution.appendChild( role );
+
+        contris.appendChild( contribution );
+    }
+
+    private void visitAgentPerson( Agent ag, Document dox, Element contris, String roleName, String tagName ) {
+        Element contribution = dox.createElement( tagName );
+
+        Element con = dox.createElement( "contributor" );
         con.setAttribute( "xsi:type", ag instanceof SocialPerson ? "Person" : "Organization" );
 
         if ( ag instanceof SocialPerson ) {
@@ -544,8 +627,8 @@ public class OOwl2HedDumper implements HeDExporter {
                 appl.appendChild( cvg );
                 Element focus = dox.createElement( "focus" );
                 focus.setAttribute( "value", cov.getCoverageType().get( 0 ) );
-                appl.appendChild( focus );
-                visitCD( cov.getCoveredConcept().get( 0 ), dox, appl, "value" );
+                appl.appendChild( cvg );
+                visitCD( cov.getCoveredConcept().get( 0 ), dox, cvg, "value" );
             }
             metadata.appendChild( appl );
         }
@@ -577,6 +660,16 @@ public class OOwl2HedDumper implements HeDExporter {
             relationship.setAttribute( "value", "AdaptedFrom" );
             related.appendChild( relationship );
             for ( KnowledgeResource kr : hed.getAdaptedFrom() ) {
+                visitKResource( kr, dox, related );
+            }
+            relatedRoot.appendChild( related );
+        }
+        if ( ! hed.getAssociatedResource().isEmpty() ) {
+            Element related = dox.createElement( "relatedResource" );
+            Element relationship = dox.createElement( "relationship" );
+            relationship.setAttribute( "value", "AdaptedFrom" );
+            related.appendChild( relationship );
+            for ( KnowledgeResource kr : hed.getAssociatedResource() ) {
                 visitKResource( kr, dox, related );
             }
             relatedRoot.appendChild( related );

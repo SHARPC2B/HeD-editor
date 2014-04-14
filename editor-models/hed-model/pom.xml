@@ -245,28 +245,12 @@
           <generateTraitDRL>true</generateTraitDRL>
           <generateDefaultImplClasses>true</generateDefaultImplClasses>
           <inheritanceMode>OPTIMIZED</inheritanceMode>
-	      <disableFullReasoning>true</disableFullReasoning>
+	        <disableFullReasoning>true</disableFullReasoning>
           <generateIndividuals>true</generateIndividuals>
           <compilationOptionsPackage>minimal</compilationOptionsPackage>
         </configuration>
       </plugin>
 
-
-
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>install</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
 	    <plugin>
 		    <groupId>com.github.goldin</groupId>

@@ -500,6 +500,31 @@ end
 
 
 
+
+    rule "Expression org.hl7.knowledgeartifact.r1.CaseItem_then"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.CaseItem()
+        _then : Object() from $xp.then
+        Link( $xp, $ind ; )
+        Link( _then, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:then", $ind, $val ) );
+    end
+
+    rule "Expression org.hl7.knowledgeartifact.r1.CaseItem_when"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.CaseItem()
+        _when : Object() from $xp.when
+        Link( $xp, $ind ; )
+        Link( _when, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:when", $ind, $val ) );
+    end
+
+
+
+
+
     rule "Expression org.hl7.knowledgeartifact.r1.Sort"
     when
         $xp : org.hl7.knowledgeartifact.r1.Sort(  _orderBy : orderBy  )
@@ -643,6 +668,116 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     rule "Expression org.hl7.knowledgeartifact.r1.Contains_element"
     when
         $xp : org.hl7.knowledgeartifact.r1.Contains()
@@ -726,16 +861,16 @@ end
 
 
 
-    rule "Expression org.hl7.knowledgeartifact.r1.Null"
-    when
-        $xp : org.hl7.knowledgeartifact.r1.Null(  _valueType : valueType  )
-        Link( $xp, $ind ; )
-    then
-        
-            helper.assertNullSafeDataProperty( drools, "a:valueType_anyURI", $ind, "" + _valueType, "xsd:anyURI" );
-        
-    end
 
+    rule "Expression org.hl7.knowledgeartifact.r1.Null_valueType"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.Null()
+        _valueType : Object() from $xp.valueType
+        Link( $xp, $ind ; )
+        Link( _valueType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:valueType_DomainClass", $ind, $val ) );
+    end
 
 
 
@@ -786,6 +921,11 @@ end
     then
         insert( helper.assertObjectProperty( "a:source_List", $ind, $val ) );
     end
+
+
+
+
+
 
 
 
@@ -1187,6 +1327,21 @@ end
 
 
 
+    rule "Expression org.hl7.knowledgeartifact.r1.Indexer_index"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.Indexer()
+        _index : Object() from $xp.index
+        Link( $xp, $ind ; )
+        Link( _index, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:index", $ind, $val ) );
+    end
+
+
+
+
+
+
     rule "Expression org.hl7.knowledgeartifact.r1.Within_element"
     when
         $xp : org.hl7.knowledgeartifact.r1.Within()
@@ -1547,6 +1702,160 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    rule "Expression org.hl7.knowledgeartifact.r1.InValueSet"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.InValueSet(  _id : id , _authority : authority , _version : version  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:id", $ind, "" + _id, "xsd:string" );
+        
+            helper.assertNullSafeDataProperty( drools, "a:authority", $ind, "" + _authority, "xsd:string" );
+        
+            helper.assertNullSafeDataProperty( drools, "a:version", $ind, "" + _version, "xsd:string" );
+        
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    rule "Expression org.hl7.knowledgeartifact.r1.Is_isType"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.Is()
+        _isType : Object() from $xp.isType
+        Link( $xp, $ind ; )
+        Link( _isType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:isType", $ind, $val ) );
+    end
+
+
+
+
+
+    rule "Expression org.hl7.knowledgeartifact.r1.Convert"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.Convert(  _toType : toType  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:toType", $ind, "" + _toType, "xsd:anyURI" );
+        
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    rule "Expression org.hl7.knowledgeartifact.r1.As"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.As(  _strict : strict  )
+        Link( $xp, $ind ; )
+    then
+        
+            helper.assertNullSafeDataProperty( drools, "a:strict", $ind, "" + _strict, "xsd:boolean" );
+        
+    end
+
+
+    rule "Expression org.hl7.knowledgeartifact.r1.As_asType"
+    when
+        $xp : org.hl7.knowledgeartifact.r1.As()
+        _asType : Object() from $xp.asType
+        Link( $xp, $ind ; )
+        Link( _asType, $val ; )
+    then
+        insert( helper.assertObjectProperty( "a:asType", $ind, $val ) );
+    end
+
+
+
+
+
+
+
+
+
+
+
     rule "Expression org.hl7.knowledgeartifact.r1.ObjectExpression_property"
     when
         $xp : org.hl7.knowledgeartifact.r1.ObjectExpression()
@@ -1591,6 +1900,41 @@ end
     then
         insert( helper.assertObjectProperty( "a:ancestor", $ind, $val ) );
     end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

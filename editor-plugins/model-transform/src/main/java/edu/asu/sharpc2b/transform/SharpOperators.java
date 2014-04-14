@@ -1096,6 +1096,7 @@ public class SharpOperators {
         typeNameIriMap.put( "Ordinal", IRI.create( typesBaseIRI + "ordinalType" ) );
         typeNameIriMap.put( "Code", IRI.create( typesBaseIRI + "codeType" ) );
         typeNameIriMap.put( "ClinicalRequest", IRI.create( typesBaseIRI + "listType" ) );
+        typeNameIriMap.put( "CaseItem", IRI.create( typesBaseIRI + "caseItemType" ) );
     }
 
     // This table maps the content of the "type" cell in the spreadsheet
@@ -1135,6 +1136,7 @@ public class SharpOperators {
         typeExpressionNameMap.put( "Ratio", IRI.create( typesBaseIRI + "Ratio" ) );
         typeExpressionNameMap.put( "TimeInterval", IRI.create( typesBaseIRI + "TimeInterval" ) );
         typeExpressionNameMap.put( "PhysicalQuantity", IRI.create( typesBaseIRI + "PhysicalQuantity" ) );
+        typeExpressionNameMap.put( "CaseItem", IRI.create( typesBaseIRI + "CaseItem" ) );
     }
 
     static void initTypeNameMap ()
@@ -1166,6 +1168,7 @@ public class SharpOperators {
         typeNameMap.put( "Expression<T:S>", "Any" );
         typeNameMap.put( "Ordinal", "Ordinal" );
         typeNameMap.put( "Code", "Code" );
+        typeNameMap.put( "CaseItem", "CaseItem" );
     }
 
 

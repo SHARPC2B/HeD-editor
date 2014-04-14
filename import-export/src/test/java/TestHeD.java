@@ -13,8 +13,8 @@ public class TestHeD {
         try {
             HeD2OwlDumper dumper = new HeD2OwlDumper();
 
-            dumper.compile( "DiabetesReminderRule.xml",
-                    "/home/davide/Projects/Git/HeD-editor/sharp-editor/import-export/src/test/resources/diabetes.owl" );
+            dumper.compile( "Pertussis.xml",
+                    "/home/davide/Projects/Git/HeD-editor/sharp-editor/import-export/src/test/resources/pertussis.owl" );
 
         } catch ( Exception e ) {
             e.printStackTrace();

@@ -51,21 +51,31 @@ public class EditorCoreTest {
         Logger.getRootLogger().removeAllAppenders();
         Logger.getRootLogger().addAppender(new NullAppender());
 
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+        //org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+        System.out.println( "Loading resource... " );
+        long now = System.currentTimeMillis();
+        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "pertussis.xml" );
         byte[] hedStream = new byte[ file.getInputStream().available() ];
         file.getInputStream().read( hedStream );
+        System.out.println( "Resource loaded.." + (System.currentTimeMillis() - now) );
 
+        System.out.println( "Initializing core..." );
+        now = System.currentTimeMillis();
         EditorCoreImpl core = (EditorCoreImpl) EditorCoreImpl.getInstance();
+        System.out.println( "Core ready.." + (System.currentTimeMillis() - now) );
+
 
         System.out.println( "Starting import process..." );
-        long now = System.currentTimeMillis();
+        now = System.currentTimeMillis();
         String uri = core.importFromStream( hedStream );
         System.out.println( "Done with the whole process.." + (System.currentTimeMillis() - now) );
 
+        /*
         System.out.println( "Starting import process...twice " );
         now = System.currentTimeMillis();
         core.importFromStream( hedStream );
         System.out.println( "Done with the whole process gain.." + (System.currentTimeMillis() - now) );
+        */
 
         HeDArtifactData data = core.getCurrentArtifact();
 

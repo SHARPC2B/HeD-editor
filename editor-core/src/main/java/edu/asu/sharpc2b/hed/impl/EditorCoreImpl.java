@@ -169,16 +169,23 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             byte[] owlBytes = baos.toByteArray();
 
             HeDKnowledgeDocument knowledgeDocument = new ModelManagerOwlAPIHermit().loadRootThingFromOntologyStream( owlBytes );
+
+            System.out.println( "Preparing artifactData " );
+            long now = System.currentTimeMillis();
             HeDArtifactData artifact = new HeDArtifactData( knowledgeDocument,
                                                             owlBytes,
                                                             getDomainClasses(),
                                                             DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis() );
+            System.out.println( "Analysis took " + ( System.currentTimeMillis() - now ) );
 
             currentArtifactId = artifact.getArtifactId();
 
             artifacts.put( currentArtifactId, artifact );
 
+            System.out.println( "Persisting artifact..." );
+            now = System.currentTimeMillis();
             knowledgeRepo.createArtifact( currentArtifactId, artifact.getTitle(), new ByteArrayInputStream( owlBytes ) );
+            System.out.println( "Save took " + ( System.currentTimeMillis() - now ) );
 
             baos.close();
 
