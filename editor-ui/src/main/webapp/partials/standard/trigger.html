@@ -6,7 +6,7 @@
   				<input type="text" class="search-query" placeholder="search">
 		</div><br>
 		<ul class="nav nav-list borderedBox">
-			<li><a href="" class="nav-header"><i class="icon-folder-open-alt"></i>Order Placed</a>
+			<!--li><a href="" class="nav-header"><i class="icon-folder-open-alt"></i>Order Placed</a>
 				<ul class="nav nav-list">
 					<li class="active"><a href=""><i class="icon-file-text-alt"></i>Lab Test Ordered</a></li>
 		  			<li><a href=""><i class="icon-file-text-alt"></i>Medication Ordered</a></li>
@@ -15,34 +15,34 @@
 			</li>
 			<li class="nav-header"><i class="icon-folder-close-alt"></i>Pt Result Available</li>
 			<li class="nav-header"><i class="icon-folder-close-alt"></i>Admit/Discharge/X-fer</li>
-			<li class="nav-header"><i class="icon-folder-close-alt"></i>...</li>
+			<li class="nav-header"><i class="icon-folder-close-alt"></i>...</li-->
 		</ul>
 		<p>Important Note: These events have been defined by your institution. If you would like to fire a rule based on an event not listed here, please contact your
 		CDS support team.</p>
 	</div>
 	<xml id="toolbox" style="display: none">
-		<category name="Triggers">
-			<block type="http://asu.edu/sharpc2b/ops-set#TemporalLiterals"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#TemporalExpressions"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#TypedTriggers"></block>
-		</category>
-		<category name="When">
-			<block type="http://asu.edu/sharpc2b/ops-set#Immediately"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#WithDelay"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#Duration"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#Weekday"></block>
-		</category>
-    	<category name="Repeating">
-    		<block type="http://asu.edu/sharpc2b/ops-set#Once"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#Until"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#Times"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#DWMRepeat"></block>
-			<block type="http://asu.edu/sharpc2b/ops-set#Every"></block>
-		</category>
+        <category name="Triggers">
+            <category name="Typed">
+                <block type="http://asu.edu/sharpc2b/ops-set#TypedTrigger" />
+                <block type="TypedExpression"></block>
+            </category>
+            <category name="Temporal">
+                <block type="http://asu.edu/sharpc2b/ops-set#TemporalTrigger" />
+                <block type="http://asu.edu/sharpc2b/ops-set#PeriodLiteralExpression"></block>
+                <block type="http://asu.edu/sharpc2b/ops-set#RatioLiteralExpression"></block>
+                <block type="http://asu.edu/sharpc2b/ops-set#TimestampIntervalLiteralExpression" />
+                <block type="http://asu.edu/sharpc2b/ops-set#PhysicalQuantityLiteralExpression" />
+                <block type="xsd:int" />
+                <block type="xsd:boolean" />
+                <block type="xsd:string" />
+                <block type="xsd:dateTime" />
+                <block type="xsd:double" />
+            </category>
+        </category>
 	</xml>
 	<div class="span8">
 		<div style="height: 44px;">
-			<div class="pull-left" style="background-color: #ddd; width: 110px; text-align: center; font-size: 17.5px; line-height: 44px;">Blocks</div>
+			<div class="pull-left" style="background-color: #ddd; width: 110px; text-align: center; font-size: 17px; line-height: 44px;">Blocks</div>
 			<div class="pull-right">
 				<button class="btn btn-link btn-large" x-ng-click="save()" ><i class="icon-save" ></i> Save </button>
 				<button class="btn btn-link btn-large" x-ng-click="clear()"><i class="icon-trash"></i> Clear</button>

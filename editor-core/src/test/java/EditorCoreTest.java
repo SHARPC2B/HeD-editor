@@ -6,6 +6,9 @@ import edu.asu.sharpc2b.hed.impl.HeDArtifactData;
 import edu.asu.sharpc2b.hed.impl.HeDNamedExpression;
 import edu.asu.sharpc2b.hed.impl.ModelManagerOwlAPIHermit;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.ops_set.OrExpression;
+import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ExpressionImpl;
 import edu.asu.sharpc2b.prr.ProductionRule;
@@ -14,6 +17,7 @@ import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
+import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
 import edu.asu.sharpc2b.transform.OOwl2HedDumper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.varia.NullAppender;
@@ -42,6 +46,8 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class EditorCoreTest {
 
@@ -51,10 +57,11 @@ public class EditorCoreTest {
         Logger.getRootLogger().removeAllAppenders();
         Logger.getRootLogger().addAppender(new NullAppender());
 
-        //org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+
         System.out.println( "Loading resource... " );
         long now = System.currentTimeMillis();
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "pertussis.xml" );
+        //org.drools.io.Resource file = ResourceFactory.newClassPathResource( "pertussis.xml" );
+        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
         byte[] hedStream = new byte[ file.getInputStream().available() ];
         file.getInputStream().read( hedStream );
         System.out.println( "Resource loaded.." + (System.currentTimeMillis() - now) );
@@ -227,6 +234,23 @@ public class EditorCoreTest {
         onto.getOWLOntologyManager().saveOntology( onto, new OWLFunctionalSyntaxOntologyFormat(), System.out );
 
 
+    }
+
+
+    @Test
+    @Ignore
+    public void testParseTrigger() throws Exception {
+        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "trig.xml" );
+
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document dox = builder.parse( file.getInputStream() );
+
+        SharpExpression sharp = new ExpressionFactory().parseBlockly( dox, BlocklyFactory.ExpressionRootType.TRIGGER );
+
+        assertTrue( sharp instanceof OrExpression );
+        assertEquals( 2, ( (OrExpression) sharp ).getHasOperand().size() );
+        assertTrue( ( (OrExpression) sharp ).getHasOperand().get( 0 ) instanceof PeriodLiteralExpression );
+        assertTrue( ( (OrExpression) sharp ).getHasOperand().get( 1 ) instanceof VariableExpression );
     }
 
 

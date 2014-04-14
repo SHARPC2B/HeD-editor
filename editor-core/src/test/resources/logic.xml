@@ -1,0 +1,28 @@
+<xml>
+	<block type="logic_root" inline="false" deletable="false" movable="false" x="0" y="0">
+		<value name="ROOT">
+			<block type="logic_compare" inline="false">
+				<mutation types="3"></mutation>
+				<field name="NAME"></field>
+				<field name="dropdown">ALL</field>
+				<value name="CLAUSE0">
+					<block type="logic_boolean">
+						<field name="Clauses">id_-1379816698</field>
+					</block>
+				</value>
+				<value name="CLAUSE1">
+					<block type="logic_negate" inline="false"></block>
+				</value>
+				<value name="CLAUSE2">
+					<block type="logic_exists" inline="false">
+						<value name="EXISTS">
+							<block type="logic_boolean">
+								<field name="Clauses">id_-273620577</field>
+							</block>
+						</value>
+					</block>
+				</value>
+			</block>
+		</value>
+	</block>
+</xml>

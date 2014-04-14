@@ -1,0 +1,37 @@
+<xml>
+	<block type="logic_root" inline="false" deletable="false" movable="false" x="0" y="0">
+		<field name="NAME">test</field>
+		<value name="NAME">
+			<block type="http://asu.edu/sharpc2b/ops-set#ObjectExpressionExpression" inline="false">
+				<objectexpression_mutation items="2"></objectexpression_mutation>
+				<value name="http://asu.edu/sharpc2b/ops-set#objectType">
+					<block type="ObservationProposal"></block>
+				</value>
+				<value name="http://asu.edu/sharpc2b/ops-set#property_0">
+					<block type="http://asu.edu/sharpc2b/ops#PropertySetExpression" inline="false">
+						<value name="http://asu.edu/sharpc2b/ops#value">
+							<block type="http://asu.edu/sharpc2b/ops-set#SimpleCodeLiteralExpression" inline="false"></block>
+						</value>
+						<value name="http://asu.edu/sharpc2b/ops#property">
+							<block type="ObservationProposal/properties" inline="false">
+								<field name="DomainProperty">urn:hl7-org:vmr:r2#observationFocus</field>
+							</block>
+						</value>
+					</block>
+				</value>
+				<value name="http://asu.edu/sharpc2b/ops-set#property_1">
+					<block type="http://asu.edu/sharpc2b/ops#PropertySetExpression" inline="false">
+						<value name="http://asu.edu/sharpc2b/ops#value">
+							<block type="http://asu.edu/sharpc2b/ops-set#NowExpression"></block>
+						</value>
+						<value name="http://asu.edu/sharpc2b/ops#property">
+							<block type="ObservationProposal/properties" inline="false">
+								<field name="DomainProperty">urn:hl7-org:vmr:r2#proposedObservationTime</field>
+							</block>
+						</value>
+					</block>
+				</value>
+			</block>
+		</value>
+	</block>
+</xml>

@@ -93,7 +93,7 @@ then
     OWLNamedIndividual req = helper.asIndividual( $cr );
     OWLNamedIndividual innVar = helper.asIndividual( "tns:InnVar_" + $cr.hashCode() );
 
-    insert( helper.assertType( rv, "prr:RuleVariable" ) );
+    insert( helper.assertType( rv, "ops:Variable" ) );
     insert( helper.assertType( type, "ops:DomainClass" ) );
 
     insert( helper.assertObjectProperty( "prr:productionRuleBoundRuleVariable", r, rv  ) );
@@ -510,6 +510,34 @@ end
 
 
 /***********************************************************************************************/
+/*  TRIGGERS
+/***********************************************************************************************/
+
+
+rule "Rule Triggers"
+when
+    $kd : KnowledgeDocument( $meta : metadata.artifactType, metadata.artifactType.value == "Rule",
+                             $trigs : triggers!.triggers )
+    $tr : Trigger( this memberOf $trigs, $type : eventType, $expr : expression )
+    Link( $expr, $xp ; )
+then
+    OWLNamedIndividual trig = helper.asIndividual( $tr );
+    OWLNamedIndividual r = helper.asIndividual( $meta );
+    OWLNamedIndividual expr = helper.asIndividual( "tns:prrExpr_" + $tr.hashCode() );
+
+    insert( helper.assertType( expr, "prr:Expression" ) );
+    insert( helper.assertType( trig, "DataEvent".equals( $type ) ? "prr-sharp:DataRuleTrigger" : "prr-sharp:TemporalRuleTrigger" ) );
+
+    insert( helper.assertObjectProperty( "prr-sharp:productionRuleTrigger", r, trig  ) );
+    insert( helper.assertObjectProperty( "prr-sharp:triggerExpression", trig, expr  ) );
+    insert( helper.assertObjectProperty( "prr-sharp:bodyExpression", expr, $xp ) );
+
+
+end
+
+
+
+/***********************************************************************************************/
 /*  EXPRESSIONS
 /***********************************************************************************************/
 
@@ -541,8 +569,9 @@ when
     Link( $ref, $exp ; )
 then
     OWLNamedIndividual var = helper.asIndividual( "tns:Var_" + $name );
-
+    insert( helper.assertType( var, "ops:Variable" ) );
     insert( helper.assertType( $exp, "ops:VariableExpression" ) );
+
     insert( helper.assertObjectProperty( "ops:referredVariable", $exp, var ) );
 end
 

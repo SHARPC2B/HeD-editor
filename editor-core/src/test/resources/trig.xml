@@ -1,0 +1,34 @@
+xml>
+<block type="http://asu.edu/sharpc2b/ops-set#TriggerRoot" deletable="false" movable="false" x="0" y="0">
+	<statement name="ROOT">
+		<block type="http://asu.edu/sharpc2b/ops-set#TemporalTrigger" inline="false">
+			<value name="Trigger">
+				<block type="http://asu.edu/sharpc2b/ops-set#PeriodLiteralExpression" inline="false">
+					<value name="http://asu.edu/sharpc2b/ops-set#period">
+						<block type="http://asu.edu/sharpc2b/ops-set#PhysicalQuantityLiteralExpression" inline="false">
+							<value name="http://asu.edu/sharpc2b/ops-set#value_double">
+								<block type="xsd:double">
+									<field name="VALUE">1.0</field>
+								</block>
+							</value>
+							<value name="http://asu.edu/sharpc2b/ops-set#unit">
+								<block type="xsd:string">
+									<field name="VALUE">day</field>
+								</block>
+							</value>
+						</block>
+					</value>
+				</block>
+			</value>
+			<next>
+				<block type="http://asu.edu/sharpc2b/ops-set#TypedTrigger" inline="false">
+					<value name="Trigger">
+						<block type="TypedExpression">
+							<field name="TypedExpression">Patient</field>
+						</block>
+					</value>
+				</block>
+			</next>
+		</block>
+	</statement>
+</block></xml>

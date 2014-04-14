@@ -28,7 +28,9 @@ import edu.asu.sharpc2b.prr.RuleAction;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
+import edu.asu.sharpc2b.prr_sharp.DataRuleTrigger;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
+import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import org.ontologydesignpatterns.ont.dul.dul.Agent;
 import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
@@ -105,10 +107,32 @@ public class OOwl2HedDumper implements HeDExporter {
         if ( rule instanceof ProductionRule ) {
             visitExternalData( (ProductionRule) rule, dox, root );
             visitExpressions( (ProductionRule) rule, dox, root );
+            visitTriggers( (ProductionRule) rule, dox, root );
             visitConditions( (ProductionRule) rule, dox, root );
             visitActions( (ProductionRule) rule, dox, root );
         }
 
+    }
+
+    private void visitTriggers( ProductionRule rule, Document dox, Element root ) {
+        Element trigs = dox.createElement( "triggers" );
+        for ( RuleTrigger trig : rule.getProductionRuleTrigger() ) {
+            visitTrigger( trig, dox, trigs );
+        }
+        root.appendChild( trigs );
+    }
+
+    private void visitTrigger( RuleTrigger trig, Document dox, Element trigs ) {
+        Element t = dox.createElement( "trigger" );
+
+        Element type = dox.createElement( "eventType" );
+        type.setTextContent( trig instanceof DataRuleTrigger ? "DataEvent" : "PeriodicEvent" );
+        t.appendChild( type );
+
+        Expression expr = trig.getTriggerExpression().iterator().next();
+        visitExpression( null, expr.getBodyExpression().iterator().next(), t, "expression", dox );
+
+        trigs.appendChild( t );
     }
 
     private void visitActions( ProductionRule rule, Document dox, Element root ) {

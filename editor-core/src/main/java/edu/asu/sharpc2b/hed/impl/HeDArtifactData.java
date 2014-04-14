@@ -3,26 +3,39 @@ package edu.asu.sharpc2b.hed.impl;
 import com.clarkparsia.empire.SupportsRdfId;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.BooleanExpression;
+import edu.asu.sharpc2b.ops.IteratorExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops_set.ClinicalRequestExpression;
+import edu.asu.sharpc2b.ops_set.OrExpression;
+import edu.asu.sharpc2b.ops_set.OrExpressionImpl;
+import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
+import edu.asu.sharpc2b.prr.ExpressionImpl;
 import edu.asu.sharpc2b.prr.ProductionRule;
 import edu.asu.sharpc2b.prr.ProductionRuleImpl;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
+import edu.asu.sharpc2b.prr_sharp.DataRuleTrigger;
+import edu.asu.sharpc2b.prr_sharp.DataRuleTriggerImpl;
 import edu.asu.sharpc2b.prr_sharp.ExpressionInSHARPImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
+import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
+import edu.asu.sharpc2b.prr_sharp.TemporalRuleTrigger;
+import edu.asu.sharpc2b.prr_sharp.TemporalRuleTriggerImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import riotcmd.trig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HeDArtifactData {
@@ -32,6 +45,7 @@ public class HeDArtifactData {
 
     private Map<String,HeDNamedExpression> blocklyExpressions = new HashMap<String,HeDNamedExpression>();
     private HeDNamedExpression logicExpression;
+    private HeDNamedExpression triggerExpression;
     private Map<String, String> usedDomainClasses = new HashMap<String,String>();
     private Map<String, String> domainClasses;
     private Map<String, Map<String, String>> domainProperties;
@@ -54,6 +68,7 @@ public class HeDArtifactData {
 
         cacheBlocklyExpressions( dok, domainClasses, domainProperties );
         cacheLogicExpression( dok, domainClasses, domainProperties );
+        cacheTriggers( dok, domainClasses, domainProperties );
     }
 
     public HeDArtifactData() {
@@ -160,8 +175,10 @@ public class HeDArtifactData {
             return true;
         }
         //TODO replace with enum or URI
-        if ( "logic".equals( returnType ) ) {
+        if ( "logic".equalsIgnoreCase( returnType ) ) {
             return heDNamedExpression.getExpression() instanceof BooleanExpression;
+        } else if ( "Request".equalsIgnoreCase( returnType ) ) {
+            return heDNamedExpression.getExpression() instanceof IteratorExpression || heDNamedExpression.getExpression() instanceof ClinicalRequestExpression;
         }
         return true;
     }
@@ -206,6 +223,12 @@ public class HeDArtifactData {
             if ( found ) {
                 logicExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( logicExpression.getName(), logicExpression.getExpression(), BlocklyFactory.ExpressionRootType.CONDITION )
+                );
+            }
+        found = replaceReferences( oldName, newName, triggerExpression.getExpression() );
+            if ( found ) {
+                triggerExpression.setDoxBytes(
+                        new BlocklyFactory( domainClasses, domainProperties ).fromExpression( triggerExpression.getName(), triggerExpression.getExpression(), BlocklyFactory.ExpressionRootType.TRIGGER )
                 );
             }
     }
@@ -291,13 +314,69 @@ public class HeDArtifactData {
                     SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
                     BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
                     logicExpression = new HeDNamedExpression(
-                        idFromName( name ),
-                        name,
-                        sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
+                            idFromName( name ),
+                            name,
+                            sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
                 }
             }
         }
     }
+
+
+    public HeDNamedExpression getTriggers() {
+        return triggerExpression;
+    }
+
+    public byte[] updateTriggers( byte[] doxBytes ) {
+        OrExpression triggers = (OrExpression) new ExpressionFactory().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.TRIGGER );
+
+        for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                ( (ProductionRule) rule ).getProductionRuleTrigger().clear();
+                for ( SharpExpression trigger : triggers.getHasOperand() ) {
+                    Expression prr = new ExpressionImpl();
+                    prr.addBodyExpression( trigger );
+                    RuleTrigger t;
+                    if ( trigger instanceof PeriodLiteralExpression ) {
+                        t = new TemporalRuleTriggerImpl();
+                    } else {
+                        t = new DataRuleTriggerImpl();
+                    }
+                    t.addTriggerExpression( prr );
+                    ( (ProductionRule) rule ).addProductionRuleTrigger( t );
+                }
+            }
+        }
+
+        triggerExpression.setDoxBytes( doxBytes );
+        triggerExpression.setExpression( triggers );
+        return doxBytes;
+    }
+
+    public void cacheTriggers( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+        String name = "$$$_TRIGGERS";
+        for ( ComputerExecutableRule rule : dok.getContains() ) {
+            if ( rule instanceof ProductionRule ) {
+                List<RuleTrigger> triggers = ( (ProductionRule) rule ).getProductionRuleTrigger();
+                if ( ! triggers.isEmpty() ) {
+                    OrExpression sharpExpression = new OrExpressionImpl();
+                    for ( RuleTrigger trigger : triggers ) {
+                        Expression prrExpr = trigger.getTriggerExpression().get( 0 );
+                        if ( ! prrExpr.getBodyExpression().isEmpty() ) {
+                            sharpExpression.addHasOperand( prrExpr.getBodyExpression().get( 0 ) );
+                        }
+                    }
+                    BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+                    triggerExpression = new HeDNamedExpression(
+                            idFromName( name ),
+                            name,
+                            sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.TRIGGER ) );
+                }
+
+            }
+        }
+    }
+
 
 
 

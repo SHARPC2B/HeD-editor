@@ -108,4 +108,21 @@ public class ExpressionActions extends Controller {
         setHeaderCORS();
         return ok( logic );
     }
+
+    public static Result getTriggers() {
+        byte[] triggers = ModelHome.getTriggers();
+        System.out.println( new String( triggers ) );
+        setHeaderCORS();
+        return ok( triggers );
+    }
+
+    public static Result updateTriggers() {
+        final Http.Request request = request();
+        Http.RequestBody body = request.body();
+
+        byte[] triggers = ModelHome.setTriggers( body.asRaw().asBytes() );
+
+        setHeaderCORS();
+        return ok( triggers );
+    }
 }

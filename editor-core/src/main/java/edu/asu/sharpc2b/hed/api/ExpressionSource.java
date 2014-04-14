@@ -21,4 +21,9 @@ public interface ExpressionSource {
     public byte[] getLogicExpression();
 
     public byte[] updateLogicExpression( byte[] conditionDoxBytes );
+
+    public byte[] getTriggers();
+
+    public byte[] updateTriggers( byte[] triggerDoxBytes );
+
 }

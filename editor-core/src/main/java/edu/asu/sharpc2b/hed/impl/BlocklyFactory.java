@@ -17,6 +17,7 @@ import edu.asu.sharpc2b.ops_set.IsEmptyExpression;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
 import edu.asu.sharpc2b.ops_set.NotExpression;
 import edu.asu.sharpc2b.ops_set.OrExpression;
+import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.prr.NamedElement;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
@@ -24,6 +25,7 @@ import org.hl7.knowledgeartifact.r1.ExpressionRef;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import riotcmd.trig;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -95,6 +97,10 @@ public class BlocklyFactory {
 
         Element exprRoot;
         switch ( type ) {
+            case TRIGGER :
+                exprRoot = createTriggerRoot( name, root, dox );
+                visitTriggers( sharpExpression, exprRoot, dox );
+                break;
             case CONDITION:
                 exprRoot = createLogicRoot( name, root, dox );
                 visitCondition( sharpExpression, null, exprRoot, dox );
@@ -108,6 +114,56 @@ public class BlocklyFactory {
 
         dox.appendChild( root );
         return root;
+    }
+
+    
+    
+    private void visitTriggers( SharpExpression sharpExpression, Element root, Document dox ) {
+        OrExpression or = (OrExpression) sharpExpression;
+        Element parent = root;
+        int max = or.getHasOperand().size();
+        for ( int j = 0; j < max; j++ ) {
+            SharpExpression expr = or.getHasOperand().get( j );
+
+            Element trigBlock = dox.createElement( "block" );
+            trigBlock.setAttribute( "inline", "false" );
+
+            Element value = dox.createElement( "value" );
+            value.setAttribute( "name", "Trigger" );
+            trigBlock.appendChild( value );
+            parent.appendChild( trigBlock );
+
+            if ( expr instanceof PeriodLiteralExpression ) {
+
+                trigBlock.setAttribute( "type", "http://asu.edu/sharpc2b/ops-set#TemporalTrigger" );
+                visitExpression( null, expr, value, "block", dox );
+
+            } else if ( expr instanceof VariableExpression ) {
+                trigBlock.setAttribute( "type", "http://asu.edu/sharpc2b/ops-set#TypedTrigger" );
+                VariableExpression var = (VariableExpression) expr;
+                String name = var.getReferredVariable().get( 0 ).getName().get( 0 );
+                String id = HeDArtifactData.idFromName( name );
+
+                Element sub = dox.createElement( "block" );
+                sub.setAttribute( "type", "TypedExpression" );
+                Element field = dox.createElement( "field" );
+                field.setAttribute( "name", "TypedExpression" );
+                field.setTextContent( id );
+
+                sub.appendChild( field );
+                value.appendChild( sub );
+            } else {
+                // Impossible
+                throw new IllegalStateException( "Unrecognized expression for trigger" + expr.getClass() );
+            }
+
+            if ( j != max -1 ) {
+                Element next = dox.createElement( "next" );
+                trigBlock.appendChild( next );
+                parent = next;
+            }
+
+        }
     }
 
     private Element createExpressionRoot( String exprName, Element root, Document dox ) {
@@ -130,6 +186,23 @@ public class BlocklyFactory {
 
         root.appendChild( block );
         return value;
+    }
+
+    private Element createTriggerRoot( String exprName, Element root, Document dox ) {
+        Element block = dox.createElement( "block" );
+        block.setAttribute( "type", "http://asu.edu/sharpc2b/ops-set#TriggerRoot" );
+        block.setAttribute( "inline", "false" );
+        block.setAttribute( "deletable", "false" );
+        block.setAttribute( "movable", "false" );
+        block.setAttribute( "x", "0" );
+        block.setAttribute( "y", "0" );
+
+        Element statement = dox.createElement( "statement" );
+        statement.setAttribute( "name", "ROOT" );
+        block.appendChild( statement );
+
+        root.appendChild( block );
+        return statement;
     }
 
     private Element createLogicRoot( String exprName, Element root, Document dox ) {

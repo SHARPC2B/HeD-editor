@@ -116,7 +116,21 @@
     </def>
   </expressions>
 
-  <conditions>
+	<triggers>
+		<trigger>
+			<eventType>DataEvent</eventType>
+			<expression xsi:type="ExpressionRef" name="Patient"/>
+		</trigger>
+		<trigger>
+			<eventType>PeriodicEvent</eventType>
+			<expression xsi:type="PeriodLiteral">
+				<period value="1" unit="day"/>
+			</expression>
+		</trigger>
+	</triggers>
+
+
+	<conditions>
     <condition>
       <logic xsi:type="And">
         <description>Patient is adult and has diabetes and no HbA1c in the last year</description>

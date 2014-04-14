@@ -1153,136 +1153,93 @@ angular.module('ruleApp.controllers', [])
         };
     }])
 
-    .controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
-        $scope.$parent.title = 'Decide how the Rule will be Triggered';
-        $scope.$parent.menuItems = standardMenuItems(2);
 
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TemporalLiterals'] = {
+
+    .controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
+        $scope.$parent.menuItems = standardMenuItems(2);
+        $scope.triggers = {};
+
+        $http({
+            method: 'GET',
+            url: serviceUrl + '/rule/current'
+        }).success(function(data) {
+                if ( data != null ) {
+                    $scope.currentRuleId = data.ruleId;
+                    $scope.currentRuleTitle = data.Name;
+                    $scope.$parent.title = 'Triggers : ' + data.Name;
+                } else {
+                    delete $scope.currentRuleId;
+                    delete $scope.currentRuleTitle;
+                    $scope.$parent.title = 'Triggers (no rule active)';
+                }
+                $http({
+                    method : 'GET',
+                    url : serviceUrl + '/rule/current/triggers'
+                }).success(function(trigs) {
+                        $scope.triggers.xml = trigs;
+                        Blockly.mainWorkspace.clear();
+                        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.triggers.xml));
+                    });
+
+            });
+
+        $scope.save = function() {
+            $scope.triggers.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+            console.log($scope.triggers.xml);
+
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/rule/triggers',
+                data : $scope.triggers.xml,
+                headers : { 'Content-Type':'application/html' }
+            }).success( function( data ) {
+                    alert( 'Updated triggers' );
+                });
+        };
+
+        $scope.clear = function() {
+            if (confirm("Clear Triggers?")) {
+                Blockly.mainWorkspace.clear();
+                var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'http://asu.edu/sharpc2b/ops-set#TriggerRoot');
+                rootBlock.initSvg();
+                rootBlock.render();
+                rootBlock.setMovable(false);
+                rootBlock.setDeletable(false);
+            }
+        };
+
+        Blockly.Blocks['TypedExpression'] = {
+            init: function() {
+                this.setColour(30);
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)", "Request" ) ), "TypedExpression");
+                this.setOutput( "Request" );
+            }
+        };
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TypedTrigger'] = {
             init: function() {
                 this.setColour(20);
                 this.appendDummyInput()
-                    .appendField("Temporal Literal");
-                this.appendValueInput("when")
-                    .setCheck("when")
-                    .appendField("Should the rule trigger")
-                    .setAlign(Blockly.ALIGN_RIGHT);
-                this.appendValueInput("repeat")
-                    .setCheck("repeat")
-                    .appendField("Should the rule be triggered");
+                    .appendField("Typed");
+                this.appendValueInput("Trigger")
+                    .setCheck("Request")
                 this.setPreviousStatement(true, "trigger");
                 this.setNextStatement(true, "trigger");
             }
         };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TemporalExpressions'] = {
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TemporalTrigger'] = {
             init: function() {
                 this.setColour(20);
                 this.appendDummyInput()
                     .appendField("Temporal");
-                this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Period Expression...)", "timed" ) ), "PeriodExpression");
+                this.appendValueInput("Trigger")
+                    .setCheck('http://asu.edu/sharpc2b/ops#IntervalType')
                 this.setPreviousStatement(true, "trigger");
                 this.setNextStatement(true, "trigger");
             }
         };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TypedTriggers'] = {
-            init: function() {
-                this.setColour(20);
-                this.appendDummyInput()
-                    .appendField("Typed Trigger");
-                this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)", "any" ) ), "TypedExpression");
-                this.setPreviousStatement(true, "trigger");
-                this.setNextStatement(true, "trigger");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Immediately'] = {
-            init: function() {
-                this.setColour(65);
-                this.appendDummyInput()
-                    .appendField("immediately");
-                this.setOutput(true, "when");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#WithDelay'] = {
-            init: function() {
-                this.setColour(65);
-                this.appendValueInput("delay")
-                    .setCheck("delay")
-                    .appendField("with delay");
-                this.setOutput(true, "when");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Duration'] = {
-            init: function() {
-                this.setColour(120);
-                this.appendDummyInput()
-                    .appendField("for ")
-                    .appendField(new Blockly.FieldTextInput(""), "number")
-                    .appendField(" ")
-                    .appendField(new Blockly.FieldDropdown([["seconds", "seconds"], ["minutes", "minutes"]]), "time");
-                this.setOutput(true, "delay");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Once'] = {
-            init: function() {
-                this.setColour(160);
-                this.appendDummyInput()
-                    .appendField("just once per event");
-                this.setOutput(true, "repeat");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Weekday'] = {
-            init: function() {
-                this.setColour(120);
-                this.appendDummyInput()
-                    .appendField("until")
-                    .appendField(new Blockly.FieldDropdown([["moday", "monday"], ["minutes", "minutes"], ["tuesday", "tuesday"], ["wednesday", "wednesday"], ["thursday", "thursday"], ["friday", "friday"], ["saturday", "saturday"], ["sunday", "sunday"]]), "weekday")
-                    .appendField("at")
-                    .appendField(new Blockly.FieldTextInput(""), "hour");
-                this.setOutput(true, "delay");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Until'] = {
-            init: function() {
-                this.setColour(160);
-                this.appendValueInput("util")
-                    .setCheck("times")
-                    .appendField("util")
-                    .appendField(new Blockly.FieldTextInput("date"), "date")
-                    .appendField("repeating");
-                this.setOutput(true, "repeat");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Times'] = {
-            init: function() {
-                this.setColour(160);
-                this.appendValueInput("times")
-                    .setCheck("times")
-                    .appendField(new Blockly.FieldTextInput("times"), "times")
-                    .appendField("times repeating")
-                this.setOutput(true, "repeat");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#DWMRepeat'] = {
-            init: function() {
-                this.setColour(210);
-                this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown([["daily", "daily"], ["weekly", "weekly"], ["monthly", "monthly"]]), "until");
-                this.setOutput(true, "times");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#Every'] = {
-            init: function() {
-                this.setColour(210);
-                this.appendDummyInput()
-                    .appendField("every")
-                    .appendField(new Blockly.FieldTextInput(""), "times")
-                    .appendField(" ")
-                    .appendField(new Blockly.FieldDropdown([["seconds", "seconds"], ["minutes", "minutes"]]), "time");
-                this.setOutput(true, "times");
-            }
-        };
-        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LogicRoot'] = {
+
+        Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TriggerRoot'] = {
             init: function() {
                 this.setColour(10);
                 this.appendStatementInput("ROOT")
@@ -1296,16 +1253,13 @@ angular.module('ruleApp.controllers', [])
             path: './lib/blockly/',
             toolbox: document.getElementById('toolbox')
         });
-        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'http://asu.edu/sharpc2b/ops-set#LogicRoot');
+
+        var rootBlock = new Blockly.Block(Blockly.mainWorkspace, 'http://asu.edu/sharpc2b/ops-set#TriggerRoot');
         rootBlock.initSvg();
         rootBlock.render();
         rootBlock.setMovable(false);
         rootBlock.setDeletable(false);
 
-        $scope.save = function() {
-            var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-            console.log(Blockly.Xml.domToText(xml));
-        };
     }])
 
 

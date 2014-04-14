@@ -765,6 +765,13 @@ public class ModelHome
         return core.updateLogicExpression( conditionExpression );
     }
 
+    public static byte[] getTriggers() {
+        return core.getTriggers();
+    }
+
+    public static byte[] setTriggers( byte[] triggerExpression ) {
+        return core.updateTriggers( triggerExpression );
+    }
 
 
 

@@ -45,6 +45,9 @@ GET            /fwd/cts2/*path                            controllers.CtsActions
 GET            /rule/current/logic                        controllers.ExpressionActions.getConditionExpression()
 POST           /rule/logic                                controllers.ExpressionActions.updateConditionExpression()
 
+GET            /rule/current/triggers                     controllers.ExpressionActions.getTriggers()
+POST           /rule/triggers                             controllers.ExpressionActions.updateTriggers()
+
 GET            /rule/expressions/list/:returnType         controllers.ExpressionActions.getExpressions(returnType:String)
 GET            /rule/expressions/:exprId                  controllers.ExpressionActions.getExpression(exprId:String)
 DELETE         /rule/expressions/:exprId                  controllers.ExpressionActions.deleteExpression(exprId:String)

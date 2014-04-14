@@ -17,6 +17,7 @@ import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpressionImpl;
 import edu.asu.sharpc2b.ops_set.NotExpression;
 import edu.asu.sharpc2b.ops_set.NotExpressionImpl;
+import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.ops_set.OrExpressionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
@@ -64,6 +65,8 @@ public class ExpressionFactory {
 
     public SharpExpression parseBlockly( Document dox, BlocklyFactory.ExpressionRootType type ) {
         switch ( type ) {
+            case TRIGGER :
+                return parseTrigger( dox );
             case CONDITION:
                 return (SharpExpression) parseCondition( dox );
             case EXPRESSION:
@@ -71,6 +74,68 @@ public class ExpressionFactory {
                 return (SharpExpression) parseGenericExpression( dox );
         }
     }
+
+    private SharpExpression parseTrigger( Document dox ) {
+        Element xml = dox.getDocumentElement();
+        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
+        Element stat = getChildrenByTagName( root, "statement" ).iterator().next();
+
+        OrExpression or = new OrExpressionImpl();
+
+        visitTrigger( stat, or );
+
+        return or;
+    }
+
+    private void visitTrigger( Element expr, OrExpression or ) {
+        List<Element> blocks = getChildrenByTagName( expr, "block" );
+        if ( blocks.isEmpty() ) {
+            return;
+        }
+
+        Element block = blocks.get( 0 );
+        String type = block.getAttribute( "type" );
+
+        if ( "http://asu.edu/sharpc2b/ops-set#TemporalTrigger".equals( type ) ) {
+            List<Element> values = getChildrenByTagName( block, "value" );
+            if ( ! values.isEmpty() ) {
+                Element value = values.get( 0 );
+                List<Element> elems = getChildrenByTagName( value, "block" );
+                if ( ! elems.isEmpty() ) {
+                    Element period = elems.get( 0 );
+                    or.addHasOperand( visitBlock( period ) );
+                }
+            }
+        } else if ( "http://asu.edu/sharpc2b/ops-set#TypedTrigger".equals( type ) ) {
+            List<Element> values = getChildrenByTagName( block, "value" );
+            if ( ! values.isEmpty() ) {
+                Element value = values.get( 0 );
+                List<Element> elems = getChildrenByTagName( value, "block" );
+                if ( ! elems.isEmpty() ) {
+                    Element elem = elems.get( 0 );
+                    List<Element> fields = getChildrenByTagName( elem, "field" );
+                    if ( ! fields.isEmpty() ) {
+                        Element field = fields.get( 0 );
+                        String varName = field.getTextContent();
+
+                        VariableExpression varexp = new VariableExpressionImpl();
+                        Variable var = new VariableImpl();
+                        var.addName( varName );
+                        varexp.addReferredVariable( var );
+
+                        or.addHasOperand( varexp );
+                    }
+                }
+            }
+        }
+
+        List<Element> nexts = getChildrenByTagName( block, "next" );
+        if ( ! nexts.isEmpty() ) {
+            Element next = nexts.get( 0 );
+            visitTrigger( next, or );
+        }
+    }
+
 
     private SharpExpression parseCondition( Document dox ) {
         Element xml = dox.getDocumentElement();
