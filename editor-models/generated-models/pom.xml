@@ -87,8 +87,7 @@
         </executions>
         <configuration>
           <schemaLocations>
-            <param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd</param>
-            <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>
+            <param>${pom.basedir}/src/main/resources/xsd/vmr/vmr.xsd</param>
             <param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>
             <param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgeartifact/knowledgedocument.xsd</param>
           </schemaLocations>
@@ -153,7 +152,7 @@
         </executions>
         <configuration>
           <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-          <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr-clean.xsd.ttl</inputOntologyFile>
+          <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr.xsd.ttl</inputOntologyFile>
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/domain-vmr.ofn</outputOntologyFile>
           <outputOntologyIriString>urn:hl7-org:vmr:r2</outputOntologyIriString>
         </configuration>

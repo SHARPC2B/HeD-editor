@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class HeDArtifactData {
 
@@ -51,13 +52,13 @@ public class HeDArtifactData {
     private HeDNamedExpression triggerExpression;
     private HeDAction actionExpression;
     private Map<String, String> usedDomainClasses = new HashMap<String,String>();
-    private Map<String, String> domainClasses;
-    private Map<String, Map<String, String>> domainProperties;
+    private SortedMap<String, String> domainClasses;
+    private SortedMap<String, SortedMap<String, String>> domainProperties;
 
 
 
 
-    public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+    public HeDArtifactData( HeDKnowledgeDocument dok, byte[] owlData, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
         this.knowledgeDocument = dok;
         this.owlData = owlData;
 
@@ -67,8 +68,8 @@ public class HeDArtifactData {
             dok.getArtifactId().addAll( vid.getArtifactId() );
         }
 
-        this.domainClasses = Collections.unmodifiableMap( domainClasses );
-        this.domainProperties = Collections.unmodifiableMap( domainProperties );
+        this.domainClasses = Collections.unmodifiableSortedMap( domainClasses );
+        this.domainProperties = Collections.unmodifiableSortedMap( domainProperties );
 
         cacheBlocklyExpressions( dok, domainClasses, domainProperties );
         cacheLogicExpression( dok, domainClasses, domainProperties );
@@ -140,7 +141,7 @@ public class HeDArtifactData {
         this.usedDomainClasses.put( fqn, name );
     }
 
-    public void cacheBlocklyExpressions( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+    public void cacheBlocklyExpressions( HeDKnowledgeDocument dok, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {
                 for ( RuleVariable var : ( (ProductionRule) rule ).getProductionRuleBoundRuleVariable() ) {
@@ -340,10 +341,10 @@ public class HeDArtifactData {
         return doxBytes;
     }
 
-    public void cacheLogicExpression( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+    public void cacheLogicExpression( HeDKnowledgeDocument dok, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
         String name = "$$$_LOGIC_PREMISE";
         for ( ComputerExecutableRule rule : dok.getContains() ) {
-            if ( rule instanceof ProductionRule ) {
+            if ( rule instanceof ProductionRule && ! ( (ProductionRule) rule ).getProductionRuleCondition().isEmpty() ) {
                 RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
                 Expression prrExpr = premise.getConditionRepresentation().get( 0 );
                 if ( ! prrExpr.getBodyExpression().isEmpty() ) {
@@ -389,7 +390,7 @@ public class HeDArtifactData {
         return doxBytes;
     }
 
-    public void cacheTriggers( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+    public void cacheTriggers( HeDKnowledgeDocument dok, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
         String name = "$$$_TRIGGERS";
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {
@@ -415,7 +416,7 @@ public class HeDArtifactData {
 
 
 
-    private void cacheActions( HeDKnowledgeDocument dok, Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
+    private void cacheActions( HeDKnowledgeDocument dok, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
         String name = "$$$_ACTIONS";
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule ) {

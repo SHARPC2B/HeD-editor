@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DomainHierarchyExplorer {
@@ -32,8 +34,9 @@ public class DomainHierarchyExplorer {
 
     private String domainHierarchy;
 
-    private Map<String,String> domKlasses = new HashMap<String,String>();
-    private Map<String,Map<String,String>> domProptis = new HashMap<String,Map<String,String>>();
+    private SortedMap<String,String> domKlasses = new TreeMap<String,String>();
+    private SortedMap<String,SortedMap<String,String>> domProptis = new TreeMap<String,SortedMap<String,String>>();
+    private SortedMap<String,String> superKlasses = new TreeMap<String,String>();
 
 
     public static DomainHierarchyExplorer getInstance( String domainModelPath, String domainNs ) {
@@ -77,6 +80,7 @@ public class DomainHierarchyExplorer {
 
                 Node supNode = getNode( frame, sup.getFragment() );
                 Node subNode = getNode( frame, sub.getFragment() );
+                superKlasses.put( sub.getFragment(), sup.getFragment() );
                 supNode.addChild( subNode );
 
             }
@@ -90,9 +94,9 @@ public class DomainHierarchyExplorer {
                 IRI klass = IRI.create( domainNs, opa.getObject().asOWLNamedIndividual().getIRI().getFragment() );
 
                 if ( domKlasses.containsKey( klass.toString() ) ) {
-                    Map<String, String> propsForKlass = domProptis.get( klass.toString() );
+                    SortedMap<String, String> propsForKlass = domProptis.get( klass.toString() );
                     if ( propsForKlass == null ) {
-                        propsForKlass = new HashMap<String,String>();
+                        propsForKlass = new TreeMap<String,String>();
                         domProptis.put( klass.toString(), propsForKlass );
                     }
                     propsForKlass.put( prop.toString(), prop.getFragment() );
@@ -145,20 +149,28 @@ public class DomainHierarchyExplorer {
         this.domainHierarchy = domainHierarchy;
     }
 
-    public Map<String, String> getDomKlasses() {
+    public SortedMap<String, String> getDomKlasses() {
         return domKlasses;
     }
 
-    public void setDomKlasses( Map<String, String> domKlasses ) {
+    public void setDomKlasses( SortedMap<String, String> domKlasses ) {
         this.domKlasses = domKlasses;
     }
 
-    public Map<String, Map<String, String>> getDomProptis() {
+    public SortedMap<String, SortedMap<String, String>> getDomProptis() {
         return domProptis;
     }
 
-    public void setDomProptis( Map<String, Map<String, String>> domProptis ) {
+    public void setDomProptis( SortedMap<String, SortedMap<String, String>> domProptis ) {
         this.domProptis = domProptis;
+    }
+
+    public Map<String, String> getSuperKlasses() {
+        return superKlasses;
+    }
+
+    public void setSuperKlasses( SortedMap<String, String> superKlasses ) {
+        this.superKlasses = superKlasses;
     }
 
     private void traverseKlasses( Node root ) {
@@ -188,9 +200,9 @@ public class DomainHierarchyExplorer {
             Map<String,String> parentProperties = domProptis.get( parent.toString() );
             for ( Node n : node.getChildren() ) {
                 IRI child = IRI.create( domainNs + n.getName() );
-                Map<String,String> childProperties = domProptis.get( child.toString() );
+                SortedMap<String,String> childProperties = domProptis.get( child.toString() );
                 if ( childProperties == null ) {
-                    childProperties = new HashMap<String, String>();
+                    childProperties = new TreeMap<String, String>();
                     domProptis.put( child.toString(), childProperties );
                 }
                 childProperties.putAll( parentProperties );

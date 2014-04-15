@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:hl7-org:vmr:r2" xmlns:vmr="urn:hl7-org:vmr:r2"
+           xmlns:dt="urn:hl7-org:cdsdt:r2"
+           targetNamespace="urn:hl7-org:vmr:r2"
+           elementFormDefault="qualified">
+	<xs:import namespace="urn:hl7-org:cdsdt:r2" schemaLocation="./datatypes.xsd"/>
+	<xs:complexType name="AdministrableSubstance">
+		<xs:complexContent>
+			<xs:extension base="Entity">
+				<xs:sequence>
+					<xs:element name="form" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="lotNo" type="dt:ST" minOccurs="0">
+					</xs:element>
+					<xs:element name="manufacturer" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="strength" type="dt:RTO" minOccurs="0">
+					</xs:element>
+					<xs:element name="substanceBrandCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="substanceCode" type="dt:CD">
+					</xs:element>
+					<xs:element name="substanceGenericCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AdverseEvent">
+		<xs:complexContent>
+			<xs:extension base="AdverseEventBase">
+				<xs:sequence>
+					<xs:element name="adverseEventStatus" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="criticality" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="severity" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AdverseEventBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="adverseEventCode" type="dt:CD">
+					</xs:element>
+					<xs:element name="adverseEventAgent" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="adverseEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="affectedBodySite" type="BodySite" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AppointmentProposal">
+		<xs:complexContent>
+			<xs:extension base="EncounterBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="proposedAppointmentTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AppointmentRequest">
+		<xs:complexContent>
+			<xs:extension base="EncounterBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="requestedAppointmentTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="requestIssuanceTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BaseFrequency" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="frequencyStartType" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="repetitions" type="Repetition" minOccurs="0">
+					</xs:element>
+					<xs:element name="timingEvent" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BodySite">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="bodySiteCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="laterality" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="directionality" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ClinicalStatement">
+		<xs:sequence>
+			<xs:element name="templateId" type="CodedIdentifier" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="id" type="dt:II" minOccurs="0">
+			</xs:element>
+			<xs:element name="dataSourceType" type="dt:CD" minOccurs="0">
+			</xs:element>
+			<xs:element name="evaluatedPersonId" type="dt:II" minOccurs="0">
+			</xs:element>
+			<xs:element name="attribute" type="CodedNameValuePair" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="relatedEntity" type="RelatedEntity" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="relatedClinicalStatement" type="RelatedClinicalStatement" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeableConcept">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="code" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="narrative" type="dt:ST" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CodedIdentifier">
+		<xs:complexContent>
+			<xs:extension base="dt:II">
+				<xs:sequence>
+					<xs:element name="relevantConcept" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CodedNameValuePair">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="name" type="dt:CD">
+					</xs:element>
+					<xs:element name="value" type="ExtendedVmrTypeBase">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CommunicationBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="medium" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="message" type="dt:ED" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="recipient" type="Entity" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="sender" type="Entity" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CommunicationEvent">
+		<xs:complexContent>
+			<xs:extension base="CommunicationBase">
+				<xs:sequence>
+					<xs:element name="communicationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CommunicationOrder">
+		<xs:complexContent>
+			<xs:extension base="CommunicationBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="orderEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="originationMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CommunicationProposal">
+		<xs:complexContent>
+			<xs:extension base="CommunicationBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="proposedCommunicationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CompositeIVOrder">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationOrder">
+				<xs:sequence>
+					<xs:element name="additive" type="Constituent" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CompositeIVProposal">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationProposal">
+				<xs:sequence>
+					<xs:element name="additive" type="Constituent" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CompositeObservationResult">
+		<xs:complexContent>
+			<xs:extension base="ObservationBase">
+				<xs:sequence>
+					<xs:element name="observationResult" type="ObservationBase" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Constituent">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="substance" type="AdministrableSubstance">
+					</xs:element>
+					<xs:element name="substanceAmount" type="dt:IVL_PQ">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DeniedAdverseEvent">
+		<xs:complexContent>
+			<xs:extension base="AdverseEventBase"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DeniedProblem">
+		<xs:complexContent>
+			<xs:extension base="ProblemBase"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DietOrder">
+		<xs:complexContent>
+			<xs:extension base="ProcedureOrder">
+				<xs:sequence>
+					<xs:element name="dietQualifier" type="DietQualifier" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DietProposal">
+		<xs:complexContent>
+			<xs:extension base="ProcedureProposal">
+				<xs:sequence>
+					<xs:element name="dietQualifier" type="DietQualifier" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DietQualifier">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="amount" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="dietQualifierType" type="dt:CD">
+					</xs:element>
+					<xs:element name="qualifier" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Documentation">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="content" type="dt:ED" minOccurs="0">
+					</xs:element>
+					<xs:element name="type" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DoseRestriction">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="maxDoseForInterval" type="dt:PQ">
+					</xs:element>
+					<xs:element name="timeInterval" type="dt:PQ">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EncounterBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="encounterType" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EncounterEvent">
+		<xs:complexContent>
+			<xs:extension base="EncounterBase">
+				<xs:sequence>
+					<xs:element name="encounterEventTime" type="dt:IVL_TS">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EnteralFeedingOrder">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationOrder">
+				<xs:sequence>
+					<xs:element name="dietQualifier" type="DietQualifier" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="dosingGoal" type="DoseRestriction" minOccurs="0">
+					</xs:element>
+					<xs:element name="dosingRateIncrement" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="dosingRateIncrementInterval" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EnteralFeedingProposal">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationProposal">
+				<xs:sequence>
+					<xs:element name="dietQualifier" type="DietQualifier" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="dosingGoal" type="DoseRestriction" minOccurs="0">
+					</xs:element>
+					<xs:element name="dosingRateIncrement" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="dosingRateIncrementInterval" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Entity">
+		<xs:sequence>
+			<xs:element name="templateId" type="CodedIdentifier" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="id" type="dt:II" minOccurs="0">
+			</xs:element>
+			<xs:element name="description" type="dt:ST" minOccurs="0">
+			</xs:element>
+			<xs:element name="entityType" type="dt:CD" minOccurs="0">
+			</xs:element>
+			<xs:element name="evaluatedPersonId" type="dt:II" minOccurs="0">
+			</xs:element>
+			<xs:element name="attribute" type="CodedNameValuePair" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="relatedEntity" type="RelatedEntity" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EvaluatedPerson">
+		<xs:complexContent>
+			<xs:extension base="Person">
+				<xs:sequence>
+					<xs:element name="age" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="ageAtDeath" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="birthTime" type="dt:TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="ethnicity" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="gender" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="isDeceased" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="preferredLanguage" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="race" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="clinicalStatement" type="ClinicalStatement" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="relatedEvaluatedPerson" type="RelatedEvaluatedPerson" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedVmrTypeBase" abstract="true">
+		<xs:sequence>
+			<xs:element name="templateId" type="CodedIdentifier" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="id" type="CodedIdentifier" minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Facility">
+		<xs:complexContent>
+			<xs:extension base="Entity">
+				<xs:sequence>
+					<xs:element name="address" type="dt:AD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="name" type="dt:ST" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="telecom" type="dt:TEL" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FrequencyAsCode">
+		<xs:complexContent>
+			<xs:extension base="BaseFrequency">
+				<xs:sequence>
+					<xs:element name="frequencyCode" type="dt:CD">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FrequencyAsInterval">
+		<xs:complexContent>
+			<xs:extension base="BaseFrequency">
+				<xs:sequence>
+					<xs:element name="intervalIsImportant" type="dt:BL">
+					</xs:element>
+					<xs:element name="period" type="dt:PQ">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Goal">
+		<xs:complexContent>
+			<xs:extension base="GoalBase">
+				<xs:sequence>
+					<xs:element name="criticality" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="goalObserverEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="goalStatus" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GoalBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="goalAchievementTargetTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="goalFocus" type="dt:CD">
+					</xs:element>
+					<xs:element name="goalPursuitEffectiveTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="targetBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+					<xs:element name="targetGoalValue" type="Value" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GoalProposal">
+		<xs:complexContent>
+			<xs:extension base="GoalBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GroupingClinicalStatement">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="componentRequirements" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ImagingOrder">
+		<xs:complexContent>
+			<xs:extension base="ProcedureOrder">
+				<xs:sequence>
+					<xs:element name="contrast" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="contrastRoute" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="contrastType" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="isolationCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="portableExam" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="sedation" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="stressor" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="transportMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ImagingProposal">
+		<xs:complexContent>
+			<xs:extension base="ProcedureProposal">
+				<xs:sequence>
+					<xs:element name="contrast" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="contrastRoute" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="contrastType" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="isolationCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="portableExam" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="sedation" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="stressor" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="transportMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LaboratoryOrder">
+		<xs:complexContent>
+			<xs:extension base="ProcedureOrder">
+				<xs:sequence>
+					<xs:element name="collectionMethod" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="specialHandling" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="specimen" type="Specimen" minOccurs="0">
+					</xs:element>
+					<xs:element name="suspectedPathogen" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LaboratoryProposal">
+		<xs:complexContent>
+			<xs:extension base="ProcedureProposal">
+				<xs:sequence>
+					<xs:element name="collectionMethod" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="specialHandling" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="specimenSource" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="suspectedPathogen" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MissedAppointment">
+		<xs:complexContent>
+			<xs:extension base="EncounterBase">
+				<xs:sequence>
+					<xs:element name="appointmentTime" type="dt:IVL_TS">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObservationBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="observationFocus" type="dt:CD">
+					</xs:element>
+					<xs:element name="observationMethod" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="targetBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+					<xs:element name="interpretation" type="dt:CD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="observationEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObservationResult">
+		<xs:complexContent>
+			<xs:extension base="ObservationBase">
+				<xs:sequence>
+					<xs:element name="observationValue" type="Value" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Organization">
+		<xs:complexContent>
+			<xs:extension base="Entity">
+				<xs:sequence>
+					<xs:element name="address" type="dt:AD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="name" type="dt:ST" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="telecom" type="dt:TEL" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PCAOrder">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationOrder">
+				<xs:sequence>
+					<xs:element name="demandDose" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="loadingDose" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="lockoutInterval" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PCAProposal">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationProposal">
+				<xs:sequence>
+					<xs:element name="demandDose" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="loadingDose" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="lockoutInterval" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Person">
+		<xs:complexContent>
+			<xs:extension base="Entity">
+				<xs:sequence>
+					<xs:element name="address" type="dt:AD" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="name" type="dt:EN" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="telecom" type="dt:TEL" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Problem">
+		<xs:complexContent>
+			<xs:extension base="ProblemBase">
+				<xs:sequence>
+					<xs:element name="ageAtOnset" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="contributedToDeath" type="dt:BL" minOccurs="0">
+					</xs:element>
+					<xs:element name="criticality" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="priorityInEncounter" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="problemAgent" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="problemStatus" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="severity" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="wasCauseOfDeath" type="dt:BL" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProblemBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="affectedBodySite" type="BodySite" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="diagnosticEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="problemCode" type="dt:CD">
+					</xs:element>
+					<xs:element name="problemEffectiveTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcedureBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="approachBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+					<xs:element name="procedureCode" type="dt:CD">
+					</xs:element>
+					<xs:element name="procedureMethod" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="targetBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcedureEvent">
+		<xs:complexContent>
+			<xs:extension base="ProcedureBase">
+				<xs:sequence>
+					<xs:element name="procedureTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcedureOrder">
+		<xs:complexContent>
+			<xs:extension base="ProcedureBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="orderEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="originationMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="prnReason" type="CodeableConcept" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="procedureTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcedureProposal">
+		<xs:complexContent>
+			<xs:extension base="ProcedureBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="prnReason" type="CodeableConcept" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="proposedProcedureTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelatedClinicalStatement">
+		<xs:complexContent>
+			<xs:extension base="RelationshipDescriptorBase">
+				<xs:sequence>
+					<xs:element name="clinicalStatement" type="ClinicalStatement"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelatedEntity">
+		<xs:complexContent>
+			<xs:extension base="RelationshipDescriptorBase">
+				<xs:sequence>
+					<xs:element name="entity" type="Entity"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelatedEvaluatedPerson">
+		<xs:complexContent>
+			<xs:extension base="RelationshipDescriptorBase">
+				<xs:sequence>
+					<xs:element name="otherEvaluatedPerson" type="EvaluatedPerson"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelationshipDescriptorBase" abstract="true">
+		<xs:sequence>
+			<xs:element name="templateId" type="CodedIdentifier" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="relationshipTimeInterval" type="dt:IVL_TS" minOccurs="0">
+			</xs:element>
+			<xs:element name="targetRole" type="dt:CD">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RepeatUntilCount">
+		<xs:complexContent>
+			<xs:extension base="Repetition">
+				<xs:sequence>
+					<xs:element name="count" type="dt:INT">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RepeatUntilTime">
+		<xs:complexContent>
+			<xs:extension base="Repetition">
+				<xs:sequence>
+					<xs:element name="time" type="dt:TS">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Repetition" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RespiratoryCareOrder">
+		<xs:complexContent>
+			<xs:extension base="ProcedureOrder">
+				<xs:sequence>
+					<xs:element name="ePAP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="fiO2" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="inspiratoryTime" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="iPAP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="isolationCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="oxygenFlowRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="peakFlowRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="peakInspiratoryPressure" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="pEEP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="pressureSupport" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="respiratoryRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="spO2Range" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="spO2Titration" type="dt:ST" minOccurs="0">
+					</xs:element>
+					<xs:element name="tidalVolume" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="ventilatorMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RespiratoryCareProposal">
+		<xs:complexContent>
+			<xs:extension base="ProcedureProposal">
+				<xs:sequence>
+					<xs:element name="ePAP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="fiO2" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="inspiratoryTime" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="iPAP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="isolationCode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="oxygenFlowRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="peakFlowRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="peakInspiratoryPressure" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="pEEP" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="pressureSupport" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="respiratoryRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="spO2Range" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="spO2Titration" type="dt:ST" minOccurs="0">
+					</xs:element>
+					<xs:element name="tidalVolume" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="ventilatorMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ScheduledAppointment">
+		<xs:complexContent>
+			<xs:extension base="EncounterBase">
+				<xs:sequence>
+					<xs:element name="appointmentTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ScheduledProcedure">
+		<xs:complexContent>
+			<xs:extension base="ProcedureBase">
+				<xs:sequence>
+					<xs:element name="procedureTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Specimen">
+		<xs:complexContent>
+			<xs:extension base="Entity">
+				<xs:sequence>
+					<xs:element name="source" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StringNameValuePair">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="name" type="dt:ST">
+					</xs:element>
+					<xs:element name="value" type="dt:ST">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceAdministrationBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="approachBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+					<xs:element name="deliveryMethod" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="deliveryRate" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="deliveryRoute" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="doseQuantity" type="dt:IVL_PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="doseType" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="substance" type="AdministrableSubstance">
+					</xs:element>
+					<xs:element name="substanceAdministrationGeneralPurpose" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="targetBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceAdministrationEvent">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="administrationTimeInterval" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="doseNumber" type="dt:INT" minOccurs="0">
+					</xs:element>
+					<xs:element name="informationAttestationType" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="isValid" type="dt:BL" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceAdministrationOrder">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="administrationTimeInterval" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="doseRestriction" type="DoseRestriction" minOccurs="0">
+					</xs:element>
+					<xs:element name="infuseOver" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="numberFillsAllowed" type="dt:INT" minOccurs="0">
+					</xs:element>
+					<xs:element name="orderEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="originationMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="prnReason" type="CodeableConcept" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="validAdministrationTimeInterval" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceAdministrationProposal">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="doseRestriction" type="DoseRestriction" minOccurs="0">
+					</xs:element>
+					<xs:element name="infuseOver" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="numberFillsAllowed" type="dt:INT" minOccurs="0">
+					</xs:element>
+					<xs:element name="prnReason" type="CodeableConcept" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="proposedAdministrationTimeInterval" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="validAdministrationTimeInterval" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceDispensationEvent">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="daysSupply" type="dt:INT" minOccurs="0">
+					</xs:element>
+					<xs:element name="dispensationQuantity" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="dispensationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="doseRestriction" type="DoseRestriction" minOccurs="0">
+					</xs:element>
+					<xs:element name="fillNumber" type="dt:INT" minOccurs="0">
+					</xs:element>
+					<xs:element name="fillsRemaining" type="dt:INT" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceDispensationOrder">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="orderEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="dispensationQuantity" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="originationMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubstanceDispensationProposal">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="dispensationQuantity" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="proposedDispensationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SupplyBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ClinicalStatement">
+				<xs:sequence>
+					<xs:element name="quantity" type="dt:PQ" minOccurs="0">
+					</xs:element>
+					<xs:element name="supplyCode" type="dt:CD">
+					</xs:element>
+					<xs:element name="targetBodySite" type="BodySite" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SupplyEvent">
+		<xs:complexContent>
+			<xs:extension base="SupplyBase">
+				<xs:sequence>
+					<xs:element name="supplyTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SupplyOrder">
+		<xs:complexContent>
+			<xs:extension base="SupplyBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="orderEventTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="originationMode" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="supplyTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SupplyProposal">
+		<xs:complexContent>
+			<xs:extension base="SupplyBase">
+				<xs:sequence>
+					<xs:element name="comment" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+					</xs:element>
+					<xs:element name="frequency" type="BaseFrequency" minOccurs="0">
+					</xs:element>
+					<xs:element name="proposedSupplyTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="urgency" type="dt:CD" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UndeliveredProcedure">
+		<xs:complexContent>
+			<xs:extension base="ProcedureBase">
+				<xs:sequence>
+					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="subjectEffectiveTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UndeliveredSubstanceAdministration">
+		<xs:complexContent>
+			<xs:extension base="SubstanceAdministrationBase">
+				<xs:sequence>
+					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="subjectEffectiveTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UndeliveredSupply">
+		<xs:complexContent>
+			<xs:extension base="SupplyBase">
+				<xs:sequence>
+					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+					<xs:element name="reason" type="dt:CD" minOccurs="0">
+					</xs:element>
+					<xs:element name="subjectEffectiveTime" type="dt:IVL_TS" minOccurs="0">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Value">
+		<xs:complexContent>
+			<xs:extension base="ExtendedVmrTypeBase">
+				<xs:sequence>
+					<xs:element name="value" type="dt:ANY">
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="vMR" type="VMR"/>
+	<xs:complexType name="VMR">
+		<xs:sequence>
+			<xs:element name="templateId" type="CodedIdentifier" minOccurs="0" maxOccurs="unbounded">
+			</xs:element>
+			<xs:element name="patient" type="EvaluatedPerson"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

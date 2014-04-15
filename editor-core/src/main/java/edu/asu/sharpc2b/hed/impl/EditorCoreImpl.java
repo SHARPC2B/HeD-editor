@@ -42,6 +42,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -350,13 +352,13 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
 
     @Override
-    public Map<String, String> getDomainClasses() {
+    public SortedMap<String, String> getDomainClasses() {
         return DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomKlasses();
     }
 
     @Override
-    public Map<String, String> getDomainProperties() {
-        Map<String,String> allProps = new HashMap<>(  );
+    public SortedMap<String, String> getDomainProperties() {
+        SortedMap<String,String> allProps = new TreeMap<String,String>(  );
         for ( Map<String,String> props : DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis().values() ) {
             allProps.putAll( props );
         }

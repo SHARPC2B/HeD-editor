@@ -26,6 +26,7 @@ import edu.asu.sharpc2b.prr.NamedElement;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.TypedElement;
+import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import org.hl7.knowledgeartifact.r1.ExpressionRef;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
@@ -51,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class BlocklyFactory {
 
@@ -58,7 +60,7 @@ public class BlocklyFactory {
     private Map<String,String> requiredDomainClasses;
 
     private Map<String,String> domainClasses;
-    private Map<String, Map<String, String>> domainProperties;
+    private Map<String, SortedMap<String, String>> domainProperties;
 
 
     public static enum ExpressionRootType {
@@ -69,9 +71,9 @@ public class BlocklyFactory {
     }
 
 
-    public BlocklyFactory( Map<String, String> domainClasses, Map<String, Map<String, String>> domainProperties ) {
-        this.domainClasses = Collections.unmodifiableMap( domainClasses );
-        this.domainProperties = Collections.unmodifiableMap( domainProperties );
+    public BlocklyFactory( SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
+        this.domainClasses = Collections.unmodifiableSortedMap( domainClasses );
+        this.domainProperties = Collections.unmodifiableSortedMap( domainProperties );
         this.requiredDomainClasses = new HashMap<String,String>();
     }
 
