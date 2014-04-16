@@ -68,30 +68,825 @@
 #################################################################
 
 
-###  urn:hl7-org:vmr:r2#AD
+###  http://www.w3.org/2000/01/rdf-schema#Literal
 
-:AD rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
+rdfs:Literal rdf:type owl:NamedIndividual .
 
 
 
-###  urn:hl7-org:vmr:r2#ADXP
+###  http://www.w3.org/2001/XMLSchema#List
 
-:ADXP rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :XP .
+xsd:List rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                  owl:NamedIndividual .
 
 
 
-###  urn:hl7-org:vmr:r2#ANY
+###  http://www.w3.org/2001/XMLSchema#base64Binary
 
-:ANY rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :HXIT .
+xsd:base64Binary rdf:type owl:NamedIndividual .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#boolean
+
+xsd:boolean rdf:type owl:NamedIndividual .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#item
+
+xsd:item rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                  owl:NamedIndividual ;
+         
+         <http://asu.edu/sharpc2b/skos-ext#partOf> xsd:List .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#string
+
+xsd:string rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#AD
+
+<urn:hl7-org:cdsdt:r2#AD> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#ADXP
+
+<urn:hl7-org:cdsdt:r2#ADXP> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#XP> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#ANY
+
+<urn:hl7-org:cdsdt:r2#ANY> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#HXIT> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#BL
+
+<urn:hl7-org:cdsdt:r2#BL> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#CD
+
+<urn:hl7-org:cdsdt:r2#CD> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#CO
+
+<urn:hl7-org:cdsdt:r2#CO> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#CS
+
+<urn:hl7-org:cdsdt:r2#CS> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#CalendarCycle
+
+<urn:hl7-org:cdsdt:r2#CalendarCycle> rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#Code
+
+<urn:hl7-org:cdsdt:r2#Code> rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#Compression
+
+<urn:hl7-org:cdsdt:r2#Compression> rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#ED
+
+<urn:hl7-org:cdsdt:r2#ED> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#EN
+
+<urn:hl7-org:cdsdt:r2#EN> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#ENXP
+
+<urn:hl7-org:cdsdt:r2#ENXP> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#XP> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#HXIT
+
+<urn:hl7-org:cdsdt:r2#HXIT> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                     owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#II
+
+<urn:hl7-org:cdsdt:r2#II> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#INT
+
+<urn:hl7-org:cdsdt:r2#INT> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL
+
+<urn:hl7-org:cdsdt:r2#IVL> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QSET> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_CO
+
+<urn:hl7-org:cdsdt:r2#IVL_CO> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                       owl:NamedIndividual ;
+                              
+                              <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_INT
+
+<urn:hl7-org:cdsdt:r2#IVL_INT> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                        owl:NamedIndividual ;
+                               
+                               <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_PQ
+
+<urn:hl7-org:cdsdt:r2#IVL_PQ> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                       owl:NamedIndividual ;
+                              
+                              <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_QTY
+
+<urn:hl7-org:cdsdt:r2#IVL_QTY> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                        owl:NamedIndividual ;
+                               
+                               <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_REAL
+
+<urn:hl7-org:cdsdt:r2#IVL_REAL> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                         owl:NamedIndividual ;
+                                
+                                <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IVL_TS
+
+<urn:hl7-org:cdsdt:r2#IVL_TS> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                       owl:NamedIndividual ;
+                              
+                              <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#IVL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#IntegrityCheckAlgorithm
+
+<urn:hl7-org:cdsdt:r2#IntegrityCheckAlgorithm> rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#PIVL_TS
+
+<urn:hl7-org:cdsdt:r2#PIVL_TS> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                        owl:NamedIndividual ;
+                               
+                               <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#PQ
+
+<urn:hl7-org:cdsdt:r2#PQ> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#QSET
+
+<urn:hl7-org:cdsdt:r2#QSET> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#QTY
+
+<urn:hl7-org:cdsdt:r2#QTY> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#REAL
+
+<urn:hl7-org:cdsdt:r2#REAL> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#RTO
+
+<urn:hl7-org:cdsdt:r2#RTO> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#ST
+
+<urn:hl7-org:cdsdt:r2#ST> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#TEL
+
+<urn:hl7-org:cdsdt:r2#TEL> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#ANY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#TS
+
+<urn:hl7-org:cdsdt:r2#TS> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual ;
+                          
+                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#QTY> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#Uid
+
+<urn:hl7-org:cdsdt:r2#Uid> rdf:type owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#XP
+
+<urn:hl7-org:cdsdt:r2#XP> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                   owl:NamedIndividual .
+
+
+
+###  urn:hl7-org:cdsdt:r2#alignment
+
+<urn:hl7-org:cdsdt:r2#alignment> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CalendarCycle> ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#capabilities
+
+<urn:hl7-org:cdsdt:r2#capabilities> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                             owl:NamedIndividual ;
+                                    
+                                    <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#TEL> ;
+                                    
+                                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#set_TelecommunicationCapability> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#charset
+
+<urn:hl7-org:cdsdt:r2#charset> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                        owl:NamedIndividual ;
+                               
+                               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Code> ;
+                               
+                               <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#code
+
+<urn:hl7-org:cdsdt:r2#code> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> ,
+                                                                      <urn:hl7-org:cdsdt:r2#CO> ,
+                                                                      <urn:hl7-org:cdsdt:r2#CS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#codeSystem
+
+<urn:hl7-org:cdsdt:r2#codeSystem> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                           owl:NamedIndividual ;
+                                  
+                                  <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> ;
+                                  
+                                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Uid> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#codeSystemName
+
+<urn:hl7-org:cdsdt:r2#codeSystemName> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                               owl:NamedIndividual ;
+                                      
+                                      <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:string ;
+                                      
+                                      <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#compression
+
+<urn:hl7-org:cdsdt:r2#compression> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Compression> ;
+                                   
+                                   <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#count
+
+<urn:hl7-org:cdsdt:r2#count> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                      owl:NamedIndividual ;
+                             
+                             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
+                             
+                             <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#data
+
+<urn:hl7-org:cdsdt:r2#data> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:base64Binary ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#denominator
+
+<urn:hl7-org:cdsdt:r2#denominator> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#QTY> ;
+                                   
+                                   <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#RTO> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#description
+
+<urn:hl7-org:cdsdt:r2#description> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> ;
+                                   
+                                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#displayName
+
+<urn:hl7-org:cdsdt:r2#displayName> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> ;
+                                   
+                                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#extension
+
+<urn:hl7-org:cdsdt:r2#extension> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:string ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#II> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#frequency
+
+<urn:hl7-org:cdsdt:r2#frequency> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#RTO> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#high
+
+<urn:hl7-org:cdsdt:r2#high> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#IVL_CO> ,
+                                                                      <urn:hl7-org:cdsdt:r2#IVL_INT> ,
+                                                                      <urn:hl7-org:cdsdt:r2#IVL_PQ> ,
+                                                                      <urn:hl7-org:cdsdt:r2#IVL_QTY> ,
+                                                                      <urn:hl7-org:cdsdt:r2#IVL_REAL> ,
+                                                                      <urn:hl7-org:cdsdt:r2#IVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#highClosed
+
+<urn:hl7-org:cdsdt:r2#highClosed> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                           owl:NamedIndividual ;
+                                  
+                                  <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:boolean ;
+                                  
+                                  <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#IVL_CO> ,
+                                                                            <urn:hl7-org:cdsdt:r2#IVL_INT> ,
+                                                                            <urn:hl7-org:cdsdt:r2#IVL_PQ> ,
+                                                                            <urn:hl7-org:cdsdt:r2#IVL_QTY> ,
+                                                                            <urn:hl7-org:cdsdt:r2#IVL_REAL> ,
+                                                                            <urn:hl7-org:cdsdt:r2#IVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#identifierName
+
+<urn:hl7-org:cdsdt:r2#identifierName> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                               owl:NamedIndividual ;
+                                      
+                                      <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:string ;
+                                      
+                                      <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#II> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#integrityCheck
+
+<urn:hl7-org:cdsdt:r2#integrityCheck> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                               owl:NamedIndividual ;
+                                      
+                                      <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:base64Binary ;
+                                      
+                                      <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#integrityCheckAlgorithm
+
+<urn:hl7-org:cdsdt:r2#integrityCheckAlgorithm> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                                        owl:NamedIndividual ;
+                                               
+                                               <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> ;
+                                               
+                                               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IntegrityCheckAlgorithm> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#isFlexible
+
+<urn:hl7-org:cdsdt:r2#isFlexible> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                           owl:NamedIndividual ;
+                                  
+                                  <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:boolean ;
+                                  
+                                  <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#language
+
+<urn:hl7-org:cdsdt:r2#language> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                         owl:NamedIndividual ;
+                                
+                                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Code> ;
+                                
+                                <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#low
+
+<urn:hl7-org:cdsdt:r2#low> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#IVL_CO> ,
+                                                                     <urn:hl7-org:cdsdt:r2#IVL_INT> ,
+                                                                     <urn:hl7-org:cdsdt:r2#IVL_PQ> ,
+                                                                     <urn:hl7-org:cdsdt:r2#IVL_QTY> ,
+                                                                     <urn:hl7-org:cdsdt:r2#IVL_REAL> ,
+                                                                     <urn:hl7-org:cdsdt:r2#IVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#lowClosed
+
+<urn:hl7-org:cdsdt:r2#lowClosed> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> xsd:boolean ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#IVL_CO> ,
+                                                                           <urn:hl7-org:cdsdt:r2#IVL_INT> ,
+                                                                           <urn:hl7-org:cdsdt:r2#IVL_PQ> ,
+                                                                           <urn:hl7-org:cdsdt:r2#IVL_QTY> ,
+                                                                           <urn:hl7-org:cdsdt:r2#IVL_REAL> ,
+                                                                           <urn:hl7-org:cdsdt:r2#IVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#mediaType
+
+<urn:hl7-org:cdsdt:r2#mediaType> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Code> ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#numerator
+
+<urn:hl7-org:cdsdt:r2#numerator> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#QTY> ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#RTO> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#originalText
+
+<urn:hl7-org:cdsdt:r2#originalText> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                             owl:NamedIndividual ;
+                                    
+                                    <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> ;
+                                    
+                                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#part
+
+<urn:hl7-org:cdsdt:r2#part> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#AD> ,
+                                                                      <urn:hl7-org:cdsdt:r2#EN> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#period
+
+<urn:hl7-org:cdsdt:r2#period> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                       owl:NamedIndividual ;
+                              
+                              <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> ;
+                              
+                              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#phase
+
+<urn:hl7-org:cdsdt:r2#phase> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                      owl:NamedIndividual ;
+                             
+                             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
+                             
+                             <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PIVL_TS> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#qualifier
+
+<urn:hl7-org:cdsdt:r2#qualifier> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ENXP> ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#set_EntityNamePartQualifier> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#reference
+
+<urn:hl7-org:cdsdt:r2#reference> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                          owl:NamedIndividual ;
+                                 
+                                 <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> ;
+                                 
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#TEL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#root
+
+<urn:hl7-org:cdsdt:r2#root> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#II> ;
+                            
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Uid> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#set_EntityNamePartQualifier
+
+<urn:hl7-org:cdsdt:r2#set_EntityNamePartQualifier> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                                            owl:NamedIndividual ;
+                                                   
+                                                   <http://asu.edu/sharpc2b/skos-ext#subConceptOf> xsd:List .
+
+
+
+###  urn:hl7-org:cdsdt:r2#set_EntityNameUse
+
+<urn:hl7-org:cdsdt:r2#set_EntityNameUse> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                                  owl:NamedIndividual ;
+                                         
+                                         <http://asu.edu/sharpc2b/skos-ext#subConceptOf> xsd:List .
+
+
+
+###  urn:hl7-org:cdsdt:r2#set_PostalAddressUse
+
+<urn:hl7-org:cdsdt:r2#set_PostalAddressUse> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                                     owl:NamedIndividual ;
+                                            
+                                            <http://asu.edu/sharpc2b/skos-ext#subConceptOf> xsd:List .
+
+
+
+###  urn:hl7-org:cdsdt:r2#set_TelecommunicationAddressUse
+
+<urn:hl7-org:cdsdt:r2#set_TelecommunicationAddressUse> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       <http://asu.edu/sharpc2b/skos-ext#subConceptOf> xsd:List .
+
+
+
+###  urn:hl7-org:cdsdt:r2#set_TelecommunicationCapability
+
+<urn:hl7-org:cdsdt:r2#set_TelecommunicationCapability> rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       <http://asu.edu/sharpc2b/skos-ext#subConceptOf> xsd:List .
+
+
+
+###  urn:hl7-org:cdsdt:r2#translation
+
+<urn:hl7-org:cdsdt:r2#translation> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                            owl:NamedIndividual ;
+                                   
+                                   <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#CD> ;
+                                   
+                                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#type
+
+<urn:hl7-org:cdsdt:r2#type> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ADXP> ,
+                                                                      <urn:hl7-org:cdsdt:r2#ENXP> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#unit
+
+<urn:hl7-org:cdsdt:r2#unit> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                     owl:NamedIndividual ;
+                            
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#Code> ;
+                            
+                            <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#PQ> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#use
+
+<urn:hl7-org:cdsdt:r2#use> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#AD> ,
+                                                                     <urn:hl7-org:cdsdt:r2#EN> ,
+                                                                     <urn:hl7-org:cdsdt:r2#TEL> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#value
+
+<urn:hl7-org:cdsdt:r2#value> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                      owl:NamedIndividual ;
+                             
+                             <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#BL> ,
+                                                                       <urn:hl7-org:cdsdt:r2#CO> ,
+                                                                       <urn:hl7-org:cdsdt:r2#ED> ,
+                                                                       <urn:hl7-org:cdsdt:r2#INT> ,
+                                                                       <urn:hl7-org:cdsdt:r2#PQ> ,
+                                                                       <urn:hl7-org:cdsdt:r2#REAL> ,
+                                                                       <urn:hl7-org:cdsdt:r2#ST> ,
+                                                                       <urn:hl7-org:cdsdt:r2#TEL> ,
+                                                                       <urn:hl7-org:cdsdt:r2#TS> ,
+                                                                       <urn:hl7-org:cdsdt:r2#XP> .
+
+
+
+###  urn:hl7-org:cdsdt:r2#xml
+
+<urn:hl7-org:cdsdt:r2#xml> rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
+                                    owl:NamedIndividual ;
+                           
+                           <http://asu.edu/sharpc2b/ops#evaluatesAs> rdfs:Literal ;
+                           
+                           <http://asu.edu/sharpc2b/skos-ext#partOf> <urn:hl7-org:cdsdt:r2#ED> .
 
 
 
@@ -140,15 +935,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#BL
-
-:BL rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
 ###  urn:hl7-org:vmr:r2#BaseFrequency
 
 :BaseFrequency rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
@@ -167,49 +953,10 @@
 
 
 
-###  urn:hl7-org:vmr:r2#CD
-
-:CD rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#CO
-
-:CO rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
-
-
-
-###  urn:hl7-org:vmr:r2#CS
-
-:CS rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#CalendarCycle
-
-:CalendarCycle rdf:type owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#ClinicalStatement
 
 :ClinicalStatement rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
                             owl:NamedIndividual .
-
-
-
-###  urn:hl7-org:vmr:r2#Code
-
-:Code rdf:type owl:NamedIndividual .
 
 
 
@@ -227,7 +974,7 @@
 :CodedIdentifier rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :II .
+                 <http://asu.edu/sharpc2b/skos-ext#subConceptOf> <urn:hl7-org:cdsdt:r2#II> .
 
 
 
@@ -303,12 +1050,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#Compression
-
-:Compression rdf:type owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#Constituent
 
 :Constituent rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
@@ -378,33 +1119,6 @@
                           owl:NamedIndividual ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ExtendedVmrTypeBase .
-
-
-
-###  urn:hl7-org:vmr:r2#ED
-
-:ED rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#EN
-
-:EN rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#ENXP
-
-:ENXP rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :XP .
 
 
 
@@ -530,94 +1244,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#HXIT
-
-:HXIT rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual .
-
-
-
-###  urn:hl7-org:vmr:r2#II
-
-:II rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#INT
-
-:INT rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL
-
-:IVL rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QSET .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_CO
-
-:IVL_CO rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                 owl:NamedIndividual ;
-        
-        <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_INT
-
-:IVL_INT rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                  owl:NamedIndividual ;
-         
-         <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_PQ
-
-:IVL_PQ rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                 owl:NamedIndividual ;
-        
-        <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_QTY
-
-:IVL_QTY rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                  owl:NamedIndividual ;
-         
-         <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_REAL
-
-:IVL_REAL rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                   owl:NamedIndividual ;
-          
-          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
-###  urn:hl7-org:vmr:r2#IVL_TS
-
-:IVL_TS rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                 owl:NamedIndividual ;
-        
-        <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :IVL .
-
-
-
 ###  urn:hl7-org:vmr:r2#ImagingOrder
 
 :ImagingOrder rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
@@ -636,12 +1262,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#IntegrityCheckAlgorithm
-
-:IntegrityCheckAlgorithm rdf:type owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#LaboratoryOrder
 
 :LaboratoryOrder rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
@@ -657,19 +1277,6 @@
                              owl:NamedIndividual ;
                     
                     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ProcedureProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#List
-
-:List rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual .
-
-
-
-###  urn:hl7-org:vmr:r2#Literal
-
-:Literal rdf:type owl:NamedIndividual .
 
 
 
@@ -724,24 +1331,6 @@
                       owl:NamedIndividual ;
              
              <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :SubstanceAdministrationProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#PIVL_TS
-
-:PIVL_TS rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                  owl:NamedIndividual ;
-         
-         <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
-
-
-
-###  urn:hl7-org:vmr:r2#PQ
-
-:PQ rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
 
 
 
@@ -805,42 +1394,6 @@
                             owl:NamedIndividual ;
                    
                    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ProcedureBase .
-
-
-
-###  urn:hl7-org:vmr:r2#QSET
-
-:QSET rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#QTY
-
-:QTY rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#REAL
-
-:REAL rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
-
-
-
-###  urn:hl7-org:vmr:r2#RTO
-
-:RTO rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
 
 
 
@@ -920,15 +1473,6 @@
                                   owl:NamedIndividual ;
                          
                          <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ProcedureProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#ST
-
-:ST rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
 
 
 
@@ -1067,30 +1611,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#TEL
-
-:TEL rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :ANY .
-
-
-
-###  urn:hl7-org:vmr:r2#TS
-
-:TS rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual ;
-    
-    <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :QTY .
-
-
-
-###  urn:hl7-org:vmr:r2#Uid
-
-:Uid rdf:type owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#UndeliveredProcedure
 
 :UndeliveredProcedure rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
@@ -1134,13 +1654,6 @@
 
 
 
-###  urn:hl7-org:vmr:r2#XP
-
-:XP rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-             owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#additive
 
 :additive rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
@@ -1158,7 +1671,7 @@
 :address rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :AD ;
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#AD> ;
          
          <http://asu.edu/sharpc2b/skos-ext#partOf> :Facility ,
                                                    :Organization ,
@@ -1171,7 +1684,7 @@
 :administrationTimeInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                      owl:NamedIndividual ;
                             
-                            <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                             
                             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationEvent ,
                                                                       :SubstanceAdministrationOrder .
@@ -1183,9 +1696,9 @@
 :adverseEventAgent rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                   <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase .
 
 
 
@@ -1194,9 +1707,9 @@
 :adverseEventCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                            owl:NamedIndividual ;
                   
-                  <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase ;
+                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                   
-                  <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                  <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase .
 
 
 
@@ -1205,9 +1718,9 @@
 :adverseEventStatus rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                    <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent .
 
 
 
@@ -1216,9 +1729,9 @@
 :adverseEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                            owl:NamedIndividual ;
                   
-                  <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase ;
+                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                   
-                  <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                  <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase .
 
 
 
@@ -1240,9 +1753,9 @@
 :age rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
               owl:NamedIndividual ;
      
-     <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson ;
+     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
      
-     <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ .
+     <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
 
 
@@ -1251,9 +1764,9 @@
 :ageAtDeath rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ .
+            <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
 
 
@@ -1262,20 +1775,9 @@
 :ageAtOnset rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
-
-
-
-###  urn:hl7-org:vmr:r2#alignment
-
-:alignment rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :CalendarCycle ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :PIVL_TS .
 
 
 
@@ -1284,9 +1786,9 @@
 :amount rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/skos-ext#partOf> :DietQualifier ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ .
+        <http://asu.edu/sharpc2b/skos-ext#partOf> :DietQualifier .
 
 
 
@@ -1295,7 +1797,7 @@
 :appointmentTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :MissedAppointment ,
                                                            :ScheduledAppointment .
@@ -1327,20 +1829,14 @@
 
 
 
-###  urn:hl7-org:vmr:r2#base64Binary
-
-:base64Binary rdf:type owl:NamedIndividual .
-
-
-
 ###  urn:hl7-org:vmr:r2#birthTime
 
 :birthTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#TS> ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :TS .
+           <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
 
 
@@ -1349,37 +1845,9 @@
 :bodySiteCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
-
-
-
-###  urn:hl7-org:vmr:r2#boolean
-
-:boolean rdf:type owl:NamedIndividual .
-
-
-
-###  urn:hl7-org:vmr:r2#capabilities
-
-:capabilities rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                       owl:NamedIndividual ;
-              
-              <http://asu.edu/sharpc2b/skos-ext#partOf> :TEL ;
-              
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :set_TelecommunicationCapability .
-
-
-
-###  urn:hl7-org:vmr:r2#charset
-
-:charset rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                  owl:NamedIndividual ;
-         
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :Code ;
-         
-         <http://asu.edu/sharpc2b/skos-ext#partOf> :ED .
+              <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite .
 
 
 
@@ -1400,35 +1868,9 @@
 :code rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :CO ,
-                                                :CS ,
-                                                :CodeableConcept .
-
-
-
-###  urn:hl7-org:vmr:r2#codeSystem
-
-:codeSystem rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                     owl:NamedIndividual ;
-            
-            <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
-            
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :Uid .
-
-
-
-###  urn:hl7-org:vmr:r2#codeSystemName
-
-:codeSystemName rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                         owl:NamedIndividual ;
-                
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
-                
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :string .
+      <http://asu.edu/sharpc2b/skos-ext#partOf> :CodeableConcept .
 
 
 
@@ -1437,7 +1879,7 @@
 :collectionMethod rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                            owl:NamedIndividual ;
                   
-                  <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                   
                   <http://asu.edu/sharpc2b/skos-ext#partOf> :LaboratoryOrder ,
                                                             :LaboratoryProposal .
@@ -1473,9 +1915,9 @@
 :communicationTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationEvent ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                   <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationEvent .
 
 
 
@@ -1484,20 +1926,9 @@
 :componentRequirements rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                 owl:NamedIndividual ;
                        
-                       <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                        
                        <http://asu.edu/sharpc2b/skos-ext#partOf> :GroupingClinicalStatement .
-
-
-
-###  urn:hl7-org:vmr:r2#compression
-
-:compression rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                      owl:NamedIndividual ;
-             
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :Compression ;
-             
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :ED .
 
 
 
@@ -1506,9 +1937,9 @@
 :content rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
-         <http://asu.edu/sharpc2b/skos-ext#partOf> :Documentation ;
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ED> ;
          
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :ED .
+         <http://asu.edu/sharpc2b/skos-ext#partOf> :Documentation .
 
 
 
@@ -1517,7 +1948,7 @@
 :contrast rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
           
           <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                     :ImagingProposal .
@@ -1529,7 +1960,7 @@
 :contrastRoute rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                          :ImagingProposal .
@@ -1541,7 +1972,7 @@
 :contrastType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                         :ImagingProposal .
@@ -1553,7 +1984,7 @@
 :contributedToDeath rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
                     
                     <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
 
@@ -1564,10 +1995,9 @@
 :count rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                 owl:NamedIndividual ;
        
-       <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
        
-       <http://asu.edu/sharpc2b/skos-ext#partOf> :PIVL_TS ,
-                                                 :RepeatUntilCount .
+       <http://asu.edu/sharpc2b/skos-ext#partOf> :RepeatUntilCount .
 
 
 
@@ -1576,23 +2006,11 @@
 :criticality rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
-             
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :Goal ,
+             <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent ,
+                                                       :Goal ,
                                                        :Problem .
-
-
-
-###  urn:hl7-org:vmr:r2#data
-
-:data rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ;
-      
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :base64Binary .
 
 
 
@@ -1601,7 +2019,7 @@
 :dataSourceType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :ClinicalStatement .
 
@@ -1612,7 +2030,7 @@
 :daysSupply rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationEvent .
 
@@ -1623,7 +2041,7 @@
 :deliveryMethod rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -1634,7 +2052,7 @@
 :deliveryRate rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -1645,7 +2063,7 @@
 :deliveryRoute rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -1656,21 +2074,10 @@
 :demandDose rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :PCAOrder ,
                                                       :PCAProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#denominator
-
-:denominator rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                      owl:NamedIndividual ;
-             
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :QTY ;
-             
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :RTO .
 
 
 
@@ -1679,10 +2086,9 @@
 :description rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ,
-                                                       :Entity ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
+             <http://asu.edu/sharpc2b/skos-ext#partOf> :Entity .
 
 
 
@@ -1691,7 +2097,7 @@
 :diagnosticEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                               owl:NamedIndividual ;
                      
-                     <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                      
                      <http://asu.edu/sharpc2b/skos-ext#partOf> :ProblemBase .
 
@@ -1717,7 +2123,7 @@
 :dietQualifierType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                    
                    <http://asu.edu/sharpc2b/skos-ext#partOf> :DietQualifier .
 
@@ -1728,9 +2134,9 @@
 :directionality rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite .
 
 
 
@@ -1739,7 +2145,7 @@
 :dispensationQuantity rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                owl:NamedIndividual ;
                       
-                      <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ ;
+                      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
                       
                       <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationEvent ,
                                                                 :SubstanceDispensationOrder ,
@@ -1752,20 +2158,9 @@
 :dispensationTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                            owl:NamedIndividual ;
                   
-                  <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                   
                   <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationEvent .
-
-
-
-###  urn:hl7-org:vmr:r2#displayName
-
-:displayName rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                      owl:NamedIndividual ;
-             
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
-             
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
 
 
 
@@ -1774,11 +2169,10 @@
 :documentationTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
-                   
-                   <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationEvent ,
+                   <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEventBase ,
+                                                             :SubstanceAdministrationEvent ,
                                                              :UndeliveredProcedure ,
                                                              :UndeliveredSubstanceAdministration ,
                                                              :UndeliveredSupply .
@@ -1790,7 +2184,7 @@
 :doseNumber rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationEvent .
 
@@ -1801,7 +2195,7 @@
 :doseQuantity rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -1825,7 +2219,7 @@
 :doseType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
           
           <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -1848,10 +2242,10 @@
 :dosingRateIncrement rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                               owl:NamedIndividual ;
                      
-                     <http://asu.edu/sharpc2b/skos-ext#partOf> :EnteralFeedingOrder ,
-                                                               :EnteralFeedingProposal ;
+                     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                      
-                     <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ .
+                     <http://asu.edu/sharpc2b/skos-ext#partOf> :EnteralFeedingOrder ,
+                                                               :EnteralFeedingProposal .
 
 
 
@@ -1860,10 +2254,10 @@
 :dosingRateIncrementInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                       owl:NamedIndividual ;
                              
-                             <http://asu.edu/sharpc2b/skos-ext#partOf> :EnteralFeedingOrder ,
-                                                                       :EnteralFeedingProposal ;
+                             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                              
-                             <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ .
+                             <http://asu.edu/sharpc2b/skos-ext#partOf> :EnteralFeedingOrder ,
+                                                                       :EnteralFeedingProposal .
 
 
 
@@ -1872,7 +2266,7 @@
 :ePAP rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
       
       <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                 :RespiratoryCareProposal .
@@ -1884,9 +2278,9 @@
 :encounterEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/skos-ext#partOf> :EncounterEvent ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                    <http://asu.edu/sharpc2b/skos-ext#partOf> :EncounterEvent .
 
 
 
@@ -1895,7 +2289,7 @@
 :encounterType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :EncounterBase .
 
@@ -1917,7 +2311,7 @@
 :entityType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :Entity .
 
@@ -1928,7 +2322,7 @@
 :ethnicity rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
            
            <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
@@ -1939,21 +2333,10 @@
 :evaluatedPersonId rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/skos-ext#partOf> :ClinicalStatement ,
-                                                             :Entity ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#II> ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :II .
-
-
-
-###  urn:hl7-org:vmr:r2#extension
-
-:extension rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :II ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :string .
+                   <http://asu.edu/sharpc2b/skos-ext#partOf> :ClinicalStatement ,
+                                                             :Entity .
 
 
 
@@ -1962,7 +2345,7 @@
 :fiO2 rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
       
       <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                 :RespiratoryCareProposal .
@@ -1974,7 +2357,7 @@
 :fillNumber rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationEvent .
 
@@ -1985,7 +2368,7 @@
 :fillsRemaining rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationEvent .
 
@@ -1996,9 +2379,9 @@
 :form rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+      <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -2012,13 +2395,9 @@
            
            <http://asu.edu/sharpc2b/ops#evaluatesAs> :BaseFrequency ;
            
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :PIVL_TS ,
-                                                     :ProcedureOrder ,
-                                                     :ProcedureProposal ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :RTO ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase ,
+           <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureOrder ,
+                                                     :ProcedureProposal ,
+                                                     :SubstanceAdministrationBase ,
                                                      :SupplyOrder ,
                                                      :SupplyProposal .
 
@@ -2029,7 +2408,7 @@
 :frequencyCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :FrequencyAsCode .
 
@@ -2040,9 +2419,9 @@
 :frequencyStartType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/skos-ext#partOf> :BaseFrequency ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                    <http://asu.edu/sharpc2b/skos-ext#partOf> :BaseFrequency .
 
 
 
@@ -2051,7 +2430,7 @@
 :gender rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
         
         <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
@@ -2062,9 +2441,9 @@
 :goalAchievementTargetTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                     owl:NamedIndividual ;
                            
-                           <http://asu.edu/sharpc2b/skos-ext#partOf> :GoalBase ;
+                           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                            
-                           <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                           <http://asu.edu/sharpc2b/skos-ext#partOf> :GoalBase .
 
 
 
@@ -2073,7 +2452,7 @@
 :goalFocus rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
            
            <http://asu.edu/sharpc2b/skos-ext#partOf> :GoalBase .
 
@@ -2084,9 +2463,9 @@
 :goalObserverEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                 owl:NamedIndividual ;
                        
-                       <http://asu.edu/sharpc2b/skos-ext#partOf> :Goal ;
+                       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                        
-                       <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                       <http://asu.edu/sharpc2b/skos-ext#partOf> :Goal .
 
 
 
@@ -2095,9 +2474,9 @@
 :goalPursuitEffectiveTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                    owl:NamedIndividual ;
                           
-                          <http://asu.edu/sharpc2b/skos-ext#partOf> :GoalBase ;
+                          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                           
-                          <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                          <http://asu.edu/sharpc2b/skos-ext#partOf> :GoalBase .
 
 
 
@@ -2106,39 +2485,9 @@
 :goalStatus rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :Goal .
-
-
-
-###  urn:hl7-org:vmr:r2#high
-
-:high rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :IVL_CO ,
-                                                :IVL_INT ,
-                                                :IVL_PQ ,
-                                                :IVL_QTY ,
-                                                :IVL_REAL ,
-                                                :IVL_TS .
-
-
-
-###  urn:hl7-org:vmr:r2#highClosed
-
-:highClosed rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                     owl:NamedIndividual ;
-            
-            <http://asu.edu/sharpc2b/skos-ext#partOf> :IVL_CO ,
-                                                      :IVL_INT ,
-                                                      :IVL_PQ ,
-                                                      :IVL_QTY ,
-                                                      :IVL_REAL ,
-                                                      :IVL_TS ;
-            
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :boolean .
 
 
 
@@ -2147,7 +2496,7 @@
 :iPAP rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
       
       <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                 :RespiratoryCareProposal .
@@ -2165,23 +2514,12 @@
 
 
 
-###  urn:hl7-org:vmr:r2#identifierName
-
-:identifierName rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                         owl:NamedIndividual ;
-                
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :II ;
-                
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :string .
-
-
-
 ###  urn:hl7-org:vmr:r2#informationAttestationType
 
 :informationAttestationType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                      owl:NamedIndividual ;
                             
-                            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                             
                             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationEvent .
 
@@ -2192,7 +2530,7 @@
 :infuseOver rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationOrder ,
                                                       :SubstanceAdministrationProposal .
@@ -2204,32 +2542,10 @@
 :inspiratoryTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                            :RespiratoryCareProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#integrityCheck
-
-:integrityCheck rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                         owl:NamedIndividual ;
-                
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ;
-                
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :base64Binary .
-
-
-
-###  urn:hl7-org:vmr:r2#integrityCheckAlgorithm
-
-:integrityCheckAlgorithm rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                                  owl:NamedIndividual ;
-                         
-                         <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ;
-                         
-                         <http://asu.edu/sharpc2b/ops#evaluatesAs> :IntegrityCheckAlgorithm .
 
 
 
@@ -2238,7 +2554,7 @@
 :interpretation rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :ObservationBase .
 
@@ -2249,7 +2565,7 @@
 :intervalIsImportant rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                               owl:NamedIndividual ;
                      
-                     <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+                     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
                      
                      <http://asu.edu/sharpc2b/skos-ext#partOf> :FrequencyAsInterval .
 
@@ -2260,20 +2576,9 @@
 :isDeceased rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
-
-
-
-###  urn:hl7-org:vmr:r2#isFlexible
-
-:isFlexible rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                     owl:NamedIndividual ;
-            
-            <http://asu.edu/sharpc2b/skos-ext#partOf> :PIVL_TS ;
-            
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :boolean .
 
 
 
@@ -2282,7 +2587,7 @@
 :isValid rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
          
          <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationEvent .
 
@@ -2293,7 +2598,7 @@
 :isolationCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                          :ImagingProposal ,
@@ -2302,34 +2607,14 @@
 
 
 
-###  urn:hl7-org:vmr:r2#item
-
-:item rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :List .
-
-
-
-###  urn:hl7-org:vmr:r2#language
-
-:language rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                   owl:NamedIndividual ;
-          
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :Code ;
-          
-          <http://asu.edu/sharpc2b/skos-ext#partOf> :ED .
-
-
-
 ###  urn:hl7-org:vmr:r2#laterality
 
 :laterality rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+            <http://asu.edu/sharpc2b/skos-ext#partOf> :BodySite .
 
 
 
@@ -2338,7 +2623,7 @@
 :loadingDose rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
              
              <http://asu.edu/sharpc2b/skos-ext#partOf> :PCAOrder ,
                                                        :PCAProposal .
@@ -2350,7 +2635,7 @@
 :lockoutInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :PCAOrder ,
                                                            :PCAProposal .
@@ -2362,39 +2647,9 @@
 :lotNo rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                 owl:NamedIndividual ;
        
-       <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> ;
        
-       <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
-
-
-
-###  urn:hl7-org:vmr:r2#low
-
-:low rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#partOf> :IVL_CO ,
-                                               :IVL_INT ,
-                                               :IVL_PQ ,
-                                               :IVL_QTY ,
-                                               :IVL_REAL ,
-                                               :IVL_TS .
-
-
-
-###  urn:hl7-org:vmr:r2#lowClosed
-
-:lowClosed rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :IVL_CO ,
-                                                     :IVL_INT ,
-                                                     :IVL_PQ ,
-                                                     :IVL_QTY ,
-                                                     :IVL_REAL ,
-                                                     :IVL_TS ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :boolean .
+       <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -2403,9 +2658,9 @@
 :manufacturer rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+              <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -2414,20 +2669,9 @@
 :maxDoseForInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/skos-ext#partOf> :DoseRestriction ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ .
-
-
-
-###  urn:hl7-org:vmr:r2#mediaType
-
-:mediaType rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :Code ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :ED .
+                    <http://asu.edu/sharpc2b/skos-ext#partOf> :DoseRestriction .
 
 
 
@@ -2436,7 +2680,7 @@
 :medium rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
         
         <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationBase .
 
@@ -2447,9 +2691,9 @@
 :message rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
-         <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationBase ;
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ED> ;
          
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :ED .
+         <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationBase .
 
 
 
@@ -2471,9 +2715,9 @@
 :narrative rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :CodeableConcept ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
+           <http://asu.edu/sharpc2b/skos-ext#partOf> :CodeableConcept .
 
 
 
@@ -2482,21 +2726,10 @@
 :numberFillsAllowed rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :INT ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#INT> ;
                     
                     <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationOrder ,
                                                               :SubstanceAdministrationProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#numerator
-
-:numerator rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :QTY ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :RTO .
 
 
 
@@ -2505,7 +2738,7 @@
 :observationEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                owl:NamedIndividual ;
                       
-                      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                       
                       <http://asu.edu/sharpc2b/skos-ext#partOf> :ObservationBase .
 
@@ -2516,7 +2749,7 @@
 :observationFocus rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                            owl:NamedIndividual ;
                   
-                  <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                  <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                   
                   <http://asu.edu/sharpc2b/skos-ext#partOf> :ObservationBase .
 
@@ -2527,7 +2760,7 @@
 :observationMethod rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                    
                    <http://asu.edu/sharpc2b/skos-ext#partOf> :ObservationBase .
 
@@ -2560,25 +2793,13 @@
 :orderEventTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationOrder ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
-                
-                <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureOrder ,
+                <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationOrder ,
+                                                          :ProcedureOrder ,
                                                           :SubstanceAdministrationOrder ,
                                                           :SubstanceDispensationOrder ,
                                                           :SupplyOrder .
-
-
-
-###  urn:hl7-org:vmr:r2#originalText
-
-:originalText rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                       owl:NamedIndividual ;
-              
-              <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
-              
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
 
 
 
@@ -2587,7 +2808,7 @@
 :originationMode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationOrder ,
                                                            :ProcedureOrder ,
@@ -2613,7 +2834,7 @@
 :oxygenFlowRate rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                           :RespiratoryCareProposal .
@@ -2625,20 +2846,10 @@
 :pEEP rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
       
       <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                 :RespiratoryCareProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#part
-
-:part rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :AD ,
-                                                :EN .
 
 
 
@@ -2658,7 +2869,7 @@
 :peakFlowRate rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                         :RespiratoryCareProposal .
@@ -2670,7 +2881,7 @@
 :peakInspiratoryPressure rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                   owl:NamedIndividual ;
                          
-                         <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                          
                          <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                                    :RespiratoryCareProposal .
@@ -2682,21 +2893,9 @@
 :period rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/skos-ext#partOf> :FrequencyAsInterval ,
-                                                  :PIVL_TS ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ .
-
-
-
-###  urn:hl7-org:vmr:r2#phase
-
-:phase rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                owl:NamedIndividual ;
-       
-       <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
-       
-       <http://asu.edu/sharpc2b/skos-ext#partOf> :PIVL_TS .
+        <http://asu.edu/sharpc2b/skos-ext#partOf> :FrequencyAsInterval .
 
 
 
@@ -2705,7 +2904,7 @@
 :portableExam rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                         :ImagingProposal .
@@ -2717,7 +2916,7 @@
 :preferredLanguage rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                    
                    <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
@@ -2728,7 +2927,7 @@
 :pressureSupport rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                            :RespiratoryCareProposal .
@@ -2740,7 +2939,7 @@
 :priorityInEncounter rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                               owl:NamedIndividual ;
                      
-                     <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                      
                      <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
 
@@ -2765,7 +2964,7 @@
 :problemAgent rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
               
               <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
 
@@ -2776,7 +2975,7 @@
 :problemCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
              
              <http://asu.edu/sharpc2b/skos-ext#partOf> :ProblemBase .
 
@@ -2787,7 +2986,7 @@
 :problemEffectiveTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                owl:NamedIndividual ;
                       
-                      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                       
                       <http://asu.edu/sharpc2b/skos-ext#partOf> :ProblemBase .
 
@@ -2798,7 +2997,7 @@
 :problemStatus rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
 
@@ -2809,7 +3008,7 @@
 :procedureCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureBase .
 
@@ -2820,7 +3019,7 @@
 :procedureMethod rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureBase .
 
@@ -2831,7 +3030,7 @@
 :procedureTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureEvent ,
                                                          :ProcedureOrder ,
@@ -2844,7 +3043,7 @@
 :proposedAdministrationTimeInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                              owl:NamedIndividual ;
                                     
-                                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                                     
                                     <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationProposal .
 
@@ -2855,9 +3054,9 @@
 :proposedAppointmentTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                   owl:NamedIndividual ;
                          
-                         <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentProposal ;
+                         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                          
-                         <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                         <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentProposal .
 
 
 
@@ -2866,9 +3065,9 @@
 :proposedCommunicationTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                     owl:NamedIndividual ;
                            
-                           <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationProposal ;
+                           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                            
-                           <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                           <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationProposal .
 
 
 
@@ -2877,7 +3076,7 @@
 :proposedDispensationTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                    owl:NamedIndividual ;
                           
-                          <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                           
                           <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceDispensationProposal .
 
@@ -2888,7 +3087,7 @@
 :proposedProcedureTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                 owl:NamedIndividual ;
                        
-                       <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                        
                        <http://asu.edu/sharpc2b/skos-ext#partOf> :ProcedureProposal .
 
@@ -2899,7 +3098,7 @@
 :proposedSupplyTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                     
                     <http://asu.edu/sharpc2b/skos-ext#partOf> :SupplyProposal .
 
@@ -2910,12 +3109,9 @@
 :qualifier rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
            
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :DietQualifier ,
-                                                     :ENXP ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :set_EntityNamePartQualifier .
+           <http://asu.edu/sharpc2b/skos-ext#partOf> :DietQualifier .
 
 
 
@@ -2924,7 +3120,7 @@
 :quantity rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
           
           <http://asu.edu/sharpc2b/skos-ext#partOf> :SupplyBase .
 
@@ -2935,7 +3131,7 @@
 :race rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
       
       <http://asu.edu/sharpc2b/skos-ext#partOf> :EvaluatedPerson .
 
@@ -2946,7 +3142,7 @@
 :reason rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
         
         <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationBase ,
                                                   :ProcedureOrder ,
@@ -2967,17 +3163,6 @@
            <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationBase ;
            
            <http://asu.edu/sharpc2b/ops#evaluatesAs> :Entity .
-
-
-
-###  urn:hl7-org:vmr:r2#reference
-
-:reference rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                    owl:NamedIndividual ;
-           
-           <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ;
-           
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :TEL .
 
 
 
@@ -3020,7 +3205,7 @@
 :relationshipTimeInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                    owl:NamedIndividual ;
                           
-                          <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                           
                           <http://asu.edu/sharpc2b/skos-ext#partOf> :RelationshipDescriptorBase .
 
@@ -3031,7 +3216,7 @@
 :relevantConcept rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :CodedIdentifier .
 
@@ -3053,9 +3238,9 @@
 :requestIssuanceTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                               owl:NamedIndividual ;
                      
-                     <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentRequest ;
+                     <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                      
-                     <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                     <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentRequest .
 
 
 
@@ -3064,9 +3249,9 @@
 :requestedAppointmentTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                    owl:NamedIndividual ;
                           
-                          <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentRequest ;
+                          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                           
-                          <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS .
+                          <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentRequest .
 
 
 
@@ -3075,21 +3260,10 @@
 :respiratoryRate rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                            :RespiratoryCareProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#root
-
-:root rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :II ;
-      
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :Uid .
 
 
 
@@ -3098,7 +3272,7 @@
 :sedation rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
           
           <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                     :ImagingProposal .
@@ -3116,61 +3290,15 @@
 
 
 
-###  urn:hl7-org:vmr:r2#set_EntityNamePartQualifier
-
-:set_EntityNamePartQualifier rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                                      owl:NamedIndividual ;
-                             
-                             <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :List .
-
-
-
-###  urn:hl7-org:vmr:r2#set_EntityNameUse
-
-:set_EntityNameUse rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                            owl:NamedIndividual ;
-                   
-                   <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :List .
-
-
-
-###  urn:hl7-org:vmr:r2#set_PostalAddressUse
-
-:set_PostalAddressUse rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                               owl:NamedIndividual ;
-                      
-                      <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :List .
-
-
-
-###  urn:hl7-org:vmr:r2#set_TelecommunicationAddressUse
-
-:set_TelecommunicationAddressUse rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                                          owl:NamedIndividual ;
-                                 
-                                 <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :List .
-
-
-
-###  urn:hl7-org:vmr:r2#set_TelecommunicationCapability
-
-:set_TelecommunicationCapability rdf:type <http://asu.edu/sharpc2b/ops#DomainClass> ,
-                                          owl:NamedIndividual ;
-                                 
-                                 <http://asu.edu/sharpc2b/skos-ext#subConceptOf> :List .
-
-
-
 ###  urn:hl7-org:vmr:r2#severity
 
 :severity rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
-          
-          <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
+          <http://asu.edu/sharpc2b/skos-ext#partOf> :AdverseEvent ,
+                                                    :Problem .
 
 
 
@@ -3179,7 +3307,7 @@
 :source rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                  owl:NamedIndividual ;
         
-        <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+        <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
         
         <http://asu.edu/sharpc2b/skos-ext#partOf> :Specimen .
 
@@ -3190,7 +3318,7 @@
 :spO2Range rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                     owl:NamedIndividual ;
            
-           <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+           <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
            
            <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                      :RespiratoryCareProposal .
@@ -3202,10 +3330,10 @@
 :spO2Titration rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
-                                                         :RespiratoryCareProposal ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#ST> ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :ST .
+               <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
+                                                         :RespiratoryCareProposal .
 
 
 
@@ -3214,7 +3342,7 @@
 :specialHandling rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :LaboratoryOrder ,
                                                            :LaboratoryProposal .
@@ -3237,7 +3365,7 @@
 :specimenSource rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :LaboratoryProposal .
 
@@ -3248,9 +3376,9 @@
 :strength rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#RTO> ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :RTO .
+          <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -3259,16 +3387,10 @@
 :stressor rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                    owl:NamedIndividual ;
           
-          <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+          <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
           
           <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                     :ImagingProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#string
-
-:string rdf:type owl:NamedIndividual .
 
 
 
@@ -3277,7 +3399,7 @@
 :subjectEffectiveTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                owl:NamedIndividual ;
                       
-                      <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                       
                       <http://asu.edu/sharpc2b/skos-ext#partOf> :UndeliveredProcedure ,
                                                                 :UndeliveredSubstanceAdministration ,
@@ -3302,7 +3424,7 @@
 :substanceAdministrationGeneralPurpose rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                                 owl:NamedIndividual ;
                                        
-                                       <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                                       <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                                        
                                        <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationBase .
 
@@ -3313,9 +3435,9 @@
 :substanceAmount rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/skos-ext#partOf> :Constituent ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ .
+                 <http://asu.edu/sharpc2b/skos-ext#partOf> :Constituent .
 
 
 
@@ -3324,9 +3446,9 @@
 :substanceBrandCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                              owl:NamedIndividual ;
                     
-                    <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+                    <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                     
-                    <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                    <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -3335,9 +3457,9 @@
 :substanceCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+               <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -3346,9 +3468,9 @@
 :substanceGenericCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                owl:NamedIndividual ;
                       
-                      <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance ;
+                      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                       
-                      <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+                      <http://asu.edu/sharpc2b/skos-ext#partOf> :AdministrableSubstance .
 
 
 
@@ -3357,7 +3479,7 @@
 :supplyCode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SupplyBase .
 
@@ -3368,7 +3490,7 @@
 :supplyTime rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :SupplyEvent ,
                                                       :SupplyOrder .
@@ -3380,7 +3502,7 @@
 :suspectedPathogen rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                             owl:NamedIndividual ;
                    
-                   <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                   <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                    
                    <http://asu.edu/sharpc2b/skos-ext#partOf> :LaboratoryOrder ,
                                                              :LaboratoryProposal .
@@ -3418,7 +3540,7 @@
 :targetRole rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                      owl:NamedIndividual ;
             
-            <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+            <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
             
             <http://asu.edu/sharpc2b/skos-ext#partOf> :RelationshipDescriptorBase .
 
@@ -3429,11 +3551,11 @@
 :telecom rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#TEL> ;
+         
          <http://asu.edu/sharpc2b/skos-ext#partOf> :Facility ,
                                                    :Organization ,
-                                                   :Person ;
-         
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :TEL .
+                                                   :Person .
 
 
 
@@ -3458,7 +3580,7 @@
 :tidalVolume rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_PQ ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_PQ> ;
              
              <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                        :RespiratoryCareProposal .
@@ -3470,9 +3592,9 @@
 :time rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :RepeatUntilTime ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#TS> ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :TS .
+      <http://asu.edu/sharpc2b/skos-ext#partOf> :RepeatUntilTime .
 
 
 
@@ -3481,9 +3603,9 @@
 :timeInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                        owl:NamedIndividual ;
               
-              <http://asu.edu/sharpc2b/skos-ext#partOf> :DoseRestriction ;
+              <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#PQ> ;
               
-              <http://asu.edu/sharpc2b/ops#evaluatesAs> :PQ .
+              <http://asu.edu/sharpc2b/skos-ext#partOf> :DoseRestriction .
 
 
 
@@ -3492,20 +3614,9 @@
 :timingEvent rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                       owl:NamedIndividual ;
              
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :BaseFrequency ;
+             <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
              
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
-
-
-
-###  urn:hl7-org:vmr:r2#translation
-
-:translation rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-                      owl:NamedIndividual ;
-             
-             <http://asu.edu/sharpc2b/skos-ext#partOf> :CD ;
-             
-             <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD .
+             <http://asu.edu/sharpc2b/skos-ext#partOf> :BaseFrequency .
 
 
 
@@ -3514,7 +3625,7 @@
 :transportMode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                         owl:NamedIndividual ;
                
-               <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+               <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                
                <http://asu.edu/sharpc2b/skos-ext#partOf> :ImagingOrder ,
                                                          :ImagingProposal .
@@ -3526,23 +3637,9 @@
 :type rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                owl:NamedIndividual ;
       
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :ADXP ;
+      <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
       
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :Documentation ,
-                                                :ENXP .
-
-
-
-###  urn:hl7-org:vmr:r2#unit
-
-:unit rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-               owl:NamedIndividual ;
-      
-      <http://asu.edu/sharpc2b/ops#evaluatesAs> :Code ;
-      
-      <http://asu.edu/sharpc2b/skos-ext#partOf> :PQ .
+      <http://asu.edu/sharpc2b/skos-ext#partOf> :Documentation .
 
 
 
@@ -3551,12 +3648,11 @@
 :urgency rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                   owl:NamedIndividual ;
          
+         <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
+         
          <http://asu.edu/sharpc2b/skos-ext#partOf> :AppointmentProposal ,
-                                                   :AppointmentRequest ;
-         
-         <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
-         
-         <http://asu.edu/sharpc2b/skos-ext#partOf> :CommunicationOrder ,
+                                                   :AppointmentRequest ,
+                                                   :CommunicationOrder ,
                                                    :CommunicationProposal ,
                                                    :GoalProposal ,
                                                    :ProcedureOrder ,
@@ -3567,17 +3663,6 @@
                                                    :SubstanceDispensationProposal ,
                                                    :SupplyOrder ,
                                                    :SupplyProposal .
-
-
-
-###  urn:hl7-org:vmr:r2#use
-
-:use rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#partOf> :AD ,
-                                               :EN ,
-                                               :TEL .
 
 
 
@@ -3595,7 +3680,7 @@
 :validAdministrationTimeInterval rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                                           owl:NamedIndividual ;
                                  
-                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :IVL_TS ;
+                                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#IVL_TS> ;
                                  
                                  <http://asu.edu/sharpc2b/skos-ext#partOf> :SubstanceAdministrationOrder ,
                                                                            :SubstanceAdministrationProposal .
@@ -3607,19 +3692,9 @@
 :value rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                 owl:NamedIndividual ;
        
-       <http://asu.edu/sharpc2b/skos-ext#partOf> :BL ,
-                                                 :CO ,
-                                                 :CodedNameValuePair ,
-                                                 :ED ,
-                                                 :INT ,
-                                                 :PQ ,
-                                                 :REAL ,
-                                                 :ST ,
+       <http://asu.edu/sharpc2b/skos-ext#partOf> :CodedNameValuePair ,
                                                  :StringNameValuePair ,
-                                                 :TEL ,
-                                                 :TS ,
-                                                 :Value ,
-                                                 :XP .
+                                                 :Value .
 
 
 
@@ -3628,7 +3703,7 @@
 :ventilatorMode rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                          owl:NamedIndividual ;
                 
-                <http://asu.edu/sharpc2b/ops#evaluatesAs> :CD ;
+                <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#CD> ;
                 
                 <http://asu.edu/sharpc2b/skos-ext#partOf> :RespiratoryCareOrder ,
                                                           :RespiratoryCareProposal .
@@ -3640,20 +3715,9 @@
 :wasCauseOfDeath rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
                           owl:NamedIndividual ;
                  
-                 <http://asu.edu/sharpc2b/ops#evaluatesAs> :BL ;
+                 <http://asu.edu/sharpc2b/ops#evaluatesAs> <urn:hl7-org:cdsdt:r2#BL> ;
                  
                  <http://asu.edu/sharpc2b/skos-ext#partOf> :Problem .
-
-
-
-###  urn:hl7-org:vmr:r2#xml
-
-:xml rdf:type <http://asu.edu/sharpc2b/ops#DomainProperty> ,
-              owl:NamedIndividual ;
-     
-     <http://asu.edu/sharpc2b/skos-ext#partOf> :ED ;
-     
-     <http://asu.edu/sharpc2b/ops#evaluatesAs> :Literal .
 
 
 

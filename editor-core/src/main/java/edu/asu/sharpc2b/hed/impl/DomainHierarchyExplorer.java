@@ -13,20 +13,21 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.w3._2002._07.owl.Thing;
 
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DomainHierarchyExplorer {
-
-    private List<String> vmrRoots = Arrays.asList( "VMR", "EntityBase", "ClinicalStatement", "ClinicalStatementRelationship" );
 
     private static ConcurrentHashMap<String, DomainHierarchyExplorer> domainExplorers = new ConcurrentHashMap<String, DomainHierarchyExplorer>(  );
 
@@ -48,7 +49,7 @@ public class DomainHierarchyExplorer {
     }
 
 
-    public DomainHierarchyExplorer( String domainModelPath, String domainNs ) {
+    protected DomainHierarchyExplorer( String domainModelPath, String domainNs ) {
         this.domainNs = domainNs;
 
         Resource domainRes = new ClassPathResource( domainModelPath );
@@ -66,17 +67,23 @@ public class DomainHierarchyExplorer {
         IRI partOf = IRI.create( "http://asu.edu/sharpc2b/skos-ext#partOf" );
 
         Map<String,Node> frame = new HashMap<>();
-        //TODO Works with vMR only, fix when the vMR ontology generation has been improved
-        Node root = initRoot( frame, "Thing", vmrRoots );
 
         for ( OWLObjectPropertyAssertionAxiom opa : onto.getAxioms( AxiomType.OBJECT_PROPERTY_ASSERTION, false ) ) {
             if ( subKlassOf.equals( opa.getProperty().asOWLObjectProperty().getIRI() ) ) {
-                IRI sup = IRI.create( domainNs, opa.getObject().asOWLNamedIndividual().getIRI().getFragment() );
-                IRI sub = IRI.create( domainNs, opa.getSubject().asOWLNamedIndividual().getIRI().getFragment() );
 
-                if ( sub.equals( sup ) ) {
+                IRI supInd = opa.getObject().asOWLNamedIndividual().getIRI();
+                IRI subInd = opa.getSubject().asOWLNamedIndividual().getIRI();
+
+                if ( supInd.equals( subInd ) ) {
                     continue;
                 }
+                if ( ! subInd.getNamespace().equals( domainNs )
+                     || ! ( supInd.getNamespace().equals( domainNs ) ) ) {
+                    continue;
+                }
+
+                IRI sup = IRI.create( domainNs, opa.getObject().asOWLNamedIndividual().getIRI().getFragment() );
+                IRI sub = IRI.create( domainNs, opa.getSubject().asOWLNamedIndividual().getIRI().getFragment() );
 
                 Node supNode = getNode( frame, sup.getFragment() );
                 Node subNode = getNode( frame, sub.getFragment() );
@@ -86,6 +93,17 @@ public class DomainHierarchyExplorer {
             }
         }
 
+        // Thing does not have an individual, so we need to complete the hierarchy
+        Node root = getNode( frame, "Thing" );
+        Set<String> temp = new HashSet<String>( superKlasses.values() );
+        for ( String sup : temp ) {
+            if ( ! superKlasses.containsKey( sup ) ) {
+                root.addChild( getNode( frame, sup ) );
+                superKlasses.put( sup, "Thing" );
+            }
+        }
+
+        // now we can traverse
         traverseKlasses( root );
 
         for ( OWLObjectPropertyAssertionAxiom opa : onto.getAxioms( AxiomType.OBJECT_PROPERTY_ASSERTION, false ) ) {

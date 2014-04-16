@@ -14,6 +14,7 @@ public class vMRModelTest {
     public void checkClassInheritance() {
         DomainHierarchyExplorer explorer = DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS );
 
+        System.out.println( explorer.getDomainHierarchy() );
 
 
         for ( String key : explorer.getSuperKlasses().keySet() ) {

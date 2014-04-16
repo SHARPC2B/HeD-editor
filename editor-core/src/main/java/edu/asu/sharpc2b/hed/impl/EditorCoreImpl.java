@@ -321,7 +321,8 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     public byte[] getLogicExpression() {
-        return getCurrentArtifact().getLogicExpression().getDoxBytes();
+        HeDNamedExpression logic = getCurrentArtifact().getLogicExpression();
+        return logic != null ? logic.getDoxBytes() : null;
     }
 
     public byte[] updateLogicExpression( byte[] doxBytes ) {
@@ -329,7 +330,8 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     public byte[] getTriggers() {
-        return getCurrentArtifact().getTriggers().getDoxBytes();
+        HeDNamedExpression trig = getCurrentArtifact().getTriggers();
+        return trig != null ? trig.getDoxBytes() : null;
     }
 
     public byte[] updateTriggers( byte[] doxBytes ) {
@@ -337,7 +339,8 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     public byte[] getActions() {
-        return getCurrentArtifact().getActions().getDoxBytes();
+        HeDAction action = getCurrentArtifact().getActions();
+        return action != null ? action.getDoxBytes() : null;
     }
 
     public byte[] updateActions( byte[] doxBytes ) {
@@ -589,8 +592,8 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     private void visitNode( OWLIndividual root, Element rootElem, Document dox, OWLDataFactory odf ) {
         OWLClassExpression type = root.getTypes( templates ).iterator().next();
         Element block = dox.createElement( "block" );
-            block.setAttribute( "type", type.asOWLClass().toStringID() );
-            visitLinks( root, rootElem, dox, odf );
+        block.setAttribute( "type", type.asOWLClass().toStringID() );
+        visitLinks( root, rootElem, dox, odf );
         rootElem.appendChild( block );
     }
 

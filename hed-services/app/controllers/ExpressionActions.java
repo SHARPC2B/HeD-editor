@@ -111,7 +111,6 @@ public class ExpressionActions extends Controller {
 
     public static Result getTriggers() {
         byte[] triggers = ModelHome.getTriggers();
-        System.out.println( new String( triggers ) );
         setHeaderCORS();
         return ok( triggers );
     }

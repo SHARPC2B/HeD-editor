@@ -172,7 +172,7 @@ public class TBoxToABox
 
     private IRI getABoxIRI (IRI tIRI)
     {
-        return getOntologyFormat().getIRI( "a:" + getLocalName( tIRI ) );
+        return tIRI;
     }
 
     private PrefixOWLOntologyFormat getOntologyFormat ()
