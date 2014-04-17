@@ -94,7 +94,28 @@
         </configuration>
       </plugin>
 
-      <plugin>
+	    <plugin>
+		    <artifactId>T-to-A-plugin</artifactId>
+		    <groupId>sharpc2b</groupId>
+		    <version>0.1-SNAPSHOT</version>
+		    <executions>
+			    <execution>
+				    <phase>generate-sources</phase>
+				    <goals>
+					    <goal>generate-tbox-to-abox</goal>
+				    </goals>
+			    </execution>
+		    </executions>
+		    <configuration>
+			    <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
+			    <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr.xsd.ttl</inputOntologyFile>
+			    <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/domain-vmr.ofn</outputOntologyFile>
+			    <outputOntologyIriString>urn:hl7-org:vmr:r2</outputOntologyIriString>
+		    </configuration>
+	    </plugin>
+
+
+	    <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
         <version>1.5</version>
@@ -115,50 +136,6 @@
         </configuration>
       </plugin>
 
-
-
-
-      <!--plugin>
-        <artifactId>skos-to-T-plugin</artifactId>
-        <groupId>sharpc2b</groupId>
-        <version>0.1-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate-skos-abox-to-tbox</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <inputOntologyFile>${pom.basedir}/src/main/resources/ontologies/icd9-pub.ofn</inputOntologyFile>
-          <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/icd9-T.ofn</outputOntologyFile>
-          <outputOntologyIriString>http://asu.edu/sharpc2b/icd9-T</outputOntologyIriString>
-          <alternateResourceDir>${pom.basedir}/src/main/resources</alternateResourceDir>
-        </configuration>
-      </plugin-->
-
-      <plugin>
-        <artifactId>T-to-A-plugin</artifactId>
-        <groupId>sharpc2b</groupId>
-        <version>0.1-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate-tbox-to-abox</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <tToAConfigResourcePath>${pom.basedir}/src/main/resources/OWL-to-Sharp-ABox-Concepts.properties</tToAConfigResourcePath>
-          <inputOntologyFile>${pom.basedir}/target/generated-sources/vmr.xsd.ttl</inputOntologyFile>
-          <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/domain-vmr.ofn</outputOntologyFile>
-          <outputOntologyIriString>urn:hl7-org:vmr:r2</outputOntologyIriString>
-        </configuration>
-      </plugin>
-
-
       <plugin>
         <artifactId>define-operators-plugin</artifactId>
         <groupId>sharpc2b</groupId>
@@ -177,6 +154,7 @@
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/sharp_operators.ofn</outputOntologyFile>
           <outputBlocklyDir>${pom.basedir}/target/generated-sources/blockly</outputBlocklyDir>
           <outputRuleDir>${pom.basedir}/target/generated-sources/rules</outputRuleDir>
+          <outputTemplateDir>${pom.basedir}/target/generated-sources/templates</outputTemplateDir>
           <outputOntologyIriString>http://asu.edu/sharpc2b/ops-set</outputOntologyIriString>
 	        <!-- The plugin can also generate the SPREADSHEET (operatorDefinitionFile above) which requires manual editing to fill the information not present in the schema -->
 	        <generationTarget>ONTOLOGY</generationTarget>
@@ -232,34 +210,18 @@
                     <include>*.drl</include>
                   </includes>
                 </resource>
+                <resource>
+                  <targetPath>${basedir}/../hed-model-templates/src/main/resources/templates</targetPath>
+                  <directory>${project.build.outputDirectory}/../generated-sources/templates</directory>
+                  <includes>
+                    <include>*.*</include>
+                  </includes>
+                </resource>
               </resources>
             </configuration>
           </execution>
         </executions>
       </plugin>
-
-      <!--<plugin>-->
-      <!--<groupId>sharpc2b</groupId>-->
-      <!--<artifactId>model-transform-plugin</artifactId>-->
-      <!--<version>0.1-SNAPSHOT</version>-->
-      <!--<executions>-->
-      <!--<execution>-->
-      <!--<phase>generate-sources</phase>-->
-      <!--<goals>-->
-      <!--<goal>generate-owl</goal>-->
-      <!--</goals>-->
-      <!--</execution>-->
-      <!--</executions>-->
-      <!--<configuration>-->
-      <!--<schemaLocations>-->
-      <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/datatypes-iso21090-clean.xsd-->
-      <!--</param>-->
-      <!--<param>${pom.basedir}/src/main/resources/xsd/vmr/vmr-clean.xsd</param>-->
-      <!--<param>${pom.basedir}/src/main/resources/xsd/arden/Arden.xsd</param>-->
-      <!--<param>${pom.basedir}/src/main/resources/xsd/HeD/knowledgedocument.xsd</param>-->
-      <!--</schemaLocations>-->
-      <!--</configuration>-->
-      <!--</plugin>-->
 
 
     </plugins>

@@ -35,7 +35,6 @@ import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleConditionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
-import org.drools.lang.dsl.DSLMapParser;
 import org.drools.semantics.utils.NameUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.w3c.dom.Document;

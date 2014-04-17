@@ -1,4 +1,4 @@
-import com.clarkparsia.common.base.SystemUtil;
+import edu.asu.sharpc2b.ClassPathResource;
 import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.hed.impl.BlocklyFactory;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
@@ -18,14 +18,11 @@ import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
-import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
 import edu.asu.sharpc2b.transform.OOwl2HedDumper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.varia.NullAppender;
-import org.drools.io.ResourceFactory;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPersonImpl;
 import org.purl.dc.terms.Agent;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
@@ -43,11 +40,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.FileInputStream;
 import java.io.OutputStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class EditorCoreTest {
@@ -61,8 +56,8 @@ public class EditorCoreTest {
 
         System.out.println( "Loading resource... " );
         long now = System.currentTimeMillis();
-        //org.drools.io.Resource file = ResourceFactory.newClassPathResource( "pertussis.xml" );
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+        //ClassPathResource file = new ClassPathResource( "pertussis.xml" );
+        ClassPathResource file = new ClassPathResource( "DiabetesReminderRule.xml" );
         byte[] hedStream = new byte[ file.getInputStream().available() ];
         file.getInputStream().read( hedStream );
         System.out.println( "Resource loaded.." + (System.currentTimeMillis() - now) );
@@ -139,7 +134,7 @@ public class EditorCoreTest {
         Logger.getRootLogger().removeAllAppenders();
         Logger.getRootLogger().addAppender(new NullAppender());
 
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "Diabetes_MetadataOnly.xml" );
+        ClassPathResource file = new ClassPathResource( "Diabetes_MetadataOnly.xml" );
         byte[] hedStream = new byte[ file.getInputStream().available() ];
         file.getInputStream().read( hedStream );
 
@@ -159,7 +154,7 @@ public class EditorCoreTest {
     @Test
     @Ignore
     public void testBlocklyGeneration() throws Exception {
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "DiabetesReminderRule.xml" );
+        ClassPathResource file = new ClassPathResource( "DiabetesReminderRule.xml" );
         byte[] hedStream = new byte[ file.getInputStream().available() ];
         file.getInputStream().read( hedStream );
 
@@ -178,7 +173,7 @@ public class EditorCoreTest {
     @Test
     @Ignore
     public void testCreateExpressionFromBlockly() throws Exception {
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "block2.xml" );
+        ClassPathResource file = new ClassPathResource( "block2.xml" );
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document dox = builder.parse( file.getInputStream() );
@@ -243,7 +238,7 @@ public class EditorCoreTest {
     @Test
     @Ignore
     public void testParseTrigger() throws Exception {
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "trig.xml" );
+        ClassPathResource file = new ClassPathResource( "trig.xml" );
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document dox = builder.parse( file.getInputStream() );
@@ -259,7 +254,7 @@ public class EditorCoreTest {
     @Test
     @Ignore
     public void testParseActions() throws Exception {
-        org.drools.io.Resource file = ResourceFactory.newClassPathResource( "actsXample.xml" );
+        ClassPathResource file = new ClassPathResource( "actsXample.xml" );
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document dox = builder.parse( file.getInputStream() );

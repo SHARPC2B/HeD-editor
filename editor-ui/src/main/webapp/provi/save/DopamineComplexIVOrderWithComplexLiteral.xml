@@ -2,10 +2,9 @@
 <?schematron-schema href="../main/schematron/knowledgeartifact.sch"?>
 <?schematron-schema href="../main/schematron/ordersets.sch"?>
 <knowledgeDocument xmlns="urn:hl7-org:knowledgeartifact:r1"
-	xmlns:vmr="urn:hl7-org:vmr:r2" xmlns:dt="urn:hl7-org:cdsdt:r2"
-	xmlns:p1="http://www.w3.org/1999/xhtml" xmlns:xml="http://www.w3.org/XML/1998/namespace"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../main/schema/knowledgeartifact/knowledgedocument.xsd 
+                   xmlns:vmr="urn:hl7-org:vmr:r2" xmlns:dt="urn:hl7-org:cdsdt:r2"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="urn:hl7-org:knowledgeartifact:r1 ../main/schema/knowledgeartifact/knowledgedocument.xsd
 	urn:hl7-org:vmr:r2 ../main/schema/vmr/vmr.xsd">
 	<!-- Dopamine Complex IV Order This example describes a complex IV order. 
 		This example was chosen to illustrate a modular order set that could be used 

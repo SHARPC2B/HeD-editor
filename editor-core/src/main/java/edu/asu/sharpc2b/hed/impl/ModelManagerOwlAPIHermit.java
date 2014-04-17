@@ -1,33 +1,20 @@
 package edu.asu.sharpc2b.hed.impl;
 
-import com.clarkparsia.common.base.SystemUtil;
 import com.clarkparsia.empire.Empire;
 import com.clarkparsia.empire.EmpireOptions;
-import com.clarkparsia.empire.annotation.InvalidRdfException;
-import com.clarkparsia.empire.annotation.RdfGenerator;
 import com.clarkparsia.empire.config.ConfigKeys;
 import com.clarkparsia.empire.config.EmpireConfiguration;
 import com.clarkparsia.empire.sesametwo.OpenRdfEmpireModule;
 import com.clarkparsia.empire.sesametwo.RepositoryDataSourceFactory;
 import com.clarkparsia.empire.util.DefaultEmpireModule;
-import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.sail.SailGraph;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
-import edu.asu.sharpc2b.transform.HeD2OwlDumper;
+import edu.asu.sharpc2b.ClassPathResource;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import edu.asu.sharpc2b.transform.SharpAnnotationProvider;
-import info.aduna.iteration.CloseableIteration;
 import org.coode.owlapi.rdf.model.AbstractTranslator;
-import org.coode.owlapi.rdf.model.RDFGraph;
 import org.coode.owlapi.rdf.model.RDFTranslator;
 import org.coode.owlapi.rdfxml.parser.AnonymousNodeChecker;
 import org.coode.owlapi.rdfxml.parser.OWLRDFConsumer;
-import org.drools.io.ResourceFactory;
-import org.drools.io.impl.ClassPathResource;
-import org.drools.semantics.AbstractObjectGraphVisitor;
-import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
@@ -37,25 +24,18 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.event.base.NotifyingRepositoryWrapper;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
-import org.openrdf.rio.turtle.TurtleWriter;
 import org.openrdf.sail.Sail;
-import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.io.StreamDocumentSource;
-import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -65,7 +45,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.rdf.syntax.RDFParser;
 import org.semanticweb.owlapi.reasoner.ConsoleProgressMonitor;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -75,12 +54,8 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 import org.semanticweb.owlapi.util.OWLOntologyMerger;
-import org.w3._2002._07.owl.Thing;
-import org.w3._2002._07.owl.ThingImpl;
 import org.xml.sax.InputSource;
-import uk.ac.manchester.cs.owl.owlapi.turtle.parser.TurtleParser;
 
-import javax.persistence.EntityListeners;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
@@ -88,7 +63,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
@@ -96,9 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
-//import edu.asu.sharpc2b.prr.ProductionRuleSetImpl;
 //import org.drools.semantics.AbstractObjectGraphVisitor;
 //import org.w3._2002._07.owl.Thing;
 //import org.w3._2002._07.owl.ThingImpl;
@@ -166,31 +138,31 @@ public class ModelManagerOwlAPIHermit
 
     protected static OWLOntology getBaseTheory() {
         long now = System.currentTimeMillis();
-        org.drools.io.Resource[] res = new org.drools.io.Resource[] {
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/DUL.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/IOLite.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/LMM_L1.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/skos-core.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/skos-ext.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/skos_lmm.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/dc_owl2dl.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/dc2dul.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/metadata.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/expr-core.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/sharp_operators.ofn" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/prr-core.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/bfo-1.1.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/sharp-time.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/event.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/actions.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/prr-sharp.owl" ),
-                ResourceFactory.newClassPathResource( "ontologies/editor_models/sharp.owl" ),
+        ClassPathResource[] res = new ClassPathResource[] {
+                new ClassPathResource( "ontologies/editor_models/DUL.owl" ),
+                new ClassPathResource( "ontologies/editor_models/IOLite.owl" ),
+                new ClassPathResource( "ontologies/editor_models/LMM_L1.owl" ),
+                new ClassPathResource( "ontologies/editor_models/skos-core.owl" ),
+                new ClassPathResource( "ontologies/editor_models/skos-ext.owl" ),
+                new ClassPathResource( "ontologies/editor_models/skos_lmm.owl" ),
+                new ClassPathResource( "ontologies/editor_models/dc_owl2dl.owl" ),
+                new ClassPathResource( "ontologies/editor_models/dc2dul.owl" ),
+                new ClassPathResource( "ontologies/editor_models/metadata.owl" ),
+                new ClassPathResource( "ontologies/editor_models/expr-core.owl" ),
+                new ClassPathResource( "ontologies/editor_models/sharp_operators.ofn" ),
+                new ClassPathResource( "ontologies/editor_models/prr-core.owl" ),
+                new ClassPathResource( "ontologies/editor_models/bfo-1.1.owl" ),
+                new ClassPathResource( "ontologies/editor_models/sharp-time.owl" ),
+                new ClassPathResource( "ontologies/editor_models/event.owl" ),
+                new ClassPathResource( "ontologies/editor_models/actions.owl" ),
+                new ClassPathResource( "ontologies/editor_models/prr-sharp.owl" ),
+                new ClassPathResource( "ontologies/editor_models/sharp.owl" ),
         };
 
         OWLOntologyLoaderConfiguration config = new OWLOntologyLoaderConfiguration();
         manager = OWLManager.createOWLOntologyManager();
 
-        for ( org.drools.io.Resource r : res ) {
+        for ( ClassPathResource r : res ) {
 
             try {
                 InputStream is = r.getInputStream();
@@ -216,7 +188,7 @@ public class ModelManagerOwlAPIHermit
 
     public HeDKnowledgeDocument loadRootThingFromOntologyStream( byte[] owlData ) {
         try {
-            return hedToObjectGraph( ResourceFactory.newByteArrayResource( owlData ) );
+            return hedToObjectGraph( new ByteArrayInputStream( owlData ) );
         } catch ( Exception e ) {
             e.printStackTrace();
             return null;
@@ -225,13 +197,13 @@ public class ModelManagerOwlAPIHermit
     }
 
 
-    public HeDKnowledgeDocument hedToObjectGraph( org.drools.io.Resource dataRes )
+    public HeDKnowledgeDocument hedToObjectGraph( InputStream dataRes )
             throws Exception {
 
         String id = getOntoId( dataRes );
         OWLOntologyID ontoId = new OWLOntologyID( IRI.create( id ) );
         OWLOntologyManager manager = baseTheory.getOWLOntologyManager();
-        manager.loadOntologyFromOntologyDocument( dataRes.getInputStream() );
+        manager.loadOntologyFromOntologyDocument( dataRes );
         OWLOntology onto = manager.getOntology( ontoId );
 
 
@@ -309,8 +281,7 @@ public class ModelManagerOwlAPIHermit
     }
 
 
-    private String getOntoId( org.drools.io.Resource res ) throws IOException {
-        InputStream is = res.getInputStream();
+    private String getOntoId( InputStream is ) throws IOException {
         byte[] data = new byte[ is.available() ];
         is.read( data );
         String content = new String( data );
@@ -324,6 +295,7 @@ public class ModelManagerOwlAPIHermit
     }
 
 
+    /*
     private com.tinkerpop.blueprints.Graph asObjectGraph (Thing o)  {
 
         long now = System.currentTimeMillis();
@@ -457,6 +429,7 @@ public class ModelManagerOwlAPIHermit
         return blueGraph;
 
     }
+    */
 
 
     private Repository dumpInSailRDFStore (OWLOntology onto) throws RepositoryException {

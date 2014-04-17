@@ -12,7 +12,7 @@
   <artifactId>editor-core</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <name>SHARPC-2B :: Smart Editor Core</name>
+  <name>SHARPC-2B :: Editor Core</name>
 
   <dependencies>
 
@@ -72,14 +72,9 @@
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-core</artifactId>
     </dependency>
-    <dependency>
+    <dependency>Nc
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-arq</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.hermit-reasoner</groupId>
-      <artifactId>org.semanticweb.hermit</artifactId>
     </dependency>
 
     <dependency>
@@ -91,14 +86,10 @@
       <artifactId>owlapi-apibinding</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.tinkerpop.blueprints</groupId>
-      <artifactId>blueprints-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.tinkerpop.blueprints</groupId>
-      <artifactId>blueprints-sail-graph</artifactId>
-    </dependency>
+	  <dependency>
+		  <groupId>org.openrdf.sesame</groupId>
+		  <artifactId>sesame-rio-rdfxml</artifactId>
+	  </dependency>
 
     <dependency>
       <groupId>org.openrdf.sesame</groupId>
