@@ -200,10 +200,14 @@ public class ModelManagerOwlAPIHermit
     public HeDKnowledgeDocument hedToObjectGraph( InputStream dataRes )
             throws Exception {
 
-        String id = getOntoId( dataRes );
+        byte[] data = new byte[ dataRes.available() ];
+        dataRes.read( data );
+
+        String id = getOntoId( new ByteArrayInputStream( data ) );
+
         OWLOntologyID ontoId = new OWLOntologyID( IRI.create( id ) );
         OWLOntologyManager manager = baseTheory.getOWLOntologyManager();
-        manager.loadOntologyFromOntologyDocument( dataRes );
+        manager.loadOntologyFromOntologyDocument( new ByteArrayInputStream( data ) );
         OWLOntology onto = manager.getOntology( ontoId );
 
 
