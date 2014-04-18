@@ -8,7 +8,6 @@ import models.metadata.Resource;
 import models.metadata.SupportingResource;
 import models.metadata.UsageTerm;
 import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
@@ -17,7 +16,7 @@ import java.util.List;
 import static controllers.SharpController.setHeaderCORS;
 
 
-public class MetadataActions extends Controller {
+public class MetadataActions extends play.mvc.Controller {
 
 
     public static Result getKeyTerms( String id ) {
@@ -42,7 +41,7 @@ public class MetadataActions extends Controller {
     }
 
     public static Result getCoverage( String id ) {
-        List<Coverage> covers = ModelHome.getCoverage( id );
+        List<Coverage> covers = models.ModelHome.getCoverage( id );
         JsonNode jsonOut = Json.toJson( covers );
         setHeaderCORS();
         return ok( jsonOut );

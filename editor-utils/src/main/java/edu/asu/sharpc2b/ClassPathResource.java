@@ -83,7 +83,7 @@ public class ClassPathResource {
         this.path = path;
         this.encoding = encoding;
         this.clazz = clazz;
-        this.classLoader = classLoader;
+        this.classLoader = classLoader == null ? Thread.currentThread().getContextClassLoader() : classLoader;
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {

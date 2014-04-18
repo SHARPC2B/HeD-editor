@@ -1,5 +1,6 @@
 package edu.asu.sharpc2b.transform;
 
+import edu.asu.sharpc2b.OwlHelper;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops_set.AndExpression;
 import org.drools.spi.KnowledgeHelper;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class HeD2OwlHelper {
+public class HeD2OwlHelper extends OwlHelper {
 
     private OWLOntology ontology;
     private OWLOntologyManager manager;
@@ -34,72 +35,12 @@ public class HeD2OwlHelper {
     private PrefixManager prefixManager;
 
     public HeD2OwlHelper( OWLOntology ontology, OWLOntologyManager manager, OWLDataFactory factory, PrefixManager prefixManager ) {
-        this.ontology = ontology;
-        this.manager = manager;
-        this.factory = factory;
-        this.prefixManager = prefixManager;
-
+        super( ontology, manager, factory, prefixManager );
 
         OWLImportsDeclaration imprt = manager.getOWLDataFactory().getOWLImportsDeclaration( IRI.create( "http://asu.edu/sharpc2b/sharp" ) );
         manager.applyChange( new AddImport( ontology, imprt ) );
     }
 
-    public void registerDataModel( String model ) {
-        IRI iri = IRI.create( model );
-        ((DefaultPrefixManager) prefixManager).setPrefix( iri.getFragment() + ":", iri.toString() + "#" );
-    }
-
-
-    public String uniqueName( Object x ) {
-        if ( x.getClass().getName().contains( "KnowledgeDocument" ) ) {
-            return "tns:" + x.getClass().getSimpleName();
-        } else {
-            return "tns:" + x.getClass().getSimpleName() + "_" + x.hashCode();
-        }
-    }
-
-    public OWLNamedIndividual asIndividual( Object x ) {
-        return factory.getOWLNamedIndividual( uniqueName( x ), prefixManager );
-    }
-
-    public OWLNamedIndividual asIndividual( String x ) {
-        if ( x.startsWith( "{urn:" ) ) {
-            String ns = x.substring( 1, x.indexOf( "}" ) );
-            String y = x.substring( x.indexOf( "}" ) + 1 );
-            return factory.getOWLNamedIndividual( "vmr:" + y, prefixManager );
-        } else if ( x.startsWith( "urn:" ) ) {
-            String ns = x.substring( 0, x.indexOf( "#" ) + 1 );
-            String y = x.substring( x.indexOf( "#" ) + 1 );
-            return factory.getOWLNamedIndividual( "vmr:" + y, prefixManager );
-        } else {
-            return factory.getOWLNamedIndividual( x, prefixManager );
-        }
-    }
-
-    public OWLNamedIndividual asExpressionIndividual( String op, Object root ) {
-        return asIndividual( "tns:" + op + "_" + System.identityHashCode( root ) );
-    }
-
-    public OWLNamedIndividual urnAsIndividual( String x ) {
-        return factory.getOWLNamedIndividual( IRI.create( x ) );
-    }
-
-    public OWLDeclarationAxiom assertIndividual( OWLNamedIndividual ind ) {
-        return factory.getOWLDeclarationAxiom( ind );
-    }
-
-    public OWLClassAssertionAxiom assertType( OWLNamedIndividual ind, String klass ) {
-        return factory.getOWLClassAssertionAxiom(
-                factory.getOWLClass( klass, prefixManager ),
-                ind );
-    }
-
-    public OWLObjectPropertyAssertionAxiom assertObjectProperty( String property, OWLNamedIndividual src, OWLNamedIndividual tgt ) {
-        return factory.getOWLObjectPropertyAssertionAxiom(
-                factory.getOWLObjectProperty( property, prefixManager ),
-                src,
-                tgt );
-    }
 
     public void assertNullSafeDataProperty( KnowledgeHelper drools, String property, OWLNamedIndividual src, String tgt, String type ) {
         if ( ! "null".equals( tgt ) ) {
@@ -111,20 +52,6 @@ public class HeD2OwlHelper {
             }
             drools.insert( assertTypedDataProperty( property, src, tgt, type ) );
         }
-    }
-
-    public OWLDataPropertyAssertionAxiom assertTypedDataProperty( String property, OWLNamedIndividual src, String tgt, String type ) {
-        return factory.getOWLDataPropertyAssertionAxiom(
-                factory.getOWLDataProperty( property, prefixManager ),
-                src,
-                factory.getOWLTypedLiteral( tgt, new OWLDatatypeImpl( IRI.create( type ) ) ) );
-    }
-
-    public OWLDataPropertyAssertionAxiom assertDataProperty( String property, OWLNamedIndividual src, String tgt ) {
-        return factory.getOWLDataPropertyAssertionAxiom(
-                factory.getOWLDataProperty( property, prefixManager ),
-                src,
-                factory.getOWLLiteral( tgt ) );
     }
 
     public void assertCD( KnowledgeHelper kh, String property, OWLNamedIndividual src, Object code ) {
@@ -216,10 +143,5 @@ public class HeD2OwlHelper {
     }
 
 
-    public void buildOntology( Set set ) {
-        for ( Object ax : set ) {
-            manager.addAxiom( ontology, (OWLAxiom) ax );
-        }
-    }
 
 }

@@ -4,8 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
-import org.drools.io.Resource;
-import org.drools.io.impl.ClassPathResource;
+import edu.asu.sharpc2b.ClassPathResource;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
@@ -13,7 +12,6 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.w3._2002._07.owl.Thing;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -38,6 +36,7 @@ public class DomainHierarchyExplorer {
     private SortedMap<String,String> domKlasses = new TreeMap<String,String>();
     private SortedMap<String,SortedMap<String,String>> domProptis = new TreeMap<String,SortedMap<String,String>>();
     private SortedMap<String,String> superKlasses = new TreeMap<String,String>();
+    private SortedMap<String,String> propertyRanges = new TreeMap<String,String>();
 
 
     public static DomainHierarchyExplorer getInstance( String domainModelPath, String domainNs ) {
@@ -52,7 +51,7 @@ public class DomainHierarchyExplorer {
     protected DomainHierarchyExplorer( String domainModelPath, String domainNs ) {
         this.domainNs = domainNs;
 
-        Resource domainRes = new ClassPathResource( domainModelPath );
+        ClassPathResource domainRes = new ClassPathResource( domainModelPath );
         OWLOntology onto = getDomainOntology( domainRes );
 
         explore( onto );
@@ -65,6 +64,7 @@ public class DomainHierarchyExplorer {
     protected String explore( OWLOntology onto )  {
         IRI subKlassOf = IRI.create( "http://asu.edu/sharpc2b/skos-ext#subConceptOf" );
         IRI partOf = IRI.create( "http://asu.edu/sharpc2b/skos-ext#partOf" );
+        IRI evaluatesAs = IRI.create( "http://asu.edu/sharpc2b/ops#evaluatesAs" );
 
         Map<String,Node> frame = new HashMap<>();
 
@@ -118,6 +118,13 @@ public class DomainHierarchyExplorer {
                         domProptis.put( klass.toString(), propsForKlass );
                     }
                     propsForKlass.put( prop.toString(), prop.getFragment() );
+
+                    for ( OWLObjectPropertyAssertionAxiom subopa : onto.getObjectPropertyAssertionAxioms( opa.getSubject() ) ) {
+                        if ( evaluatesAs.equals( subopa.getProperty().asOWLObjectProperty().getIRI() ) ) {
+                            propertyRanges.put( subopa.getSubject().asOWLNamedIndividual().getIRI().toString(),
+                                                subopa.getObject().asOWLNamedIndividual().getIRI().toString() );
+                        }
+                    }
                 }
             }
         }
@@ -134,7 +141,7 @@ public class DomainHierarchyExplorer {
         return domainHierarchy;
     }
 
-    private OWLOntology getDomainOntology( Resource domainRes ) {
+    private OWLOntology getDomainOntology( ClassPathResource domainRes ) {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         try {
             ClassPathResource skos = new ClassPathResource( "ontologies/editor_models/skos-core.owl" );
@@ -189,6 +196,22 @@ public class DomainHierarchyExplorer {
 
     public void setSuperKlasses( SortedMap<String, String> superKlasses ) {
         this.superKlasses = superKlasses;
+    }
+
+    public SortedMap<String, String> getPropertyRanges() {
+        return propertyRanges;
+    }
+
+    public void setPropertyRanges( SortedMap<String, String> propertyRanges ) {
+        this.propertyRanges = propertyRanges;
+    }
+
+    public String getPropertyType( String propertyIri ) {
+        return propertyRanges.get( propertyIri );
+    }
+
+    public SortedMap<String,String> getPropertiesForType( String klassIri ) {
+        return domProptis.get( klassIri );
     }
 
     private void traverseKlasses( Node root ) {

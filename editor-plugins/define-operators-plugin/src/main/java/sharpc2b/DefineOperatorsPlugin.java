@@ -76,13 +76,6 @@ public class DefineOperatorsPlugin
     private File outputRuleDir;
 
     /**
-     * File in which to save the template info
-     *
-     * @parameter default-value="./target/generated-sources"
-     */
-    private File outputTemplateDir;
-
-    /**
      * The IRI to give the saved output Ontology.
      *
      * @parameter default-value="./target/generated-sources"
@@ -102,6 +95,8 @@ public class DefineOperatorsPlugin
      * OR
      * can generate the operator ontology (ONTOLOGY)
      * The latter is the default;
+     *
+     * @parameter default-value="ONTOLOGY"
      */
     private String generationTarget;
 

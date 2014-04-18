@@ -7,7 +7,7 @@ import play.mvc.Result;
  * User: rk Date: 7/31/13 Package: controllers
  */
 public class SharpController
-        extends Controller
+        extends play.mvc.Controller
 {
 
     // static String CORS_ORIGIN = "http://localhost:8080/";

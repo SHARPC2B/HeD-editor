@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static controllers.SharpController.setHeaderCORS;
 
-public class ExpressionActions extends Controller {
+public class ExpressionActions extends play.mvc.Controller {
 
 
     public static Result getExpressions() {

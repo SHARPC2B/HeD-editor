@@ -24,7 +24,7 @@ import static controllers.SharpController.setHeaderCORS;
  * User: rk Date: 8/19/13 Package: controllers
  */
 public class CtsActions
-        extends Controller
+        extends play.mvc.Controller
 {
 
 //    static String ctsURL = "http://informatics.mayo.edu/cts2/rest/";

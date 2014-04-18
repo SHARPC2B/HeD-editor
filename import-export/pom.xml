@@ -29,6 +29,11 @@
 		  <artifactId>hed-model-expressions</artifactId>
 		  <version>0.1-SNAPSHOT</version>
 	  </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>editor-utils</artifactId>
+		  <version>0.1-SNAPSHOT</version>
+	  </dependency>
 
     <dependency>
       <groupId>org.drools</groupId>

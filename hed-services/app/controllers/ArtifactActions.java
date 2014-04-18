@@ -21,7 +21,7 @@ import static controllers.SharpController.setHeaderCORS;
  * User: rk Date: 7/31/13 Package: controllers
  */
 public class ArtifactActions
-        extends Controller
+        extends play.mvc.Controller
 {
 
 //    static final String templateListResourcePath = ModelHome

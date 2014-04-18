@@ -10,7 +10,7 @@
 
   <artifactId>editor-ui</artifactId>
   <packaging>war</packaging>
-  <name>editor-ui</name>
+  <name>SHARPC-2B :: Editor UI</name>
 
   <url>http://maven.apache.org</url>
 

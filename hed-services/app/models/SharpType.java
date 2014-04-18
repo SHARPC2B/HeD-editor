@@ -1,16 +1,8 @@
 package models;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import play.db.ebean.Model;
 
-/**
- * Single "Model" parent for Sharp objects.
- *
- * User: rk Date: 9/3/13
- */
-public class SharpType
-        extends Model
-{
+public class SharpType extends play.db.ebean.Model {
 
     public String mtype;
 

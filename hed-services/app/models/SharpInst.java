@@ -11,7 +11,7 @@ import java.util.List;
  * User: rk Date: 9/15/13
  */
 public abstract class SharpInst
-        extends Model
+        extends play.db.ebean.Model
 {
 
     public List<String> errors = new ArrayList<String>();

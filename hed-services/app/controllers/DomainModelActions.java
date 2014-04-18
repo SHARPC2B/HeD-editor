@@ -15,7 +15,7 @@ import java.util.Map;
 import static controllers.SharpController.setHeaderCORS;
 import static play.mvc.Results.ok;
 
-public class DomainModelActions extends Controller {
+public class DomainModelActions extends play.mvc.Controller {
 
 
     public static Result getDomainClassHierarchyDescr() {

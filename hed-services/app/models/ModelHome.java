@@ -9,7 +9,6 @@ import edu.asu.sharpc2b.hed.impl.HeDArtifactData;
 import edu.asu.sharpc2b.metadata.ClinicalCoverage;
 import edu.asu.sharpc2b.metadata.ClinicalCoverageImpl;
 import edu.asu.sharpc2b.metadata.Coverage;
-import edu.asu.sharpc2b.metadata.CoverageImpl;
 import edu.asu.sharpc2b.metadata.Evidence;
 import edu.asu.sharpc2b.metadata.EvidenceImpl;
 import edu.asu.sharpc2b.metadata.InlineResource;
@@ -18,14 +17,10 @@ import edu.asu.sharpc2b.metadata.KnowledgeResourceImpl;
 import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.RightsDeclarationImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
-import edu.asu.sharpc2b.skos_ext.CodedConcept;
-import edu.asu.sharpc2b.skos_ext.CodedConceptImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
 import edu.mayo.cts2.framework.core.client.Cts2RestClient;
-import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
-import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryList;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import models.ex.ConvertJsonToJavaException;
 import models.ex.ModelDataFileNotFoundException;
@@ -33,13 +28,11 @@ import models.metadata.Contributor;
 import models.metadata.Resource;
 import models.metadata.SupportingResource;
 import models.metadata.UsageTerm;
-import org.drools.semantics.Thing;
 import org.ontologydesignpatterns.ont.dul.dul.Entity;
 import org.ontologydesignpatterns.ont.dul.dul.OrganizationImpl;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPersonImpl;
 import org.purl.dc.terms.Agent;
-import org.purl.dc.terms.AgentImpl;
 import org.purl.dc.terms.Location;
 import org.purl.dc.terms.LocationImpl;
 import org.purl.dc.terms.RightsStatement;
@@ -47,7 +40,6 @@ import org.purl.dc.terms.RightsStatementImpl;
 import play.libs.Json;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -784,7 +776,144 @@ public class ModelHome
 
 
 
+    /************************************************************************************************************/
+    /* DOMAIN MODEL APIs */
+    /**
+     ***********************************************************************************************************/
 
+
+    public static Map<String, String> getDomainClasses() {
+        Map<String,String> dk = core.getDomainClasses();
+        return dk;
+    }
+
+    public static Map<String, String> getDomainProperties() {
+        return core.getDomainProperties();
+    }
+
+    public static Map<String, String> getDomainProperties( String klassId ) {
+        return core.getDomainProperties( klassId );
+    }
+
+    public static String getDomainClassHierarchyDescription() {
+        return core.getDomainClassHierarchyDescription();
+    }
+
+
+    public static void updateBasicInfo( Rule rule ) {
+        core.updateBasicInfo( rule.ruleId, rule.Name, rule.Description, rule.Status, rule.Type );
+    }
+
+    public static Map<String,String> getUsedDomainClasses( String id ) {
+        HeDArtifactData data = core.getArtifactData( id );
+        if ( data == null ) {
+            return Collections.emptyMap();
+        }
+        return data.getUsedDomainClasses();
+    }
+
+    public static void addUsedDomainClass( String id ) {
+        core.addUsedDomainClass( id );
+    }
+
+
+
+    /************************************************************************************************************/
+    /* DOMAIN MODEL APIs */
+    /**
+     ***********************************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private static Map<String,PrimitiveTemplate> templateCache = new HashMap<String,PrimitiveTemplate>();
+
+    public static TemplateList getTemplateList( String category ) {
+        TemplateList templateList = new TemplateList();
+        templateCache.clear();
+
+        Set<String> templateIds = core.getTemplateIds( category );
+
+        for ( String templateId : templateIds ) {
+            Map<String,Object> templateDetails = core.getTemplateInfo( templateId );
+            PrimitiveTemplate template = new PrimitiveTemplate();
+            template.templateId = (String) templateDetails.get( "templateId" );
+            template.key = template.templateId.substring( template.templateId.lastIndexOf( "#" ) + 1 );
+            template.name = (String) templateDetails.get( "name" );
+            template.category = (String) templateDetails.get( "category" );
+            template.group = (String) templateDetails.get( "group" );
+            template.description = (String) templateDetails.get( "description" );
+            template.example = (String) templateDetails.get( "example" );
+            template.parameterIds = (List<String>) templateDetails.get( "parameterIds" );
+            template.parameters = rebuildParameterInfo( (Map<String,Map<String,Object>>) templateDetails.get( "parameterData" ) );
+
+            spliceInHedTypes( template, hedTypeList );
+
+            templateCache.put( template.key, template );
+            templateList.addTemplate( template );
+        }
+
+        System.out.println( "Template list from the home " + templateList );
+        return templateList;
+    }
+
+
+
+    static HedTypeList hedTypeList = initHeDTypeList();
+
+    private static HedTypeList initHeDTypeList() {
+        HedTypeList typeList = createJavaInstanceFromJsonFile( HedTypeList.class );
+
+        for ( HedType type : typeList.hedTypes ) {
+            if ( "CodeLiteral".equals( type.name ) ) {
+                ElementType codeSystem = type.getElement( "codeSystem" );
+                //  codeSystem.selectionChoices = lookupCodeSystems();
+            }
+        }
+
+        return typeList;
+    }
+
+    private static List<String> lookupCodeSystems() {
+        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( "http://localhost:8080/cts2framework/codesystems", CodeSystemCatalogEntryDirectory.class );
+        List<String> codeSystemNames = new ArrayList<>( codesSystems.getEntryCount() );
+        for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
+            codeSystemNames.add( entry.getCodeSystemName() );
+        }
+        return codeSystemNames;
+    }
+
+
+    private static List<ParameterType> rebuildParameterInfo( Map<String, Map<String,Object>> parameterData ) {
+        ArrayList<ParameterType> parameterTypes = new ArrayList<ParameterType>();
+        for ( String key : parameterData.keySet() ) {
+            Map<String,Object> pData = parameterData.get( key );
+            ParameterType param = new ParameterType();
+
+            param.key = key;
+            param.name = (String) pData.get( "name" );
+            param.label = (String) pData.get( "label" );
+            param.description = (String) pData.get( "description" );
+            param.hedTypeName = (String) pData.get( "typeName" );
+            param.expressionChoices = (List<String>) pData.get( "expressionChoices" );
+
+            parameterTypes.add( param );
+        }
+        return parameterTypes;
+    }
 
 
     static String createUUID()
@@ -933,15 +1062,16 @@ public class ModelHome
         return null;
     }
 
+
+
+
     //========================================================================================
 
-    public static String jsonFileForClass(final Class<?> aClass)
-    {
+    public static String jsonFileForClass( final Class<?> aClass ) {
         return jsonFileForClass( aClass.getSimpleName() );
     }
 
-    public static String jsonFileForClass(final String aClassName)
-    {
+    public static String jsonFileForClass( final String aClassName ) {
         return "public/data/" + aClassName + ".json";
     }
 
@@ -952,24 +1082,21 @@ public class ModelHome
      *
      * Currently only files for TemplateList and ParameterList.
      */
-    public static <M> M createJavaInstanceFromJsonFile(final Class<M> aClass) throws ModelDataFileNotFoundException, ConvertJsonToJavaException {
+    public static <M> M createJavaInstanceFromJsonFile( final Class<M> aClass )
+            throws ModelDataFileNotFoundException, ConvertJsonToJavaException {
         String jsonDataResourcePath = jsonFileForClass( aClass );
         System.out.println( "jsonDataResourcePath = " + jsonDataResourcePath );
 
         final URL urlParameters = Resources.getResource( jsonDataResourcePath );
 
         final String jsonText;
-        try
-        {
+        try {
             jsonText = Resources.toString( urlParameters, Charsets.UTF_8 );
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new ModelDataFileNotFoundException( e );
         }
-        try
-        {
+        try {
             JsonNode jsonNode = Json.parse( jsonText );
 //            System.out.println( "fetched value (json) = |" + jsonValue + "|" );
 
@@ -977,133 +1104,12 @@ public class ModelHome
             o = Json.fromJson( jsonNode, aClass );
 
             return (M) o;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new ConvertJsonToJavaException( ex );
         }
     }
 
 
-    private static Map<String,PrimitiveTemplate> templateCache = new HashMap<String,PrimitiveTemplate>();
-
-    public static TemplateList getTemplateList( String category ) {
-        System.out.println( "ModelHome was asked a template list" );
-        TemplateList templateList = new TemplateList();
-        templateCache.clear();
-
-        Set<String> templateIds = core.getTemplateIds( category );
-
-        for ( String templateId : templateIds ) {
-            Map<String,Object> templateDetails = core.getTemplateInfo( templateId );
-            PrimitiveTemplate template = new PrimitiveTemplate();
-            template.templateId = (String) templateDetails.get( "templateId" );
-            template.key = template.templateId.substring( template.templateId.lastIndexOf( "#" ) + 1 );
-            template.name = (String) templateDetails.get( "name" );
-            template.category = (String) templateDetails.get( "category" );
-            template.group = (String) templateDetails.get( "group" );
-            template.description = (String) templateDetails.get( "description" );
-            template.example = (String) templateDetails.get( "example" );
-            template.parameterIds = (List<String>) templateDetails.get( "parameterIds" );
-            template.parameters = rebuildParameterInfo( (Map<String,Map<String,Object>>) templateDetails.get( "parameterData" ) );
-
-            spliceInHedTypes( template, hedTypeList );
-
-            templateCache.put( template.key, template );
-            templateList.addTemplate( template );
-        }
-
-        System.out.println( "Template list from the home " + templateList );
-        return templateList;
-    }
-
-
-
-    static HedTypeList hedTypeList = initHeDTypeList();
-
-    private static HedTypeList initHeDTypeList() {
-        HedTypeList typeList = createJavaInstanceFromJsonFile( HedTypeList.class );
-
-        for ( HedType type : typeList.hedTypes ) {
-            if ( "CodeLiteral".equals( type.name ) ) {
-                ElementType codeSystem = type.getElement( "codeSystem" );
-                //  codeSystem.selectionChoices = lookupCodeSystems();
-            }
-        }
-
-        return typeList;
-    }
-
-    private static List<String> lookupCodeSystems() {
-        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( "http://localhost:8080/cts2framework/codesystems", CodeSystemCatalogEntryDirectory.class );
-        List<String> codeSystemNames = new ArrayList<>( codesSystems.getEntryCount() );
-        for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
-            codeSystemNames.add( entry.getCodeSystemName() );
-        }
-        return codeSystemNames;
-    }
-
-
-    private static List<ParameterType> rebuildParameterInfo( Map<String, Map<String,Object>> parameterData ) {
-        ArrayList<ParameterType> parameterTypes = new ArrayList<ParameterType>();
-        for ( String key : parameterData.keySet() ) {
-            Map<String,Object> pData = parameterData.get( key );
-            ParameterType param = new ParameterType();
-
-            param.key = key;
-            param.name = (String) pData.get( "name" );
-            param.label = (String) pData.get( "label" );
-            param.description = (String) pData.get( "description" );
-            param.hedTypeName = (String) pData.get( "typeName" );
-            param.expressionChoices = (List<String>) pData.get( "expressionChoices" );
-
-            parameterTypes.add( param );
-        }
-        return parameterTypes;
-    }
-
-
-
-
-
-
-
-
-
-
-    public static Map<String, String> getDomainClasses() {
-        Map<String,String> dk = core.getDomainClasses();
-        return dk;
-    }
-
-    public static Map<String, String> getDomainProperties() {
-        return core.getDomainProperties();
-    }
-
-    public static Map<String, String> getDomainProperties( String klassId ) {
-        return core.getDomainProperties( klassId );
-    }
-
-    public static String getDomainClassHierarchyDescription() {
-        return core.getDomainClassHierarchyDescription();
-    }
-
-
-    public static void updateBasicInfo( Rule rule ) {
-        core.updateBasicInfo( rule.ruleId, rule.Name, rule.Description, rule.Status, rule.Type );
-    }
-
-    public static Map<String,String> getUsedDomainClasses( String id ) {
-        HeDArtifactData data = core.getArtifactData( id );
-        if ( data == null ) {
-            return Collections.emptyMap();
-        }
-        return data.getUsedDomainClasses();
-    }
-
-    public static void addUsedDomainClass( String id ) {
-        core.addUsedDomainClass( id );
-    }
 
 }

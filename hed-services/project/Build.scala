@@ -10,6 +10,7 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
+    "org.avaje.ebeanorm" % "avaje-ebeanorm-api" % "3.1.1",
 
     //"xml-apis" % "xml-apis" % "1.4.01" force(),
     "xerces" % "xercesImpl" % "2.10.0" force(),

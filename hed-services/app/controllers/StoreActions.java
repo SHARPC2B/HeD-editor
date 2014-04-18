@@ -21,7 +21,7 @@ import static controllers.SharpController.setHeaderCORS;
 
 
 public class StoreActions
-        extends Controller {
+        extends play.mvc.Controller {
 
     public static Result getAvailableArtifacts() {
         List<String> ruleIds = ModelHome.getAvailableArtifacts();

@@ -30,6 +30,8 @@
     <module>editor-persistence</module>
 
     <module>design-docs</module>
+
+	  <module>editor-utils</module>
   </modules>
 
 
@@ -102,15 +104,6 @@
 	    </snapshots>
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
-    </repository>
-
-    <repository>
-	    <snapshots>
-		    <enabled>false</enabled>
-		    <updatePolicy>never</updatePolicy>
-	    </snapshots>
-	  <id>aduna-repository</id>
-      <url>http://repo.aduna-software.org/maven2/releases</url>
     </repository>
 
     <repository>
@@ -284,47 +277,47 @@
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-runtime</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-core</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-queryalgebra-evaluation</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-queryalgebra-model</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-queryalgebra</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-queryparser-sparql</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-sail-api</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-sail-memory</artifactId>
-        <version>2.6.9</version>
+        <version>2.7.0</version>
       </dependency>
 	    <dependency>
 		    <groupId>org.openrdf.sesame</groupId>
 		    <artifactId>sesame-rio-rdfxml</artifactId>
-		    <version>2.6.9</version>
+		    <version>2.7.0</version>
 	    </dependency>
 
 
@@ -426,19 +419,6 @@
       <id>mayo-repository</id>
       <name>Mayo EDU Info Repository</name>
       <url>http://informatics.mayo.edu/maven/content/repositories/public</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>aduna-repository</id>
-      <name>Aduna Soft Repository</name>
-      <url>http://repo.aduna-software.org/maven2/releases</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
