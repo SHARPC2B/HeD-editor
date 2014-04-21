@@ -206,6 +206,10 @@ public class DomainHierarchyExplorer {
         this.propertyRanges = propertyRanges;
     }
 
+    public String getDomainNs() {
+        return domainNs;
+    }
+
     public String getPropertyType( String propertyIri ) {
         return propertyRanges.get( propertyIri );
     }

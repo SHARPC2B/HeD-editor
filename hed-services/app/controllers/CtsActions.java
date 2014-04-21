@@ -1,11 +1,15 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import edu.mayo.cts2.framework.core.client.Cts2RestClient;
 import edu.mayo.cts2.framework.core.json.JsonConverter;
 import edu.mayo.cts2.framework.core.xml.Cts2Marshaller;
 import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
 import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryDirectory;
+import models.ModelHome;
+import play.api.libs.json.JsPath;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -14,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import static controllers.SharpController.setHeaderCORS;
@@ -32,7 +37,6 @@ public class CtsActions
 
     public static Result helloWorld ()
     {
-        System.out.println( "\nUnmarshalling and printing using CTS2 REST client\n" );
         Cts2Marshaller marshaller = new DelegatingMarshaller();
         Cts2RestClient client = new Cts2RestClient( marshaller, true );
         ValueSetCatalogEntryDirectory result = client
@@ -40,31 +44,9 @@ public class CtsActions
                                   ValueSetCatalogEntryDirectory.class );
 
         System.out.println( result );
-//        final URL url = Resources.getResource( templateListResourcePath );
-//        final String value;
-//        try
-//        {
-//            value = Resources.toString( url, Charsets.UTF_8 );
-//        }
-//        catch (IOException e)
-//        {
-//            setHeaderCORS();
-//            return internalServerError(
-//                    "IO error while trying to find and load resource " + templateListResourcePath );
-//        }
-//        try
-//        {
-//            JsonNode jsonValue = Json.parse( value );
-////            System.out.println( "fetched value (json) = |" + jsonValue + "|" );
+
         setHeaderCORS();
-//        return ok( jsonValue );
         return ok( result.toString() );
-//        }
-//        catch (Exception e)
-//        {
-//            setHeaderCORS();
-//            return notFound( "Error parsing as JSON, text = " + "\n" + value );
-//        }
     }
 
     public static Result searchInCodeSystem (final String cs,
@@ -102,6 +84,17 @@ public class CtsActions
         setHeaderCORS();
         return ok( jsonText );
     }
+
+    public static Result getCodeSystems() {
+        JsonConverter converter = new JsonConverter();
+        List<String> codeSystems = ModelHome.getCodeSystems();
+
+        JsonNode jsonOut = Json.toJson( codeSystems );
+        System.out.println( "Sending " + jsonOut );
+        setHeaderCORS();
+        return ok( jsonOut );
+    }
+
 
     public static Result unMarshallandPrintFromJson ()
             throws IOException

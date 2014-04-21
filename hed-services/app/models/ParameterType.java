@@ -36,6 +36,8 @@ public class ParameterType
 
     public String selectedExpression = null;
 
+    public String displayValue;
+
     //========================================================================================
 
     public ElementType getElement(String name)

@@ -154,15 +154,33 @@
           <outputOntologyFile>${pom.basedir}/target/generated-sources/ontologies/editor_models/sharp_operators.ofn</outputOntologyFile>
           <outputBlocklyDir>${pom.basedir}/target/generated-sources/blockly</outputBlocklyDir>
           <outputRuleDir>${pom.basedir}/target/generated-sources/rules</outputRuleDir>
-          <outputTemplateDir>${pom.basedir}/target/generated-sources/templates</outputTemplateDir>
           <outputOntologyIriString>http://asu.edu/sharpc2b/ops-set</outputOntologyIriString>
-	        <!-- The plugin can also generate the SPREADSHEET (operatorDefinitionFile above) which requires manual editing to fill the information not present in the schema -->
 	        <generationTarget>ONTOLOGY</generationTarget>
         </configuration>
       </plugin>
 
 
-      <plugin>
+	    <plugin>
+		    <artifactId>template-gen-plugin</artifactId>
+		    <groupId>sharpc2b</groupId>
+		    <version>0.1-SNAPSHOT</version>
+		    <executions>
+			    <execution>
+				    <phase>generate-sources</phase>
+				    <goals>
+					    <goal>generate-templates</goal>
+				    </goals>
+			    </execution>
+		    </executions>
+		    <configuration>
+			    <inputTemplateFile>${pom.basedir}/src/main/resources/HeD_Templates.xlsx</inputTemplateFile>
+			    <outputOntologyFile>${pom.basedir}/target/generated-sources/templates/sharp_templates.owl</outputOntologyFile>
+			    <outputOntologyIriString>http://asu.edu/sharpc2b/templates</outputOntologyIriString>
+		    </configuration>
+	    </plugin>
+
+
+	    <plugin>
         <groupId>com.github.goldin</groupId>
         <artifactId>copy-maven-plugin</artifactId>
         <version>0.2.5</version>
@@ -211,7 +229,7 @@
                   </includes>
                 </resource>
                 <resource>
-                  <targetPath>${basedir}/../hed-model-templates/src/main/resources/templates</targetPath>
+                  <targetPath>${basedir}/../hed-ontologies/src/main/resources/ontologies/templates</targetPath>
                   <directory>${project.build.outputDirectory}/../generated-sources/templates</directory>
                   <includes>
                     <include>*.*</include>

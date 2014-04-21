@@ -886,6 +886,35 @@ angular.module('ruleApp.controllers', [])
             }
         };
 
+        $scope.codeSystems = {};
+        $http.get(serviceUrl + '/cts2/codesystems').success(function(data) {
+            $scope.codeSystems.chosenCodeSystem = data[0];
+            $scope.codeSystems.list = data;
+        });
+        $scope.cts2search = function(matchValue) {
+            var codeSys = $scope.codeSystems.chosenCodeSystem;
+            return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+                console.log( response );
+                return response.data.entityDirectory.entryList;
+            });
+        };
+        $scope.onSelect = function ($item, $model, $label) {
+            $scope.codeSystems.chosenCode.code = $item.name.name;
+            $scope.codeSystems.chosenCode.codeSystem = $item.name.namespace;
+            $scope.codeSystems.chosenCode.label = $label;
+        };
+        $scope.execute = function() {
+            $http.get( serviceUrl + '/template/list/Condition/' + $scope.codeSystems.chosenCode.codeSystem + '/' + $scope.codeSystems.chosenCode.code ).success(function( data ) {
+                $scope.primitives = data;
+            });
+        }
+        $scope.clear = function() {
+            $scope.codeSystems = {};
+            $http.get(serviceUrl + '/template/list/Condition').success(function(data) {
+                $scope.primitives = data;
+            });
+        }
+
 
         $http.get(serviceUrl + '/template/list/Condition').success(function(data) {
             $scope.primitives = data;
@@ -1319,10 +1348,21 @@ angular.module('ruleApp.controllers', [])
         };
 
 
+
         $http.get(serviceUrl + '/template/list/Action').success(function(data) {
             $scope.actionsTemplates = data;
         });
-
+        $scope.gridOptions = {
+            data: 'actionsTemplates',
+            multiSelect: false,
+            filterOptions: {filterText: '', useExternalFilter: false},
+            columnDefs: [{ field: 'name', displayName: 'Generic Clause', width: "45%" },
+                { field: 'example', displayName: 'Example' }],
+            rowTemplate: '<div ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-click="openClauseEditor(row.entity)">' +
+                '<div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div>' +
+                '<div ng-cell></div>' +
+                '</div>'
+        };
         $scope.openClauseEditor = function(clause) {
             var d = $modal.open({
                 templateUrl: 'partials/standard/logic/primitive-editor.html',
@@ -1566,30 +1606,56 @@ angular.module('ruleApp.controllers', [])
 
     .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal) {
     	$scope.clause = clause;
-        $scope.submit = function(data) {
 
+        $scope.formatTemplate = function( $scope ) {
+            $scope.template = clause.description;
+            angular.forEach($scope.detail.parameters, function(parameter, key) {
+                format( parameter );
+                $scope.template = $scope.template.replace(
+                    parameter.label,
+                    '<a ng-click="openOther(detail.parameters[' + key + '])">'
+                        + parameter.label
+                        + '</a>'
+                        + ( ! isEmpty( parameter.displayValue ) ? ' == ' + parameter.displayValue : '' )
+                        + '<br/>' );
+            });
+        }
+
+        // Code-filtered templates are few, and pre-populated
+        // Otherwise, templates may be MANY, so details are fetched on demand.
+        if ( $scope.clause.parameters.length == 0 ) {
+            $http.get(serviceUrl + '/template/detail/' + clause.templateId).success(function(data) {
+                $scope.detail = data;
+                $scope.formatTemplate( $scope );
+            });
+        } else {
+            $scope.detail = $scope.clause;
+            $scope.formatTemplate( $scope );
+        }
+
+        $scope.submit = function(data) {
             $http({
                 method : 'POST',
                 url : serviceUrl + '/primitive/create/' + data.key,
                 data : $scope.expressionName
-
             }).success( function( answer ) {
                     $modalInstance.dismiss('ok');
                 });
 
         };
-        $http.get(serviceUrl + '/template/' + clause.key).success(function(data) {
-            $scope.detail = data;
-            $scope.template = clause.name;
-            angular.forEach(data.parameters, function(parameter, key) {
-                $scope.template = $scope.template.replace(parameter.name, '<a ng-click="openOther(detail.parameters[' + key + '])">' + parameter.name + '</a>');
-            });
-        });
 
         $scope.verify = function(data) {
-            $http.put(serviceUrl + '/template/inst', data).success(function(response) {
-                $scope.detail = response;
-            });
+            $http({
+                method : 'POST',
+                url : serviceUrl + '/template/verify',
+                data : $scope.detail
+            }).success( function( answer ) {
+                    if ( answer.length == 0 ) {
+                        alert( "OK!" );
+                    } else {
+                        alert( answer );
+                    }
+                });
         };
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
@@ -1603,7 +1669,7 @@ angular.module('ruleApp.controllers', [])
                         return parameter;
                     }
                 }
-            });
+            }).result.then(function() { $scope.formatTemplate($scope) });
         };
 
     }])
@@ -1611,14 +1677,24 @@ angular.module('ruleApp.controllers', [])
     .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
         $scope.parameter = parameter;
         $scope.cts2search = function(matchValue) {
-            return $http.jsonp(serviceUrl + "/fwd/cts2/codesystem/RXNORM/version/RXNORM-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=10&matchvalue="+matchValue).then(function(response){
+            var codeSys = $scope.parameter.elements[0].value;
+            return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
                 return response.data.entityDirectory.entryList;
             });
         };
         $scope.ok = function() {
+            format( $scope.parameter );
             $modalInstance.close();
         };
+        $scope.onSelect = function ($item, $model, $label) {
+            $scope.parameter.elements[0].value = $item.name.namespace;
+            $scope.parameter.elements[1].value = $item.name.name;
+            $scope.parameter.elements[2].value = $label;
+        };
+
     }])
+
+
 
     .controller('HomeImportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance){
         $scope.import = function() {
@@ -1763,4 +1839,19 @@ function updateTitle( $scope ) {
     } else {
         $scope.$parent.title = 'Artifact Management';
     }
+}
+
+function format( parameter ) {
+    var display = "";
+    parameter.elements.forEach( function(element) {
+        if ( ! isEmpty( element.value ) ) {
+            console.log( element.name + " --> <<" + element.value + ">>" );
+            display = display + '[' + element.name + "=" + element.value + '] ';
+        }
+    });
+    parameter.displayValue = display;
+}
+
+function isEmpty(str) {
+    return (!str || 0 === str.length);
 }

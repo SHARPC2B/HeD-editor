@@ -31,11 +31,21 @@
       <artifactId>hed-ontologies</artifactId>
       <version>${editor.version}</version>
     </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>hed-model-templates</artifactId>
+		  <version>0.1-SNAPSHOT</version>
+	  </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
       <artifactId>import-export</artifactId>
       <version>${editor.version}</version>
     </dependency>
+	  <dependency>
+		  <groupId>sharpc2b</groupId>
+		  <artifactId>editor-utils</artifactId>
+		  <version>0.1-SNAPSHOT</version>
+	  </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
       <artifactId>persistence-factory</artifactId>
@@ -72,7 +82,7 @@
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-core</artifactId>
     </dependency>
-    <dependency>Nc
+    <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>jena-arq</artifactId>
     </dependency>

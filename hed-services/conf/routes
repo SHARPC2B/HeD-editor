@@ -10,17 +10,20 @@ GET            /assets/*file                              controllers.Assets.at(
 
 OPTIONS        /*ignore                                   controllers.SharpController.checkPreFlight(ignore:String)
 
-GET            /cts2/hello                                controllers.CtsActions.helloWorld()
-GET            /cts2/hello2                               controllers.CtsActions.unMarshallandPrintFromJson()
+#GET            /cts2/hello                                controllers.CtsActions.helloWorld()
+#GET            /cts2/hello2                               controllers.CtsActions.unMarshallandPrintFromJson()
 
 ########################################################
 
 GET            /cts2/codematch/:cs/:matchvalue            controllers.CtsActions.searchInCodeSystem(cs,matchvalue)
+GET            /cts2/codesystems                          controllers.CtsActions.getCodeSystems()
 
+GET            /template/list/:category/:cs/:cd           controllers.ArtifactActions.getTemplateListByGroupFiltered(category, cs, cd)
 GET            /template/list/:category                   controllers.ArtifactActions.getTemplateListByGroupJson(category)
 GET            /template/list                             controllers.ArtifactActions.getTemplateListJson()
-PUT            /template/inst                             controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true,save:Boolean = false)
-GET            /template/:id                              controllers.ArtifactActions.getConstructedTemplateForID(id:String)
+POST           /template/verify                           controllers.ArtifactActions.verifyTemplate()
+#PUT            /template/inst                             controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true,save:Boolean = false)
+GET            /template/detail/:id                       controllers.ArtifactActions.getTemplateDetails(id:String)
 #GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 
 GET            /rule/current                              controllers.RuleActions.getCurrentInfo()
@@ -104,7 +107,7 @@ DELETE         /store                                     controllers.StoreActio
 GET            /store/export/:id/:format                  controllers.StoreActions.exportArtifact(id,format)
 
 
-
+#################################################
 # GET  /template                  List of template types
 # GET  /template/1B               get template type 1B.  Does not create an instance
 # POST /template/1B               Create a new instance of 1B, return it with it's ID+URI (/template/1B/xyz123)

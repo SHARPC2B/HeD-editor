@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>editor-models</artifactId>
+		<groupId>sharpc2b</groupId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>sharpc2b</groupId>
+	<artifactId>hed-model-templates</artifactId>
+	<name>SHARPC-2B :: HeD Templates</name>
+	<version>0.1-SNAPSHOT</version>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>sharpc2b</groupId>
+			<artifactId>editor-utils</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>sharpc2b</groupId>
+			<artifactId>hed-model</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>sharpc2b</groupId>
+			<artifactId>hed-model-expressions</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owlapi-apibinding</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+
+
+
+	<build>
+		<plugins>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>include-generated-sources</id>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${pom.basedir}/target/generated-sources/xjc</source>
+								<source>${pom.basedir}/target/generated-sources/META-INF</source>
+								<source>${pom.basedir}/target/generated-sources/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-shapes-generator-plugin</artifactId>
+				<version>${chance.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>cast</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>sharpc2b</groupId>
+						<artifactId>hed-ontologies</artifactId>
+						<version>0.1-SNAPSHOT</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<outputDirectory>${pom.basedir}</outputDirectory>
+					<ontology>ontologies/templates/sharp_templates.owl</ontology>
+					<ontologyImports>
+						<import>ontologies/templates/template_schema.owl</import>
+					</ontologyImports>
+
+					<modelName>HeD_Templates</modelName>
+					<axiomInference>FULL</axiomInference>
+					<generateInterfaces>true</generateInterfaces>
+					<generateInterfaceJar>false</generateInterfaceJar>
+					<generateTraitDRL>false</generateTraitDRL>
+					<generateDefaultImplClasses>true</generateDefaultImplClasses>
+					<inheritanceMode>OPTIMIZED</inheritanceMode>
+					<disableFullReasoning>true</disableFullReasoning>
+					<generateIndividuals>true</generateIndividuals>
+					<compilationOptionsPackage>minimal</compilationOptionsPackage>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>com.github.goldin</groupId>
+				<artifactId>copy-maven-plugin</artifactId>
+				<version>0.2.5</version>
+				<executions>
+					<execution>
+						<id>install_play_jars</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<targetPath>${basedir}/../../hed-services/lib</targetPath>
+									<directory>${project.build.outputDirectory}/..</directory>
+									<includes>
+										<include>*.jar</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+
+	</build>
+
+
+</project>

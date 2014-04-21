@@ -2,16 +2,21 @@
 	<div class="borderedBox span5" style="padding: 7px;">
 		<form class="form-inline">
 			<label>Select the code system</label>
-			<select>
-				<option>RxNorm</option>
-  				<option>NDC</option>
-			</select>
-			<input type="search" class="search-query" placeholder="Search in CTS" ng-model="templateFilter">
-			<button type="submit" class="btn">Populate Templates</button>
+            <select ng-model="codeSystems.chosenCodeSystem" ng-options="codeSystem for codeSystem in codeSystems.list"></select><br>
+			<!--select>
+				<option ng-repeat="codeSystem in codeSystems.list" ng-model="codeSystems.chosenCodeSystem">{{codeSystem}}</option>
+			</select-->
+            <input type="text" ng-model="codeSystems.chosenCode.label"
+                   typeahead="suggestion.knownEntityDescriptionList[0].designation for suggestion in cts2search($viewValue)"
+                   typeahead-editable="false"
+                   typeahead-on-select='onSelect($item, $model, $label)'>
+			<!--input type="search" class="search-query" placeholder="Search in CTS" ng-model="templateFilter"-->
+			<button type="submit" x-ng-click="execute()" class="btn">Filter Templates</button>
+			<button type="submit" x-ng-click="clear()" class="btn">Reset</button>
 		</form>
 		<p class="text-center">Select an option below (a new window will open)</p>
 		<p><input type="search" class="search-query span12" placeholder="Filter templates" ng-model="templateFilter"></p>
-		<ul class="nav nav-list borderedBox">
+		<ul class="nav nav-list borderedBox" style="height: 500px; overflow-y:scroll;" >
 			<li ng-repeat="primitive in primitives"><a href="" class="nav-header" ng-click="primitive.show = !primitive.show" ng-show="(primitive.templates | filter:templateFilter).length > 0"><i class="icon-folder-open-alt" ng-show="!primitive.show"></i><i class="icon-folder-close-alt" ng-show="primitive.show"></i>{{primitive.label}}</a>
 				<ul class="nav nav-list" ng-show="!primitive.show">
 					<li ng-repeat="template in primitive.templates | filter:templateFilter" ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>

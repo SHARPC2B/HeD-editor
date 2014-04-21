@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ElementType<E>
-        extends SharpType
+        extends SharpType implements Cloneable
 {
     private static final List<String> NUMERIC_TYPES = Arrays.asList( "Decimal", "Integer" );
 //    public String id;
@@ -35,6 +36,8 @@ public class ElementType<E>
 
     public E initialValue;
 
+    public E value;
+
     public String searchService;
 
     public Integer minSelectionCount;
@@ -44,6 +47,25 @@ public class ElementType<E>
     public E minValue; // = new BigDecimal( 0 );
 
     //========================================================================================
+
+
+    public ElementType<E> clone() {
+        ElementType t = new ElementType<E>();
+        t.name = this.name;
+        t.mtype = this.mtype;
+        t.label = this.label;
+        t.description = this.description;
+        t.valueType = this.valueType;
+        t.widgetType = this.widgetType;
+        t.selectionChoices = this.selectionChoices != null ? new ArrayList<E>( this.selectionChoices ) : null;
+        t.initialValue = this.initialValue;
+        t.value = this.value;
+        t.searchService = this.searchService;
+        t.minSelectionCount = this.minSelectionCount;
+        t.maxSelectionCount = this.maxSelectionCount;
+        t.minValue = this.minValue;
+        return t;
+    }
 
     boolean isMultiValued()
     {

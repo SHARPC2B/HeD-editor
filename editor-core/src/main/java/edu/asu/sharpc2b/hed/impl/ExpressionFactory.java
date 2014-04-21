@@ -273,10 +273,13 @@ public class ExpressionFactory<T> {
     private SharpExpression parseCondition( Document dox ) {
         Element xml = dox.getDocumentElement();
         Element root = getChildrenByTagName( xml, "block" ).iterator().next();
-        Element value = getChildrenByTagName( root, "value" ).iterator().next();
-        Element expr = getChildrenByTagName( value, "block" ).iterator().next();
-
-        return visitConditionBlock( expr );
+        List<Element> values = getChildrenByTagName( root, "value" );
+        if ( ! values.isEmpty() ) {
+            Element value = values.iterator().next();
+            Element expr = getChildrenByTagName( value, "block" ).iterator().next();
+            return visitConditionBlock( expr );
+        }
+        return null;
     }
 
     private SharpExpression visitConditionBlock( Element block ) {

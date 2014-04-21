@@ -64,10 +64,20 @@ public class BlocklyFactory {
 
 
     public static enum ExpressionRootType {
-        TRIGGER,
-        CONDITION,
-        EXPRESSION,
-        ACTION
+        TRIGGER( "http://asu.edu/sharpc2b/ops-set#TriggerRoot" ),
+        CONDITION( "logic_root" ),
+        EXPRESSION( "logic_root" ),
+        ACTION( "action_root" );
+
+        String rootId;
+
+        ExpressionRootType( String id ) {
+            this.rootId = id;
+        }
+
+        public String getId() {
+            return rootId;
+        }
     }
 
 
@@ -98,6 +108,43 @@ public class BlocklyFactory {
             e.printStackTrace();
             return new byte[ 0 ];
         }
+    }
+
+    public static byte[] emptyRoot( ExpressionRootType type ) {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            Document dox = builderFactory.newDocumentBuilder().newDocument();
+            Element root = dox.createElement( "xml" );
+            String name = "NAME";
+
+            Element exprRoot;
+            switch ( type ) {
+                case ACTION:
+                    exprRoot = createActionRoot( name, root, dox );
+                    break;
+                case TRIGGER :
+                    exprRoot = createTriggerRoot( name, root, dox );
+                    break;
+                case CONDITION:
+                    exprRoot = createLogicRoot( name, root, dox );
+                    break;
+                case EXPRESSION:
+                default:
+                    exprRoot = createExpressionRoot( name, root, dox );
+                    break;
+            }
+
+            root.appendChild( exprRoot );
+            dox.appendChild( root );
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            dump( dox, baos );
+            return baos.toByteArray();
+        } catch ( ParserConfigurationException e ) {
+            e.printStackTrace();
+            return new byte[ 0 ];
+        }
+
     }
 
     private Element visitRoot( String name, Object sharpExpression, Document dox, ExpressionRootType type ) {
@@ -284,14 +331,8 @@ public class BlocklyFactory {
         }
     }
 
-    private Element createExpressionRoot( String exprName, Element root, Document dox ) {
-        Element block = dox.createElement( "block" );
-        block.setAttribute( "type", "logic_root" );
-        block.setAttribute( "inline", "false" );
-        block.setAttribute( "deletable", "false" );
-        block.setAttribute( "movable", "false" );
-        block.setAttribute( "x", "0" );
-        block.setAttribute( "y", "0" );
+    private static Element createExpressionRoot( String exprName, Element root, Document dox ) {
+        Element block = root( ExpressionRootType.EXPRESSION.getId(), dox );
 
         Element eName = dox.createElement( "field" );
         eName.setAttribute( "name", "NAME" );
@@ -306,14 +347,30 @@ public class BlocklyFactory {
         return value;
     }
 
-    private Element createActionRoot( String exprName, Element root, Document dox ) {
+    private static Element createActionRoot( String exprName, Element root, Document dox ) {
+        Element block = root( ExpressionRootType.ACTION.getId(), dox );
+        Element statement = dox.createElement( "statement" );
+        statement.setAttribute( "name", "ROOT" );
+        block.appendChild( statement );
+
+        root.appendChild( block );
+        return statement;
+    }
+
+    private static Element root( String type, Document dox ) {
         Element block = dox.createElement( "block" );
-        block.setAttribute( "type", "action_root" );
+        block.setAttribute( "type", type );
         block.setAttribute( "inline", "false" );
         block.setAttribute( "deletable", "false" );
         block.setAttribute( "movable", "false" );
         block.setAttribute( "x", "0" );
         block.setAttribute( "y", "0" );
+        return block;
+    }
+
+
+    private static Element createTriggerRoot( String exprName, Element root, Document dox ) {
+        Element block = root( ExpressionRootType.TRIGGER.getId(), dox );
 
         Element statement = dox.createElement( "statement" );
         statement.setAttribute( "name", "ROOT" );
@@ -323,32 +380,8 @@ public class BlocklyFactory {
         return statement;
     }
 
-    private Element createTriggerRoot( String exprName, Element root, Document dox ) {
-        Element block = dox.createElement( "block" );
-        block.setAttribute( "type", "http://asu.edu/sharpc2b/ops-set#TriggerRoot" );
-        block.setAttribute( "inline", "false" );
-        block.setAttribute( "deletable", "false" );
-        block.setAttribute( "movable", "false" );
-        block.setAttribute( "x", "0" );
-        block.setAttribute( "y", "0" );
-
-        Element statement = dox.createElement( "statement" );
-        statement.setAttribute( "name", "ROOT" );
-        block.appendChild( statement );
-
-        root.appendChild( block );
-        return statement;
-    }
-
-    private Element createLogicRoot( String exprName, Element root, Document dox ) {
-        Element block = dox.createElement( "block" );
-        block.setAttribute( "type", "logic_root" );
-        block.setAttribute( "inline", "false" );
-        block.setAttribute( "deletable", "false" );
-        block.setAttribute( "movable", "false" );
-        block.setAttribute( "x", "0" );
-        block.setAttribute( "y", "0" );
-
+    private static Element createLogicRoot( String exprName, Element root, Document dox ) {
+        Element block = root( ExpressionRootType.CONDITION.getId(), dox );
         Element value = dox.createElement( "value" );
         value.setAttribute( "name", "ROOT" );
         block.appendChild( value );
@@ -705,7 +738,7 @@ public class BlocklyFactory {
             }
 
             exprRoot.appendChild( block );
-   } else if ( sharpExpression instanceof VariableExpression ) {
+        } else if ( sharpExpression instanceof VariableExpression ) {
             VariableExpression variable = (VariableExpression) sharpExpression;
             RuleVariable ruleVariable = (RuleVariable) variable.getReferredVariable().get( 0 );
 
@@ -771,7 +804,7 @@ public class BlocklyFactory {
     }
 
 
-    protected void dump( Document dox, OutputStream stream ) {
+    protected static void dump( Document dox, OutputStream stream ) {
         try {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();

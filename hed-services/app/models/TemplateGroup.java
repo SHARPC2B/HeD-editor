@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemplateGroup extends SharpType {
+public class TemplateGroup extends SharpType implements Comparable<TemplateGroup> {
 
     public String label;
     public List<PrimitiveTemplate> templates = new ArrayList<>();
@@ -14,4 +14,8 @@ public class TemplateGroup extends SharpType {
         return cnt++;
     }
 
+    @Override
+    public int compareTo( TemplateGroup o ) {
+        return this.label.compareTo( o.label );
+    }
 }

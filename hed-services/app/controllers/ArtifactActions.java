@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,43 +21,7 @@ import static controllers.SharpController.setHeaderCORS;
 /**
  * User: rk Date: 7/31/13 Package: controllers
  */
-public class ArtifactActions
-        extends play.mvc.Controller
-{
-
-//    static final String templateListResourcePath = ModelHome
-//            .jsonFileForClass( "template-list-grouped" );
-//
-//    /**
-//     * Implements GET /template/list
-//     */
-//    public static Result getTemplateListJson ()
-//    {
-//        final URL url = Resources.getResource( templateListResourcePath );
-//        final String value;
-//        try
-//        {
-//            value = Resources.toString( url, Charsets.UTF_8 );
-//        }
-//        catch (IOException e)
-//        {
-//            setHeaderCORS();
-//            return internalServerError(
-//                    "IO error while trying to find and load resource " + templateListResourcePath );
-//        }
-//        try
-//        {
-//            JsonNode jsonValue = Json.parse( value );
-////            System.out.println( "fetched value (json) = |" + jsonValue + "|" );
-//            setHeaderCORS();
-//            return ok( jsonValue );
-//        }
-//        catch (Exception e)
-//        {
-//            setHeaderCORS();
-//            return notFound( "Error parsing as JSON, text = " + "\n" + value );
-//        }
-//    }
+public class ArtifactActions extends play.mvc.Controller {
 
     /**
      * Implements GET /template/list/:category and /template/list
@@ -65,40 +30,44 @@ public class ArtifactActions
         return getTemplateListByGroupJson( null );
     }
 
-    public static Result getTemplateListByGroupJson (final String category)
-    {
+    public static Result getTemplateListByGroupFiltered( String category, String cs, String cd ) {
         final String cat = category != null ? category : request().getQueryString( "category" );
 
-        System.out.println( "category = " + category );
-        System.out.println( "cat = " + cat );
-        System.out.println( "uri = " + request().uri() );
-        System.out.println( "query = " + request().queryString() );
+        TemplateList tList = ModelHome.getTemplateList( category, cs, cd );
+
+        return groupTemplates( tList );
+    }
+
+    public static Result getTemplateListByGroupJson( final String category ) {
+        final String cat = category != null ? category : request().getQueryString( "category" );
 
         TemplateList tList = ModelHome.getTemplateList( category );
 
-        System.out.println( "Retrieved " + tList );
+        return groupTemplates( tList );
+    }
 
+    private static Result groupTemplates( TemplateList tList ) {
         final List<TemplateGroup> templateGroups = new LinkedList<TemplateGroup>();
 
         for ( PrimitiveTemplate template : tList.templates ) {
-            if ( cat == null || cat.equals( template.category ) ) {
-                TemplateGroup tGroup = null;
-                for ( TemplateGroup g : templateGroups ) {
-                    if ( template.group.equals( g.label ) ) {
-                        tGroup = g;
-                    }
+            TemplateGroup tGroup = null;
+            for ( TemplateGroup g : templateGroups ) {
+                if ( template.group.equals( g.label ) ) {
+                    tGroup = g;
                 }
-                if ( tGroup == null ) {
-                    tGroup = new TemplateGroup();
-                    tGroup.label = template.group;
-                    templateGroups.add( tGroup );
-                }
-                tGroup.templates.add( template );
             }
+            if ( tGroup == null ) {
+                tGroup = new TemplateGroup();
+                tGroup.label = template.group;
+                templateGroups.add( tGroup );
+            }
+            tGroup.templates.add( template );
         }
+
+        Collections.sort( templateGroups );
+
         try {
             JsonNode jsonValue = Json.toJson( templateGroups );
-//            System.out.println( "fetched value (json) = |" + jsonValue + "|" );
             setHeaderCORS();
             return ok( jsonValue );
         } catch (Exception e) {
@@ -107,32 +76,29 @@ public class ArtifactActions
         }
     }
 
-    /**
-     * Implements GET /template/:id
-     */
-    public static Result getConstructedTemplateForID (final String id)
-    {
-        System.out.println( "Template ID = " + id );
+    public static Result verifyTemplate() {
+        final Http.Request request = request();
+        Http.RequestBody body = request.body();
+        PrimitiveTemplate templ = Json.fromJson( body.asJson(), PrimitiveTemplate.class );
 
-        PrimitiveTemplate selectedTemplate = ModelHome.getPrimitiveTemplate( id );
-
-//        TemplateList tList = ModelHome.createJavaInstanceFromJsonFile( TemplateList.class );
-//
-//        ParameterList pList = ModelHome.createJavaInstanceFromJsonFile( ParameterList.class );
-//
-//        PrimitiveTemplate selectedTemplate = null;
-//        for ( PrimitiveTemplate t : tList.templates )
-//        {
-//            if ( t.id.equals( id ) )
-//            {
-//                selectedTemplate = t;
-//            }
-//        }
-//        spliceInParameters( selectedTemplate, pList );
-        JsonNode json = Json.toJson( selectedTemplate );
+        List<String> errors = ModelHome.verifyTemplate( templ );
         setHeaderCORS();
-        return ok( json );
+        return ok( Json.toJson( errors ) );
     }
+
+
+    public static Result getTemplateDetails( String id ) {
+        PrimitiveTemplate template = ModelHome.getTemplateDetail( id );
+
+        JsonNode jsonValue = Json.toJson( template );
+        System.out.println( "fetched value (json) = |" + jsonValue + "|" );
+        setHeaderCORS();
+        return ok( jsonValue );
+    }
+
+
+
+
 
 //    private static void spliceInParameters (final PrimitiveTemplate selectedTemplate,
 //                                            final ParameterList allParameters)
@@ -210,4 +176,5 @@ public class ArtifactActions
 
         return ok( jsonOut );
     }
+
 }

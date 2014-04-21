@@ -5,7 +5,7 @@
             "mtype": "HedType",
             "name": "CodeLiteral",
             "label": "Code Literal",
-            "description": "...Description...",
+            "description": "A coded concept, CD",
             "elements": [
                 {
                     "mtype": "ElementType",
@@ -23,6 +23,16 @@
                     "name": "code",
                     "label": "Code Value",
                     "valueType": "String",
+                    "widgetType": "TextBox",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "displayValue",
+                    "label": "Code Label",
+                    "valueType": "String",
                     "widgetType": "SearchChoice",
                     "initialValue": null,
                     "minSelectionCount": 1,
@@ -34,7 +44,7 @@
             "mtype": "HedType",
             "name": "PhysicalQuantityLiteral",
             "label": "Physical Quantity",
-            "description": "...Description...",
+            "description": "A Physical Quantity, PQ",
             "elements": [
                 {
                     "mtype": "ElementType",
@@ -64,12 +74,12 @@
             "mtype": "HedType",
             "name": "StringLiteral",
             "label": "Text Value",
-            "description": "...Description...",
+            "description": "A String; ST",
             "elements": [
                 {
                     "name": "value",
                     "label": "Value",
-                    "mtype": "StringElementType",
+                    "mtype": "ElementType",
                     "valueType": "String",
                     "widgetType": "TextBox",
                     "searchService": null,
@@ -79,6 +89,231 @@
                     "errors": []
                 }
             ]
+        },
+
+        {
+            "mtype": "HedType",
+            "name": "TimestampIntervalLiteral",
+            "label": "Timestamp Interval Literal",
+            "description": "A Timestamp IntervalLiteral, IVL_TS",
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Timestamp",
+                    "mtype": "ElementType",
+                    "valueType": "Date",
+                    "widgetType": "DateTimeLocal",
+                    "value": "",
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Timestamp",
+                    "mtype": "ElementType",
+                    "valueType": "Date",
+                    "widgetType": "DateTimeLocal",
+                    "value": "",
+                    "attributeName": "highClosed",
+                    "attributeValue": false
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "IntegerLiteral",
+            "label": "Integer Literal",
+            "description": "A IntegerLiteral expression, INT",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "value",
+                    "label": "Integer",
+                    "valueType": "Integer",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "TimestampLiteral",
+            "label": "Timestamp Literal",
+            "description": "A TimestampLiteral, TS",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Timestamp",
+                    "valueType": "Date",
+                    "widgetType": "DateTimeLocal",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "IntegerIntervalLiteral",
+            "label": "Integer Interval Literal",
+            "description": "A Integer Interval Literal, IVL_INT",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "low",
+                    "label": "Lower Integer",
+                    "valueType": "Integer",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1,
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Integer",
+                    "valueType": "Integer",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1,
+                    "attributeName": "highClosed",
+                    "attributeValue": false
+                }
+            ]
+        },
+
+        {
+            "mtype": "HedType",
+            "name": "BooleanLiteral",
+            "label": "Boolean Literal",
+            "description": "A BooleanLiteral, BL",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "boolean",
+                    "label": "Boolean Literal",
+                    "valueType": "Boolean",
+                    "widgetType": "Checkbox",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "CodedOrdinalLiteral",
+            "label": "Coded Ordinal Literal",
+            "description": "A CodedOrdinalLiteral, CO",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "codeSystem",
+                    "label": "Code System",
+                    "valueType": "String",
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "value": "RxNorm"
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "code",
+                    "label": "Code",
+                    "valueType": "Code",
+                    "widgetType": "SearchChoice",
+                    "value": ""
+                },
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "PeriodLiteral",
+            "label": "Period Literal",
+            "description": "A PeriodLiteral, PIVL_TS.",
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Phase",
+                    "valueType": "Date",
+                    "widgetType": "DateTimeLocal",
+                    "value": "2014-02-20T01:04",
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Phase",
+                    "valueType": "Date",
+                    "widgetType": "DateTimeLocal",
+                    "value": "",
+                    "attributeName": "highClosed",
+                    "attributeValue": true
+                },
+                {
+                    "name": "period",
+                    "label": "Period",
+                    "valueType": "dt:PQ",
+                    "widgetType": "TextBox",
+                    "value": ""
+                },
+                {
+                    "name": "numerator",
+                    "label": "Numerator",
+                    "valueType": "QTY",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "denominator",
+                    "label": "Denominator",
+                    "valueType": "QTY",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "count",
+                    "label": "Count",
+                    "valueType": "Integer",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 1
+                },
+                {
+                    "name": "alignment",
+                    "label": "Alignment",
+                    "valueType": "dt:CalendarCycle",
+                    "widgetType": "DateTimeLocal",
+                    "value": ""
+                },
+                {
+                    "name": "isFlexible",
+                    "label": "Is Flexible",
+                    "valueType": "Boolean",
+                    "widgetType": "Checkbox",
+                    "value": false
+                }
+            ]
         }
     ]
 }
+
+
+/*
+hedTypeMap.put( "AD", AddressLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "CS", SimpleCodeLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "EN", EntityNameLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "II", IdentifierLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "IVL_PQ", PhysicalQuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "IVL_QTY", QuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "IVL_REAL", RealIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "REAL", RealLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "RTO", RatioLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+hedTypeMap.put( "TEL", UrlLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+*/

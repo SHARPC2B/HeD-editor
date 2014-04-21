@@ -19,9 +19,14 @@ import edu.asu.sharpc2b.metadata.RightsDeclarationImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import edu.asu.sharpc2b.templates.Parameter;
+import edu.asu.sharpc2b.templates.Template;
 import edu.mayo.cts2.framework.core.client.Cts2RestClient;
+import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
+import edu.mayo.cts2.framework.model.entity.EntityDirectory;
+import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
 import models.ex.ConvertJsonToJavaException;
 import models.ex.ModelDataFileNotFoundException;
 import models.metadata.Contributor;
@@ -37,6 +42,7 @@ import org.purl.dc.terms.Location;
 import org.purl.dc.terms.LocationImpl;
 import org.purl.dc.terms.RightsStatement;
 import org.purl.dc.terms.RightsStatementImpl;
+import org.springframework.web.client.HttpClientErrorException;
 import play.libs.Json;
 
 import java.io.IOException;
@@ -52,13 +58,15 @@ import java.util.UUID;
 /**
  * User: rk Date: 8/19/13 Package: models
  */
-public class ModelHome
-{
-
-    static int lastKey = 1;
+public class ModelHome {
 
 
     private static EditorCore core = EditorCoreImpl.getInstance();
+
+    //TODO Read from configuration
+    private final static String cts2Base = "http://localhost:8080/cts2framework";
+
+    private static HedTypeList hedTypeList = initHeDTypeList();
 
 
 
@@ -823,6 +831,9 @@ public class ModelHome
     /**
      ***********************************************************************************************************/
 
+    public static List<String> getCodeSystems() {
+        return lookupCodeSystems();
+    }
 
 
 
@@ -835,44 +846,135 @@ public class ModelHome
 
 
 
+    /************************************************************************************************************/
+    /* TEMPLATE APIs */
+    /**
+     ***********************************************************************************************************/
 
 
 
 
-    private static Map<String,PrimitiveTemplate> templateCache = new HashMap<String,PrimitiveTemplate>();
+
 
     public static TemplateList getTemplateList( String category ) {
         TemplateList templateList = new TemplateList();
-        templateCache.clear();
 
         Set<String> templateIds = core.getTemplateIds( category );
 
         for ( String templateId : templateIds ) {
-            Map<String,Object> templateDetails = core.getTemplateInfo( templateId );
             PrimitiveTemplate template = new PrimitiveTemplate();
-            template.templateId = (String) templateDetails.get( "templateId" );
-            template.key = template.templateId.substring( template.templateId.lastIndexOf( "#" ) + 1 );
-            template.name = (String) templateDetails.get( "name" );
-            template.category = (String) templateDetails.get( "category" );
-            template.group = (String) templateDetails.get( "group" );
-            template.description = (String) templateDetails.get( "description" );
-            template.example = (String) templateDetails.get( "example" );
-            template.parameterIds = (List<String>) templateDetails.get( "parameterIds" );
-            template.parameters = rebuildParameterInfo( (Map<String,Map<String,Object>>) templateDetails.get( "parameterData" ) );
+            Template templateDetails = core.getTemplateInfo( templateId );
 
-            spliceInHedTypes( template, hedTypeList );
+            fillBasicTemplateDetails( templateId, template, templateDetails );
 
-            templateCache.put( template.key, template );
             templateList.addTemplate( template );
+        }
+
+        return templateList;
+    }
+
+    public static TemplateList getTemplateList( String category, String codeSystem, String code ) {
+        TemplateList templateList = new TemplateList();
+
+        Set<String> templateIds = core.getTemplateIds( category );
+
+        for ( String templateId : templateIds ) {
+            PrimitiveTemplate template = new PrimitiveTemplate();
+            Template templateDetails = core.getTemplateInfo( templateId );
+
+            fillBasicTemplateDetails( templateId, template, templateDetails );
+
+            if ( applyCodeRestrictions( template, templateDetails, codeSystem, code ) ) {
+                templateList.addTemplate( template );
+            }
         }
 
         System.out.println( "Template list from the home " + templateList );
         return templateList;
     }
 
+    private static boolean applyCodeRestrictions( PrimitiveTemplate template, Template templateDetails, String codeSystem, String code ) {
+        boolean found = false;
+        for ( Parameter parm : templateDetails.getHasParameter() ) {
+            if ( ! parm.getConstraint().isEmpty() ) {
+                for ( String constr : parm.getConstraint() ) {
+                    if ( isCodeHierarchyConstraint( constr ) ) {
+                        EntityDirectory space = getCodespace( constr.trim() );
+                        for ( EntityDirectoryEntry entry : space.getEntry() ) {
+                            if ( entry.getName().getNamespace().equals( codeSystem )
+                               && entry.getName().getName().equals( code ) ) {
+                                found = true;
+
+                                for ( Parameter param : templateDetails.getHasParameter() ) {
+                                    template.parameterIds.add( param.getName().get( 0 ) );
+                                }
+                                template.parameters = rebuildParameterInfo( templateDetails.getHasParameter() );
+
+                                for ( ParameterType p : template.parameters ) {
+                                    if ( p.name.equals( parm.getName().get( 0 ) ) ) {
+                                        p.getElement( "code" ).value = code;
+                                        p.getElement( "codeSystem" ).value = codeSystem.toUpperCase();
+                                        p.getElement( "displayValue" ).value = entry.getKnownEntityDescription()[0].getDesignation();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return found;
+    }
+
+    private static EntityDirectory getCodespace( String constr ) {
+        int pos = constr.indexOf( ":" );
+        String codeSystem = constr.substring( 0, pos );
+        String code = constr.substring( pos + 1 );
+        String req = cts2Base
+                     + "/codesystem/"
+                     + codeSystem
+                     + "/version/"
+                     + codeSystem.toUpperCase()     // TODO check this!
+                     + "-LATEST/entity/"
+                     + code
+                     + "/children";
+        System.out.println( req );
+
+        EntityDirectory space = new Cts2RestClient( true ).getCts2Resource( req, EntityDirectory.class );
+        return space;
+    }
+
+    private static boolean isCodeHierarchyConstraint( String constr ) {
+        //TODO....
+        return constr.contains( ":" );
+    }
+
+    private static void fillBasicTemplateDetails( String templateId, PrimitiveTemplate template, Template templateDetails ) {
+        template.templateId = templateId;
+        template.key = templateId;
+        template.name = templateDetails.getName().get( 0 );
+        template.description = templateDetails.getDescription().get( 0 );
+        template.category = new ArrayList( templateDetails.getCategory() );
+        template.group = templateDetails.getGroup().get( 0 );
+    }
 
 
-    static HedTypeList hedTypeList = initHeDTypeList();
+    public static PrimitiveTemplate getTemplateDetail( String id ) {
+        PrimitiveTemplate template = new PrimitiveTemplate();
+        Template templateDetails = core.getTemplateInfo( id );
+
+        fillBasicTemplateDetails( id, template, templateDetails );
+
+        for ( Parameter param : templateDetails.getHasParameter() ) {
+            template.parameterIds.add( param.getName().get( 0 ) );
+        }
+        if ( template.parameters == null || template.parameters.isEmpty() ) {
+            template.parameters = rebuildParameterInfo( templateDetails.getHasParameter() );
+        }
+
+        return template;
+    }
+
 
     private static HedTypeList initHeDTypeList() {
         HedTypeList typeList = createJavaInstanceFromJsonFile( HedTypeList.class );
@@ -880,7 +982,8 @@ public class ModelHome
         for ( HedType type : typeList.hedTypes ) {
             if ( "CodeLiteral".equals( type.name ) ) {
                 ElementType codeSystem = type.getElement( "codeSystem" );
-                //  codeSystem.selectionChoices = lookupCodeSystems();
+                codeSystem.selectionChoices = lookupCodeSystems();
+                codeSystem.value = codeSystem.selectionChoices.iterator().next();
             }
         }
 
@@ -888,7 +991,7 @@ public class ModelHome
     }
 
     private static List<String> lookupCodeSystems() {
-        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( "http://localhost:8080/cts2framework/codesystems", CodeSystemCatalogEntryDirectory.class );
+        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/codesystems", CodeSystemCatalogEntryDirectory.class );
         List<String> codeSystemNames = new ArrayList<>( codesSystems.getEntryCount() );
         for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
             codeSystemNames.add( entry.getCodeSystemName() );
@@ -897,52 +1000,119 @@ public class ModelHome
     }
 
 
-    private static List<ParameterType> rebuildParameterInfo( Map<String, Map<String,Object>> parameterData ) {
+    private static List<ParameterType> rebuildParameterInfo( List<Parameter> params ) {
         ArrayList<ParameterType> parameterTypes = new ArrayList<ParameterType>();
-        for ( String key : parameterData.keySet() ) {
-            Map<String,Object> pData = parameterData.get( key );
+        for ( Parameter p : params ) {
             ParameterType param = new ParameterType();
 
-            param.key = key;
-            param.name = (String) pData.get( "name" );
-            param.label = (String) pData.get( "label" );
-            param.description = (String) pData.get( "description" );
-            param.hedTypeName = (String) pData.get( "typeName" );
-            param.expressionChoices = (List<String>) pData.get( "expressionChoices" );
+            param.key = p.getName().get( 0 );
+            param.name = p.getName().get( 0 );
+            param.label = p.getLabel().get( 0 );
+            param.description = p.getDescription().get( 0 );
+            param.hedTypeName = p.getTypeName().get( 0 );
+
+            HedType hedType = findHedType( param.hedTypeName, hedTypeList );
+
+            if ( hedType != null ) {
+                param.hedType = hedType;
+                for ( ElementType eType : hedType.elements )
+                {
+                    param.elements.add( eType.clone() );
+                }
+            }
+
+            if ( ! p.getDefaultValue().isEmpty() ) {
+                parseAndInjectDefaultValue( param, p.getDefaultValue().get( 0 ) );
+            }
 
             parameterTypes.add( param );
         }
         return parameterTypes;
+
+    }
+
+    private static void parseAndInjectDefaultValue( ParameterType param, String value ) {
+        if ( "CodeLiteral".equals( param.hedTypeName ) ) {
+            value = value.trim();
+            int separator = value.indexOf( ":" );
+            String codeSystem = value.substring( 0, separator );
+            String code = value.substring( separator + 1 );
+
+            try {
+                CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + value, CodeSystemCatalogEntry.class );
+                param.getElement( "label" ).value = entry.getFormalName();
+            } catch ( HttpClientErrorException e ) {
+                System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );
+            }
+
+            param.getElement( "code" ).value = code;
+            param.getElement( "codeSystem" ).value = codeSystem;
+
+        }
     }
 
 
-    static String createUUID()
-    {
-        return UUID.randomUUID().toString();
+    public static List<String> verifyTemplate( PrimitiveTemplate templ ) {
+        List<String> errors = new ArrayList<String>();
+        Template templateDetail = core.getTemplateInfo( templ.templateId );
+        for ( Parameter param : templateDetail.getHasParameter() ) {
+            if ( ! param.getConstraint().isEmpty() ) {
+                for ( String constr : param.getConstraint() ) {
+                    String error = applyConstraint( param, constr, templ );
+                    if ( error != null ) {
+                        errors.add( error );
+                    }
+                }
+            }
+        }
+        return errors;
     }
 
-    public static PrimitiveInst createPrimitiveInst(String ruleId,
-                                                    String templateId)
-    {
+    private static String applyConstraint( Parameter param, String constr, PrimitiveTemplate templ ) {
+        if ( isCodeHierarchyConstraint( constr ) ) {
+            for ( ParameterType p : templ.parameters ) {
+                if ( p.name.equals( param.getName().get( 0 ) ) ) {
+                    EntityDirectory space = getCodespace( constr );
+
+                    String actualCode = (String) p.getElement( "code" ).value;
+                    String actualCodeSystem = (String) p.getElement( "codeSystem" ).value;
+
+                    boolean found = false;
+                    for ( EntityDirectoryEntry entry : space.getEntry() ) {
+                        if ( entry.getName().getNamespace().toUpperCase().equals( actualCodeSystem )
+                            && entry.getName().getName().equals( actualCode ) ) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if ( ! found ) {
+                        return "Code " + actualCodeSystem + ":" + actualCode + " is not allowed in parameter " + p.label;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public static PrimitiveInst createPrimitiveInst( String ruleId, String templateId ) {
+        /*
         Rule rule = ModelHome.getArtifact( ruleId );
 
         PrimitiveTemplate template = ModelHome.getPrimitiveTemplate( templateId );
 
         PrimitiveInst inst = template.createInst();
-//        PrimitiveInst inst = new PrimitiveInst();
-//        inst.type = template;
-//        inst.id = createUUID();
-
         rule.primitives.add( inst );
 
-        return inst;
+        return inst;*/
+        return null;
     }
 
     /**
      * new
      */
     public static PrimitiveInst createPrimitiveInst(String templateId) {
-        //TODO pass actual values from form
+        /*
         String name = "foo";
         Map<String,Map<String,Object>> parameterValues = new HashMap<String,Map<String,Object>>();
 
@@ -957,104 +1127,27 @@ public class ModelHome
         }
 
         core.instantiateTemplate( templateId, name, parameterValues );
-
+        */
         return null;
     }
 
-    /**
-     * new
-     */
-    public static PrimitiveTemplate getPrimitiveTemplateHed(final String id)
-    {
-        TemplateList tList = createJavaInstanceFromJsonFile( TemplateList.class );
 
-        HedTypeList pList = createJavaInstanceFromJsonFile( HedTypeList.class );
 
-        PrimitiveTemplate selectedTemplate = null;
-        for ( PrimitiveTemplate t : tList.templates )
-        {
-            if ( t.templateId.equals( id ) )
-            {
-                selectedTemplate = t;
-            }
-        }
-        spliceInHedTypes( selectedTemplate, pList );
 
-        return selectedTemplate;
-    }
-
-    public static PrimitiveTemplate getPrimitiveTemplate(final String key)
-    {
-//        TemplateList tList = createJavaInstanceFromJsonFile( TemplateList.class );
-//
-//        ParameterList pList = createJavaInstanceFromJsonFile( ParameterList.class );
-//
-//        PrimitiveTemplate selectedTemplate = null;
-//        for ( PrimitiveTemplate t : tList.templates )
-//        {
-//            if ( t.templateId.equals( id ) )
-//            {
-//                selectedTemplate = t;
-//            }
-//        }
-//        spliceInParameters( selectedTemplate, pList );
-
-        return templateCache.get( key );
-    }
-
-    private static void spliceInParameters(final PrimitiveTemplate selectedTemplate,
-                                           final ParameterList allParameters)
-    {
-        if ( selectedTemplate == null )
-        {
-            return;
-        }
-        for ( String paramId : selectedTemplate.parameterIds )
-        {
-            ParameterType p = findParameter( paramId, allParameters );
-            if ( p != null )
-            {
-                selectedTemplate.parameters.add( p );
-            }
-        }
-    }
-
-    static ParameterType findParameter(final String paramId,
-                                       final ParameterList allParameters)
-    {
-        for ( ParameterType p : allParameters.parameters )
-        {
-            if ( p.key.equals( paramId ) )
-            {
+    static ParameterType findParameter( final String paramId,
+                                        final ParameterList allParameters ) {
+        for ( ParameterType p : allParameters.parameters ) {
+            if ( p.key.equals( paramId ) ) {
                 return p;
             }
         }
         return null;
     }
 
-    private static void spliceInHedTypes(final PrimitiveTemplate selectedTemplate,
-                                         final HedTypeList allHedTypes)
-    {
-        if ( selectedTemplate == null ) {
-            return;
-        }
-        for ( ParameterType p : selectedTemplate.parameters ) {
-            HedType hedType = findHedType( p.hedTypeName, allHedTypes );
-
-            if ( hedType != null ) {
-                p.hedType = hedType;
-                for ( ElementType eType : hedType.elements )
-                {
-                    p.elements.add( eType );
-                }
-            }
-        }
-    }
 
     static HedType findHedType(final String typeName,
                                final HedTypeList allTypes) {
         for ( HedType p : allTypes.hedTypes ) {
-//            if ( p.hedTypeName.equals( typeName ) )
             if ( p.name.equals( typeName ) ) {
                 return p;
             }
@@ -1109,7 +1202,6 @@ public class ModelHome
             throw new ConvertJsonToJavaException( ex );
         }
     }
-
 
 
 }

@@ -181,14 +181,32 @@ public class HeDArtifactData {
             return true;
         }
         //TODO replace with enum or URI
-        if ( "logic".equalsIgnoreCase( returnType ) ) {
+        if ( "Logic".equalsIgnoreCase( returnType ) ) {
             return heDNamedExpression.getExpression() instanceof BooleanExpression;
         } else if ( "Request".equalsIgnoreCase( returnType ) ) {
             return heDNamedExpression.getExpression() instanceof IteratorExpression || heDNamedExpression.getExpression() instanceof ClinicalRequestExpression;
-        } else if ( "action".equalsIgnoreCase( returnType ) ) {
+        } else if ( "Action".equalsIgnoreCase( returnType ) ) {
             return heDNamedExpression.getExpression() instanceof ObjectExpression;
         }
         return true;
+    }
+
+    public Map<String,String> getNamedExpressions( Class<?> returnType ) {
+        HashMap<String,String> expressions = new HashMap<String,String>( blocklyExpressions.size() );
+        for ( String exprId : blocklyExpressions.keySet() ) {
+            if ( returnType == null || isReturnTypeCompatible( blocklyExpressions.get( exprId ), returnType ) ) {
+                expressions.put( exprId, blocklyExpressions.get( exprId ).getName() );
+            }
+        }
+        return expressions;
+    }
+
+    private boolean isReturnTypeCompatible( HeDNamedExpression heDNamedExpression, Class returnType ) {
+        if ( returnType == null ) {
+            return true;
+        }
+        return returnType.isInstance( heDNamedExpression.getExpression() );
+
     }
 
     public HeDNamedExpression getNamedExpression( String exprId ) {
@@ -325,6 +343,9 @@ public class HeDArtifactData {
 
     public byte[] updateLogicExpression( byte[] doxBytes ) {
         SharpExpression logic = new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.CONDITION );
+        if ( logic == null ) {
+            return doxBytes;
+        }
 
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {

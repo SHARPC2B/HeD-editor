@@ -83,17 +83,29 @@ public class ClassPathResource {
         this.path = path;
         this.encoding = encoding;
         this.clazz = clazz;
-        this.classLoader = classLoader == null ? Thread.currentThread().getContextClassLoader() : classLoader;
+        this.classLoader = (classLoader) == null ? retrieveClassLoader() : classLoader;
     }
 
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject( this.path );
+    private ClassLoader retrieveClassLoader() {
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader currentClassLoader = ClassPathResource.class.getClassLoader();
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+
+        if ( contextClassLoader != null ) {
+            return contextClassLoader;
+        }
+
+        if ( currentClassLoader != null ) {
+            return currentClassLoader;
+        }
+
+        if ( systemClassLoader != null ) {
+            return systemClassLoader;
+        }
+
+        throw new IllegalStateException( "No classloader available to retrieve resources, fatal" );
     }
 
-    public void readExternal(ObjectInput in) throws IOException,
-            ClassNotFoundException {
-        this.path = (String) in.readObject();
-    }
 
     /**
      * This implementation opens an InputStream for the given class path resource.

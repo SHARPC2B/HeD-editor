@@ -23,6 +23,7 @@
     <module>skos-to-T-plugin</module>
     <module>T-to-A-plugin</module>
     <module>define-operators-plugin</module>
+	  <module>template-gen-plugin</module>
   </modules>
 
 
