@@ -21,6 +21,7 @@ import edu.asu.sharpc2b.ops_set.IntegerIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IntegerLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpression;
+import edu.asu.sharpc2b.ops_set.PhysicalQuantityLiteralExpression;
 import edu.asu.sharpc2b.ops_set.QuantityIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.RatioLiteralExpression;
 import edu.asu.sharpc2b.ops_set.RealIntervalLiteralExpression;
@@ -35,6 +36,7 @@ import edu.asu.sharpc2b.templates.Template;
 import edu.asu.sharpc2b.templates_data.IndividualFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,13 +67,15 @@ public class TemplateStoreImpl {
         hedTypeMap.put( "IVL_QTY", QuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "IVL_REAL", RealIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "IVL_TS", TimestampIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-        hedTypeMap.put( "PQ", PhysicalQuantityExpression.class.getSimpleName().replace( "Expression", "" ) );
+        hedTypeMap.put( "PQ", PhysicalQuantityLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "REAL", RealLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "RTO", RatioLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "ST", StringLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "TEL", UrlLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "TS", TimestampLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "PIVL_TS", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+        hedTypeMap.put( "Frequency", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+        hedTypeMap.put( "BaseFrequency", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
 
         typeForHeDMap = new HashMap<String,Class>();
         typeForHeDMap.put( AddressLiteralExpression.class.getSimpleName().replace( "Expression", "" ), StringExpression.class );
@@ -87,7 +91,7 @@ public class TemplateStoreImpl {
         typeForHeDMap.put( QuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ), IntervalExpression.class );
         typeForHeDMap.put( RealIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ), IntervalExpression.class );
         typeForHeDMap.put( TimestampIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ), IntervalExpression.class );
-        typeForHeDMap.put( PhysicalQuantityExpression.class.getSimpleName().replace( "Expression", "" ),PhysicalQuantityExpression.class );
+        typeForHeDMap.put( PhysicalQuantityLiteralExpression.class.getSimpleName().replace( "Expression", "" ),PhysicalQuantityExpression.class );
         typeForHeDMap.put( RealLiteralExpression.class.getSimpleName().replace( "Expression", "" ), RealExpression.class );
         typeForHeDMap.put( RatioLiteralExpression.class.getSimpleName().replace( "Expression", "" ), RealExpression.class );
         typeForHeDMap.put( StringLiteralExpression.class.getSimpleName().replace( "Expression", "" ), StringExpression.class );
@@ -114,8 +118,11 @@ public class TemplateStoreImpl {
 
 
     public Set<String> getTemplateIds( String category ) {
-        if ( category == null || ! templateByCategory.containsKey( category ) ) {
+        if ( category == null  ) {
             return templateCache.keySet();
+        }
+        if ( ! templateByCategory.containsKey( category ) ) {
+            return Collections.emptySet();
         }
         return templateByCategory.get( category );
     }

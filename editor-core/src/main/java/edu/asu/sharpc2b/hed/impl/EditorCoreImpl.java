@@ -6,7 +6,10 @@ import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
+import edu.asu.sharpc2b.ops.ScalarExpression;
+import edu.asu.sharpc2b.ops_set.IndividualFactory;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
+import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.templates.Parameter;
 import edu.asu.sharpc2b.templates.Template;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
@@ -390,11 +393,11 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     @Override
     public Template getTemplateInfo( String templateId ) {
         Template template = templateStore.getTemplateInfo( templateId );
-        lookupCompatibleExpressions( template );
+        lookupCompatibleExpressionsAndOperations( template );
         return template;
     }
 
-    private void lookupCompatibleExpressions( Template template ) {
+    private void lookupCompatibleExpressionsAndOperations( Template template ) {
         for ( Parameter param : template.getHasParameter() ) {
             if ( param.getTypeName().isEmpty() ) {
                 continue;
@@ -404,11 +407,31 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
                 continue;
             }
             Class<?> paramType = templateStore.getClassForHeDType( hedParam );
+
             Map<String,String> exprs = getCurrentArtifact().getNamedExpressions( paramType );
+            param.getCompatibleExpression().clear();
             for ( String exprId : exprs.keySet() ) {
-                param.addCompatibleEpression( exprId );
+                param.addCompatibleExpression( exprId );
             }
+            lookupCompatibleOperations( param, paramType );
         }
+    }
+
+    private void lookupCompatibleOperations( Parameter param, Class<?> paramType ) {
+        //TODO Explore the ontology, using the indivudals, and cache the results!
+        param.getCompatibleOperation().clear();
+        addOperation( param, "EqualCode" );
+        if ( ScalarExpression.class.isAssignableFrom( paramType ) ) {
+            addOperation( param, "GreaterCode" );
+            addOperation( param, "GreaterOrEqualCode" );
+            addOperation( param, "LessCode" );
+            addOperation( param, "LessOrEqualCode" );
+        }
+
+    }
+
+    private void addOperation( Parameter param, String code ) {
+        param.addCompatibleOperation( (( ConceptCode ) IndividualFactory.getNamedIndividuals().get( code )).getCode().get( 0 ) );
     }
 
     @Override

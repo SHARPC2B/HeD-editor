@@ -100,36 +100,6 @@ public class ArtifactActions extends play.mvc.Controller {
 
 
 
-//    private static void spliceInParameters (final PrimitiveTemplate selectedTemplate,
-//                                            final ParameterList allParameters)
-//    {
-//        if ( selectedTemplate == null )
-//        {
-//            return;
-//        }
-//        for ( String paramId : selectedTemplate.parameterIds )
-//        {
-//            ParameterType p = findParameter( paramId, allParameters );
-//            if ( p != null )
-//            {
-//                selectedTemplate.parameters.add( p );
-//            }
-//        }
-//    }
-//
-//    private static ParameterType findParameter (final String paramId,
-//                                                    final ParameterList allParameters)
-//    {
-//        for ( ParameterType p : allParameters.parameters )
-//        {
-//            if ( p.id.equals( paramId ) )
-//            {
-//                return p;
-//            }
-//        }
-//        return null;
-//    }
-
     //##############################################################################################
 
     /**

@@ -2,6 +2,11 @@
 	<h2 class="text-center">{{parameter.label}}</h2>
 </div>
 <div class="modal-body">
+    <div style="margin-left: 180px;">
+        <label class="control-label">Operation</label>
+        <select x-ng-model="parameter.chosenOperation" x-ng-options="op for op in parameter.operationChoices"></select>
+    </div>
+    <hr>
 	<div style="margin-left: 180px;">
 		<label class="radio inline">
 			<input type="radio" ng-model="parameter.useLiteral" ng-value="true">Literal

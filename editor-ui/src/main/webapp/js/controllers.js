@@ -135,7 +135,6 @@ angular.module('ruleApp.controllers', [])
                     $scope.isoLangs = data;
                 });
                 $scope.saveBackground = function(background) {
-                    console.log(background);
                     $http({
                         method: 'POST',
                         url: serviceUrl + '/rule/info/' + $scope.currentRuleId,
@@ -535,7 +534,6 @@ angular.module('ruleApp.controllers', [])
         $scope.save = function() {
             var expressionIndex = null;
             $scope.currentExpression.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-            console.log($scope.currentExpression.xml);
             var  xmlDoc=new DOMParser().parseFromString($scope.currentExpression.xml,"text/xml");
 
             if (expressionIndex === null) {
@@ -574,7 +572,6 @@ angular.module('ruleApp.controllers', [])
                 data : $scope.currentExpression.xml,
                 headers : { 'Content-Type':'application/html' }
             }).success( function( data ) {
-                    console.log(data);
                     $scope.currentExpression.expressionIRI = data;
                     if (expressionIndex === null) {
                         $scope.expressions.push(angular.copy($scope.currentExpression));
@@ -863,7 +860,6 @@ angular.module('ruleApp.controllers', [])
 
         $scope.save = function() {
             $scope.logic.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-            console.log($scope.logic.xml);
 
             $http({
                 method : 'POST',
@@ -1175,7 +1171,7 @@ angular.module('ruleApp.controllers', [])
 
     .controller('TriggerCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
         $scope.$parent.menuItems = standardMenuItems(2);
-        $scope.triggerTemplates = {};
+        $scope.triggers = {};
 
         $http({
             method: 'GET',
@@ -1221,7 +1217,6 @@ angular.module('ruleApp.controllers', [])
 
         $scope.save = function() {
             $scope.triggers.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-            console.log($scope.triggers.xml);
 
             $http({
                 method : 'POST',
@@ -1337,7 +1332,6 @@ angular.module('ruleApp.controllers', [])
 
         $scope.save = function() {
             $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-            console.log($scope.actions.xml);
 
             $http({
                 method : 'POST',
@@ -1543,7 +1537,6 @@ angular.module('ruleApp.controllers', [])
                 }
 
                 $scope.saveBackground = function(background) {
-                    console.log(background);
                     $http({
                         method: 'POST',
                         url: serviceUrl + '/rule/info/' + $scope.currentRuleId,
@@ -1619,14 +1612,14 @@ angular.module('ruleApp.controllers', [])
                     '<a ng-click="openOther(detail.parameters[' + key + '])">'
                         + parameter.label
                         + '</a>'
-                        + ( ! isEmpty( parameter.displayValue ) ? ' == ' + parameter.displayValue : '' )
+                        + ( ! isEmpty( parameter.displayValue ) ? ' ' + parameter.chosenOperation + ' ' + parameter.displayValue : '' )
                         + '<br/>' );
             });
         }
 
         // Code-filtered templates are few, and pre-populated
         // Otherwise, templates may be MANY, so details are fetched on demand.
-        if ( $scope.clause.parameters.length == 0 ) {
+        if ( $scope.clause.parameters == null ) {
             $http.get(serviceUrl + '/template/detail/' + clause.templateId).success(function(data) {
                 $scope.detail = data;
                 $scope.formatTemplate( $scope );
@@ -1848,7 +1841,6 @@ function format( parameter ) {
     var display = "";
     parameter.elements.forEach( function(element) {
         if ( ! isEmpty( element.value ) ) {
-            console.log( element.name + " --> <<" + element.value + ">>" );
             display = display + '[' + element.name + "=" + element.value + '] ';
         }
     });

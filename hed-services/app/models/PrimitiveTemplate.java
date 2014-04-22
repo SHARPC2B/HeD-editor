@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import javax.persistence.Id;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,7 +30,9 @@ public class PrimitiveTemplate extends SharpType {
 
     public List<String> parameterIds = new ArrayList<String>();
 
-    public List<ParameterType> parameters = new ArrayList<ParameterType>();
+    public List<ParameterType> parameters = null;
+
+
 
     //========================================================================================
 

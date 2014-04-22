@@ -50,9 +50,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 /**
@@ -1000,7 +1002,7 @@ public class ModelHome {
 
 
     private static List<ParameterType> rebuildParameterInfo( List<Parameter> params ) {
-        ArrayList<ParameterType> parameterTypes = new ArrayList<ParameterType>();
+        List<ParameterType> parameterTypes = new ArrayList<ParameterType>();
         for ( Parameter p : params ) {
             ParameterType param = new ParameterType();
 
@@ -1009,13 +1011,19 @@ public class ModelHome {
             param.label = p.getLabel().get( 0 );
             param.description = p.getDescription().get( 0 );
             param.hedTypeName = p.getTypeName().get( 0 );
+            param.optional = p.getOptional().get( 0 );
+            param.multiple = p.getMultiple().get( 0 );
+
+            param.expressionChoices = new ArrayList( p.getCompatibleExpression() );
+
+            param.operationChoices = new ArrayList( p.getCompatibleOperation() );
+            param.selectedOperation = param.operationChoices.get( 0 );
 
             HedType hedType = findHedType( param.hedTypeName, hedTypeList );
 
             if ( hedType != null ) {
                 param.hedType = hedType;
-                for ( ElementType eType : hedType.elements )
-                {
+                for ( ElementType eType : hedType.elements ) {
                     param.elements.add( eType.clone() );
                 }
             }
@@ -1027,26 +1035,29 @@ public class ModelHome {
             parameterTypes.add( param );
         }
         return parameterTypes;
-
     }
 
     private static void parseAndInjectDefaultValue( ParameterType param, String value ) {
+        StringTokenizer tok = new StringTokenizer( value, ";" );
+        while ( tok.hasMoreTokens() ) {
+            String pair = tok.nextToken().trim();
+            int eqIndex = pair.indexOf( "=" );
+            String elem = pair.substring( 0, eqIndex ).trim();
+            String vals = pair.substring( eqIndex + 1 );
+
+            param.getElement( elem ).value = vals;
+            param.getElement( elem ).initialValue = vals;
+
+        }
         if ( "CodeLiteral".equals( param.hedTypeName ) ) {
-            value = value.trim();
-            int separator = value.indexOf( ":" );
-            String codeSystem = value.substring( 0, separator );
-            String code = value.substring( separator + 1 );
 
             try {
-                CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + value, CodeSystemCatalogEntry.class );
+                String code = (String) param.getElement( "code" ).value;
+                CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + code, CodeSystemCatalogEntry.class );
                 param.getElement( "label" ).value = entry.getFormalName();
             } catch ( HttpClientErrorException e ) {
                 System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );
             }
-
-            param.getElement( "code" ).value = code;
-            param.getElement( "codeSystem" ).value = codeSystem;
-
         }
     }
 
@@ -1063,31 +1074,50 @@ public class ModelHome {
                     }
                 }
             }
+            if ( ! param.getOptional().get( 0 ) ) {
+                ParameterType ptype = extractParameter( templ.parameters, param.getName().get( 0 ) );
+                boolean found = true;
+                for ( ElementType el : ptype.elements ) {
+                    if ( el.value == null ) {
+                        found = false;
+                        break;
+                    }
+                }
+                if ( ! found ) {
+                    errors.add( "Parameter " + ptype.name + " is mandatory, but not all values have been assigned " );
+                }
+            }
         }
         return errors;
     }
 
     private static String applyConstraint( Parameter param, String constr, PrimitiveTemplate templ ) {
         if ( isCodeHierarchyConstraint( constr ) ) {
-            for ( ParameterType p : templ.parameters ) {
-                if ( p.name.equals( param.getName().get( 0 ) ) ) {
-                    EntityDirectory space = getCodespace( constr );
+            ParameterType p = extractParameter( templ.parameters, param.getName().get( 0 ) );
+            EntityDirectory space = getCodespace( constr );
 
-                    String actualCode = (String) p.getElement( "code" ).value;
-                    String actualCodeSystem = (String) p.getElement( "codeSystem" ).value;
+            String actualCode = (String) p.getElement( "code" ).value;
+            String actualCodeSystem = (String) p.getElement( "codeSystem" ).value;
 
-                    boolean found = false;
-                    for ( EntityDirectoryEntry entry : space.getEntry() ) {
-                        if ( entry.getName().getNamespace().toUpperCase().equals( actualCodeSystem )
-                            && entry.getName().getName().equals( actualCode ) ) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if ( ! found ) {
-                        return "Code " + actualCodeSystem + ":" + actualCode + " is not allowed in parameter " + p.label;
-                    }
+            boolean found = false;
+            for ( EntityDirectoryEntry entry : space.getEntry() ) {
+                if ( entry.getName().getNamespace().toUpperCase().equals( actualCodeSystem )
+                     && entry.getName().getName().equals( actualCode ) ) {
+                    found = true;
+                    break;
                 }
+            }
+            if ( ! found ) {
+                return "Code " + actualCodeSystem + ":" + actualCode + " is not allowed in parameter " + p.label;
+            }
+        }
+        return null;
+    }
+
+    private static ParameterType extractParameter( List<ParameterType> parameters, String pname ) {
+        for ( ParameterType p : parameters ) {
+            if ( p.name.equals( pname ) ) {
+                return p;
             }
         }
         return null;

@@ -34,9 +34,17 @@ public class ParameterType
 
     public List<String> expressionChoices = new ArrayList<String>();
 
+    public List<String> operationChoices = new ArrayList<String>();
+
+    public String selectedOperation = null;
+
     public String selectedExpression = null;
 
     public String displayValue;
+
+    public boolean optional;
+
+    public boolean multiple;
 
     //========================================================================================
 
@@ -69,25 +77,5 @@ public class ParameterType
         return inst;
     }
 
-    protected ObjectNode addToJson(final ObjectNode json)
-    {
-        if ( hedType != null )
-        {
-            hedType.addToJson( json );
-        }
-
-        json.put( "key", key );
-        json.put( "name", name );
-        json.put( "label", label );
-        json.put( "description", description );
-        json.put( "hedTypeName", hedTypeName );
-//        json.put( "hedType", hedType );
-        json.put( "useLiteral", useLiteral );
-        json.put( "expressionChoices", Json.toJson( expressionChoices ) );
-        json.put( "elements", Json.toJson( elements ) );
-        json.put( "selectedExpression", selectedExpression );
-
-        return json;
-    }
 
 }

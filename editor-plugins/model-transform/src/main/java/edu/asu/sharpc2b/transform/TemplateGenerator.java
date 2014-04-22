@@ -138,6 +138,9 @@ public class TemplateGenerator {
                     for ( String constr : p.constraints ) {
                         axioms.add( helper.assertDataProperty( "tns:constraint", param, constr ) );
                     }
+                    axioms.add( helper.assertDataProperty( "tns:optional", param, p.optional ) );
+                    axioms.add( helper.assertDataProperty( "tns:multiple", param, p.multiple ) );
+
 
                     axioms.add( helper.assertObjectProperty( "tns:hasParameter", templ, param ) );
                 }
@@ -216,6 +219,15 @@ public class TemplateGenerator {
                                 p.constraints.add( tok.nextToken() );
                             }
                         }
+                        String card = row.getCell( PARAM_CARD ) != null ? row.getCell( PARAM_CARD ).getStringCellValue() : null;
+                        if ( card != null ) {
+                            if ( card.startsWith( "0" ) ) {
+                                p.optional = true;
+                            }
+                            if ( card.contains( "*" ) ) {
+                                p.multiple = true;
+                            }
+                        }
                         templ.params.add( p );
                     }
 
@@ -243,6 +255,8 @@ public class TemplateGenerator {
         public String type;
         public String defaultValue;
         public List<String> constraints;
+        public boolean optional = false;
+        public boolean multiple = false;
 
         public Parameter( String name, String displayName, String property, String type ) {
             this.name = isEmpty( name ) ? null : name;
