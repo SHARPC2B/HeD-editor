@@ -221,7 +221,7 @@
           <generateTraitDRL>false</generateTraitDRL>
           <generateDefaultImplClasses>true</generateDefaultImplClasses>
           <inheritanceMode>OPTIMIZED</inheritanceMode>
-          <generateIndividuals>false</generateIndividuals>
+          <generateIndividuals>true</generateIndividuals>
 	        <disableFullReasoning>true</disableFullReasoning>
           <compilationOptionsPackage>minimal</compilationOptionsPackage>
         </configuration>

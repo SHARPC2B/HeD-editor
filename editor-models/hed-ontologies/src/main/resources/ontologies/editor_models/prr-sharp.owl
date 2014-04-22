@@ -17,7 +17,6 @@ Prefix(prr-sharp:=<http://asu.edu/sharpc2b/prr-sharp#>)
 Ontology(<http://asu.edu/sharpc2b/prr-sharp>
 Import(<http://asu.edu/sharpc2b/prr>)
 Import(<http://asu.edu/sharpc2b/actions>)
-Import(<http://asu.edu/sharpc2b/sharp-time>)
 Import(<http://asu.edu/sharpc2b/metadata>)
 Import(<http://asu.edu/sharpc2b/ops>)
 

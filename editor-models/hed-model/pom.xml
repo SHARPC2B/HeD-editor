@@ -216,9 +216,9 @@
             <import>ontologies/editor_models/expr-core.owl</import>
             <import>ontologies/editor_models/prr-core.owl</import>
 
-            <import>ontologies/editor_models/bfo-1.1.owl</import>
+            <!--import>ontologies/editor_models/bfo-1.1.owl</import>
             <import>ontologies/editor_models/sharp-time.owl</import>
-            <import>ontologies/editor_models/event.owl</import>
+            <import>ontologies/editor_models/event.owl</import-->
             <import>ontologies/editor_models/actions.owl</import>
             <!--import>ontologies/editor_models/sharp_operators.ofn</import-->
             <import>ontologies/editor_models/prr-sharp.owl</import>
