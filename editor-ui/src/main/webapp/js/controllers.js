@@ -894,13 +894,12 @@ angular.module('ruleApp.controllers', [])
         $scope.cts2search = function(matchValue) {
             var codeSys = $scope.codeSystems.chosenCodeSystem;
             return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
-                console.log( response );
                 return response.data.entityDirectory.entryList;
             });
         };
         $scope.onSelect = function ($item, $model, $label) {
             $scope.codeSystems.chosenCode.code = $item.name.name;
-            $scope.codeSystems.chosenCode.codeSystem = $item.name.namespace;
+            $scope.codeSystems.chosenCode.codeSystem = $item.name.namespace.toUpperCase();
             $scope.codeSystems.chosenCode.label = $label;
         };
         $scope.execute = function() {
@@ -920,17 +919,6 @@ angular.module('ruleApp.controllers', [])
             $scope.primitives = data;
         });
 
-        $scope.gridOptions = {
-            data: 'primitives',
-            multiSelect: false,
-            filterOptions: {filterText: '', useExternalFilter: false},
-            columnDefs: [{ field: 'name', displayName: 'Generic Clause', width: "45%" },
-                { field: 'example', displayName: 'Example' }],
-            rowTemplate: '<div ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-click="openClauseEditor(row.entity)">' +
-                '<div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div>' +
-                '<div ng-cell></div>' +
-                '</div>'
-        };
         $scope.openClauseEditor = function(clause) {
             var d = $modal.open({
                 templateUrl: 'partials/standard/logic/primitive-editor.html',
@@ -1147,6 +1135,7 @@ angular.module('ruleApp.controllers', [])
 
     .controller('TextInputCtrl', ['$scope', '$http', '$modalInstance', 'text', function($scope, $http, $modalInstance, text) {
         $scope.text = text;
+        $scope.triggers = {};
 
         $scope.save = function(text) {
             $modalInstance.close(text);
@@ -1184,9 +1173,9 @@ angular.module('ruleApp.controllers', [])
 
 
 
-    .controller('TriggerCtrl', [ '$http', '$scope', function($http, $scope) {
+    .controller('TriggerCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
         $scope.$parent.menuItems = standardMenuItems(2);
-        $scope.triggers = {};
+        $scope.triggerTemplates = {};
 
         $http({
             method: 'GET',
@@ -1211,6 +1200,24 @@ angular.module('ruleApp.controllers', [])
                     });
 
             });
+
+
+        $http.get(serviceUrl + '/template/list/Trigger').success(function(data) {
+            $scope.triggerTemplates = data;
+        });
+
+        $scope.openClauseEditor = function(clause) {
+            var d = $modal.open({
+                templateUrl: 'partials/standard/logic/primitive-editor.html',
+                controller: 'EditPrimitiveController',
+                resolve : {
+                    clause : function() {
+                        return angular.copy(clause);
+                    }
+                }
+            });
+        };
+
 
         $scope.save = function() {
             $scope.triggers.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -1322,6 +1329,12 @@ angular.module('ruleApp.controllers', [])
 
             });
 
+
+        $http.get(serviceUrl + '/template/list/Condition').success(function(data) {
+            $scope.primitives = data;
+        });
+
+
         $scope.save = function() {
             $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
             console.log($scope.actions.xml);
@@ -1352,17 +1365,7 @@ angular.module('ruleApp.controllers', [])
         $http.get(serviceUrl + '/template/list/Action').success(function(data) {
             $scope.actionsTemplates = data;
         });
-        $scope.gridOptions = {
-            data: 'actionsTemplates',
-            multiSelect: false,
-            filterOptions: {filterText: '', useExternalFilter: false},
-            columnDefs: [{ field: 'name', displayName: 'Generic Clause', width: "45%" },
-                { field: 'example', displayName: 'Example' }],
-            rowTemplate: '<div ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-click="openClauseEditor(row.entity)">' +
-                '<div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }">&nbsp;</div>' +
-                '<div ng-cell></div>' +
-                '</div>'
-        };
+
         $scope.openClauseEditor = function(clause) {
             var d = $modal.open({
                 templateUrl: 'partials/standard/logic/primitive-editor.html',
@@ -1687,7 +1690,7 @@ angular.module('ruleApp.controllers', [])
             $modalInstance.close();
         };
         $scope.onSelect = function ($item, $model, $label) {
-            $scope.parameter.elements[0].value = $item.name.namespace;
+            $scope.parameter.elements[0].value = $item.name.namespace.toUpperCase();
             $scope.parameter.elements[1].value = $item.name.name;
             $scope.parameter.elements[2].value = $label;
         };

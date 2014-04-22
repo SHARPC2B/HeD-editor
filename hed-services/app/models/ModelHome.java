@@ -938,7 +938,6 @@ public class ModelHome {
                      + "-LATEST/entity/"
                      + code
                      + "/children";
-        System.out.println( req );
 
         EntityDirectory space = new Cts2RestClient( true ).getCts2Resource( req, EntityDirectory.class );
         return space;
@@ -983,7 +982,7 @@ public class ModelHome {
             if ( "CodeLiteral".equals( type.name ) ) {
                 ElementType codeSystem = type.getElement( "codeSystem" );
                 codeSystem.selectionChoices = lookupCodeSystems();
-                codeSystem.value = codeSystem.selectionChoices.iterator().next();
+                //codeSystem.value = codeSystem.selectionChoices.iterator().next();
             }
         }
 
