@@ -40,22 +40,6 @@ public class ParameterInst
 //        return errors.isEmpty();
     }
 
-    protected ObjectNode addInstInfoToJson(final ObjectNode json)
-    {
-        super.addInstInfoToJson( json);
 
-
-        ArrayNode parts = JsonNodeFactory.instance.arrayNode();
-        for ( ElementInst p : this.elements )
-        {
-            parts.add( p.toJsonCore() );
-        }
-        json.put( "elements", parts );
-        json.put( "useLiteral", this.useLiteral );
-        json.put( "selectedExpression", this.selectedExpression );
-        json.put( "key", this.type.key );
-
-        return json;
-    }
 
 }

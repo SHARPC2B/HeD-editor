@@ -1612,7 +1612,7 @@ angular.module('ruleApp.controllers', [])
                     '<a ng-click="openOther(detail.parameters[' + key + '])">'
                         + parameter.label
                         + '</a>'
-                        + ( ! isEmpty( parameter.displayValue ) ? ' ' + parameter.chosenOperation + ' ' + parameter.displayValue : '' )
+                        + ( ! isEmpty( parameter.displayValue ) ? ' ' + parameter.selectedOperation + ' ' + parameter.displayValue : '' )
                         + '<br/>' );
             });
         }
@@ -1672,22 +1672,58 @@ angular.module('ruleApp.controllers', [])
 
     .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
         $scope.parameter = parameter;
+        $scope.resolveCodes = true;
+
         $scope.cts2search = function(matchValue) {
-            var codeSys = $scope.parameter.elements[0].value;
-            return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
-                return response.data.entityDirectory.entryList;
-            });
+            if ( $scope.resolveCodes ) {
+                var codeSys = $scope.parameter.elements[0].value;
+                return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+                    var entities = new Array();
+                    var list = response.data.entityDirectory.entryList;
+                    for ( var j = 0; j < list.length; j++ ) {
+                        entities[j] = $scope.normalize( list[j] );
+                    }
+                    return entities;
+                });
+            } else {
+                return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+                    var entities = new Array();
+                    console.log(response);
+                    var list = response.data.valueSetCatalogEntryDirectory.entryList;
+                    for ( var j = 0; j < list.length; j++ ) {
+                        entities[j] = $scope.normalize( list[j] );
+                    }
+                    return entities;
+                });
+            }
         };
         $scope.ok = function() {
             format( $scope.parameter );
             $modalInstance.close();
         };
         $scope.onSelect = function ($item, $model, $label) {
-            $scope.parameter.elements[0].value = $item.name.namespace.toUpperCase();
-            $scope.parameter.elements[1].value = $item.name.name;
+            $scope.parameter.elements[0].value = $item.namespace;
+            $scope.parameter.elements[1].value = $item.name;
             $scope.parameter.elements[2].value = $label;
         };
-
+        $scope.onOpChange = function(op) {
+            $scope.resolveCodes = "Equal" == op;
+        }
+        $scope.normalize = function(entity) {
+            if ( $scope.resolveCodes ) {
+                var descriptor = {};
+                descriptor.designation = entity.knownEntityDescriptionList[0].designation;
+                descriptor.namespace = entity.name.namespace.toUpperCase();
+                descriptor.name = entity.name.name;
+                return descriptor;
+            } else {
+                var descriptor = {};
+                descriptor.designation = entity.valueSetName;
+                descriptor.namespace = entity.valueSetName;
+                descriptor.name = entity.valueSetName;
+                return descriptor;
+            }
+        }
     }])
 
 

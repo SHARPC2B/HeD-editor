@@ -42,6 +42,24 @@
         },
         {
             "mtype": "HedType",
+            "name": "SimpleCodeLiteral",
+            "label": "Simple Code Literal",
+            "description": "A coded concept, CS",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "displayValue",
+                    "label": "Code Label",
+                    "valueType": "String",
+                    "widgetType": "SearchChoice",
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
             "name": "PhysicalQuantityLiteral",
             "label": "Physical Quantity",
             "description": "A Physical Quantity, PQ",
@@ -90,7 +108,94 @@
                 }
             ]
         },
-
+        {
+            "mtype": "HedType",
+            "name": "AddressLiteral",
+            "label": "Address",
+            "description": "An Address; AD",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "EntityNameLiteral",
+            "label": "Name",
+            "description": "An Entity Name; EN",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "IdentifierLiteral",
+            "label": "Identifier",
+            "description": "An Identifier; II",
+            "elements": [
+                {
+                    "name": "root",
+                    "label": "Root",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                },
+                {
+                    "name": "extension",
+                    "label": "Extension",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "UrlLiteral",
+            "label": "URL",
+            "description": "A URI; TEL",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "URL",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
         {
             "mtype": "HedType",
             "name": "TimestampIntervalLiteral",
@@ -133,6 +238,23 @@
                     "widgetType": "Number",
                     "value": 0,
                     "step": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "RealLiteral",
+            "label": "Real Literal",
+            "description": "A RealLiteral expression, REAL",
+            "elements": [
+                {
+                    "mtype": "ElementType",
+                    "name": "value",
+                    "label": "Value",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01
                 }
             ]
         },
@@ -300,7 +422,133 @@
                     "value": false
                 }
             ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "PhysicalQuantityIntervalLiteral",
+            "label": "Physical Quantity Interval Literal",
+            "description": "A Physical Quantity Interval Literal, IVL_PQ",
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step" : 0.01,
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01,
+                    "attributeName": "highClosed",
+                    "attributeValue": false
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "unit",
+                    "label": "Physical Unit of Measure",
+                    "valueType": "String",
+                    "widgetType": "TextBox",
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "QuantityIntervalLiteral",
+            "label": "Quantity Interval Literal",
+            "description": "A Quantity Interval Literal, IVL_QTY",
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step" : 0.01,
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01,
+                    "attributeName": "highClosed",
+                    "attributeValue": false
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "RealIntervalLiteral",
+            "label": "Real Interval Literal",
+            "description": "A Real Interval Literal, IVL_REAL",
+            "elements": [
+                {
+                    "name": "low",
+                    "label": "Lower Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step" : 0.01,
+                    "attributeName": "lowClosed",
+                    "attributeValue": false
+                },
+                {
+                    "name": "high",
+                    "label": "Higher Value",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01,
+                    "attributeName": "highClosed",
+                    "attributeValue": false
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
+            "name": "RatioLiteral",
+            "label": "Ratio Literal",
+            "description": "A Ratio Literal, RTO",
+            "elements": [
+                {
+                    "name": "numerator",
+                    "label": "Numerator",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step" : 0.01
+                },
+                {
+                    "name": "denominator",
+                    "label": "Denominator",
+                    "mtype": "ElementType",
+                    "valueType": "Decimal",
+                    "widgetType": "Number",
+                    "value": 0,
+                    "step": 0.01
+                }
+            ]
         }
+
     ]
 }
 
@@ -309,11 +557,5 @@
 hedTypeMap.put( "AD", AddressLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
 hedTypeMap.put( "CS", SimpleCodeLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
 hedTypeMap.put( "EN", EntityNameLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "II", IdentifierLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "IVL_PQ", PhysicalQuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "IVL_QTY", QuantityIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "IVL_REAL", RealIntervalLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "REAL", RealLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "RTO", RatioLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
-hedTypeMap.put( "TEL", UrlLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+
 */

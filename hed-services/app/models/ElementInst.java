@@ -126,15 +126,5 @@ public class ElementInst<E>
         }
     }
 
-    protected ObjectNode addInstInfoToJson(final ObjectNode json)
-    {
-        super.addInstInfoToJson( json);
-
-//        this.value = Integer.valueOf( 42);
-        json.put( "value", Json.toJson( this.value ) );
-        json.put( "name", this.type.name );
-
-        return json;
-    }
 
 }

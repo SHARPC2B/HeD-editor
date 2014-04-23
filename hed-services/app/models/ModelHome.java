@@ -43,6 +43,7 @@ import org.purl.dc.terms.LocationImpl;
 import org.purl.dc.terms.RightsStatement;
 import org.purl.dc.terms.RightsStatementImpl;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import play.libs.Json;
 
 import java.io.IOException;
@@ -1053,9 +1054,13 @@ public class ModelHome {
 
             try {
                 String code = (String) param.getElement( "code" ).value;
-                CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + code, CodeSystemCatalogEntry.class );
-                param.getElement( "label" ).value = entry.getFormalName();
+                if ( code != null && ! "".equals( code ) ) {
+                    CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + code, CodeSystemCatalogEntry.class );
+                    param.getElement( "label" ).value = entry.getFormalName();
+                }
             } catch ( HttpClientErrorException e ) {
+                System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );
+            } catch ( HttpServerErrorException e ) {
                 System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );
             }
         }

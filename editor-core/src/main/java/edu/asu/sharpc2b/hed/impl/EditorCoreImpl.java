@@ -421,6 +421,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         //TODO Explore the ontology, using the indivudals, and cache the results!
         param.getCompatibleOperation().clear();
         addOperation( param, "EqualCode" );
+        addOperation( param, "InCode" );
         if ( ScalarExpression.class.isAssignableFrom( paramType ) ) {
             addOperation( param, "GreaterCode" );
             addOperation( param, "GreaterOrEqualCode" );

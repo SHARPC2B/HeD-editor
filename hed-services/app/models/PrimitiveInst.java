@@ -39,20 +39,5 @@ public class PrimitiveInst
 //        return errors.isEmpty();
     }
 
-    protected ObjectNode addInstInfoToJson(final ObjectNode json)
-    {
-        super.addInstInfoToJson( json );
-
-        ArrayNode parts = JsonNodeFactory.instance.arrayNode();
-        for ( ParameterInst p : this.parameterInsts )
-        {
-            parts.add( p.toJsonCore() );
-        }
-        json.put( "parameters", parts );
-        json.put( "id", this.id );
-        json.put( "templateId", this.type.templateId );
-
-        return json;
-    }
 
 }

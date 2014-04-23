@@ -9,7 +9,7 @@
 	<select ng-switch-when="Dropdown" ng-model="element.value" ng-options="sc for sc in element.selectionChoices"></select>
 	<input ng-switch-when="SearchChoice" type="text"
            ng-model="parameter.elements[2].value;"
-           typeahead="suggestion.knownEntityDescriptionList[0].designation for suggestion in cts2search($viewValue)"
+           typeahead="suggestion.designation for suggestion in cts2search($viewValue)"
            typeahead-editable="false"
            typeahead-on-select="onSelect($item, $model, $label)">
 	<div ng-switch-when="DateTimeLocal">
