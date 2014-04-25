@@ -37,6 +37,7 @@ import org.ontologydesignpatterns.ont.dul.dul.Agent;
 import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
 import org.ontologydesignpatterns.ont.dul.dul.Organization;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.w3._2002._07.owl.Thing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -827,8 +828,7 @@ public class OOwl2HedDumper implements HeDExporter {
     }
 
 
-    @Override
-    public byte[] export( HeDKnowledgeDocument dok ) {
+    public byte[] export( HeDKnowledgeDocument dok, OWLOntology dow ) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document dox = new OOwl2HedDumper().serialize( dok );
         OOwl2HedDumper.dump( dox, baos );

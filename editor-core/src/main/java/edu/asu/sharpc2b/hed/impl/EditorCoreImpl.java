@@ -15,6 +15,8 @@ import edu.asu.sharpc2b.templates.Template;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.transform.HeDExporterFactory;
 
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -235,9 +237,16 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public byte[] exportArtifact( String id, String format ) {
-        HeDKnowledgeDocument dok = getArtifact( id );
+        HeDArtifactData data = getArtifactData( id );
 
-        return HeDExporterFactory.getExporter( format ).export( dok );
+        try {
+            return HeDExporterFactory.getExporter( format ).export(
+                    data.getKnowledgeDocument(),
+                    OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument( new ByteArrayInputStream( data.getOwlData() ) ) );
+        } catch ( OWLOntologyCreationException e ) {
+            e.printStackTrace();
+        }
+        return new byte[ 0 ];
     }
 
     @Override

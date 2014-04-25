@@ -1,0 +1,806 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="www.usd.edu#"
+     xml:base="www.usd.edu"
+     xmlns:skos-ext="http://asu.edu/sharpc2b/skos-ext#"
+     xmlns:DUL="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#"
+     xmlns:prr="http://asu.edu/sharpc2b/prr#"
+     xmlns:prr-sharp="http://asu.edu/sharpc2b/prr-sharp#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:meta="http://asu.edu/sharpc2b/metadata#"
+     xmlns:dcterms="http://purl.org/dc/terms/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:IOLite="http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#"
+     xmlns:tns="http://www.usd.edu#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:act="http://asu.edu/sharpc2b/actions#"
+     xmlns:r2="urn:hl7-org:vmr:r2#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:vmr="urn:hl7-org:vmr:r2"
+     xmlns:ops="http://asu.edu/sharpc2b/ops#">
+    <owl:Ontology rdf:about="www.usd.edu">
+        <owl:imports rdf:resource="http://asu.edu/sharpc2b/sharp"/>
+        <owl:versionIRI rdf:resource="www.usd.edu/1.0"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://asu.edu/sharpc2b/actions#memberAction -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/actions#memberAction"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#adaptedFrom -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#adaptedFrom"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#applicability -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#applicability"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#artifactVersion -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#artifactVersion"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#coveredConcept -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#coveredConcept"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#realizesInformation -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#realizesInformation"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#schemaVersion -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#schemaVersion"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#supportingResource -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/metadata#supportingResource"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#hasOperand -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#hasOperand"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#iterator -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#iterator"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#opCode -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#opCode"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#referredVariable -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#referredVariable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#source -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#source"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#type -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/ops#type"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#conditionRepresentation -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#conditionRepresentation"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#contains -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#contains"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#productionRuleAction -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#productionRuleAction"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#productionRuleBoundRuleVariable -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#productionRuleBoundRuleVariable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#productionRuleCondition -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#productionRuleCondition"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#rulesetVariable -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#rulesetVariable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#variableFilterExpression -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr#variableFilterExpression"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr-sharp#bodyExpression -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr-sharp#bodyExpression"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr-sharp#elementType -->
+
+    <owl:ObjectProperty rdf:about="http://asu.edu/sharpc2b/prr-sharp#elementType"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/contributor -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/contributor"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/references -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/references"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/spatial -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/spatial"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#artifactId -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#artifactId"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#contactInformation -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#contactInformation"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#coverageType -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#coverageType"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#description -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#description"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#status -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#status"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#urlLocation -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#urlLocation"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#versionId -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/metadata#versionId"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#name -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/prr#name"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/skos-ext#code -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/skos-ext#code"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/skos-ext#codeSystem -->
+
+    <owl:DatatypeProperty rdf:about="http://asu.edu/sharpc2b/skos-ext#codeSystem"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/bibliographicCitation -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/bibliographicCitation"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/description"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/identifier -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/identifier"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/title -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/dc/terms/title"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://asu.edu/sharpc2b/actions#CompositeAction -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/actions#CompositeAction"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#ClinicalCoverage -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/metadata#ClinicalCoverage"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#DataModelRealization -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/metadata#DataModelRealization"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/metadata#VersionedIdentifier -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/metadata#VersionedIdentifier"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#AggregateIteratorExpression -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/ops#AggregateIteratorExpression"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#Variable -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/ops#Variable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#VariableExpression -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#ProductionRule -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr#ProductionRule"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#RuleCondition -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr#RuleCondition"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#RuleVariable -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr#RuleVariable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr#Variable -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr#Variable"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr-sharp#HeDKnowledgeDocument -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr-sharp#HeDKnowledgeDocument"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/prr-sharp#ValueSet -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/prr-sharp#ValueSet"/>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/skos-ext#ConceptCode -->
+
+    <owl:Class rdf:about="http://asu.edu/sharpc2b/skos-ext#ConceptCode"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#Op_and -->
+
+    <owl:NamedIndividual rdf:about="http://asu.edu/sharpc2b/ops#Op_and">
+        <skos-ext:code rdf:datatype="http://www.w3.org/2001/XMLSchema#string">and</skos-ext:code>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#Op_exists -->
+
+    <owl:NamedIndividual rdf:about="http://asu.edu/sharpc2b/ops#Op_exists">
+        <skos-ext:code rdf:datatype="http://www.w3.org/2001/XMLSchema#string">exists</skos-ext:code>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://asu.edu/sharpc2b/ops#Op_geq -->
+
+    <owl:NamedIndividual rdf:about="http://asu.edu/sharpc2b/ops#Op_geq">
+        <skos-ext:code rdf:datatype="http://www.w3.org/2001/XMLSchema#string">geq</skos-ext:code>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ActionGroup_1478485854 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ActionGroup_1478485854">
+        <act:memberAction rdf:resource="http://www.usd.edu#CreateAction_155625682"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ActionGroup_448425773 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ActionGroup_448425773">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/actions#CompositeAction"/>
+        <act:memberAction rdf:resource="http://www.usd.edu#ActionGroup_1478485854"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ArtifactType_1171444015 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ArtifactType_1171444015">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr#ProductionRule"/>
+        <prr:productionRuleAction rdf:resource="http://www.usd.edu#ActionGroup_448425773"/>
+        <prr:productionRuleCondition rdf:resource="http://www.usd.edu#Condition_60394352"/>
+        <prr:productionRuleBoundRuleVariable rdf:resource="http://www.usd.edu#Var_HemoglobinA1cResultsFromLast12Months"/>
+        <prr:productionRuleBoundRuleVariable rdf:resource="http://www.usd.edu#Var_Patient"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#CD_350907817 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#CD_350907817">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/skos-ext#ConceptCode"/>
+        <skos-ext:codeSystem rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2.16.840.1.113883.6.96</skos-ext:codeSystem>
+        <skos-ext:code rdf:datatype="http://www.w3.org/2001/XMLSchema#string">73211009</skos-ext:code>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ClinicalRequest_1542351202 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ClinicalRequest_1542351202"/>
+    
+
+
+    <!-- http://www.usd.edu#ClinicalRequest_852020584 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ClinicalRequest_852020584">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#AggregateIteratorExpression"/>
+        <ops:source rdf:resource="http://www.usd.edu#ExtVar_852020584"/>
+        <ops:iterator rdf:resource="http://www.usd.edu#InnVar_852020584"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Condition_60394352 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Condition_60394352">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr#RuleCondition"/>
+        <prr:conditionRepresentation rdf:resource="http://www.usd.edu#Expr_60394352"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Coverage_869780941 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Coverage_869780941">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/metadata#ClinicalCoverage"/>
+        <meta:coverageType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ClinicalFocus</meta:coverageType>
+        <dcterms:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes Mellitus</dcterms:description>
+        <meta:coveredConcept rdf:resource="http://www.usd.edu#CD_350907817"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#CreateAction_155625682 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#CreateAction_155625682"/>
+    
+
+
+    <!-- http://www.usd.edu#Evidence_311473561 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Evidence_311473561">
+        <meta:supportingResource rdf:resource="http://www.usd.edu#KnowledgeResource_890431193"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_1542351202 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_1542351202">
+        <prr-sharp:bodyExpression rdf:resource="http://www.usd.edu#ClinicalRequest_1542351202"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_60394352 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_60394352">
+        <prr-sharp:bodyExpression rdf:resource="http://www.usd.edu#Expr_and_1435592680"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_852020584 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_852020584">
+        <prr-sharp:bodyExpression rdf:resource="http://www.usd.edu#ClinicalRequest_852020584"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_and_1435592680 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_and_1435592680">
+        <ops:opCode rdf:resource="http://asu.edu/sharpc2b/ops#Op_and"/>
+        <ops:hasOperand rdf:resource="http://www.usd.edu#Expr_exists_151049956"/>
+        <ops:hasOperand rdf:resource="http://www.usd.edu#Expr_geq_1027398715"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_exists_151049956 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_exists_151049956">
+        <ops:opCode rdf:resource="http://asu.edu/sharpc2b/ops#Op_exists"/>
+        <ops:hasOperand rdf:resource="http://www.usd.edu#ExpressionRef_370939738"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Expr_geq_1027398715 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Expr_geq_1027398715">
+        <ops:opCode rdf:resource="http://asu.edu/sharpc2b/ops#Op_geq"/>
+        <ops:hasOperand rdf:resource="http://www.usd.edu#ExpressionRef_1721681125"/>
+        <ops:hasOperand rdf:resource="http://www.usd.edu#PhysicalQuantityLiteral_1100008197"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExpressionRef_1662152747 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExpressionRef_1662152747">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+        <ops:referredVariable rdf:resource="http://www.usd.edu#Var_HemoglobinA1cResultsFromLast12Months"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExpressionRef_1721681125 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExpressionRef_1721681125">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+        <ops:referredVariable rdf:resource="http://www.usd.edu#Var_PatientAge"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExpressionRef_370939738 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExpressionRef_370939738">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+        <ops:referredVariable rdf:resource="http://www.usd.edu#Var_NonGestationalDiabetesMellitus"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExpressionRef_529206994 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExpressionRef_529206994">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+        <ops:referredVariable rdf:resource="http://www.usd.edu#Var_HemoglobinA1cResultsFromLast12Months"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExpressionRef_818453989 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExpressionRef_818453989">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#VariableExpression"/>
+        <ops:referredVariable rdf:resource="http://www.usd.edu#Var_Patient"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExtVar_852020584 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExtVar_852020584">
+        <ops:referredVariable rdf:resource="http://www.usd.edu#ExternalData"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ExternalData -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ExternalData">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr#Variable"/>
+        <prr:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">$contextData</prr:name>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#InnVar_852020584 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#InnVar_852020584">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/ops#Variable"/>
+        <ops:type rdf:resource="urn:hl7-org:vmr:r2Patient"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#KnowledgeDocument -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#KnowledgeDocument">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr-sharp#HeDKnowledgeDocument"/>
+        <meta:status rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Draft</meta:status>
+        <dcterms:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hemoglobin A1c reminder for patients with poorly-controlled diabetes</dcterms:title>
+        <prr:contains rdf:resource="http://www.usd.edu#ArtifactType_1171444015"/>
+        <meta:applicability rdf:resource="http://www.usd.edu#Coverage_869780941"/>
+        <prr:rulesetVariable rdf:resource="http://www.usd.edu#ExternalData"/>
+        <meta:adaptedFrom rdf:resource="http://www.usd.edu#KnowledgeResource_1745690129"/>
+        <dcterms:references rdf:resource="http://www.usd.edu#ModelReference_1431620097"/>
+        <dcterms:contributor rdf:resource="http://www.usd.edu#Person_1202632934"/>
+        <meta:schemaVersion rdf:resource="http://www.usd.edu#VersionedIdentifier_2147051051"/>
+        <meta:artifactVersion rdf:resource="http://www.usd.edu#VersionedIdentifier_570428570"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#KnowledgeResource_1745690129 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#KnowledgeResource_1745690129">
+        <dcterms:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CDSC L3 Diabetes Mellitus Assessment Rule</dcterms:description>
+        <dcterms:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recommendation 1: Order HgbA1c Now (Overdue HgbA1c)</dcterms:title>
+        <dcterms:spatial rdf:resource="http://www.usd.edu#TEL_755954075"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#KnowledgeResource_890431193 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#KnowledgeResource_890431193">
+        <dcterms:bibliographicCitation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diabetes Care January 2012 vol. 35 no. Supplement 1 S11-S63.</dcterms:bibliographicCitation>
+        <dcterms:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Standards of Medical Care in Diabetes - 2012</dcterms:title>
+        <dcterms:spatial rdf:resource="http://www.usd.edu#TEL_296791546"/>
+        <meta:artifactVersion rdf:resource="http://www.usd.edu#VersionedIdentifier_1811008455"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ModelReference_1431620097 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ModelReference_1431620097">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/metadata#DataModelRealization"/>
+        <meta:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HL7 Virtual Medical Record version 1.0</meta:description>
+        <dcterms:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">urn:hl7-org:vmr:r2</dcterms:identifier>
+        <meta:realizesInformation rdf:resource="urn:hl7-org:vmr:r2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Person_1202632934 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Person_1202632934">
+        <meta:contactInformation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mailto:aziz.boxwala@meliorix.com</meta:contactInformation>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#PhysicalQuantityLiteral_1100008197 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#PhysicalQuantityLiteral_1100008197"/>
+    
+
+
+    <!-- http://www.usd.edu#TEL_296791546 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#TEL_296791546">
+        <meta:urlLocation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://care.diabetesjournals.org/content/35/Supplement_1/S11.full.pdf+html</meta:urlLocation>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#TEL_755954075 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#TEL_755954075">
+        <meta:urlLocation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://cdsportal.partners.org/transformXML.aspx?xmlFileName=CDSC-Diabetes-L3-PHS-2011-L3-7.0-090221fe8003f004.xml</meta:urlLocation>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#ValueSet_543515881 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#ValueSet_543515881">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr-sharp#ValueSet"/>
+        <meta:artifactId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NonGestationalDMValueSet</meta:artifactId>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Var_HemoglobinA1cResultsFromLast12Months -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Var_HemoglobinA1cResultsFromLast12Months">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr#RuleVariable"/>
+        <prr:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HemoglobinA1cResultsFromLast12Months</prr:name>
+        <prr:variableFilterExpression rdf:resource="http://www.usd.edu#Expr_1542351202"/>
+        <prr-sharp:elementType rdf:resource="urn:hl7-org:vmr:r2ObservationResult"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Var_NonGestationalDiabetesMellitus -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Var_NonGestationalDiabetesMellitus"/>
+    
+
+
+    <!-- http://www.usd.edu#Var_Patient -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Var_Patient">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/prr#RuleVariable"/>
+        <prr:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patient</prr:name>
+        <prr:variableFilterExpression rdf:resource="http://www.usd.edu#Expr_852020584"/>
+        <prr-sharp:elementType rdf:resource="urn:hl7-org:vmr:r2Patient"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#Var_PatientAge -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#Var_PatientAge"/>
+    
+
+
+    <!-- http://www.usd.edu#VersionedIdentifier_1811008455 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#VersionedIdentifier_1811008455">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/metadata#VersionedIdentifier"/>
+        <meta:artifactId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">10.2337/dc12-s011</meta:artifactId>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#VersionedIdentifier_2147051051 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#VersionedIdentifier_2147051051">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/metadata#VersionedIdentifier"/>
+        <meta:versionId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.0</meta:versionId>
+        <meta:artifactId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">www.hed.org/knowledgedocument</meta:artifactId>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.usd.edu#VersionedIdentifier_570428570 -->
+
+    <owl:NamedIndividual rdf:about="http://www.usd.edu#VersionedIdentifier_570428570">
+        <rdf:type rdf:resource="http://asu.edu/sharpc2b/metadata#VersionedIdentifier"/>
+        <meta:versionId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.0</meta:versionId>
+        <meta:artifactId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">www.usd.edu</meta:artifactId>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- urn:hl7-org:vmr:r2 -->
+
+    <owl:NamedIndividual rdf:about="urn:hl7-org:vmr:r2"/>
+    
+
+
+    <!-- urn:hl7-org:vmr:r2ObservationResult -->
+
+    <owl:NamedIndividual rdf:about="urn:hl7-org:vmr:r2ObservationResult"/>
+    
+
+
+    <!-- urn:hl7-org:vmr:r2Patient -->
+
+    <owl:NamedIndividual rdf:about="urn:hl7-org:vmr:r2Patient"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.8) http://owlapi.sourceforge.net -->
+

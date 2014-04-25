@@ -15,6 +15,9 @@
 //import java.net.URL;
 //import java.util.Properties;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+import edu.asu.sharpc2b.ClassPathResource;
+import edu.asu.sharpc2b.transform.StylesheetDumper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -24,6 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class TestXSD {
 
@@ -147,6 +151,15 @@ public class TestXSD {
 //
 //
 //    }
+
+    @Test
+    public void testXSLT() throws IOException {
+        InputStream data = new ClassPathResource( "DiabetesReminderRule.xml" ).getInputStream();
+        byte[] xml = new byte[ data.available() ];
+        data.read( xml );
+        byte[] out = new StylesheetDumper().transform( xml );
+        System.out.println( new String( out ) );
+    }
 
 
 }
