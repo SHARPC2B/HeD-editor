@@ -16,12 +16,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>sharpc2b</groupId>
-      <artifactId>generated-models</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>

@@ -1,0 +1,242 @@
+{
+	"mtype":"PrimitiveTemplate",
+	"name":"Lab Test Result With Threshold",
+	"templateId":"LabTestResultWithThreshold",
+	"key":"LabTestResultWithThreshold",
+	"category":[
+
+	],
+	"group":"Observation",
+	"description":"Observation WITH Target_TBD AND Threshold",
+	"example":null,
+	"parameterIds":[
+		"observationFocus",
+		"observationValue"
+	],
+	"parameters":[
+		{
+			"mtype":"ParameterType",
+			"name":"observationFocus",
+			"key":"observationFocus",
+			"label":"Target_TBD",
+			"description":"Target_TBD",
+			"hedTypeName":"CodeLiteral",
+			"hedType":{
+				"mtype":"HedType",
+				"name":"CodeLiteral",
+				"label":"Code Literal",
+				"description":"A coded concept, CD",
+				"elements":[
+					{
+						"mtype":"ElementType",
+						"name":"codeSystem",
+						"label":"Coding System",
+						"description":null,
+						"valueType":"String",
+						"widgetType":"Choice",
+						"selectionChoices":[
+							"HDD",
+							"LOINC",
+							"SNOMED",
+							"RXNORM"
+						],
+						"initialValue":"RxNorm",
+						"value":null,
+						"searchService":null,
+						"minSelectionCount":1,
+						"maxSelectionCount":1,
+						"minValue":null
+					},
+					{
+						"mtype":"ElementType",
+						"name":"code",
+						"label":"Code Value",
+						"description":null,
+						"valueType":"String",
+						"widgetType":"TextBox",
+						"selectionChoices":null,
+						"initialValue":null,
+						"value":null,
+						"searchService":null,
+						"minSelectionCount":1,
+						"maxSelectionCount":1,
+						"minValue":null
+					},
+					{
+						"mtype":"ElementType",
+						"name":"displayValue",
+						"label":"Code Label",
+						"description":null,
+						"valueType":"String",
+						"widgetType":"SearchChoice",
+						"selectionChoices":null,
+						"initialValue":null,
+						"value":null,
+						"searchService":null,
+						"minSelectionCount":1,
+						"maxSelectionCount":1,
+						"minValue":null
+					}
+				]
+			},
+			"elements":[
+				{
+					"mtype":"ElementType",
+					"name":"codeSystem",
+					"label":"Coding System",
+					"description":null,
+					"valueType":"String",
+					"widgetType":"Choice",
+					"selectionChoices":[
+						"HDD",
+						"LOINC",
+						"SNOMED",
+						"RXNORM"
+					],
+					"initialValue":"RxNorm",
+					"value":"LOINC",
+					"searchService":null,
+					"minSelectionCount":1,
+					"maxSelectionCount":1,
+					"minValue":null
+				},
+				{
+					"mtype":"ElementType",
+					"name":"code",
+					"label":"Code Value",
+					"description":null,
+					"valueType":"String",
+					"widgetType":"TextBox",
+					"selectionChoices":null,
+					"initialValue":null,
+					"value":"10486-9",
+					"searchService":null,
+					"minSelectionCount":1,
+					"maxSelectionCount":1,
+					"minValue":null
+				},
+				{
+					"mtype":"ElementType",
+					"name":"displayValue",
+					"label":"Code Label",
+					"description":null,
+					"valueType":"String",
+					"widgetType":"SearchChoice",
+					"selectionChoices":null,
+					"initialValue":null,
+					"value":"Hgb Ag Tiss Ql ImStn",
+					"searchService":null,
+					"minSelectionCount":1,
+					"maxSelectionCount":1,
+					"minValue":null
+				}
+			],
+			"useLiteral":true,
+			"expressionChoices":[
+
+			],
+			"operationChoices":[
+				"Equal"
+			],
+			"selectedOperation":"Equal",
+			"selectedExpression":null,
+			"displayValue":"[codeSystem=LOINC] [code=10486-9] [displayValue=Hgb Ag Tiss Ql ImStn]",
+			"optional":false,
+			"multiple":false
+		},
+		{
+			"mtype":"ParameterType",
+			"name":"observationValue",
+			"key":"observationValue",
+			"label":"Threshold",
+			"description":"Threshold",
+			"hedTypeName":"PhysicalQuantityLiteral",
+			"hedType":{
+				"mtype":"HedType",
+				"name":"PhysicalQuantityLiteral",
+				"label":"Physical Quantity",
+				"description":"A Physical Quantity, PQ",
+				"elements":[
+					{
+						"mtype":"ElementType",
+						"name":"value",
+						"label":"Quantity / Amount",
+						"description":null,
+						"valueType":"Decimal",
+						"widgetType":"Number",
+						"selectionChoices":null,
+						"initialValue":0,
+						"value":0,
+						"searchService":null,
+						"minSelectionCount":1,
+						"maxSelectionCount":1,
+						"minValue":0
+					},
+					{
+						"mtype":"ElementType",
+						"name":"unit",
+						"label":"Physical Units of Measure",
+						"description":null,
+						"valueType":"String",
+						"widgetType":"TextBox",
+						"selectionChoices":null,
+						"initialValue":null,
+						"value":null,
+						"searchService":null,
+						"minSelectionCount":1,
+						"maxSelectionCount":1,
+						"minValue":null
+					}
+				]
+			},
+			"elements":[
+				{
+					"mtype":"ElementType",
+					"name":"value",
+					"label":"Quantity / Amount",
+					"description":null,
+					"valueType":"Decimal",
+					"widgetType":"Number",
+					"selectionChoices":null,
+					"initialValue":0,
+					"value":7,
+					"searchService":null,
+					"minSelectionCount":1,
+					"maxSelectionCount":1,
+					"minValue":0
+				},
+				{
+					"mtype":"ElementType",
+					"name":"unit",
+					"label":"Physical Units of Measure",
+					"description":null,
+					"valueType":"String",
+					"widgetType":"TextBox",
+					"selectionChoices":null,
+					"initialValue":null,
+					"value":"mg/l",
+					"searchService":null,
+					"minSelectionCount":1,
+					"maxSelectionCount":1,
+					"minValue":null
+				}
+			],
+			"useLiteral":true,
+			"expressionChoices":[
+
+			],
+			"operationChoices":[
+				"Equal",
+				"Greater",
+				"GreaterOrEqual",
+				"Less",
+				"LessOrEqual"
+			],
+			"selectedOperation":"Greater",
+			"selectedExpression":null,
+			"displayValue":"[value=7] [unit=mg/l] ",
+			"optional":false,
+			"multiple":false
+		}
+	]
+}

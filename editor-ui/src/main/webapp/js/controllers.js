@@ -3,7 +3,6 @@
 var serviceUrl = 'http://localhost:9000';
 //var serviceUrl = 'http://192.168.0.4:9000';
 
-
 angular.module('ruleApp.controllers', [])
 
     .controller('HomeCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {

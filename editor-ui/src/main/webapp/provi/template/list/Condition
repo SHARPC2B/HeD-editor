@@ -1367,6 +1367,16 @@
           "OBSERVATION_EVENT_TIME",
           "OBSERVATION_VALUE"
         ]
+      },
+      {
+      	"templateId": "LabTestResultWithThreshold",
+        "id": 9,
+        "name": "Lab Test Result With Threshold",
+        "description": "Observation WITH Target_TBD AND Threshold",
+        "parameterIds": [
+          "OBSERVATION_FOCUS",
+          "OBSERVATION_VALUE"
+        ]
       }
     ],
     "cnt": 9
