@@ -213,6 +213,9 @@
             <import>ontologies/editor_models/dc_owl2dl.owl</import>
             <import>ontologies/editor_models/dc2dul.owl</import>
             <import>ontologies/editor_models/metadata.owl</import>
+
+            <import>ontologies/editor_models/template_schema.owl</import>
+
             <import>ontologies/editor_models/expr-core.owl</import>
             <import>ontologies/editor_models/prr-core.owl</import>
 

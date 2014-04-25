@@ -1,29 +1,39 @@
 <div class="row-fluid">
 	<div class="borderedBox span5" style="padding: 7px;">
+        <p class="text-center">Pre-filter the condition clauses by CD:</p>
 		<form class="form-inline">
-			<label>Select the code system</label>
-            <select ng-model="codeSystems.chosenCodeSystem" ng-options="codeSystem for codeSystem in codeSystems.list" ></select><br>
-			<!--select>
-				<option ng-repeat="codeSystem in codeSystems.list" ng-model="codeSystems.chosenCodeSystem">{{codeSystem}}</option>
-			</select-->
             <input type="text" ng-model="codeSystems.chosenCode.label"
                    typeahead="suggestion.knownEntityDescriptionList[0].designation for suggestion in cts2search($viewValue)"
                    typeahead-editable="false"
                    typeahead-on-select='onSelect($item, $model, $label)'>
-			<!--input type="search" class="search-query" placeholder="Search in CTS" ng-model="templateFilter"-->
 			<button type="submit" x-ng-click="execute()" class="btn">Filter Templates</button>
 			<button type="submit" x-ng-click="clear()" class="btn">Reset</button>
 		</form>
 		<p class="text-center">Select an option below (a new window will open)</p>
 		<p><input type="search" class="search-query span12" placeholder="Filter templates" ng-model="templateFilter"></p>
-		<ul class="nav nav-list borderedBox" style="height: 500px; overflow-y:scroll;" >
+		<ul class="nav nav-list borderedBox" style="height: 300px; overflow-y:scroll;" >
 			<li ng-repeat="primitive in primitives"><a href="" class="nav-header" ng-click="primitive.show = !primitive.show" ng-show="(primitive.templates | filter:templateFilter).length > 0"><i class="icon-folder-open-alt" ng-show="!primitive.show"></i><i class="icon-folder-close-alt" ng-show="primitive.show"></i>{{primitive.label}}</a>
 				<ul class="nav nav-list" ng-show="!primitive.show">
 					<li ng-repeat="template in primitive.templates | filter:templateFilter" ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
 				</ul>
 			</li>
 		</ul>
-		<p class="text-center"><b>All of the items on the grey area may be dragged in to the canvas on the right</b></p>
+
+            <p class="text-center">Expressions:</p>
+            <div class="search-prepend">
+                <div class="icon-search icon-white"></div>
+                <input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
+            </div><br>
+            <ul class="nav nav-list borderedBox" style="height: 150px; overflow-y:scroll;">
+                <li x-ng-repeat="expression in expressions | filter:search" >
+                    <div class="span10 pull-left">{{expression.name}}</div>
+                    <div class="span2 pull-right">
+                        <a href="" x-ng-click="preview(expression)"><i class="icon-zoom-in" title="View"></i></a>
+                    </div>
+                </li>
+            </ul>
+
+        <p class="text-center"><b>All of the items on the grey area may be dragged in to the canvas on the right</b></p>
 		<p class="text-center"><i>Remember, you may drop anything in a container (including other containers), but nothing may go inside a clause.</i></p>
 		<xml id="toolbox" style="display: none">
 			<category name="Blocks">

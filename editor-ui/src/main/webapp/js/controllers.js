@@ -857,6 +857,10 @@ angular.module('ruleApp.controllers', [])
 
             });
 
+        $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+            $scope.expressions = data;
+        });
+
 
         $scope.save = function() {
             $scope.logic.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -883,13 +887,9 @@ angular.module('ruleApp.controllers', [])
         };
 
         $scope.codeSystems = {};
-        $http.get(serviceUrl + '/cts2/codesystems').success(function(data) {
-            $scope.codeSystems.chosenCodeSystem = data[0];
-            $scope.codeSystems.list = data;
-        });
         $scope.cts2search = function(matchValue) {
             var codeSys = $scope.codeSystems.chosenCodeSystem;
-            return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+            return $http.jsonp(serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&matchalgorithm=startsWith&format=json&maxtoreturn=20&matchvalue='+matchValue).then(function(response){
                 return response.data.entityDirectory.entryList;
             });
         };
@@ -916,12 +916,37 @@ angular.module('ruleApp.controllers', [])
         });
 
         $scope.openClauseEditor = function(clause) {
+
             var d = $modal.open({
                 templateUrl: 'partials/standard/logic/primitive-editor.html',
                 controller: 'EditPrimitiveController',
                 resolve : {
                     clause : function() {
-                        return angular.copy(clause);
+                        var inst = angular.copy(clause);
+                        inst.category[0] = "CONDITION";
+                        return inst;
+                    }
+                }
+            })
+            d.result.then( function( logic ) {
+                console.log( logic );
+                    $scope.logic.xml = logic;
+                    Blockly.mainWorkspace.clear();
+                    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.logic.xml));
+
+                    $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+                        $scope.expressions = data;
+                    });
+            });
+        };
+
+        $scope.preview = function(expression) {
+            var d = $modal.open({
+                templateUrl: 'partials/standard/logic/canvas.html',
+                controller: 'CanvasCtrl',
+                resolve : {
+                    expression : function() {
+                        return expression.expressionIRI;
                     }
                 }
             });
@@ -1129,6 +1154,30 @@ angular.module('ruleApp.controllers', [])
 
 
 
+    .controller('CanvasCtrl', ['$scope', '$http', '$modalInstance', 'expression', function($scope, $http, $modalInstance, expression) {
+        Blockly.Blocks['logic_root'] = {
+            init: function() {
+                this.appendValueInput("NAME")
+                    .appendField(new Blockly.FieldTextInput("Name"), "NAME");
+                this.setColour(46);
+            }
+        };
+
+        $http({
+            method : 'GET',
+            url : serviceUrl + '/rule/expressions/' + expression,
+            headers : { 'Content-Type':'application/html' }
+        }).success( function( data ) {
+                console.log( data );
+                Blockly.mainWorkspace.clear();
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom(data));
+            });
+
+        $scope.cancel = function() {
+            $modalInstance.dismiss();
+        }
+    }])
+
     .controller('TextInputCtrl', ['$scope', '$http', '$modalInstance', 'text', function($scope, $http, $modalInstance, text) {
         $scope.text = text;
         $scope.triggers = {};
@@ -1208,10 +1257,23 @@ angular.module('ruleApp.controllers', [])
                 controller: 'EditPrimitiveController',
                 resolve : {
                     clause : function() {
-                        return angular.copy(clause);
+                        var inst = angular.copy(clause);
+                        inst.category[0] = "TRIGGER";
+                        return inst;
                     }
                 }
             });
+            d.result.then( function( triggers ) {
+                $scope.triggers.xml = triggers;
+                Blockly.mainWorkspace.clear();
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.triggers.xml));
+                /*
+                $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+                    $scope.expressions = data;
+                });
+                */
+            });
+
         };
 
 
@@ -1299,6 +1361,8 @@ angular.module('ruleApp.controllers', [])
     .controller('ActionCtrl', [ '$http', '$scope', '$modal','$log', function($http, $scope, $modal,$log) {
         $scope.$parent.menuItems = standardMenuItems(4);
         $scope.actions = {};
+        $scope.expressions = {};
+        $scope.primitives = {};
 
         $http({
             method: 'GET',
@@ -1329,6 +1393,21 @@ angular.module('ruleApp.controllers', [])
             $scope.primitives = data;
         });
 
+        $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+            $scope.expressions = data;
+        });
+
+        $scope.preview = function(expression) {
+            var d = $modal.open({
+                templateUrl: 'partials/standard/logic/canvas.html',
+                controller: 'CanvasCtrl',
+                resolve : {
+                    expression : function() {
+                        return expression.expressionIRI;
+                    }
+                }
+            });
+        };
 
         $scope.save = function() {
             $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
@@ -1360,17 +1439,31 @@ angular.module('ruleApp.controllers', [])
             $scope.actionsTemplates = data;
         });
 
-        $scope.openClauseEditor = function(clause) {
+        $scope.openClauseEditor = function(clause, subMode) {
             var d = $modal.open({
                 templateUrl: 'partials/standard/logic/primitive-editor.html',
                 controller: 'EditPrimitiveController',
                 resolve : {
                     clause : function() {
-                        return angular.copy(clause);
+                        var inst = angular.copy(clause);
+                        inst.category[0] = "ACTION";
+                        inst.category[1] = subMode;
+                        return inst;
                     }
                 }
             });
+            d.result.then( function( actions ) {
+                $scope.actions.xml = actions;
+                Blockly.mainWorkspace.clear();
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.actions.xml));
+
+                $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+                    $scope.expressions = data;
+                });
+
+            });
         };
+
         Blockly.Blocks.action_group = {
             init: function() {
                 this.setColour(20);
@@ -1515,6 +1608,14 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
+        $scope.outputFormat = 'HED_XML';
+
+        $scope.refresh = function() {
+            $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat ).success(function(data) {
+                $scope.xml = data;
+            });
+        }
+
         $http({
             method: 'GET',
             url: serviceUrl + '/rule/current'
@@ -1526,10 +1627,7 @@ angular.module('ruleApp.controllers', [])
                     $scope.$parent.title = 'Review and Save ' + data.Name;
 
                     $scope.$parent.menuItems = standardMenuItems(5);
-                    $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/HED_XML' ).success(function(data) {
-                        $scope.xml = data;
-                    });
-
+                    $scope.refresh();
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
@@ -1546,6 +1644,11 @@ angular.module('ruleApp.controllers', [])
                 };
         });
     }])
+
+
+
+
+
 
     .controller('TechnicalCtrl', [ '$http', '$scope', function ($http, $scope) {
         $scope.color = d3.scale.category20();
@@ -1602,6 +1705,7 @@ angular.module('ruleApp.controllers', [])
 
     .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal) {
     	$scope.clause = clause;
+        alert( clause.category );
 
         $scope.formatTemplate = function( $scope ) {
             $scope.template = clause.description;
@@ -1622,20 +1726,23 @@ angular.module('ruleApp.controllers', [])
         if ( $scope.clause.parameters == null ) {
             $http.get(serviceUrl + '/template/detail/' + clause.templateId).success(function(data) {
                 $scope.detail = data;
+                $scope.detail.category = clause.category;
                 $scope.formatTemplate( $scope );
             });
         } else {
             $scope.detail = $scope.clause;
+            $scope.detail.category = clause.category;
             $scope.formatTemplate( $scope );
         }
 
         $scope.submit = function(data) {
+            console.log( data );
             $http({
                 method : 'POST',
-                url : serviceUrl + '/primitive/create/' + data.key,
-                data : $scope.expressionName
+                url : serviceUrl + '/template/create',
+                data : data
             }).success( function( answer ) {
-                    $modalInstance.dismiss('ok');
+                    $modalInstance.close( answer );
                 });
 
         };
@@ -1677,7 +1784,10 @@ angular.module('ruleApp.controllers', [])
         $scope.cts2search = function(matchValue) {
             if ( $scope.resolveCodes ) {
                 var codeSys = $scope.parameter.elements[0].value;
-                return $http.jsonp(serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+                var call = isEmpty( codeSys )
+                    ? serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue
+                    : serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
+                return $http.jsonp( call ).then(function(response){
                     var entities = new Array();
                     var list = response.data.entityDirectory.entryList;
                     for ( var j = 0; j < list.length; j++ ) {
@@ -1686,9 +1796,8 @@ angular.module('ruleApp.controllers', [])
                     return entities;
                 });
             } else {
-                return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&matchvalue='+matchValue).then(function(response){
+                return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&maxtoreturn=30&matchvalue='+matchValue).then(function(response){
                     var entities = new Array();
-                    console.log(response);
                     var list = response.data.valueSetCatalogEntryDirectory.entryList;
                     for ( var j = 0; j < list.length; j++ ) {
                         entities[j] = $scope.normalize( list[j] );
@@ -1725,7 +1834,6 @@ angular.module('ruleApp.controllers', [])
             }
         }
     }])
-
 
 
     .controller('HomeImportCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance){

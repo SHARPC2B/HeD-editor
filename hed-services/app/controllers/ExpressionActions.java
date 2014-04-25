@@ -105,6 +105,8 @@ public class ExpressionActions extends play.mvc.Controller {
 
         byte[] logic = ModelHome.setConditionExpression( body.asRaw().asBytes() );
 
+        System.out.println( new String( logic ) );
+
         setHeaderCORS();
         return ok( logic );
     }

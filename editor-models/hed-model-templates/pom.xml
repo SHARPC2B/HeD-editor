@@ -92,12 +92,17 @@
 						<artifactId>hed-ontologies</artifactId>
 						<version>0.1-SNAPSHOT</version>
 					</dependency>
+					<dependency>
+						<groupId>sharpc2b</groupId>
+						<artifactId>hed-model</artifactId>
+						<version>0.1-SNAPSHOT</version>
+					</dependency>
 				</dependencies>
 				<configuration>
 					<outputDirectory>${pom.basedir}</outputDirectory>
 					<ontology>ontologies/templates/sharp_templates.owl</ontology>
 					<ontologyImports>
-						<import>ontologies/templates/template_schema.owl</import>
+						<import>ontologies/editor_models/template_schema.owl</import>
 					</ontologyImports>
 
 					<modelName>HeD_Templates</modelName>

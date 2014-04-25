@@ -12,6 +12,6 @@ public interface TemplateStore {
 
     public Template getTemplateInfo( String templateId );
 
-    public String instantiateTemplate( String templateId, String name, Map<String,Map<String,Object>> parameterValues );
+    public byte[] instantiateTemplate( String templateId, String name, Template source );
 
 }

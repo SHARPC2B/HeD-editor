@@ -14,6 +14,7 @@ import edu.asu.sharpc2b.templates.Parameter;
 import edu.asu.sharpc2b.templates.Template;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.transform.HeDExporterFactory;
+
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -290,7 +291,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     public String cloneNamedExpression( String exprId ) {
         HeDNamedExpression expr = getCurrentArtifact().getNamedExpression( exprId );
         String id = UUID.randomUUID().toString();
-        getCurrentArtifact().updateNamedExpression( id, expr.getName(), expr.getDoxBytes() );
+        getCurrentArtifact().updateNamedExpression( id, expr.getName(), expr.getDoxBytes(), null );
         return id;
     }
 
@@ -305,7 +306,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             return null;
         }
 
-        return getCurrentArtifact().updateNamedExpression( exprId, exprName, doxBytes );
+        return getCurrentArtifact().updateNamedExpression( exprId, exprName, doxBytes, null );
     }
 
     public byte[] getLogicExpression() {
@@ -432,12 +433,17 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     }
 
     private void addOperation( Parameter param, String code ) {
-        param.addCompatibleOperation( (( ConceptCode ) IndividualFactory.getNamedIndividuals().get( code )).getCode().get( 0 ) );
+        ConceptCode ccode = (ConceptCode) IndividualFactory.getNamedIndividuals().get( code );
+        if ( ccode != null && ! ccode.getCode().isEmpty() ) {
+            String symbl = ccode.getCode().get( 0 );
+            param.addCompatibleOperation( symbl );
+        } else {
+            System.out.println( "WARNING : Op with missing symbol " + code );
+        }
     }
 
     @Override
-    public String instantiateTemplate( String templateId, String name, Map<String, Map<String, Object>> parameterValues ) {
-        return null;
+    public byte[] instantiateTemplate( String templateId, String name, Template source ) {
+        return getCurrentArtifact().instantiateExpressionFromTemplate( name, name, source );
     }
-
 }

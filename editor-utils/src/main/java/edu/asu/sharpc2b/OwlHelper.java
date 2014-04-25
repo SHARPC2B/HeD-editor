@@ -139,6 +139,13 @@ public class OwlHelper {
                 factory.getOWLLiteral( flag ) );
     }
 
+    public OWLAxiom assertDataProperty( String property, OWLNamedIndividual src, int value ) {
+        return factory.getOWLDataPropertyAssertionAxiom(
+                factory.getOWLDataProperty( property, prefixManager ),
+                src,
+                factory.getOWLLiteral( value ) );
+    }
+
 
     private String extractStringProperty( String propName, Object code ) {
         try {

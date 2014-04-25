@@ -205,8 +205,7 @@
         <configuration>
           <outputDirectory>${pom.basedir}</outputDirectory>
 
-
-          <ontology>/home/davide/Projects/Git/HeD-editor/sharp-editor/editor-models/hed-ontologies/src/main/resources/ontologies/editor_models/sharp_operators.ofn</ontology>
+          <ontology>ontologies/editor_models/sharp_operators.ofn</ontology>
           <ontologyImports>
             <import>ontologies/editor_models/skos-core.owl</import>
             <import>ontologies/editor_models/skos-ext.owl</import>

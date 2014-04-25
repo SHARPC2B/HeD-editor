@@ -6,10 +6,10 @@
 			<input type="text" class="search-query span12" placeholder="search" x-ng-model="actionFilter">
 		</div>
 		<br>
-		<ul class="nav nav-list borderedBox" style="height: 300px; overflow-y:scroll;">
+		<ul class="nav nav-list borderedBox" style="height: 250px; overflow-y:scroll;">
 			<li x-ng-repeat="action in actionsTemplates"><a href="" class="nav-header" x-ng-click="action.show = !action.show" x-ng-show="(action.templates | filter:actionFilter).length > 0"><i class="icon-folder-open-alt" x-ng-show="!action.show"></i><i class="icon-folder-close-alt" x-ng-show="action.show"></i>{{action.label}}</a>
 				<ul class="nav nav-list" x-ng-show="!action.show">
-					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
+					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template,'ACTION')"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -17,16 +17,31 @@
 
         <p class="text-center">Conditional actions can be further specified:</p>
         <p><input type="search" class="search-query span12" placeholder="Filter templates" ng-model="templateFilter"></p>
-        <ul class="nav nav-list borderedBox" style="height: 200px; overflow-y:scroll;" >
+        <ul class="nav nav-list borderedBox" style="height: 175px; overflow-y:scroll;" >
             <li ng-repeat="primitive in primitives"><a href="" class="nav-header" ng-click="primitive.show = !primitive.show" ng-show="(primitive.templates | filter:templateFilter).length > 0"><i class="icon-folder-open-alt" ng-show="!primitive.show"></i><i class="icon-folder-close-alt" ng-show="primitive.show"></i>{{primitive.label}}</a>
                 <ul class="nav nav-list" ng-show="!primitive.show">
-                    <li ng-repeat="template in primitive.templates | filter:templateFilter" ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
+                    <li ng-repeat="template in primitive.templates | filter:templateFilter" ng-click="openClauseEditor(template,'CONDITION')"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
                 </ul>
+            </li>
+        </ul>
+        <br>
+
+        <p class="text-center">Expressions:</p>
+        <div class="search-prepend">
+            <div class="icon-search icon-white"></div>
+            <input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
+        </div><br>
+        <ul class="nav nav-list borderedBox" style="height: 125px; overflow-y:scroll;">
+            <li x-ng-repeat="expression in expressions | filter:search" >
+                <div class="span10 pull-left">{{expression.name}}</div>
+                <div class="span2 pull-right">
+                    <a href="" x-ng-click="preview(expression)"><i class="icon-zoom-in" title="View"></i></a>
+                </div>
             </li>
         </ul>
 
 
-        <p class="text-center">Available actions on the grey area may be dragged in to the canvas on the right</p>
+
 		<xml id="toolbox" style="display: none">
 			<category name="Blocks">
 				<block type="action_group"></block>

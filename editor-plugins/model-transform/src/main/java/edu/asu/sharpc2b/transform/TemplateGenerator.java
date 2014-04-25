@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 
 public class TemplateGenerator {
 
+    public static final int TEMPLATE_INDEX = 0;
     public static final int TEMPLATE_NAME = 5;
     public static final int TEMPLATE_CATEGORY = 4;
     public static final int PARAM_VMR_DATA_ELEMENT = 9;
@@ -76,7 +77,7 @@ public class TemplateGenerator {
     public OWLOntology createTemplateOntology( ) throws IOException, OWLOntologyCreationException {
 
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        manager.loadOntologyFromOntologyDocument( new ClassPathResource( "ontologies/templates/template_schema.owl" ).getInputStream() );
+        manager.loadOntologyFromOntologyDocument( new ClassPathResource( "ontologies/editor_models/template_schema.owl" ).getInputStream() );
         OWLOntology ontT = manager.createOntology( IRI.create( templatesIRI + "_data" ) );
         manager.applyChange( new AddImport( ontT, manager.getOWLDataFactory().getOWLImportsDeclaration( IRI.create( templatesIRI ) ) ) );
 
@@ -114,6 +115,7 @@ public class TemplateGenerator {
                 }
 
                 String descr = format( mainCategory, t.params );
+                axioms.add( helper.assertDataProperty( "tns:index", templ, t.index ) );
                 axioms.add( helper.assertDataProperty( "tns:name", templ, t.name ) );
                 axioms.add( helper.assertDataProperty( "tns:description", templ, descr ) );
                 axioms.add( helper.assertDataProperty( "tns:example", templ, descr ) );
@@ -121,8 +123,8 @@ public class TemplateGenerator {
 
                 for ( Parameter p : t.params ) {
                     String paramName = p.name;
-                    paramName = paramName.substring( paramName.lastIndexOf( '/' ) + 1 );
-
+                    //paramName = paramName.substring( paramName.lastIndexOf( '/' ) + 1 );
+                    paramName = paramName.replace( ".", "_" );
                     OWLNamedIndividual param = helper.asIndividual( "tns:" + t.id + "_" + paramName );
 
                     axioms.add( helper.assertType( param, "tns:" + "Parameter" ) );
@@ -178,6 +180,7 @@ public class TemplateGenerator {
                 // sometimes the sheet contains empty rows ...
                 continue;
             }
+            Cell indexCell = row.getCell( TEMPLATE_INDEX );
             Cell templateCell = row.getCell( TEMPLATE_NAME );
             Cell templateCat = row.getCell( TEMPLATE_CATEGORY );
 
@@ -201,6 +204,11 @@ public class TemplateGenerator {
             boolean isDisabled = sheet.getWorkbook().getFontAt( templateCell.getCellStyle().getFontIndex() ).getStrikeout();
 
             if ( ! isEmpty( templ.name ) && ( ! isDisabled ) ) {
+
+                if ( indexCell != null ) {
+                    int index = (int) indexCell.getNumericCellValue();
+                    templ.index = index;
+                }
 
                 String element = row.getCell( PARAM_VMR_DATA_ELEMENT ).getStringCellValue();
                 if ( ! "templateId".equals( element ) ) {
@@ -282,6 +290,8 @@ public class TemplateGenerator {
     }
 
     private static class Template {
+        public int index;
+
         public String id;
         public String name;
         public String category;

@@ -148,6 +148,7 @@ public class ModelManagerOwlAPIHermit
                 new ClassPathResource( "ontologies/editor_models/dc_owl2dl.owl" ),
                 new ClassPathResource( "ontologies/editor_models/dc2dul.owl" ),
                 new ClassPathResource( "ontologies/editor_models/metadata.owl" ),
+                new ClassPathResource( "ontologies/editor_models/template_schema.owl" ),
                 new ClassPathResource( "ontologies/editor_models/expr-core.owl" ),
                 new ClassPathResource( "ontologies/editor_models/sharp_operators.ofn" ),
                 new ClassPathResource( "ontologies/editor_models/prr-core.owl" ),

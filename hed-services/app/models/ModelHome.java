@@ -16,11 +16,16 @@ import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.KnowledgeResourceImpl;
 import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.RightsDeclarationImpl;
+import edu.asu.sharpc2b.ops.Primitive;
+import edu.asu.sharpc2b.ops.PrimitiveImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import edu.asu.sharpc2b.templates.ActionTemplate;
 import edu.asu.sharpc2b.templates.Parameter;
+import edu.asu.sharpc2b.templates.ParameterImpl;
 import edu.asu.sharpc2b.templates.Template;
+import edu.asu.sharpc2b.templates.TemplateImpl;
 import edu.mayo.cts2.framework.core.client.Cts2RestClient;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
@@ -51,6 +56,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -873,6 +879,7 @@ public class ModelHome {
             templateList.addTemplate( template );
         }
 
+        templateList.sort();
         return templateList;
     }
 
@@ -952,12 +959,14 @@ public class ModelHome {
     }
 
     private static void fillBasicTemplateDetails( String templateId, PrimitiveTemplate template, Template templateDetails ) {
+        template.index = templateDetails.getIndex().get( 0 );
         template.templateId = templateId;
         template.key = templateId;
         template.name = templateDetails.getName().get( 0 );
         template.description = templateDetails.getDescription().get( 0 );
         template.category = new ArrayList( templateDetails.getCategory() );
         template.group = templateDetails.getGroup().get( 0 );
+        template.templateClass = templateDetails.getClass().getName();
     }
 
 
@@ -994,11 +1003,11 @@ public class ModelHome {
 
     private static List<String> lookupCodeSystems() {
         CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/codesystems", CodeSystemCatalogEntryDirectory.class );
-        List<String> codeSystemNames = new ArrayList<>( codesSystems.getEntryCount() );
+        Set<String> codeSystemNames = new HashSet<String>( codesSystems.getEntryCount() );
         for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
             codeSystemNames.add( entry.getCodeSystemName() );
         }
-        return codeSystemNames;
+        return new ArrayList( codeSystemNames );
     }
 
 
@@ -1040,14 +1049,21 @@ public class ModelHome {
 
     private static void parseAndInjectDefaultValue( ParameterType param, String value ) {
         StringTokenizer tok = new StringTokenizer( value, ";" );
+
         while ( tok.hasMoreTokens() ) {
             String pair = tok.nextToken().trim();
             int eqIndex = pair.indexOf( "=" );
             String elem = pair.substring( 0, eqIndex ).trim();
             String vals = pair.substring( eqIndex + 1 );
 
-            param.getElement( elem ).value = vals;
-            param.getElement( elem ).initialValue = vals;
+            if ( "operation".equals( elem ) ) {
+                param.selectedOperation = vals;
+            } else if ( param.getElement( elem ) != null ) {
+                param.getElement( elem ).value = vals;
+                param.getElement( elem ).initialValue = vals;
+            } else {
+                System.err.println( "WARNING : Trying to assign initial value " + vals + " to element " + elem + ", which does not exist" );
+            }
 
         }
         if ( "CodeLiteral".equals( param.hedTypeName ) ) {
@@ -1128,43 +1144,45 @@ public class ModelHome {
         return null;
     }
 
+    public static byte[] createPrimitiveInst( PrimitiveTemplate t ) {
 
-    public static PrimitiveInst createPrimitiveInst( String ruleId, String templateId ) {
-        /*
-        Rule rule = ModelHome.getArtifact( ruleId );
-
-        PrimitiveTemplate template = ModelHome.getPrimitiveTemplate( templateId );
-
-        PrimitiveInst inst = template.createInst();
-        rule.primitives.add( inst );
-
-        return inst;*/
-        return null;
-    }
-
-    /**
-     * new
-     */
-    public static PrimitiveInst createPrimitiveInst(String templateId) {
-        /*
-        String name = "foo";
-        Map<String,Map<String,Object>> parameterValues = new HashMap<String,Map<String,Object>>();
-
-        PrimitiveTemplate templ = templateCache.get( templateId );
-        for ( String pid : templ.parameterIds ) {
-            Map<String,Object> details = new HashMap<String,Object>();
-            ParameterType param = templ.getParameter( pid );
-            for ( ElementType elem : param.elements ) {
-                details.put( elem.name, "TODO" );
-            }
-            parameterValues.put( pid, details );
+        Template source = null;
+        try {
+            source = (Template) Class.forName( t.templateClass ).newInstance();
+        } catch ( Exception e ) {
+            e.printStackTrace();
         }
 
-        core.instantiateTemplate( templateId, name, parameterValues );
-        */
-        return null;
-    }
+        source.addName( t.name );
+        source.addGroup( t.group );
+        for ( String cat : t.category ) {
+            source.addCategory( cat );
+        }
+        source.addDescription( t.description );
+        source.addExample( t.example );
 
+        for ( ParameterType p : t.parameters ) {
+            Parameter param = new ParameterImpl();
+
+            param.addOptional( p.optional );
+            param.addMultiple( p.multiple );
+            param.addName( p.name );
+            param.addLabel( p.label );
+            param.addDescription( p.description );
+            param.addTypeName( p.hedTypeName );
+
+            StringBuilder value = new StringBuilder( );
+            value.append( "operation=" ).append( p.selectedOperation ).append( ";" );
+            for ( ElementType el : p.elements ) {
+                value.append( el.name ).append( "=" ).append( el.value ).append( ";" );
+            }
+            param.addDefaultValue( value.toString() );
+
+            source.addHasParameter( param );
+        }
+
+        return core.instantiateTemplate( t.key, t.name, source );
+    }
 
 
 

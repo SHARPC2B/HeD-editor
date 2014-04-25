@@ -19,6 +19,7 @@ import edu.asu.sharpc2b.ops_set.EntityNameLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IdentifierLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IntegerIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IntegerLiteralExpression;
+import edu.asu.sharpc2b.ops_set.LiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PhysicalQuantityLiteralExpression;
@@ -76,6 +77,8 @@ public class TemplateStoreImpl {
         hedTypeMap.put( "PIVL_TS", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "Frequency", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
         hedTypeMap.put( "BaseFrequency", PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+        hedTypeMap.put( "ED", LiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
+        hedTypeMap.put( "Entity", IdentifierLiteralExpression.class.getSimpleName().replace( "Expression", "" ) );
 
         typeForHeDMap = new HashMap<String,Class>();
         typeForHeDMap.put( AddressLiteralExpression.class.getSimpleName().replace( "Expression", "" ), StringExpression.class );
@@ -98,6 +101,7 @@ public class TemplateStoreImpl {
         typeForHeDMap.put( UrlLiteralExpression.class.getSimpleName().replace( "Expression", "" ), StringExpression.class );
         typeForHeDMap.put( TimestampLiteralExpression.class.getSimpleName().replace( "Expression", "" ), DateExpression.class );
         typeForHeDMap.put( PeriodLiteralExpression.class.getSimpleName().replace( "Expression", "" ), PeriodLiteralExpression.class );
+        typeForHeDMap.put( LiteralExpression.class.getSimpleName().replace( "Expression", "" ), StringLiteralExpression.class );
     }
 
     public static TemplateStoreImpl getInstance( DomainHierarchyExplorer explorer ) {
@@ -151,7 +155,7 @@ public class TemplateStoreImpl {
     private void determineTypes( Template template, DomainHierarchyExplorer explorer ) {
         List<Parameter> undefinedParams = new ArrayList<Parameter>();
         for ( Parameter param : template.getHasParameter() ) {
-            StringTokenizer tok = new StringTokenizer( param.getPath().get( 0 ), "/" );
+            StringTokenizer tok = new StringTokenizer( param.getPath().get( 0 ), "." );
             while ( tok.hasMoreTokens() ) {
                 String prop = explorer.getDomainNs() + tok.nextToken();
                 if ( ! tok.hasMoreTokens() ) {
@@ -162,6 +166,11 @@ public class TemplateStoreImpl {
                             System.out.println( "WARNING : property " + prop + " on path " + param.getPath().get( 0 ) +  " declared with different types " + originalType + " vs (xls) " + param.getTypeName().get( 0 ) );
                             originalType = param.getTypeName().get( 0 );
                         }
+                        param.getTypeName().clear();
+                        param.addTypeName( mapNativeToHeD( originalType ) );
+                    } else {
+                        String originalType = param.getTypeName().get( 0 );
+                        System.out.println( "WARNING : unable to find property " + prop + " not found in domain model, will use the declared type " + originalType );
                         param.getTypeName().clear();
                         param.addTypeName( mapNativeToHeD( originalType ) );
                     }

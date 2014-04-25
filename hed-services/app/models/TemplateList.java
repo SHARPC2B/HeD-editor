@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Id;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,4 +37,8 @@ public class TemplateList {
         this.templates = templates;
     }
 
+
+    public void sort() {
+        Collections.sort( templates );
+    }
 }

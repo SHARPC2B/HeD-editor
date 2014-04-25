@@ -1,16 +1,46 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.SupportsRdfId;
+import edu.asu.sharpc2b.actions.CancelActionImpl;
+import edu.asu.sharpc2b.actions.CollectInformationActionImpl;
+import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.CompositeActionImpl;
+import edu.asu.sharpc2b.actions.CreateActionImpl;
+import edu.asu.sharpc2b.actions.FireEventActionImpl;
+import edu.asu.sharpc2b.actions.MessageActionImpl;
+import edu.asu.sharpc2b.actions.ModifyActionImpl;
 import edu.asu.sharpc2b.actions.SharpAction;
+import edu.asu.sharpc2b.actions.SharpActionImpl;
+import edu.asu.sharpc2b.metadata.Evidence;
+import edu.asu.sharpc2b.metadata.KnowledgeResource;
+import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
 import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
+import edu.asu.sharpc2b.ops.LiteralExpression;
 import edu.asu.sharpc2b.ops.ObjectExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.Variable;
+import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.ops.VariableExpressionImpl;
+import edu.asu.sharpc2b.ops.VariableImpl;
+import edu.asu.sharpc2b.ops_set.AddExpression;
+import edu.asu.sharpc2b.ops_set.AddExpressionImpl;
+import edu.asu.sharpc2b.ops_set.BooleanLiteralExpression;
+import edu.asu.sharpc2b.ops_set.BooleanLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ClinicalRequestExpression;
+import edu.asu.sharpc2b.ops_set.ClinicalRequestExpressionImpl;
+import edu.asu.sharpc2b.ops_set.EqualExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IntegerLiteralExpression;
+import edu.asu.sharpc2b.ops_set.IntegerLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.NotEqualExpression;
+import edu.asu.sharpc2b.ops_set.NotEqualExpressionImpl;
 import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.ops_set.OrExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
+import edu.asu.sharpc2b.ops_set.PeriodLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.StringLiteralExpression;
+import edu.asu.sharpc2b.ops_set.StringLiteralExpressionImpl;
 import edu.asu.sharpc2b.prr.ComputerExecutableRule;
 import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.ExpressionImpl;
@@ -18,6 +48,7 @@ import edu.asu.sharpc2b.prr.ProductionRule;
 import edu.asu.sharpc2b.prr.ProductionRuleImpl;
 import edu.asu.sharpc2b.prr.RuleAction;
 import edu.asu.sharpc2b.prr.RuleCondition;
+import edu.asu.sharpc2b.prr.RuleConditionImpl;
 import edu.asu.sharpc2b.prr.RuleVariable;
 import edu.asu.sharpc2b.prr.RuleVariableImpl;
 import edu.asu.sharpc2b.prr_sharp.DataRuleTrigger;
@@ -28,15 +59,46 @@ import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocumentImpl;
 import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
 import edu.asu.sharpc2b.prr_sharp.TemporalRuleTrigger;
 import edu.asu.sharpc2b.prr_sharp.TemporalRuleTriggerImpl;
+import edu.asu.sharpc2b.sharp.HasInterpretantRange;
+import edu.asu.sharpc2b.sharp.RelatedRuleElementRange;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import edu.asu.sharpc2b.templates.CollectTemplate;
+import edu.asu.sharpc2b.templates.CreateTemplate;
+import edu.asu.sharpc2b.templates.DeclareTemplate;
+import edu.asu.sharpc2b.templates.FireEventTemplate;
+import edu.asu.sharpc2b.templates.RemoveTemplate;
+import edu.asu.sharpc2b.templates.Template;
+import edu.asu.sharpc2b.templates.UpdateTemplate;
+import org.drools.semantics.Literal;
+import org.ontologydesignpatterns.ont.dul.dul.Description;
+import org.ontologydesignpatterns.ont.dul.dul.Entity;
+import org.ontologydesignpatterns.ont.dul.dul.InformationObject;
+import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
+import org.openrdf.model.Graph;
+import org.purl.dc.dcam.VocabularyEncodingScheme;
+import org.purl.dc.terms.Agent;
+import org.purl.dc.terms.AgentClass;
+import org.purl.dc.terms.LicenseDocument;
+import org.purl.dc.terms.LinguisticSystem;
+import org.purl.dc.terms.Location;
+import org.purl.dc.terms.LocationPeriodOrJurisdiction;
+import org.purl.dc.terms.MediaType;
+import org.purl.dc.terms.MediaTypeOrExtent;
+import org.purl.dc.terms.PeriodOfTime;
+import org.purl.dc.terms.ProvenanceStatement;
+import org.purl.dc.terms.RightsStatement;
+import org.purl.dc.terms.SizeOrDuration;
+import org.purl.dc.terms.Standard;
 import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.w3._2002._07.owl.Thing;
 import riotcmd.trig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,10 +275,10 @@ public class HeDArtifactData {
         return blocklyExpressions.get( exprId );
     }
 
-    public String updateNamedExpression( String exprId, String name, byte[] doxBytes ) {
+    public String updateNamedExpression( String exprId, String name, byte[] doxBytes, SharpExpression expression ) {
         HeDNamedExpression namedExpression;
         if ( ! blocklyExpressions.containsKey( exprId ) ) {
-            namedExpression = createVariableFromBlocks( exprId, name, doxBytes );
+            namedExpression = createVariableFromBlocks( exprId, name, doxBytes, expression );
             blocklyExpressions.put( exprId, namedExpression  );
         } else {
             namedExpression = blocklyExpressions.get( exprId );
@@ -318,13 +380,15 @@ public class HeDArtifactData {
         }
     }
 
-    private HeDNamedExpression createVariableFromBlocks( String exprId, String name, byte[] doxBytes ) {
+    private HeDNamedExpression createVariableFromBlocks( String exprId, String name, byte[] doxBytes, SharpExpression expression ) {
         // new expression
         RuleVariable newVar = new RuleVariableImpl();
         newVar.addName( name );
 
         Expression shExp = new ExpressionInSHARPImpl();
-        SharpExpression sharpExpression = new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION );
+        SharpExpression sharpExpression = expression != null
+                                          ? expression
+                                          : new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.EXPRESSION );
         shExp.addBodyExpression( sharpExpression );
         newVar.addVariableFilterExpression( shExp );
 
@@ -349,12 +413,20 @@ public class HeDArtifactData {
 
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
+
+                if ( ( (ProductionRule) rule ).getProductionRuleCondition().isEmpty() ) {
+                    RuleCondition cond = new RuleConditionImpl();
+                    Expression prrExpr = new ExpressionImpl();
+                    cond.addConditionRepresentation( prrExpr );
+                    ( (ProductionRule) rule ).addProductionRuleCondition( cond );
+                }
+
                 RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
                 Expression prrExpr = premise.getConditionRepresentation().get( 0 );
                 if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                     prrExpr.getBodyExpression().clear();
-                    prrExpr.getBodyExpression().add( logic );
                 }
+                prrExpr.getBodyExpression().add( logic );
             }
         }
         logicExpression.setDoxBytes( doxBytes );
@@ -481,5 +553,150 @@ public class HeDArtifactData {
         return id;
     }
 
+
+
+
+
+    public byte[] instantiateExpressionFromTemplate( String templateId, String name, Template source ) {
+        SharpExpression expr = instantiateExpression( source );
+        BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+        byte[] blocks = factory.fromExpression( name, expr, BlocklyFactory.ExpressionRootType.EXPRESSION );
+
+        expr.addIncarnationOf( source );
+
+        if ( ! ( expr instanceof LiteralExpression ) ) {
+            updateNamedExpression( templateId, name, blocks, expr );
+        }
+
+        if ( ! source.getCategory().isEmpty() ) {
+            String cat = source.getCategory().get( 0 );
+            BlocklyFactory.ExpressionRootType type = BlocklyFactory.ExpressionRootType.valueOf( cat );
+
+            switch ( type ) {
+                case CONDITION:
+                    if ( logicExpression == null ) {
+                        logicExpression = new HeDNamedExpression(
+                                idFromName( "$$$_LOGIC_PREMISE" ),
+                                "$$$_LOGIC_PREMISE",
+                                null,
+                                BlocklyFactory.emptyRoot( BlocklyFactory.ExpressionRootType.CONDITION ) );
+
+                    }
+                    return factory.updateRoot( expr,
+                                               name,
+                                               getLogicExpression().getDoxBytes(),
+                                               BlocklyFactory.ExpressionRootType.CONDITION );
+                case TRIGGER:
+                    if ( triggerExpression == null ) {
+                        triggerExpression = new HeDNamedExpression(
+                                idFromName( "$$$_TRIGGGERS" ),
+                                "$$$_TRIGGGERS",
+                                new OrExpressionImpl(),
+                                BlocklyFactory.emptyRoot( BlocklyFactory.ExpressionRootType.TRIGGER ) );
+
+                    }
+
+                    SharpExpression trix;
+                    if ( expr instanceof LiteralExpression ) {
+                        trix = expr;
+                    } else {
+                        VariableExpression varexp = new VariableExpressionImpl();
+                        Variable var = new VariableImpl();
+                        var.addName( name );
+                        varexp.addReferredVariable( var );
+                        trix = varexp;
+                    }
+                    OrExpression or = new OrExpressionImpl();
+                    or.getHasOperand().addAll( ((OrExpression)triggerExpression.getExpression()).getHasOperand() );
+                    or.addHasOperand( trix );
+
+                    return new BlocklyFactory( domainClasses, domainProperties ).fromExpression( "$$$_TRIGGGERS", or, BlocklyFactory.ExpressionRootType.TRIGGER );
+                case ACTION:
+                    if ( actionExpression == null ) {
+                        actionExpression = new HeDAction(
+                                idFromName( "$$$_ACTIONS" ),
+                                "$$$_ACTIONS",
+                                new CompositeActionImpl(),
+                                BlocklyFactory.emptyRoot( BlocklyFactory.ExpressionRootType.ACTION ) );
+                    }
+
+                    if ( expr instanceof BooleanExpression ) {
+                        return factory.updateRoot( expr,
+                                                   name,
+                                                   getActions().getDoxBytes(),
+                                                   BlocklyFactory.ExpressionRootType.ACTION );
+                    } else {
+                        return factory.updateActionRoot( determineActionFromTemplate( source ),
+                                                         name,
+                                                         getActions().getDoxBytes(),
+                                                         BlocklyFactory.ExpressionRootType.ACTION );
+                    }
+
+                case EXPRESSION:
+                default:
+                    throw new IllegalStateException( "Can only instantiate a template for CONDITION, TRIGGER, ACTION, found " + type );
+            }
+
+        } else {
+            throw new IllegalStateException( "Unable to instantiate a template without a category : CONDITION, TRIGGER, ACTION" );
+        }
+    }
+
+    private SharpAction determineActionFromTemplate( Template templ ) {
+        if ( templ instanceof CreateTemplate ) {
+            return new CreateActionImpl();
+        } else if ( templ instanceof CollectTemplate ) {
+            return new CollectInformationActionImpl();
+        } else if ( templ instanceof UpdateTemplate ) {
+            return new ModifyActionImpl();
+        } else if ( templ instanceof RemoveTemplate ) {
+            return new CancelActionImpl();
+        } else if ( templ instanceof FireEventTemplate ) {
+            return new FireEventActionImpl();
+        } else if ( templ instanceof DeclareTemplate ) {
+            // TODO Replace! with DeclareAction
+            return new MessageActionImpl();
+        }
+        throw new UnsupportedOperationException( "Unable to determine action for template " + templ.getClass() );
+    }
+
+    private SharpExpression instantiateExpression( Template source ) {
+        switch ( BlocklyFactory.ExpressionRootType.valueOf( source.getCategory().get( 0 ) ) ) {
+            case CONDITION:
+                EqualExpressionImpl eq = new EqualExpressionImpl();
+                BooleanLiteralExpression boo = new BooleanLiteralExpressionImpl();
+                boo.addValue_Boolean( true );
+                eq.addFirstOperand( boo );
+                eq.addSecondOperand( boo );
+                return eq;
+            case TRIGGER:
+                if ( source.getGroup().contains( "Timed" ) ) {
+                    PeriodLiteralExpression period = new PeriodLiteralExpressionImpl();
+                    return period;
+                } else {
+                    ClinicalRequestExpression clix = new ClinicalRequestExpressionImpl();
+                    return clix;
+                }
+            case ACTION:
+                switch ( BlocklyFactory.ExpressionRootType.valueOf( source.getCategory().get( 1 ) ) ) {
+                    case CONDITION:
+                        EqualExpressionImpl eq2 = new EqualExpressionImpl();
+                        BooleanLiteralExpression boo2 = new BooleanLiteralExpressionImpl();
+                        boo2.addValue_Boolean( true );
+                        eq2.addFirstOperand( boo2 );
+                        eq2.addSecondOperand( boo2 );
+                        return eq2;
+                    case ACTION:
+                        default:
+                            AddExpression neq = new AddExpressionImpl();
+                            IntegerLiteralExpression lit = new IntegerLiteralExpressionImpl();
+                            lit.addValue( 3 );
+                            neq.addFirstOperand( lit );
+                            neq.addSecondOperand( lit );
+                        return neq;
+                }
+        }
+        return null;
+    }
 
 }

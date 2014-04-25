@@ -4,6 +4,7 @@ import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import edu.asu.sharpc2b.actions.AtomicAction;
 import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.CreateAction;
 import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
@@ -14,7 +15,10 @@ import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertyExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.Variable;
 import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.ops.VariableExpressionImpl;
+import edu.asu.sharpc2b.ops.VariableImpl;
 import edu.asu.sharpc2b.ops_set.AndExpression;
 import edu.asu.sharpc2b.ops_set.IsEmptyExpression;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
@@ -22,6 +26,7 @@ import edu.asu.sharpc2b.ops_set.NotExpression;
 import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.prr.Expression;
+import edu.asu.sharpc2b.prr.ExpressionImpl;
 import edu.asu.sharpc2b.prr.NamedElement;
 import edu.asu.sharpc2b.prr.RuleCondition;
 import edu.asu.sharpc2b.prr.RuleVariable;
@@ -41,6 +46,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
@@ -134,7 +140,6 @@ public class BlocklyFactory {
                     break;
             }
 
-            root.appendChild( exprRoot );
             dox.appendChild( root );
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -798,9 +803,10 @@ public class BlocklyFactory {
     }
 
     private boolean isParentBoolean( SharpExpression parent ) {
-        return parent != null
+        return parent == null ||
+               ( parent != null
                && ! ( parent instanceof IsNotEmptyExpression )
-               && ! ( parent instanceof IsEmptyExpression );
+               && ! ( parent instanceof IsEmptyExpression ) );
     }
 
 
@@ -815,6 +821,74 @@ public class BlocklyFactory {
             transformer.transform( source, result );
         } catch ( TransformerException e ) {
             e.printStackTrace();
+        }
+    }
+
+
+
+
+    public byte[] updateActionRoot( SharpAction act, String name, byte[] doxBytes, ExpressionRootType action ) {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream( doxBytes );
+            Document dox = builderFactory.newDocumentBuilder().parse( bais );
+
+            // This tree is partial and disconnected. It is used to create the visual blocks,
+            // it will be properly instantiated when the user saves the changes
+            act.addTitle( act.getClass().getSimpleName().replace( "ActionImpl", "" ) + " " + name );
+
+            Expression rep = new ExpressionImpl();
+            VariableExpression varexp = new VariableExpressionImpl();
+            Variable var = new VariableImpl();
+            var.addName( name );
+            varexp.addReferredVariable( var );
+            rep.addBodyExpression( varexp );
+            act.addActionExpression( rep );
+
+            visitActions( Arrays.asList( act ), dox.getDocumentElement(), dox );
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            dump( dox, baos );
+            return baos.toByteArray();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return doxBytes;
+        }
+    }
+
+    public byte[] updateRoot( SharpExpression expr, String name, byte[] doxBytes, ExpressionRootType type ) {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream( doxBytes );
+            Document dox = builderFactory.newDocumentBuilder().parse( bais );
+
+            Element varReference = dox.createElement( "block" );
+            varReference.setAttribute( "type", getRefName( expr, type ) );
+            varReference.setAttribute( "x", "0" );
+            varReference.setAttribute( "y", "200" );
+            Element field = dox.createElement( "field" );
+            field.setAttribute( "name", "Clauses" );
+            field.setTextContent( name );
+            varReference.appendChild( field );
+
+            dox.getDocumentElement().appendChild( varReference );
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            dump( dox, baos );
+            return baos.toByteArray();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return doxBytes;
+        }
+    }
+
+    // TODO fixme
+    private String getRefName( SharpExpression expr, ExpressionRootType context ) {
+        switch ( context ) {
+            case ACTION:
+                return "action_condition";
+            default:
+                return "logic_boolean";
         }
     }
 }

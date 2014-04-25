@@ -110,6 +110,26 @@
         },
         {
             "mtype": "HedType",
+            "name": "Literal",
+            "label": "Full Text",
+            "description": "A String; ST",
+            "elements": [
+                {
+                    "name": "value",
+                    "label": "Value",
+                    "mtype": "ElementType",
+                    "valueType": "String",
+                    "widgetType": "RichText",
+                    "searchService": null,
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1,
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "mtype": "HedType",
             "name": "AddressLiteral",
             "label": "Address",
             "description": "An Address; AD",
@@ -360,7 +380,7 @@
             "elements": [
                 {
                     "name": "low",
-                    "label": "Lower Phase",
+                    "label": "Starting On...",
                     "valueType": "Date",
                     "widgetType": "DateTimeLocal",
                     "value": "2014-02-20T01:04",
@@ -369,7 +389,7 @@
                 },
                 {
                     "name": "high",
-                    "label": "Higher Phase",
+                    "label": "Until...",
                     "valueType": "Date",
                     "widgetType": "DateTimeLocal",
                     "value": "",
@@ -377,23 +397,8 @@
                     "attributeValue": true
                 },
                 {
-                    "name": "period",
-                    "label": "Period",
-                    "valueType": "dt:PQ",
-                    "widgetType": "TextBox",
-                    "value": ""
-                },
-                {
                     "name": "numerator",
-                    "label": "Numerator",
-                    "valueType": "QTY",
-                    "widgetType": "Number",
-                    "value": 0,
-                    "step": 1
-                },
-                {
-                    "name": "denominator",
-                    "label": "Denominator",
+                    "label": "Every...",
                     "valueType": "QTY",
                     "widgetType": "Number",
                     "value": 0,
@@ -401,18 +406,11 @@
                 },
                 {
                     "name": "count",
-                    "label": "Count",
+                    "label": "Max # times:",
                     "valueType": "Integer",
                     "widgetType": "Number",
                     "value": 0,
                     "step": 1
-                },
-                {
-                    "name": "alignment",
-                    "label": "Alignment",
-                    "valueType": "dt:CalendarCycle",
-                    "widgetType": "DateTimeLocal",
-                    "value": ""
                 },
                 {
                     "name": "isFlexible",

@@ -146,11 +146,13 @@ public class DomainHierarchyExplorer {
         try {
             ClassPathResource skos = new ClassPathResource( "ontologies/editor_models/skos-core.owl" );
             ClassPathResource skos_ext = new ClassPathResource( "ontologies/editor_models/skos-ext.owl" );
+            ClassPathResource templates = new ClassPathResource( "ontologies/editor_models/template_schema.owl" );
             ClassPathResource ops = new ClassPathResource( "ontologies/editor_models/expr-core.owl" );
 
 
             manager.loadOntologyFromOntologyDocument( skos.getInputStream() );
             manager.loadOntologyFromOntologyDocument( skos_ext.getInputStream() );
+            manager.loadOntologyFromOntologyDocument( templates.getInputStream() );
             manager.loadOntologyFromOntologyDocument( ops.getInputStream() );
             OWLOntology domain = manager.loadOntologyFromOntologyDocument( domainRes.getInputStream() );
 

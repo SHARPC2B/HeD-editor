@@ -1,5 +1,6 @@
 <label class="control-label" for="{{element.name}}" xmlns="http://www.w3.org/1999/html">{{element.label}}</label>
 <div class="controls" ng-switch on="element.widgetType">
+	<input ng-switch-when="RichText" type="text" ng-model="element.value">
 	<input ng-switch-when="TextBox" type="text" id="{{element.name}}" ng-model="element.value">
 	<span ng-switch-when="Choice">
 		<label class="radio inline" ng-repeat="choice in element.selectionChoices">

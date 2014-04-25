@@ -102,23 +102,7 @@ public class ArtifactActions extends play.mvc.Controller {
 
     //##############################################################################################
 
-    /**
-     * Implements GET /template/inst
-     */
-    @BodyParser.Of(BodyParser.Json.class)
-    public static Result saveTemplateInst (final boolean verify,
-                                           final boolean save)
-    {
-//        String msg = "submitted: " + "verify = " + verify + ", save = " + save;
-//        JsonNode js = Json.parse( "submitted: " + "verify = " + verify + ", save = " + save );
-
-//        ObjectNode j = Json.newObject();
-//        j.put( "verify", verify );
-//        j.put( "save", save );
-
-//        JsonNode jn = new JsonNode();
-//        String jText = "{submitted: "+"verify = "+verify+", save = "+save;
-//        JsonNode json = Json.toJson(  );
+    public static Result saveTemplateInst (final boolean verify) {
 
         final Http.Request request = request();
 
@@ -126,25 +110,14 @@ public class ArtifactActions extends play.mvc.Controller {
 
         JsonNode jn = body.asJson();
 
-//        System.out.println( "body as JsonNode = \n" + jn );
+        PrimitiveTemplate pt = Json.fromJson( jn, PrimitiveTemplate.class );
+        byte[] updatedCanvas = ModelHome.createPrimitiveInst( pt );
 
-        Object o = Json.fromJson( jn, PrimitiveInst.class );
+        System.out.println( new String( updatedCanvas ) );
 
-        PrimitiveInst template = (PrimitiveInst) o;
-
-        if ( verify )
-        {
-            template.verify();
-
-            System.out.println( "verified template.id = " + template.id );
-        }
-
-//        int n = inGraph.triples.size();
-
-        JsonNode jsonOut = Json.toJson( template );
         setHeaderCORS();
 
-        return ok( jsonOut );
+        return ok( updatedCanvas );
     }
 
 }

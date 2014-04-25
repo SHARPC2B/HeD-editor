@@ -15,6 +15,7 @@ import play.mvc.Result;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -193,29 +194,17 @@ public class CtsActions
 
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty( "Accept", "text/json" );
-        if (connection.getResponseCode() != 200)
-        {
+        if ( connection.getResponseCode() != 200 ) {
             throw new RuntimeException(
                     "Failed : The HTTP error code is : " + connection.getResponseCode() );
         }
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader( (connection.getInputStream()) ) );
-        String output;
-        StringBuilder buffer = new StringBuilder();
-        while ((output = br.readLine()) != null)
-        {
-            buffer.append( output );
-        }
-//        JsonConverter converter = new JsonConverter();
-//        StringBuilder builder = new StringBuilder();
-//        ValueSetCatalogEntryDirectory valuesetcat = converter
-//                .fromJson( builder.toString(), ValueSetCatalogEntryDirectory.class );
-//
-//        String jsonText = converter.toJson( valuesetcat );
-        System.out.println( "Got CTS2 " + buffer.toString() );
+
+        InputStream response = connection.getInputStream();
+        byte[] data = new byte[ response.available() ];
+        response.read( data );
+
         setHeaderCORS();
-//        return ok( jsonText );
-        return ok( buffer.toString() );
+        return ok( data );
     }
 
     private static String createJsonQueryString (final Map<String, String[]> queries)
@@ -229,17 +218,10 @@ public class CtsActions
         {
             for (String value : entry.getValue())
             {
-                if (empty)
-                {
-                    sb.append( "?" );
-                }
-                if (!empty)
-                {
-                    sb.append( "&" );
-                }
-                sb.append( entry.getKey() + "=" + value );
-                if ("format".equals( entry.getKey() ) && "json".equals( value ))
-                {
+                sb.append( empty ? "?" : "&" );
+                sb.append( entry.getKey() + "=" + value.replace( " ", "%20" ) );
+
+                if ("format".equals( entry.getKey() ) && "json".equals( value )) {
                     hasFormatJson = true;
                 }
                 empty = false;

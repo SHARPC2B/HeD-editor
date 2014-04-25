@@ -22,7 +22,7 @@ GET            /template/list/:category/:cs/:cd           controllers.ArtifactAc
 GET            /template/list/:category                   controllers.ArtifactActions.getTemplateListByGroupJson(category)
 GET            /template/list                             controllers.ArtifactActions.getTemplateListJson()
 POST           /template/verify                           controllers.ArtifactActions.verifyTemplate()
-#PUT            /template/inst                             controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true,save:Boolean = false)
+POST           /template/create                           controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true)
 GET            /template/detail/:id                       controllers.ArtifactActions.getTemplateDetails(id:String)
 #GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
 

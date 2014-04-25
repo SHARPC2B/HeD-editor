@@ -9,6 +9,7 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 
 Ontology(<http://asu.edu/sharpc2b/ops>
 Import(<http://asu.edu/sharpc2b/skos-ext>)
+Import(<http://asu.edu/sharpc2b/templates>)
 
 Declaration(Class(:AggregateIteratorExpression))
 SubClassOf(:AggregateIteratorExpression :IteratorExpression)
@@ -334,6 +335,9 @@ ObjectPropertyRange(:hasOperandType :TypeConcept)
 Declaration(ObjectProperty(:hasOperator))
 ObjectPropertyDomain(:hasOperator :OperatorExpression)
 ObjectPropertyRange(:hasOperator :OperatorConcept)
+Declaration(ObjectProperty(:incarnationOf))
+ObjectPropertyDomain(:incarnationOf :SharpExpression)
+ObjectPropertyRange(:incarnationOf <http://asu.edu/sharpc2b/templates#Template>)
 Declaration(ObjectProperty(:iterator))
 ObjectPropertyDomain(:iterator :IteratorExpression)
 ObjectPropertyRange(:iterator :Variable)

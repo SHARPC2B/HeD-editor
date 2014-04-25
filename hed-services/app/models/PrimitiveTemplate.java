@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * User: rk Date: 8/13/13 Package: models
  */
-public class PrimitiveTemplate extends SharpType {
+public class PrimitiveTemplate extends SharpType implements Comparable<PrimitiveTemplate> {
 
     @Id
     public String templateId;
@@ -32,6 +32,14 @@ public class PrimitiveTemplate extends SharpType {
 
     public List<ParameterType> parameters = null;
 
+    public Integer index;
+
+    public String templateClass;
+
+    @Override
+    public int compareTo( PrimitiveTemplate o ) {
+        return this.index - o.index;
+    }
 
 
     //========================================================================================
