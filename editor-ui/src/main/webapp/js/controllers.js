@@ -1842,7 +1842,7 @@ angular.module('ruleApp.controllers', [])
         }
 
         $scope.duplicateParam = function( param ) {
-            $scope.detail.parameters.splice( $scope.detail.parameters.indexOf( param ), 0, angular.copy( param ) );
+            $scope.detail.parameters.splice( $scope.detail.parameters.indexOf( param ), angular.copy( param ) );
         }
     }])
 
