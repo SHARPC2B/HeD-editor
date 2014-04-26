@@ -1060,14 +1060,16 @@ public class ModelHome {
             if ( "operation".equals( elem ) ) {
                 param.selectedOperation = vals;
             } else if ( param.getElement( elem ) != null ) {
-                param.getElement( elem ).value = vals;
                 if ( vals.startsWith( "{" ) ) {
-                    vals = vals.substring( vals.indexOf( "{" ), vals.lastIndexOf( '}' ) - 1 );
+                    vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
                     String[] admissibles = vals.split( "," );
                     param.getElement( elem ).initialValue = admissibles[ 0 ];
+                    param.getElement( elem ).value = admissibles[ 0 ];
                     param.getElement( elem ).selectionChoices = Arrays.asList( admissibles );
+                    param.getElement( elem ).widgetType = "Dropdown";
                 } else {
                     param.getElement( elem ).initialValue = vals;
+                    param.getElement( elem ).value = vals;
                 }
             } else {
                 System.err.println( "WARNING : Trying to assign initial value " + vals + " to element " + elem + ", which does not exist" );
@@ -1080,7 +1082,7 @@ public class ModelHome {
                 String code = (String) param.getElement( "code" ).value;
                 if ( code != null && ! "".equals( code ) ) {
                     CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + code, CodeSystemCatalogEntry.class );
-                    param.getElement( "label" ).value = entry.getFormalName();
+                    param.getElement( "displayValue" ).value = entry.getFormalName();
                 }
             } catch ( HttpClientErrorException e ) {
                 System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );

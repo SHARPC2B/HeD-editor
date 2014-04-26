@@ -170,7 +170,7 @@ public class TemplateStoreImpl {
                         param.addTypeName( mapNativeToHeD( originalType ) );
                     } else {
                         String originalType = param.getTypeName().get( 0 );
-                        System.out.println( "WARNING : unable to find property " + prop + " not found in domain model, will use the declared type " + originalType );
+                        System.out.println( "WARNING : unable to find property " + prop + " not found in domain model OR property has complex anonymous type, will use the declared type " + originalType );
                         param.getTypeName().clear();
                         param.addTypeName( mapNativeToHeD( originalType ) );
                     }

@@ -5,7 +5,7 @@ var serviceUrl = 'http://localhost:9000';
 
 angular.module('ruleApp.controllers', [])
 
-    .controller('HomeCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
+    .controller('HomeCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal ) {
         $http({
             method: 'GET',
             url: serviceUrl + '/rule/current'
@@ -78,13 +78,13 @@ angular.module('ruleApp.controllers', [])
         });
 
         $scope.$parent.menuItems = [
-            {"text": "Standard Mode", "href": "#/standard/background"}
+            {"text": "Go To Authoring...", "href": "#/standard/background"}
             //, {"text": "Technical View", "href": "#/technical"}
         ];
 
 
         $scope.openModal = function(partial) {
-            $modal.open({
+            var modal = $modal.open({
                 templateUrl: 'partials/home/' + partial.toLowerCase() +'.html',
                 controller: 'Home' + partial + 'Ctrl',
                 scope : $scope,
@@ -93,6 +93,9 @@ angular.module('ruleApp.controllers', [])
                         return $scope.$parent.title;
                     }
                 }
+            });
+            modal.result.then(function() {
+                window.location.href = "#/standard/background";
             });
         };
         $scope.createNew = function() {
@@ -105,6 +108,8 @@ angular.module('ruleApp.controllers', [])
                 }).success( function( data ) {
                         $scope.currentRuleId = data.ruleId;
                         updateTitle( $scope );
+
+                        window.location.href = "#/standard/background";
                     });
             }
         };
@@ -662,7 +667,7 @@ angular.module('ruleApp.controllers', [])
                     }
                 };
                 Blockly.Blocks[domainClass + '/properties' ] = {
-         
+
                     init: function() {
                         this.setColour(40);
                         this.appendDummyInput().appendField(domainClass);
@@ -691,7 +696,7 @@ angular.module('ruleApp.controllers', [])
         };
 
         Blockly.Blocks['http://asu.edu/sharpc2b/ops#VariableExpression'] = {
- 
+
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
@@ -701,7 +706,7 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks[ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] = {
- 
+
             init: function() {
                 this.setColour(40);
                 this.appendValueInput('DOT')
@@ -897,7 +902,9 @@ angular.module('ruleApp.controllers', [])
                     var descriptor = {};
                     descriptor.namespace = entity.name.namespace.toUpperCase();
                     descriptor.name = entity.name.name;
-                    descriptor.designation = descriptor.namespace + ':' + descriptor.name + '-' + entity.knownEntityDescriptionList[0].designation;
+                    descriptor.designation =
+                            // descriptor.namespace + ':' + descriptor.name + '-' +
+                            entity.knownEntityDescriptionList[0].designation;
                     entities[ j ] = descriptor;
                 }
                 return entities;
@@ -1719,17 +1726,11 @@ angular.module('ruleApp.controllers', [])
 
     .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal) {
     	$scope.clause = clause;
+
         $scope.formatTemplate = function( $scope ) {
             $scope.template = clause.description;
             angular.forEach($scope.detail.parameters, function(parameter, key) {
                 format( parameter );
-                $scope.template = $scope.template.replace(
-                    parameter.label,
-                    '<a ng-click="openOther(detail.parameters[' + key + '])">'
-                        + parameter.label
-                        + '</a>'
-                        + ( ! isEmpty( parameter.displayValue ) ? ' ' + parameter.selectedOperation + ' ' + parameter.displayValue : '' )
-                        + '<br/>' );
             });
         }
 
@@ -1740,6 +1741,7 @@ angular.module('ruleApp.controllers', [])
                 $scope.detail = data;
                 $scope.detail.category = clause.category;
                 $scope.formatTemplate( $scope );
+
             });
         } else {
             $scope.detail = $scope.clause;
@@ -1787,6 +1789,61 @@ angular.module('ruleApp.controllers', [])
             }).result.then(function() { $scope.formatTemplate($scope) });
         };
 
+
+
+        $scope.cts2search = function(matchValue, parameter) {
+            var resolveCodes = ( parameter.selectedOperation == "Equal" );
+            var codeSys = parameter.elements[2].value;
+            if ( resolveCodes ) {
+                var call = isEmpty( codeSys )
+                    ? serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue
+                    : serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
+                return $http.jsonp( call ).then(function(response){
+                    var entities = new Array();
+                    var list = response.data.entityDirectory.entryList;
+                    for ( var j = 0; j < list.length; j++ ) {
+                        entities[j] = $scope.normalize( list[j], true );
+                    }
+                    return entities;
+                });
+            } else {
+                return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&maxtoreturn=30&matchvalue='+matchValue).then(function(response){
+                    var entities = new Array();
+                    var list = response.data.valueSetCatalogEntryDirectory.entryList;
+                    for ( var j = 0; j < list.length; j++ ) {
+                        entities[j] = $scope.normalize( list[j], false );
+                    }
+                    return entities;
+                });
+            }
+        };
+        $scope.onSelect = function ($item, $model, $label, parameter) {
+            parameter.elements[ 2 ].value = $item.namespace;
+            parameter.elements[ 1 ].value = $item.name;
+            parameter.elements[ 0 ].value = $label;
+            format(parameter)
+        };
+        $scope.normalize = function(entity, resolveCodes) {
+            if ( resolveCodes ) {
+                var descriptor = {};
+                descriptor.namespace = entity.name.namespace.toUpperCase();
+                descriptor.name = entity.name.name;
+                descriptor.designation =
+                    //descriptor.namespace + ':' + descriptor.name + ' - ' +
+                    entity.knownEntityDescriptionList[0].designation;
+                return descriptor;
+            } else {
+                var descriptor = {};
+                descriptor.designation = entity.valueSetName;
+                descriptor.namespace = entity.valueSetName;
+                descriptor.name = entity.valueSetName;
+                return descriptor;
+            }
+        }
+
+        $scope.duplicateParam = function( param ) {
+            $scope.detail.parameters.splice( $scope.detail.parameters.indexOf( param ), 0, angular.copy( param ) );
+        }
     }])
 
     .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
@@ -1795,7 +1852,7 @@ angular.module('ruleApp.controllers', [])
 
         $scope.cts2search = function(matchValue) {
             if ( $scope.resolveCodes ) {
-                var codeSys = $scope.parameter.elements[0].value;
+                var codeSys = $scope.parameter.elements[2].value;
                 var call = isEmpty( codeSys )
                     ? serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue
                     : serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
@@ -1823,9 +1880,9 @@ angular.module('ruleApp.controllers', [])
             $modalInstance.close();
         };
         $scope.onSelect = function ($item, $model, $label) {
-            $scope.parameter.elements[0].value = $item.namespace;
-            $scope.parameter.elements[1].value = $item.name;
-            $scope.parameter.elements[2].value = $label;
+            $scope.parameter.elements[ 2 ].value = $item.namespace;
+            $scope.parameter.elements[ 1 ].value = $item.name;
+            $scope.parameter.elements[ 0 ].value = $label;
         };
         $scope.onOpChange = function(op) {
             $scope.resolveCodes = "Equal" == op;
@@ -1835,7 +1892,9 @@ angular.module('ruleApp.controllers', [])
                 var descriptor = {};
                 descriptor.namespace = entity.name.namespace.toUpperCase();
                 descriptor.name = entity.name.name;
-                descriptor.designation = descriptor.namespace + ':' + descriptor.name + ' - ' + entity.knownEntityDescriptionList[0].designation;
+                descriptor.designation =
+                        //descriptor.namespace + ':' + descriptor.name + ' - ' +
+                        entity.knownEntityDescriptionList[0].designation;
                 return descriptor;
             } else {
                 var descriptor = {};
@@ -1899,7 +1958,7 @@ angular.module('ruleApp.controllers', [])
             $scope.selectedRule = template.name;
         };
     }])
-    .controller('HomeOpenCtrl', ['$scope', '$http', '$modalInstance', function($scope, $http, $modalInstance) {
+    .controller('HomeOpenCtrl', ['$scope', '$http', '$modalInstance', '$location', function($scope, $http, $modalInstance, $location) {
         $http.get( serviceUrl + '/store/list' ).success(function(data) {
             $scope.rules = data;
         });
@@ -1916,7 +1975,7 @@ angular.module('ruleApp.controllers', [])
                                 $scope.$parent.currentRuleId = data.ruleId;
                                 $scope.$parent.currentRuleTitle = data.Name;
                                 updateTitle( $scope.$parent );
-                                $modalInstance.dismiss('ok');
+                                $modalInstance.close('ok');
                             });
                     });
         };
@@ -1996,8 +2055,14 @@ function updateTitle( $scope ) {
 function format( parameter ) {
     var display = "";
     parameter.elements.forEach( function(element) {
-        if ( ! isEmpty( element.value ) ) {
-            display = display + '[' + element.name + "=" + element.value + '] ';
+        if ( ! isEmpty( element.value ) && element !== parameter.elements[0] ) {
+            //display = display + '[' + element.name + "=" + element.value + '] ';
+            display = display
+                        + ' '
+                        + ( isEmpty( element.pre ) ? '' : element.pre )
+                        + element.value
+                        + ( isEmpty( element.post ) ? '' : element.post )
+                        + ' ';
         }
     });
     parameter.displayValue = display;

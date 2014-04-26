@@ -123,10 +123,6 @@ public class DomainHierarchyExplorer {
                         if ( evaluatesAs.equals( subopa.getProperty().asOWLObjectProperty().getIRI() ) ) {
                             propertyRanges.put( subopa.getSubject().asOWLNamedIndividual().getIRI().toString(),
                                                 subopa.getObject().asOWLNamedIndividual().getIRI().toString() );
-                        } else {
-                            //TODO property has a complex type!
-                            propertyRanges.put( subopa.getSubject().asOWLNamedIndividual().getIRI().toString(),
-                                                null );
                         }
                     }
                 }

@@ -9,12 +9,11 @@
             "elements": [
                 {
                     "mtype": "ElementType",
-                    "name": "codeSystem",
-                    "label": "Coding System",
+                    "name": "displayValue",
+                    "label": "Code Label",
                     "valueType": "String",
-                    "widgetType": "Choice",
-                    "selectionChoices": ["RxNorm", "NDC"],
-                    "initialValue": "RxNorm",
+                    "widgetType": "SearchChoice",
+                    "initialValue": null,
                     "minSelectionCount": 1,
                     "maxSelectionCount": 1
                 },
@@ -30,11 +29,12 @@
                 },
                 {
                     "mtype": "ElementType",
-                    "name": "displayValue",
-                    "label": "Code Label",
+                    "name": "codeSystem",
+                    "label": "Coding System",
                     "valueType": "String",
-                    "widgetType": "SearchChoice",
-                    "initialValue": null,
+                    "widgetType": "Choice",
+                    "selectionChoices": ["RxNorm", "NDC"],
+                    "initialValue": "RxNorm",
                     "minSelectionCount": 1,
                     "maxSelectionCount": 1
                 }
@@ -347,20 +347,20 @@
             "elements": [
                 {
                     "mtype": "ElementType",
+                    "name": "code",
+                    "label": "Code",
+                    "valueType": "Code",
+                    "widgetType": "SearchChoice",
+                    "value": ""
+                },
+                {
+                    "mtype": "ElementType",
                     "name": "codeSystem",
                     "label": "Code System",
                     "valueType": "String",
                     "widgetType": "Choice",
                     "selectionChoices": ["RxNorm", "NDC"],
                     "value": "RxNorm"
-                },
-                {
-                    "mtype": "ElementType",
-                    "name": "code",
-                    "label": "Code",
-                    "valueType": "Code",
-                    "widgetType": "SearchChoice",
-                    "value": ""
                 },
                 {
                     "name": "value",

@@ -20,17 +20,22 @@
 		<dependency>
 			<groupId>sharpc2b</groupId>
 			<artifactId>editor-utils</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${editor.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>sharpc2b</groupId>
 			<artifactId>hed-model</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${editor.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>sharpc2b</groupId>
 			<artifactId>hed-model-expressions</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${editor.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>sharpc2b</groupId>
+			<artifactId>model-analysis</artifactId>
+			<version>${editor.version}</version>
 		</dependency>
 
 		<dependency>
@@ -90,12 +95,12 @@
 					<dependency>
 						<groupId>sharpc2b</groupId>
 						<artifactId>hed-ontologies</artifactId>
-						<version>0.1-SNAPSHOT</version>
+						<version>${editor.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>sharpc2b</groupId>
 						<artifactId>hed-model</artifactId>
-						<version>0.1-SNAPSHOT</version>
+						<version>${editor.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>

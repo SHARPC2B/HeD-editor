@@ -22,6 +22,7 @@
     <module>hed-model</module>
     <module>hed-model-expressions</module>
     <module>hed-model-templates</module>
+	  <module>model-analysis</module>
   </modules>
 
 
@@ -37,7 +38,7 @@
 	    <dependency>
 		    <groupId>sharpc2b</groupId>
 		    <artifactId>generated-models</artifactId>
-		    <version>0.1-SNAPSHOT</version>
+		    <version>${editor.version}</version>
 	    </dependency>
 
       <dependency>

@@ -1,0 +1,30 @@
+<span  style="vertical-align: super;">{{parameter.label}} </span>
+
+<select ng-model="parameter.selectedOperation" ng-options="oc for oc in parameter.operationChoices" class="input-medium"></select>
+
+<span ng-switch="parameter.elements[0].widgetType">
+	        <input ng-switch-when="RichText" type="text" ng-model="parameter.elements[0].value">
+	        <input ng-switch-when="TextBox" type="text" ng-model="parameter.elements[0].value">
+            <input ng-switch-when="Number" type="number" ng-model="parameter.elements[0].value" step="{{parameter.elements[0].step}}">
+            <span ng-switch-when="Choice">
+		        <label class="radio inline" ng-repeat="choice in parameter.elements[0].selectionChoices">
+                    <input type="radio" ng-model="parameter.elements[0].value" value="{{choice}}">{{choice}}
+                </label>
+	        </span>
+	        <select ng-switch-when="Dropdown" ng-model="parameter.elements[0].value" ng-options="sc for sc in parameter.elements[0].selectionChoices" />
+	        <input ng-switch-when="SearchChoice" type="text"
+                   ng-model="parameter.elements[0].value"
+                   typeahead="suggestion.designation for suggestion in cts2search($viewValue, parameter)"
+                   typeahead-editable="false"
+                   typeahead-on-select="onSelect($item, $model, $label, parameter)">
+            <input ng-switch-when="DateTimeLocal" type="datetime-local" ng-model="parameter.elements[0].value">
+        	<input ng-switch-when="Checkbox" type="checkbox" ng-model="parameter.elements[0].value">
+        </span>
+
+<span  style="vertical-align: super;">{{parameter.displayValue}} </span>
+
+<button ng-click="openOther(parameter)" class="btn" style="vertical-align: super;">...</button>
+
+<span ng-switch="parameter.multiple">
+    <button ng-switch-when="true" ng-click="duplicateParam(parameter)" class="btn" style="vertical-align: super;">+</button>
+</span>

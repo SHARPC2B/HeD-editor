@@ -2,10 +2,6 @@
 	<h2 class="text-center">{{parameter.label}}</h2>
 </div>
 <div class="modal-body">
-    <div style="margin-left: 180px;">
-        <label class="control-label">Operation</label>
-        <select x-ng-model="parameter.selectedOperation" x-ng-options="op for op in parameter.operationChoices" x-ng-change="onOpChange(parameter.selectedOperation)"></select>
-    </div>
     <hr>
 	<div style="margin-left: 180px;">
 		<label class="radio inline">
@@ -17,8 +13,10 @@
 	</div>
 	<hr>
 	<form class="form-horizontal" ng-show="parameter.useLiteral">
-		<div class="control-group" ng-repeat="element in parameter.elements" ng-include="'partials/standard/logic/primitive-widget.html'" ng-class="{error: element.errors.length > 0}"></div>
-		<div class="control-group error" ng-if="parameter.errors">
+
+        <div class="control-group" ng-repeat="element in parameter.elements" ng-include="'partials/standard/logic/primitive-widget.html'" ng-class="{error: element.errors.length > 0}"></div>
+
+        <div class="control-group error" ng-if="parameter.errors">
 			<label class="control-label" for="error">Error</label>
 			<div class="controls">
 				<p class="text-error" ng-repeat="error in parameter.errors">{{error.error}}</p>
