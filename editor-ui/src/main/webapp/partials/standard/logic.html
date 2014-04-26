@@ -3,7 +3,7 @@
         <p class="text-center">Pre-filter the condition clauses by CD:</p>
 		<form class="form-inline">
             <input type="text" ng-model="codeSystems.chosenCode.label"
-                   typeahead="suggestion.knownEntityDescriptionList[0].designation for suggestion in cts2search($viewValue)"
+                   typeahead="suggestion.designation for suggestion in cts2search($viewValue)"
                    typeahead-editable="false"
                    typeahead-on-select='onSelect($item, $model, $label)'>
 			<button type="submit" x-ng-click="execute()" class="btn">Filter Templates</button>

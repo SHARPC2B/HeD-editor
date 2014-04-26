@@ -1,6 +1,7 @@
 'use strict';
 
 var serviceUrl = 'http://localhost:9000';
+//var serviceUrl = 'http://192.168.0.4:9000';
 
 
 angular.module('ruleApp.controllers', [])
@@ -120,11 +121,11 @@ angular.module('ruleApp.controllers', [])
                     $scope.background = data;
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Background Information ' + data.Name;
+                    $scope.$parent.title = 'Metadata ' + data.Name;
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
-                    $scope.$parent.title = 'Background Information (no rule active)';
+                    $scope.$parent.title = 'Metadata (no rule active)';
                 }
 
 
@@ -147,7 +148,7 @@ angular.module('ruleApp.controllers', [])
                                         $scope.background = data;
                                         $scope.currentRuleId = data.ruleId;
                                         $scope.currentRuleTitle = data.Name;
-                                        $scope.$parent.title = 'Background Information ' + data.Name;
+                                        $scope.$parent.title = 'Metadata ' + data.Name;
                                     }
                             )
 
@@ -662,7 +663,7 @@ angular.module('ruleApp.controllers', [])
                     }
                 };
                 Blockly.Blocks[domainClass + '/properties' ] = {
-                    helpUrl: 'http://www.example.com/',
+         
                     init: function() {
                         this.setColour(40);
                         this.appendDummyInput().appendField(domainClass);
@@ -691,7 +692,7 @@ angular.module('ruleApp.controllers', [])
         };
 
         Blockly.Blocks['http://asu.edu/sharpc2b/ops#VariableExpression'] = {
-            helpUrl: 'http://www.example.com/',
+ 
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
@@ -701,7 +702,7 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks[ 'http://asu.edu/sharpc2b/ops#DomainProperty' ] = {
-            helpUrl: 'http://www.example.com/',
+ 
             init: function() {
                 this.setColour(40);
                 this.appendValueInput('DOT')
@@ -726,7 +727,6 @@ angular.module('ruleApp.controllers', [])
         };
 
         Blockly.Blocks['logic_root'] = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setHelpUrl('http://www.example.com/');
                 this.appendValueInput("NAME")
@@ -890,12 +890,23 @@ angular.module('ruleApp.controllers', [])
         $scope.cts2search = function(matchValue) {
             var codeSys = $scope.codeSystems.chosenCodeSystem;
             return $http.jsonp(serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&matchalgorithm=startsWith&format=json&maxtoreturn=20&matchvalue='+matchValue).then(function(response){
-                return response.data.entityDirectory.entryList;
+                var entities = new Array();
+                var list = response.data.entityDirectory.entryList;
+                console.log( list );
+                for ( var j = 0; j < list.length; j++ ) {
+                    var entity = list[j];
+                    var descriptor = {};
+                    descriptor.namespace = entity.name.namespace.toUpperCase();
+                    descriptor.name = entity.name.name;
+                    descriptor.designation = descriptor.namespace + ':' + descriptor.name + '-' + entity.knownEntityDescriptionList[0].designation;
+                    entities[ j ] = descriptor;
+                }
+                return entities;
             });
         };
         $scope.onSelect = function ($item, $model, $label) {
-            $scope.codeSystems.chosenCode.code = $item.name.name;
-            $scope.codeSystems.chosenCode.codeSystem = $item.name.namespace.toUpperCase();
+            $scope.codeSystems.chosenCode.code = $item.name;
+            $scope.codeSystems.chosenCode.codeSystem = $item.namespace;
             $scope.codeSystems.chosenCode.label = $label;
         };
         $scope.execute = function() {
@@ -1077,7 +1088,6 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.logic_boolean = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
@@ -1087,7 +1097,6 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.logic_any = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(60);
                 this.appendDummyInput()
@@ -1097,7 +1106,6 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.logic_negate = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(210);
                 this.appendValueInput( 'NOT' )
@@ -1109,7 +1117,6 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.logic_exists = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(210);
                 this.appendValueInput( 'EXISTS' )
@@ -1121,7 +1128,6 @@ angular.module('ruleApp.controllers', [])
             }
         };
         Blockly.Blocks.logic_root = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(10);
                 this.appendValueInput( 'ROOT' )
@@ -1168,14 +1174,25 @@ angular.module('ruleApp.controllers', [])
             url : serviceUrl + '/rule/expressions/' + expression,
             headers : { 'Content-Type':'application/html' }
         }).success( function( data ) {
-                console.log( data );
+                $scope.expression = expression;
+                Blockly.inject(document.getElementById('blocklyPreview'), {
+                    path: './lib/blockly/',
+                    toolbox: document.getElementById('toolbox')
+                });
+
                 Blockly.mainWorkspace.clear();
                 Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom(data));
             });
 
         $scope.cancel = function() {
+            Blockly.inject(document.getElementById('blocklyDiv'), {
+                path: './lib/blockly/',
+                toolbox: document.getElementById('toolbox')
+            });
             $modalInstance.dismiss();
         }
+
+
     }])
 
     .controller('TextInputCtrl', ['$scope', '$http', '$modalInstance', 'text', function($scope, $http, $modalInstance, text) {
@@ -1434,7 +1451,6 @@ angular.module('ruleApp.controllers', [])
         };
 
 
-
         $http.get(serviceUrl + '/template/list/Action').success(function(data) {
             $scope.actionsTemplates = data;
         });
@@ -1565,7 +1581,6 @@ angular.module('ruleApp.controllers', [])
         };
 
         Blockly.Blocks.action_condition = {
-            helpUrl: 'http://www.example.com/',
             init: function() {
                 this.setColour(160);
                 this.appendDummyInput()
@@ -1705,8 +1720,6 @@ angular.module('ruleApp.controllers', [])
 
     .controller('EditPrimitiveController', ['$scope', '$modalInstance', 'clause', '$http', '$modal', function($scope, $modalInstance, clause, $http, $modal) {
     	$scope.clause = clause;
-        alert( clause.category );
-
         $scope.formatTemplate = function( $scope ) {
             $scope.template = clause.description;
             angular.forEach($scope.detail.parameters, function(parameter, key) {
@@ -1821,9 +1834,9 @@ angular.module('ruleApp.controllers', [])
         $scope.normalize = function(entity) {
             if ( $scope.resolveCodes ) {
                 var descriptor = {};
-                descriptor.designation = entity.knownEntityDescriptionList[0].designation;
                 descriptor.namespace = entity.name.namespace.toUpperCase();
                 descriptor.name = entity.name.name;
+                descriptor.designation = descriptor.namespace + ':' + descriptor.name + ' - ' + entity.knownEntityDescriptionList[0].designation;
                 return descriptor;
             } else {
                 var descriptor = {};
@@ -1917,7 +1930,7 @@ angular.module('ruleApp.controllers', [])
     }]);
 
 function standardMenuItems(position) {
-    var menuItems = [{"text": "Background Information", "href": "#/standard/background"},
+    var menuItems = [{"text": "Metadata", "href": "#/standard/background"},
         {"text": "Create Expressions", "href": "#/standard/expression"},
         {"text": "Select Trigger", "href": "#/standard/trigger"},
         {"text": "Define Logic", "href": "#/standard/logic"},

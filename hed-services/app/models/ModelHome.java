@@ -54,6 +54,7 @@ import play.libs.Json;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -911,7 +912,7 @@ public class ModelHome {
                     if ( isCodeHierarchyConstraint( constr ) ) {
                         EntityDirectory space = getCodespace( constr.trim() );
                         for ( EntityDirectoryEntry entry : space.getEntry() ) {
-                            if ( entry.getName().getNamespace().equals( codeSystem )
+                            if ( entry.getName().getNamespace().equalsIgnoreCase( codeSystem )
                                && entry.getName().getName().equals( code ) ) {
                                 found = true;
 
@@ -1054,13 +1055,20 @@ public class ModelHome {
             String pair = tok.nextToken().trim();
             int eqIndex = pair.indexOf( "=" );
             String elem = pair.substring( 0, eqIndex ).trim();
-            String vals = pair.substring( eqIndex + 1 );
+            String vals = pair.substring( eqIndex + 1 ).trim();
 
             if ( "operation".equals( elem ) ) {
                 param.selectedOperation = vals;
             } else if ( param.getElement( elem ) != null ) {
                 param.getElement( elem ).value = vals;
-                param.getElement( elem ).initialValue = vals;
+                if ( vals.startsWith( "{" ) ) {
+                    vals = vals.substring( vals.indexOf( "{" ), vals.lastIndexOf( '}' ) - 1 );
+                    String[] admissibles = vals.split( "," );
+                    param.getElement( elem ).initialValue = admissibles[ 0 ];
+                    param.getElement( elem ).selectionChoices = Arrays.asList( admissibles );
+                } else {
+                    param.getElement( elem ).initialValue = vals;
+                }
             } else {
                 System.err.println( "WARNING : Trying to assign initial value " + vals + " to element " + elem + ", which does not exist" );
             }

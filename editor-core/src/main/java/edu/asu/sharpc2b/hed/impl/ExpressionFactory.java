@@ -4,6 +4,7 @@ import com.clarkparsia.empire.annotation.RdfProperty;
 import edu.asu.sharpc2b.actions.AtomicAction;
 import edu.asu.sharpc2b.actions.AtomicActionImpl;
 import edu.asu.sharpc2b.actions.CancelActionImpl;
+import edu.asu.sharpc2b.actions.CollectInformationActionImpl;
 import edu.asu.sharpc2b.actions.CompositeAction;
 import edu.asu.sharpc2b.actions.CompositeActionImpl;
 import edu.asu.sharpc2b.actions.CreateActionImpl;
@@ -92,13 +93,17 @@ public class ExpressionFactory<T> {
     }
 
     private SharpAction parseAction( Document dox ) {
-        Element xml = dox.getDocumentElement();
-        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
-        Element stat = getChildrenByTagName( root, "statement" ).iterator().next();
-
         CompositeAction parent = new CompositeActionImpl();
 
-        visitAction( stat, parent );
+        Element xml = dox.getDocumentElement();
+        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
+
+        List<Element> statements = getChildrenByTagName( root, "statement" );
+
+        if ( statements != null && ! statements.isEmpty() ) {
+            Element stat = statements.iterator().next();
+            visitAction( stat, parent );
+        }
 
         return parent;
     }
@@ -142,8 +147,8 @@ public class ExpressionFactory<T> {
             } else if ( "Declare".equals( mode ) ) {
                 // TODO ! Fix hierarchy
                 action = new AtomicActionImpl();
-            } else if ( "Collect".equals( mode ) ) {
-                action = new AtomicActionImpl();
+            } else if ( mode.startsWith( "Collect" ) ) {
+                action = new CollectInformationActionImpl();
             }
         }
 
@@ -209,13 +214,16 @@ public class ExpressionFactory<T> {
 
 
     private SharpExpression parseTrigger( Document dox ) {
-        Element xml = dox.getDocumentElement();
-        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
-        Element stat = getChildrenByTagName( root, "statement" ).iterator().next();
-
         OrExpression or = new OrExpressionImpl();
 
-        visitTrigger( stat, or );
+        Element xml = dox.getDocumentElement();
+        Element root = getChildrenByTagName( xml, "block" ).iterator().next();
+        List<Element> statements = getChildrenByTagName( root, "statement" );
+
+        if ( ! statements.isEmpty() ) {
+            Element stat = statements.iterator().next();
+            visitTrigger( stat, or );
+        }
 
         return or;
     }

@@ -407,9 +407,6 @@ public class HeDArtifactData {
 
     public byte[] updateLogicExpression( byte[] doxBytes ) {
         SharpExpression logic = new ExpressionFactory<SharpExpression>().parseBlockly( doxBytes, BlocklyFactory.ExpressionRootType.CONDITION );
-        if ( logic == null ) {
-            return doxBytes;
-        }
 
         for ( ComputerExecutableRule rule : knowledgeDocument.getContains() ) {
             if ( rule instanceof ProductionRule ) {
@@ -426,7 +423,11 @@ public class HeDArtifactData {
                 if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                     prrExpr.getBodyExpression().clear();
                 }
-                prrExpr.getBodyExpression().add( logic );
+                if ( logic != null ) {
+                    prrExpr.getBodyExpression().add( logic );
+                } else {
+                    ( (ProductionRule) rule ).getProductionRuleCondition().clear();
+                }
             }
         }
         logicExpression.setDoxBytes( doxBytes );
@@ -435,21 +436,25 @@ public class HeDArtifactData {
     }
 
     public void cacheLogicExpression( HeDKnowledgeDocument dok, SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domainProperties ) {
-        String name = "$$$_LOGIC_PREMISE";
         for ( ComputerExecutableRule rule : dok.getContains() ) {
             if ( rule instanceof ProductionRule && ! ( (ProductionRule) rule ).getProductionRuleCondition().isEmpty() ) {
                 RuleCondition premise = ( (ProductionRule) rule ).getProductionRuleCondition().get( 0 );
                 Expression prrExpr = premise.getConditionRepresentation().get( 0 );
                 if ( ! prrExpr.getBodyExpression().isEmpty() ) {
                     SharpExpression sharpExpression = prrExpr.getBodyExpression().get( 0 );
-                    BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
-                    logicExpression = new HeDNamedExpression(
-                            idFromName( name ),
-                            name,
-                            sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
+                    logicExpression = createLogicExpression( sharpExpression );
                 }
             }
         }
+    }
+
+    private HeDNamedExpression createLogicExpression( SharpExpression sharpExpression ) {
+        String name = "$$$_LOGIC_PREMISE";
+        BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+        return new HeDNamedExpression(
+                idFromName( name ),
+                name,
+                sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
     }
 
 
@@ -575,11 +580,7 @@ public class HeDArtifactData {
             switch ( type ) {
                 case CONDITION:
                     if ( logicExpression == null ) {
-                        logicExpression = new HeDNamedExpression(
-                                idFromName( "$$$_LOGIC_PREMISE" ),
-                                "$$$_LOGIC_PREMISE",
-                                null,
-                                BlocklyFactory.emptyRoot( BlocklyFactory.ExpressionRootType.CONDITION ) );
+                        logicExpression = createLogicExpression( null );
 
                     }
                     return factory.updateRoot( expr,

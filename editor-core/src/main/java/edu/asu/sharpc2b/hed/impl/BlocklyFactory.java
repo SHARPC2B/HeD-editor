@@ -159,15 +159,21 @@ public class BlocklyFactory {
         switch ( type ) {
             case ACTION:
                 exprRoot = createActionRoot( name, root, dox );
-                visitActions( Arrays.asList( (SharpAction) sharpExpression ), exprRoot, dox );
+                if ( sharpExpression != null ) {
+                    visitActions( Arrays.asList( (SharpAction) sharpExpression ), exprRoot, dox );
+                }
                 break;
             case TRIGGER :
                 exprRoot = createTriggerRoot( name, root, dox );
-                visitTriggers( (SharpExpression) sharpExpression, exprRoot, dox );
+                if ( sharpExpression != null ) {
+                    visitTriggers( (SharpExpression) sharpExpression, exprRoot, dox );
+                }
                 break;
             case CONDITION:
                 exprRoot = createLogicRoot( name, root, dox );
-                visitCondition( (SharpExpression) sharpExpression, null, exprRoot, dox );
+                if ( sharpExpression != null ) {
+                    visitCondition( (SharpExpression) sharpExpression, null, exprRoot, dox );
+                }
                 break;
             case EXPRESSION:
             default:
