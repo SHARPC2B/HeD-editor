@@ -7,6 +7,7 @@ import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.ops.DateExpression;
+import edu.asu.sharpc2b.ops.IntervalExpression;
 import edu.asu.sharpc2b.ops.ScalarExpression;
 import edu.asu.sharpc2b.ops_set.IndividualFactory;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
@@ -443,7 +444,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             addOperation( param, "LessCode" );
             addOperation( param, "LessOrEqualCode" );
         }
-        if ( DateExpression.class.isAssignableFrom( paramType ) ) {
+        if ( IntervalExpression.class.isAssignableFrom( paramType ) || DateExpression.class.isAssignableFrom( paramType ) ) {
             addOperation( param, "LastCode" );
             addOperation( param, "FirstCode" );
         }

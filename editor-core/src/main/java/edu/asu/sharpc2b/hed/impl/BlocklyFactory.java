@@ -209,23 +209,9 @@ public class BlocklyFactory {
                 Expression expr = cond.getConditionRepresentation().get( 0 );
                 SharpExpression sharpCondition = expr.getBodyExpression().get( 0 );
                 if ( sharpCondition instanceof VariableExpression ) {
-                    VariableExpression var = (VariableExpression) sharpCondition;
-                    String varName = var.getReferredVariable().get( 0 ).getName().get( 0 );
-                    String varId = HeDArtifactData.idFromName( varName );
-
-                    Element condElem = dox.createElement( "value" );
-                    condElem.setAttribute( "name", "Condition" );
-
-                    Element ac = dox.createElement( "block" );
-                    ac.setAttribute( "type", "action_condition" );
-
-                    Element field = dox.createElement( "field" );
-                    field.setAttribute( "name", "Clauses" );
-                    field.setTextContent( varId );
-
-                    ac.appendChild( field );
-                    condElem.appendChild( ac );
-                    block.appendChild( condElem );
+                    visitActionLogicCondition( (VariableExpression) sharpCondition, block, dox );
+                } else if ( sharpCondition instanceof NotExpression ) {
+                    visitActionLogicNegation( (NotExpression) sharpCondition, block, dox );
                 } else {
                     throw new UnsupportedOperationException( "Only references are supported as action conditions, found " + sharpCondition.getClass() );
                 }
@@ -291,6 +277,47 @@ public class BlocklyFactory {
             }
 
         }
+    }
+
+    private void visitActionLogicNegation( NotExpression not, Element block, Document dox ) {
+        Element neg = dox.createElement( "block" );
+        neg.setAttribute( "inline", "false" );
+        neg.setAttribute( "type", "action_logic_negate" );
+        block.appendChild( neg );
+
+        if ( ! not.getFirstOperand().isEmpty() ) {
+            Element clause = dox.createElement( "value" );
+            clause.setAttribute( "name", "NOT" );
+            neg.appendChild( clause );
+
+            SharpExpression arg = not.getFirstOperand().get( 0 );
+            if ( arg instanceof VariableExpression ) {
+                visitActionLogicCondition( (VariableExpression) arg, clause, dox );
+            } else if ( arg instanceof NotExpression ) {
+                visitActionLogicNegation( (NotExpression) arg, clause, dox );
+            } else {
+                throw new UnsupportedOperationException( "TODO Action Conditions can only support Not and Refs" );
+            }
+        }
+    }
+
+    private void visitActionLogicCondition( VariableExpression var, Element block, Document dox ) {
+        String varName = var.getReferredVariable().get( 0 ).getName().get( 0 );
+        String varId = HeDArtifactData.idFromName( varName );
+
+        Element condElem = dox.createElement( "value" );
+        condElem.setAttribute( "name", "Condition" );
+
+        Element ac = dox.createElement( "block" );
+        ac.setAttribute( "type", "action_condition" );
+
+        Element field = dox.createElement( "field" );
+        field.setAttribute( "name", "Clauses" );
+        field.setTextContent( varId );
+
+        ac.appendChild( field );
+        condElem.appendChild( ac );
+        block.appendChild( condElem );
     }
 
 

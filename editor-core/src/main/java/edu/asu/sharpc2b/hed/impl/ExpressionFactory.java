@@ -159,20 +159,14 @@ public class ExpressionFactory<T> {
         for ( Element val : values ) {
             if ( "Condition".equals( val.getAttribute( "name" ) ) ) {
                 Element sub = getChildrenByTagName( val, "block" ).get( 0 );
-                Element field = getChildrenByTagName( sub, "field" ).get( 0 );
-                String varName = field.getTextContent();
-                String id = HeDArtifactData.idFromName( varName );
-
-                VariableExpression varexp = new VariableExpressionImpl();
-                Variable var = new VariableImpl();
-                var.addName( varName );
-                varexp.addReferredVariable( var );
+                SharpExpression expr = visitActionConditionBlock( sub );
 
                 RuleCondition condition = new RuleConditionImpl();
                 Expression prrExpr = new ExpressionImpl();
-                prrExpr.addBodyExpression( varexp );
+                prrExpr.addBodyExpression( expr );
                 condition.addConditionRepresentation( prrExpr );
                 action.addLocalCondition( condition );
+
             }
         }
 
@@ -217,6 +211,35 @@ public class ExpressionFactory<T> {
         if ( ! nexts.isEmpty() ) {
             Element next = nexts.get( 0 );
             visitAction( next, actionGroup );
+        }
+    }
+
+    private SharpExpression visitActionConditionBlock( Element sub ) {
+        String conditionType = sub.getAttribute( "type" );
+        if ( "action_condition".equals( conditionType ) ) {
+            Element field = getChildrenByTagName( sub, "field" ).get( 0 );
+            String varName = field.getTextContent();
+            String id = HeDArtifactData.idFromName( varName );
+
+            VariableExpression varexp = new VariableExpressionImpl();
+            Variable var = new VariableImpl();
+            var.addName( varName );
+            varexp.addReferredVariable( var );
+
+            return varexp;
+        } else if ( "action_logic_negate".equals( conditionType ) ) {
+            Element value = getChildrenByTagName( sub, "value" ).get( 0 );
+            List<Element> inner = getChildrenByTagName( value, "block" );
+            if ( ! inner.isEmpty() ) {
+                Element nested = inner.get( 0 );
+                NotExpression not = new NotExpressionImpl();
+
+                not.addFirstOperand( visitActionConditionBlock( nested ) );
+                return not;
+            }
+            return new NotExpressionImpl();
+        } else {
+            throw new UnsupportedOperationException( "Unrecognized block type in action logic " + conditionType );
         }
     }
 

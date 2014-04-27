@@ -464,7 +464,18 @@ public class HeDArtifactData {
         return new HeDNamedExpression(
                 idFromName( name ),
                 name,
-                sharpExpression, factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
+                sharpExpression,
+                factory.fromExpression( name, sharpExpression, BlocklyFactory.ExpressionRootType.CONDITION ) );
+    }
+
+    private HeDAction createActionExpression( SharpAction sharpAction ) {
+        String name = "$$$_ACTIONS";
+        BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
+        return new HeDAction(
+                idFromName( name ),
+                name,
+                sharpAction,
+                factory.fromExpression( name, sharpAction, BlocklyFactory.ExpressionRootType.ACTION ) );
     }
 
 
@@ -557,6 +568,10 @@ public class HeDArtifactData {
             }
         }
 
+        if ( actionExpression == null ) {
+            actionExpression = createActionExpression( new CompositeActionImpl() );
+        }
+
         actionExpression.setDoxBytes( doxBytes );
         actionExpression.setAction( action );
         return doxBytes;
@@ -624,11 +639,7 @@ public class HeDArtifactData {
                     return new BlocklyFactory( domainClasses, domainProperties ).fromExpression( "$$$_TRIGGGERS", or, BlocklyFactory.ExpressionRootType.TRIGGER );
                 case ACTION:
                     if ( actionExpression == null ) {
-                        actionExpression = new HeDAction(
-                                idFromName( "$$$_ACTIONS" ),
-                                "$$$_ACTIONS",
-                                new CompositeActionImpl(),
-                                BlocklyFactory.emptyRoot( BlocklyFactory.ExpressionRootType.ACTION ) );
+                        actionExpression = createActionExpression( new CompositeActionImpl() );
                     }
 
                     if ( expr instanceof BooleanExpression ) {

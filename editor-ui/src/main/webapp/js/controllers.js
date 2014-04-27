@@ -1727,6 +1727,17 @@ angular.module('ruleApp.controllers', [])
             }
 
         };
+        Blockly.Blocks.action_logic_negate = {
+            init: function() {
+                this.setColour(210);
+                this.appendValueInput( 'NOT' )
+                    .appendField( "Not" )
+                    .setCheck( "Boolean")
+                    .setAlign( Blockly.ALIGN_RIGHT );
+                this.setOutput(true, "Boolean");
+                this.setTooltip('');
+            }
+        };
         Blockly.Blocks.action_sentence = {
             init: function() {
                 this.setColour(290);
