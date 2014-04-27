@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Artifact;
 import models.ModelHome;
 import models.NamedConcept;
 import models.Rule;
@@ -34,7 +35,7 @@ public class RuleActions
     }
 
     public static Result list() {
-        List<String> ids = ModelHome.getAvailableArtifacts();
+        List<Artifact> ids = ModelHome.getAvailableArtifacts();
 
         JsonNode jsonOut = Json.toJson( ids );
         System.out.println( "created Rule = " + jsonOut );

@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -54,15 +55,15 @@ public class RepoTest {
         knowledgeRepo.createArtifact( uri, title, stream );
         knowledgeRepo.createArtifact( uri2, title2, stream2 );
 
-        List<String> artifacts = knowledgeRepo.getAvailableArtifacts();
+        Map<String,String> artifacts = knowledgeRepo.getAvailableArtifacts();
         assertEquals( 2, artifacts.size() );
-        assertTrue( artifacts.containsAll( Arrays.asList( uri, uri2 ) ) );
+        assertTrue( artifacts.keySet().containsAll( Arrays.asList( uri, uri2 ) ) );
 
         knowledgeRepo.deleteArtifact( uri );
 
         artifacts = knowledgeRepo.getAvailableArtifacts();
         assertEquals( 1, artifacts.size() );
-        assertTrue( artifacts.containsAll( Arrays.asList( uri2 ) ) );
+        assertTrue( artifacts.keySet().containsAll( Arrays.asList( uri2 ) ) );
 
 
         String uri3 = "http://asu.bmi.edu/Rule_" + System.identityHashCode( uuid ) + "_clone";
@@ -70,7 +71,7 @@ public class RepoTest {
 
         artifacts = knowledgeRepo.getAvailableArtifacts();
         assertEquals( 2, artifacts.size() );
-        assertTrue( artifacts.containsAll( Arrays.asList( uri2, uri3 ) ) );
+        assertTrue( artifacts.keySet().containsAll( Arrays.asList( uri2, uri3 ) ) );
 
 
         knowledgeRepo.saveArtifact( uri2, new ByteArrayInputStream( "test2aaa".getBytes() ) );

@@ -24,21 +24,18 @@ public class StoreActions
         extends play.mvc.Controller {
 
     public static Result getAvailableArtifacts() {
-        List<String> ruleIds = ModelHome.getAvailableArtifacts();
+        List<Artifact> artifacts = ModelHome.getAvailableArtifacts();
 
-        System.out.println( "found rules = " + ruleIds );
+        System.out.println( "found rules = " + artifacts );
 
         List<RuleGroup> groups = new ArrayList<RuleGroup>();
 
         RuleGroup ruleGroup = new RuleGroup();
         ruleGroup.label = "HeD rules";
-        ruleGroup.templates = new ArrayList<Artifact>( ruleIds.size() );
+        ruleGroup.templates = new ArrayList<Artifact>( artifacts.size() );
 
-        for ( String id : ruleIds ) {
-            Artifact artifact = new Artifact();
-            artifact.name = id;
-            ruleGroup.templates.add( artifact );
-        }
+        // TODO No subcategorization mechanism yet...
+        ruleGroup.templates.addAll( artifacts );
 
         groups.add( ruleGroup );
 
@@ -157,31 +154,6 @@ public class StoreActions
         setHeaderCORS();
         return ok( jsonOut );
     }
-
-
-    public static Result configStoreAccess( String path ) {
-        setHeaderCORS();
-        return ok();
-    }
-
-
-    public static Result list() {
-        List<String> ids = ModelHome.getAvailableArtifacts();
-
-        JsonNode jsonOut = Json.toJson( ids );
-        setHeaderCORS();
-
-        return ok( jsonOut );
-    }
-
-    public static Result get(String id) {
-        Rule rule = ModelHome.getArtifact( id );
-        JsonNode jsonOut = Json.toJson( rule );
-
-        setHeaderCORS();
-        return ok( jsonOut );
-    }
-
 
 
 }

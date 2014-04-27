@@ -19,7 +19,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StanbolArtifactRepository implements ArtifactRepository {
 
@@ -42,7 +44,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
 
 
     @Override
-    public List<String> getAvailableArtifacts() {
+    public Map<String,String> getAvailableArtifacts() {
         try {
             SolrQuery sQuery = new SolrQuery();
             sQuery.setQuery( "*" );
@@ -51,15 +53,15 @@ public class StanbolArtifactRepository implements ArtifactRepository {
 
             List<DocumentResult> docs = searchResult.getItemResults();
 
-            List<String> ids = new ArrayList<String>( docs.size() );
+            Map<String,String> ids = new HashMap<String,String>( docs.size() );
             for ( DocumentResult dox : docs ) {
-                ids.add( dox.getLocalId() );
+                ids.put( dox.getLocalId(), dox.getTitle() );
             }
             System.out.println( "Artifact IDs found in stanbol repository " + ids );
             return ids;
         } catch ( StanbolServiceException e ) {
             e.printStackTrace();
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
     }
 

@@ -950,6 +950,8 @@ angular.module('ruleApp.controllers', [])
                     $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
                         $scope.expressions = data;
                     });
+
+                $scope.save();
             });
         };
 
@@ -1353,6 +1355,7 @@ angular.module('ruleApp.controllers', [])
                     $scope.expressions = data;
                 });
                 */
+                $scope.save();
             });
 
         };
@@ -1570,6 +1573,8 @@ angular.module('ruleApp.controllers', [])
                 $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
                     $scope.expressions = data;
                 });
+
+                $scope.save();
 
             });
         };
@@ -2046,7 +2051,7 @@ angular.module('ruleApp.controllers', [])
 
     .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
         $scope.parameter = parameter;
-        $scope.resolveCodes = parameter.chosenOperations == 'Equals';
+        $scope.resolveCodes = parameter.selectedOperation == 'Equal';
 
         $scope.cts2search = function(matchValue) {
             if ( $scope.resolveCodes ) {
@@ -2214,7 +2219,7 @@ angular.module('ruleApp.controllers', [])
             $modalInstance.dismiss();
         };
         $scope.select = function(template) {
-            $scope.selectedRule = template.name;
+            $scope.selectedRule = template;
         };
     }]);
 

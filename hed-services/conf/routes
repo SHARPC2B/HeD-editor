@@ -10,9 +10,6 @@ GET            /assets/*file                              controllers.Assets.at(
 
 OPTIONS        /*ignore                                   controllers.SharpController.checkPreFlight(ignore:String)
 
-#GET            /cts2/hello                                controllers.CtsActions.helloWorld()
-#GET            /cts2/hello2                               controllers.CtsActions.unMarshallandPrintFromJson()
-
 ########################################################
 
 GET            /cts2/codematch/:cs/:matchvalue            controllers.CtsActions.searchInCodeSystem(cs,matchvalue)
@@ -108,13 +105,6 @@ GET            /store/export/:id/:format                  controllers.StoreActio
 
 
 #################################################
-# GET  /template                  List of template types
-# GET  /template/1B               get template type 1B.  Does not create an instance
-# POST /template/1B               Create a new instance of 1B, return it with it's ID+URI (/template/1B/xyz123)
-# PUT  /template/1B/xyz123        Set new def of xyz123
-
-# Hello action
-# GET     /hello                      controllers.ApplicationScl.sayHello
 
 #GET            /zero                             controllers.graph.Arithmetic.zero()
 #GET            /add/:x/:y                        controllers.graph.Arithmetic.add(x: Long, y:Long)

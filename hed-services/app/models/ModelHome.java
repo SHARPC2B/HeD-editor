@@ -86,8 +86,16 @@ public class ModelHome {
     /* ARTIFACT APIs */
     /************************************************************************************************************/
 
-    public static List<String> getAvailableArtifacts() {
-        return core.getAvailableArtifacts();
+    public static List<Artifact> getAvailableArtifacts() {
+        Map<String,String> artifacts = core.getAvailableArtifacts();
+        List<Artifact> result = new ArrayList<Artifact>();
+        for ( String id : artifacts.keySet() ) {
+            Artifact artifact = new Artifact();
+            artifact.id = id;
+            artifact.name = artifacts.get( id );
+            result.add( artifact );
+        }
+        return result;
     }
 
     public static Rule getArtifact( String id ) {

@@ -17,7 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class FilesystemArtifactRepository implements ArtifactRepository {
 
@@ -40,20 +43,22 @@ public class FilesystemArtifactRepository implements ArtifactRepository {
     }
 
     @Override
-    public List<String> getAvailableArtifacts() {
-        List<String> names = new ArrayList<>(  );
+    public Map<String,String> getAvailableArtifacts() {
+        Map<String,String> artifacts = new TreeMap<String,String>();
         try {
             BufferedReader reader = new BufferedReader( new FileReader( repoIndex ) );
             for ( String line; ( line = reader.readLine() ) != null; ) {
                 if ( ! "".equals( line ) ) {
-                    names.add( line.substring( 0, line.indexOf( "," ) ) );
+                    String id = line.substring( 0, line.indexOf( "," ) );
+                    String title = line.substring( line.indexOf( "," ) + 1 );
+                    artifacts.put( id, title );
                 }
             }
         } catch ( Exception e ) {
             e.printStackTrace();
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_MAP;
         }
-        return Collections.unmodifiableList( names );
+        return Collections.unmodifiableMap( artifacts );
     }
 
     @Override

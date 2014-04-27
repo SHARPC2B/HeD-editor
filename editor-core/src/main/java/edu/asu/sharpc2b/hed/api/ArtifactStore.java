@@ -2,10 +2,11 @@ package edu.asu.sharpc2b.hed.api;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface ArtifactStore {
 
-    public List<String> getAvailableArtifacts();
+    public Map<String,String> getAvailableArtifacts();
 
     String importFromStream( byte[] stream );
 

@@ -6,6 +6,7 @@ import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
+import edu.asu.sharpc2b.ops.DateExpression;
 import edu.asu.sharpc2b.ops.ScalarExpression;
 import edu.asu.sharpc2b.ops_set.IndividualFactory;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
@@ -25,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,7 +153,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
 
     @Override
-    public List<String> getAvailableArtifacts() {
+    public Map<String,String> getAvailableArtifacts() {
         return knowledgeRepo.getAvailableArtifacts();
     }
 
@@ -440,6 +442,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             addOperation( param, "GreaterOrEqualCode" );
             addOperation( param, "LessCode" );
             addOperation( param, "LessOrEqualCode" );
+        }
+        if ( DateExpression.class.isAssignableFrom( paramType ) ) {
+            addOperation( param, "LastCode" );
+            addOperation( param, "FirstCode" );
         }
 
     }
