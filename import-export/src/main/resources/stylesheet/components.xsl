@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:hed="urn:hl7-org:v3:knowledgeartifact:r1"
-	xmlns:dt="urn:hl7-org:v3:cdsdt:r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:hed="urn:hl7-org:knowledgeartifact:r1"
+	xmlns:dt="urn:hl7-org:cdsdt:r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xsl:output method="html" indent="yes" version="4.01"
 		encoding="ISO-8859-1" doctype-system="http://www.w3.org/TR/html4/strict.dtd"
 		doctype-public="-//W3C//DTD HTML 4.01//EN" />

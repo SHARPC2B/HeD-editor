@@ -106,6 +106,7 @@ angular.module('ruleApp.controllers', [])
                     data : [],
                     headers : { 'Content-Type':'application/html' }
                 }).success( function( data ) {
+
                         $scope.currentRuleId = data.ruleId;
                         updateTitle( $scope );
 
@@ -1628,12 +1629,26 @@ angular.module('ruleApp.controllers', [])
 
 
 
-    .controller('SaveCtrl', [ '$scope', '$http', function($scope, $http) {
-        $scope.outputFormat = 'HED_XML';
+    .controller('SaveCtrl', [ '$scope', '$http', '$sce', function($scope, $http, $sce) {
+        $scope.outputFormat1 = 'HED_HTML';
+        $scope.outputFormat2 = 'HED_XML';
 
-        $scope.refresh = function() {
-            $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat ).success(function(data) {
-                $scope.xml = data;
+        $scope.refresh1 = function() {
+            $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat1 ).success(function(data) {
+                if ( $scope.outputFormat1 == 'HED_HTML' ) {
+                    $scope.xml1 = $sce.trustAsHtml( data );
+                } else {
+                    $scope.xml1 = data;
+                }
+            });
+        }
+        $scope.refresh2 = function() {
+            $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat2 ).success(function(data) {
+                if ( $scope.outputFormat2 == 'HED_HTML' ) {
+                    $scope.xml2 = $sce.trustAsHtml( data );
+                } else {
+                    $scope.xml2 = data;
+                }
             });
         }
 
@@ -1648,7 +1663,8 @@ angular.module('ruleApp.controllers', [])
                     $scope.$parent.title = 'Review and Save ' + data.Name;
 
                     $scope.$parent.menuItems = standardMenuItems(5);
-                    $scope.refresh();
+                    $scope.refresh1();
+                    $scope.refresh2();
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;

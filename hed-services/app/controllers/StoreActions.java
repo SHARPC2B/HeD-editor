@@ -57,7 +57,7 @@ public class StoreActions
         JsonNode jsonOut = Json.toJson( rule );
 
         setHeaderCORS();
-        return created( jsonOut );
+        return ok( jsonOut );
     }
 
 

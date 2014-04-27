@@ -4,7 +4,7 @@ public class HeDExporterFactory {
 
     public static enum HED_EXPORT_FORMATS {
         HED_OWL,
-        HED_TEXT,
+        HED_HTML,
         HED_XML;
     }
 
@@ -12,7 +12,7 @@ public class HeDExporterFactory {
         switch ( format ) {
             case HED_OWL:
                 return new Owl2OwlDumper();
-            case HED_TEXT:
+            case HED_HTML:
                 return new StylesheetDumper();
             case HED_XML:
                 default:
