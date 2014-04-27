@@ -32,6 +32,8 @@ import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntrySummary;
 import edu.mayo.cts2.framework.model.entity.EntityDirectory;
 import edu.mayo.cts2.framework.model.entity.EntityDirectoryEntry;
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntryDirectory;
+import edu.mayo.cts2.framework.model.valueset.ValueSetCatalogEntrySummary;
 import models.ex.ConvertJsonToJavaException;
 import models.ex.ModelDataFileNotFoundException;
 import models.metadata.Contributor;
@@ -841,8 +843,21 @@ public class ModelHome {
     /**
      ***********************************************************************************************************/
 
+    private static List<String> codeSystems;
+    private static List<String> valueSets;
+
     public static List<String> getCodeSystems() {
-        return lookupCodeSystems();
+        if ( codeSystems == null ) {
+            codeSystems = lookupCodeSystems();
+        }
+        return codeSystems;
+    }
+
+    public static List<String> getValueSets() {
+        if ( valueSets == null ) {
+            valueSets = lookupValueSets();
+        }
+        return valueSets;
     }
 
 
@@ -998,8 +1013,9 @@ public class ModelHome {
         for ( HedType type : typeList.hedTypes ) {
             if ( "CodeLiteral".equals( type.name ) ) {
                 ElementType codeSystem = type.getElement( "codeSystem" );
-                codeSystem.selectionChoices = lookupCodeSystems();
-                //codeSystem.value = codeSystem.selectionChoices.iterator().next();
+                codeSystem.selectionChoices = getCodeSystems();
+                ElementType valuesets = type.getElement( "valueSet" );
+                valuesets.selectionChoices = getValueSets();
             }
         }
 
@@ -1013,6 +1029,15 @@ public class ModelHome {
             codeSystemNames.add( entry.getCodeSystemName() );
         }
         return new ArrayList( codeSystemNames );
+    }
+
+    private static List<String> lookupValueSets() {
+        ValueSetCatalogEntryDirectory valuesets = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/valuesets", ValueSetCatalogEntryDirectory.class );
+        Set<String> valuesetNames = new HashSet<String>( valuesets.getEntryCount() );
+        for ( ValueSetCatalogEntrySummary entry : valuesets.getEntry() ) {
+            valuesetNames.add( entry.getValueSetName() );
+        }
+        return new ArrayList( valuesetNames );
     }
 
 

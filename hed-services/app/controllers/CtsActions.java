@@ -173,15 +173,9 @@ public class CtsActions
         System.out.println( "forwardToCts: path = " + path );
 
         String formatIn = request().getQueryString( "format" );
-//        System.out.println( "formatIn = " + formatIn );
 
         final String base = ctsURL;
         URL url;
-//        uri = uri.concat( "/resolution" );
-//        if (!uri.endsWith( "?format=json" ))
-//        {
-//            uri = uri.concat( "?format=json" );
-//        }
         String queryString = createJsonQueryString( request().queryString() );
 
         String fwdPath = path + queryString;

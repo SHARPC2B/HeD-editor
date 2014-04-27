@@ -505,6 +505,7 @@ DataPropertyAssertion(<http://asu.edu/sharpc2b/templates#name> <http://asu.edu/s
 DataPropertyAssertion(<http://asu.edu/sharpc2b/templates#optional> <http://asu.edu/sharpc2b/templates#PatientAdmitted_observationFocus> "false"^^xsd:boolean)
 DataPropertyAssertion(<http://asu.edu/sharpc2b/templates#path> <http://asu.edu/sharpc2b/templates#PatientAdmitted_observationFocus> "observationFocus"^^xsd:string)
 DataPropertyAssertion(<http://asu.edu/sharpc2b/templates#typeName> <http://asu.edu/sharpc2b/templates#PatientAdmitted_observationFocus> "CD"^^xsd:string)
+ClassAssertion(<http://asu.edu/sharpc2b/templates#ConditionTemplate> <http://asu.edu/sharpc2b/templates#PatientAge>)
 ClassAssertion(<http://asu.edu/sharpc2b/templates#Template> <http://asu.edu/sharpc2b/templates#PatientAge>)
 ObjectPropertyAssertion(<http://asu.edu/sharpc2b/templates#hasParameter> <http://asu.edu/sharpc2b/templates#PatientAge> <http://asu.edu/sharpc2b/templates#PatientAge_age>)
 DataPropertyAssertion(<http://asu.edu/sharpc2b/templates#description> <http://asu.edu/sharpc2b/templates#PatientAge> "Findings WITH Age"^^xsd:string)

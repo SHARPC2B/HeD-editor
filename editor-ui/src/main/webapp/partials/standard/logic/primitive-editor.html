@@ -10,10 +10,9 @@
            x-popover-title="Label"></i>
   	</form>
 	<!--div show-data template="{{template}}"></div-->
+    <div ng-repeat="parameter in detail.parameters | filter: { optional: false } " ng-include="'partials/standard/logic/primitive-widget-simple.html'" />
+
     <accordion close-others="false">
-        <accordion-group is-open="true">
-    	    <div ng-repeat="parameter in detail.parameters | filter: { optional: false } " ng-include="'partials/standard/logic/primitive-widget-simple.html'" />
-        </accordion-group>
         <accordion-group is-open="false">
             <accordion-heading>More...</accordion-heading>
             <div ng-repeat="parameter in detail.parameters | filter: { optional: true } " ng-include="'partials/standard/logic/primitive-widget-simple.html'" />

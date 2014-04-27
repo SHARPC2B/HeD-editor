@@ -2031,31 +2031,63 @@ angular.module('ruleApp.controllers', [])
         }
 
         $scope.duplicateParam = function( param ) {
-            $scope.detail.parameters.splice( $scope.detail.parameters.indexOf( param ), angular.copy( param ) );
+            $scope.detail.parameters.push( angular.copy( param ) );
         }
+        $scope.clearAndReset = function(parameter) {
+            parameter.elements.forEach( function(element) {
+                if ( ! isEmpty( element.value ) ) {
+                    element.value = element.initialValue;
+                }
+            });
+            format(parameter);
+        }
+
     }])
 
     .controller('ParameterController', ['$scope', '$modalInstance', 'parameter', '$http', function($scope, $modalInstance, parameter, $http) {
         $scope.parameter = parameter;
-        $scope.resolveCodes = true;
+        $scope.resolveCodes = parameter.chosenOperations == 'Equals';
 
         $scope.cts2search = function(matchValue) {
             if ( $scope.resolveCodes ) {
-                var codeSys = $scope.parameter.elements[2].value;
-                var call = isEmpty( codeSys )
-                    ? serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue
-                    : serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
-                return $http.jsonp( call ).then(function(response){
-                    var entities = new Array();
-                    var list = response.data.entityDirectory.entryList;
-                    if ( list != undefined ) {
-                        for ( var j = 0; j < list.length; j++ ) {
-                            entities[j] = $scope.normalize( list[j] );
+                // look for an individual code
+                var exploreCodeSystems = isEmpty( $scope.parameter.elements[3].value );
+
+                if ( exploreCodeSystems ) {
+                    // use code systems
+                    var codeSys = $scope.parameter.elements[2].value;
+                    var call = isEmpty( codeSys )
+                        ? serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue
+                        : serviceUrl + '/fwd/cts2/codesystem/' + codeSys + '/version/' + codeSys + '-LATEST/entities?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
+                    return $http.jsonp( call ).then(function(response){
+                        var entities = new Array();
+                        var list = response.data.entityDirectory.entryList;
+                        if ( list != undefined ) {
+                            for ( var j = 0; j < list.length; j++ ) {
+                                entities[j] = $scope.normalize( list[j] );
+                            }
                         }
-                    }
-                    return entities;
-                });
+                        return entities;
+                    });
+                } else {
+                    // try to access content of a valueset
+                    var valueset = $scope.parameter.elements[3].value;
+                    var call = serviceUrl + '/fwd/cts2/valueset/' + valueset + '/definition/null/resolution?callback=JSON_CALLBACK&format=json&maxtoreturn=20&matchvalue='+matchValue;
+                    return $http.jsonp( call ).then(function(response){
+                        var entities = new Array();
+                        console.log( response.data );
+                        var list = response.data.iteratableResolvedValueSet.entryList;
+                        console.log( list );
+                        if ( list != undefined ) {
+                            for ( var j = 0; j < list.length; j++ ) {
+                                entities[j] = $scope.normalize( list[j] );
+                            }
+                        }
+                        return entities;
+                    });
+                }
             } else {
+                // don't look for individual codes, just return the valueset
                 return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&maxtoreturn=30&matchvalue='+matchValue).then(function(response){
                     var entities = new Array();
                     var list = response.data.valueSetCatalogEntryDirectory.entryList;
@@ -2081,21 +2113,26 @@ angular.module('ruleApp.controllers', [])
             $scope.resolveCodes = "Equal" == op;
         }
         $scope.normalize = function(entity) {
+            var descriptor = {};
             if ( $scope.resolveCodes ) {
-                var descriptor = {};
-                descriptor.namespace = entity.name.namespace.toUpperCase();
-                descriptor.name = entity.name.name;
-                descriptor.designation =
+                if ( isEmpty( $scope.parameter.elements[3].value ) ) {
+                    descriptor.namespace = entity.name.namespace.toUpperCase();
+                    descriptor.name = entity.name.name;
+                    descriptor.designation =
                         //descriptor.namespace + ':' + descriptor.name + ' - ' +
-                        entity.knownEntityDescriptionList[0].designation;
-                return descriptor;
+                            entity.knownEntityDescriptionList[0].designation;
+                } else {
+                    descriptor.namespace = entity.namespace.toUpperCase();
+                    descriptor.name = entity.name;
+                    descriptor.designation = entity.designation;
+                }
+
             } else {
-                var descriptor = {};
                 descriptor.designation = entity.valueSetName;
                 descriptor.namespace = entity.valueSetName;
                 descriptor.name = entity.valueSetName;
-                return descriptor;
             }
+            return descriptor;
         }
     }])
 
@@ -2272,5 +2309,5 @@ function format( parameter ) {
 }
 
 function isEmpty(str) {
-    return (!str || 0 === str.length);
+    return (str == null || !str || 0 === str.length);
 }

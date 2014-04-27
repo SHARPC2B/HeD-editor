@@ -25,6 +25,7 @@
 <span  style="vertical-align: super;">{{parameter.displayValue}} </span>
 
 <button ng-click="openOther(parameter)" class="btn" style="vertical-align: super;">...</button>
+<button ng-click="clearAndReset(parameter)" class="btn" style="vertical-align: super;">X</button>
 
 <span ng-switch="parameter.multiple">
     <button ng-switch-when="true" ng-click="duplicateParam(parameter)" class="btn" style="vertical-align: super;">+</button>

@@ -33,8 +33,19 @@
                     "label": "Coding System",
                     "valueType": "String",
                     "widgetType": "Choice",
-                    "selectionChoices": ["RxNorm", "NDC"],
-                    "initialValue": "RxNorm",
+                    "selectionChoices": [],
+                    "initialValue": null,
+                    "minSelectionCount": 1,
+                    "maxSelectionCount": 1
+                },
+                {
+                    "mtype": "ElementType",
+                    "name": "valueSet",
+                    "label": "Value Set",
+                    "valueType": "String",
+                    "widgetType": "Dropdown",
+                    "selectionChoices": [],
+                    "initialValue": null,
                     "minSelectionCount": 1,
                     "maxSelectionCount": 1
                 }
@@ -359,8 +370,9 @@
                     "label": "Code System",
                     "valueType": "String",
                     "widgetType": "Choice",
-                    "selectionChoices": ["RxNorm", "NDC"],
-                    "value": "RxNorm"
+                    "selectionChoices": [],
+                    "initialValue": null,
+                    "value": ""
                 },
                 {
                     "name": "value",
