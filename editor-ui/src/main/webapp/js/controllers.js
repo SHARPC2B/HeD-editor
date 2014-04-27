@@ -892,7 +892,6 @@ angular.module('ruleApp.controllers', [])
             return $http.jsonp(serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&matchalgorithm=startsWith&format=json&maxtoreturn=20&matchvalue='+matchValue).then(function(response){
                 var entities = new Array();
                 var list = response.data.entityDirectory.entryList;
-                console.log( list );
                 for ( var j = 0; j < list.length; j++ ) {
                     var entity = list[j];
                     var descriptor = {};
@@ -942,7 +941,6 @@ angular.module('ruleApp.controllers', [])
                 }
             })
             d.result.then( function( logic ) {
-                console.log( logic );
                     $scope.logic.xml = logic;
                     Blockly.mainWorkspace.clear();
                     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom($scope.logic.xml));
@@ -1238,11 +1236,8 @@ angular.module('ruleApp.controllers', [])
         }).success( function( data ) {
                 $scope.expression = expression;
                 Blockly.inject(document.getElementById('blocklyPreview'), {
-                    path: './lib/blockly/',
-                    toolbox: document.getElementById('toolbox')
+                    path: './lib/blockly/'
                 });
-
-                Blockly.mainWorkspace.clear();
                 Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, Blockly.Xml.textToDom(data));
             });
 
@@ -1526,7 +1521,6 @@ angular.module('ruleApp.controllers', [])
 
         $scope.save = function() {
             $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
-
             $http({
                 method : 'POST',
                 url : serviceUrl + '/rule/actions',
@@ -1582,7 +1576,14 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(20);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown([["Perform all", "all"], ["Perform none", "none"], ["Perform any", "any"], ["Perform exactly one", "one"]]), "NAME");
+                    .appendField(new Blockly.FieldDropdown([
+                        ["Perform all", "All"],
+                        ["Perform any", "Any"],
+                        ["Perform all or none", "AllOrNone"],
+                        ["Perform exactly one", "ExactlyOne"],
+                        ["Perform at most one", "AtMostOne"],
+                        ["Perform one or more", "OneOrMore"]
+                    ]),"NAME");
                 this.appendDummyInput()
                 	.appendField("Tittle")
                 	.appendField(new Blockly.FieldTextInput("title"), "TITLE");
@@ -1920,7 +1921,6 @@ angular.module('ruleApp.controllers', [])
         }
 
         $scope.submit = function(data) {
-            console.log( data );
             $http({
                 method : 'POST',
                 url : serviceUrl + '/template/create',
@@ -2155,6 +2155,7 @@ angular.module('ruleApp.controllers', [])
                             method: 'GET',
                             url: serviceUrl + '/rule/current'
                         }).success(function(data) {
+                                $scope.$parent.currentRuleId = {};
                                 $scope.$parent.currentRuleId = data.ruleId;
                                 $scope.$parent.currentRuleTitle = data.Name;
                                 updateTitle( $scope.$parent );

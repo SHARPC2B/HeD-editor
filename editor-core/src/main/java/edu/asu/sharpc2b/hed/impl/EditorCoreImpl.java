@@ -133,7 +133,10 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     public String createArtifact() {
         System.out.println( "Create artifact using repo" +  knowledgeRepo.getClass().getName() );
 
-        HeDArtifactData artifact = new HeDArtifactData();
+        HeDArtifactData artifact = new HeDArtifactData(
+                getDomainClasses(),
+                DomainHierarchyExplorer.getInstance( DOMAIN_MODEL_PATH, DOMAIN_NS ).getDomProptis()
+        );
 
         currentArtifactId = artifact.getArtifactId();
 

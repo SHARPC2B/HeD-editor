@@ -177,6 +177,14 @@ public class ExpressionFactory<T> {
         }
 
         if ( "action_group".equals( type ) ) {
+
+            List<Element> fields = getChildrenByTagName( block, "field" );
+            for ( Element e : fields ) {
+                if ( e.hasAttribute( "name" ) && "NAME".equals( e.getAttribute( "name" ) ) ) {
+                    ((CompositeAction) action).addGroupSelection( e.getTextContent() );
+                }
+            }
+
             List<Element> stats = getChildrenByTagName( block, "statement" );
             if ( ! stats.isEmpty() ) {
                 Element statement = stats.get( 0 );

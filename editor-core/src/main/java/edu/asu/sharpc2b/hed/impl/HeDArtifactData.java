@@ -15,6 +15,7 @@ import edu.asu.sharpc2b.metadata.Evidence;
 import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.VersionedIdentifier;
+import edu.asu.sharpc2b.metadata.VersionedIdentifierImpl;
 import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
 import edu.asu.sharpc2b.ops.LiteralExpression;
@@ -139,14 +140,20 @@ public class HeDArtifactData {
         cacheActions( dok, domainClasses, domainProperties );
     }
 
-    public HeDArtifactData() {
+    public HeDArtifactData( SortedMap<String, String> domainClasses, SortedMap<String, SortedMap<String, String>> domProptis ) {
         String artifactId = EditorCoreImpl.newArtifactId();
         String title =  "HeD Artifact " + artifactId.substring( artifactId.lastIndexOf( "/" ) + 1 );
 
         knowledgeDocument = new HeDKnowledgeDocumentImpl();
         ((HeDKnowledgeDocumentImpl) knowledgeDocument).setDyEntryId( artifactId + "#KnowledgeDocument" );
+
         knowledgeDocument.addArtifactId( artifactId );
         knowledgeDocument.addIdentifier( artifactId );
+        VersionedIdentifier vid = new VersionedIdentifierImpl();
+        vid.addVersionId( "1.0" );
+        vid.addArtifactId( artifactId );
+        knowledgeDocument.addArtifactVersion( vid );
+
         knowledgeDocument.addTitle( title );
         knowledgeDocument.addStatus( "Draft" );
 
@@ -154,6 +161,9 @@ public class HeDArtifactData {
 
         ProductionRule innerRule = new ProductionRuleImpl();
         knowledgeDocument.addContains( innerRule );
+
+        this.domainClasses = domainClasses;
+        this.domainProperties = domProptis;
 
         refreshOwlData();
     }

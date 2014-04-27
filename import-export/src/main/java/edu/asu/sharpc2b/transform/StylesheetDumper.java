@@ -33,7 +33,7 @@ public class StylesheetDumper implements HeDExporter {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
-            ClassPathResource res = new ClassPathResource( "stylesheet/healthedecisions-generic.xsl" );
+            ClassPathResource res = new ClassPathResource( "stylesheet/healthedecisions-bootstrap.xsl" );
             StreamSource stylesource = new StreamSource( res.getInputStream() );
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             transformerFactory.setURIResolver( new URIResolver() {

@@ -34,6 +34,7 @@ import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.prr_sharp.RuleTrigger;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import org.ontologydesignpatterns.ont.dul.dul.Agent;
+import org.ontologydesignpatterns.ont.dul.dul.Entity;
 import org.ontologydesignpatterns.ont.dul.dul.InformationRealization;
 import org.ontologydesignpatterns.ont.dul.dul.Organization;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
@@ -736,10 +737,12 @@ public class OOwl2HedDumper implements HeDExporter {
         title.setAttribute( "value", kr.getTitle().get( 0 ) );
         r.appendChild( title );
 
-        Element loc = dox.createElement( "location" );
-        List locs = ((Site) kr.getSpatial().get( 0 )).getUrlLocation();
-        loc.setAttribute( "value", locs.get( 0 ).toString() );
-        r.appendChild( loc );
+        if ( ! kr.getHasLocation().isEmpty() ) {
+            Element loc = dox.createElement( "location" );
+            Entity location = kr.getHasLocation().get( 0 );
+            loc.setAttribute( "value", location.getDescription().get( 0 ) );
+            r.appendChild( loc );
+        }
 
         if ( ! kr.getDescription().isEmpty() ) {
             Element descr = dox.createElement( "description" );
