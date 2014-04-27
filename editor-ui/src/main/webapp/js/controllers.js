@@ -77,11 +77,6 @@ angular.module('ruleApp.controllers', [])
                 };
         });
 
-        $scope.$parent.menuItems = [
-            {"text": "Go To Authoring...", "href": "#/standard/background"}
-            //, {"text": "Technical View", "href": "#/technical"}
-        ];
-
 
         $scope.openModal = function(partial) {
             var modal = $modal.open({
@@ -2081,8 +2076,17 @@ function availableProperties( httpContext, $scope, domainClass ) {
 function updateTitle( $scope ) {
     if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
         $scope.$parent.title = 'Artifact ' + $scope.currentRuleTitle;
+
+        $scope.$parent.menuItems = [
+            {"text": "Go To Authoring...", "href": "#/standard/background"}
+            //, {"text": "Technical View", "href": "#/technical"}
+        ];
+
     } else {
         $scope.$parent.title = 'Artifact Management';
+
+        $scope.$parent.menuItems = [];
+
     }
 }
 
