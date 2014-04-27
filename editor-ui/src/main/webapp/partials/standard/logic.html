@@ -5,6 +5,7 @@
             <input type="text" ng-model="codeSystems.chosenCode.label"
                    typeahead="suggestion.designation for suggestion in cts2search($viewValue)"
                    typeahead-editable="false"
+                   typeahead-wait-ms="500"
                    typeahead-on-select='onSelect($item, $model, $label)'>
 			<button type="submit" x-ng-click="execute()" class="btn">Filter Templates</button>
 			<button type="submit" x-ng-click="clear()" class="btn">Reset</button>

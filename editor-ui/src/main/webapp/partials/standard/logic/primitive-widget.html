@@ -12,6 +12,7 @@
            ng-model="parameter.elements[0].value"
            typeahead="suggestion.designation for suggestion in cts2search($viewValue)"
            typeahead-editable="false"
+           typeahead-wait-ms="500"
            typeahead-on-select="onSelect($item, $model, $label)">
 	<div ng-switch-when="DateTimeLocal">
 		<input type="datetime-local" ng-model="element.value">

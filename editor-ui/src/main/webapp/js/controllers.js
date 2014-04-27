@@ -892,15 +892,17 @@ angular.module('ruleApp.controllers', [])
             return $http.jsonp(serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&matchalgorithm=startsWith&format=json&maxtoreturn=20&matchvalue='+matchValue).then(function(response){
                 var entities = new Array();
                 var list = response.data.entityDirectory.entryList;
-                for ( var j = 0; j < list.length; j++ ) {
-                    var entity = list[j];
-                    var descriptor = {};
-                    descriptor.namespace = entity.name.namespace.toUpperCase();
-                    descriptor.name = entity.name.name;
-                    descriptor.designation =
+                if ( list != undefined ) {
+                    for ( var j = 0; j < list.length; j++ ) {
+                        var entity = list[j];
+                        var descriptor = {};
+                        descriptor.namespace = entity.name.namespace.toUpperCase();
+                        descriptor.name = entity.name.name;
+                        descriptor.designation =
                             // descriptor.namespace + ':' + descriptor.name + '-' +
                             entity.knownEntityDescriptionList[0].designation;
-                    entities[ j ] = descriptor;
+                        entities[ j ] = descriptor;
+                    }
                 }
                 return entities;
             });
@@ -1984,8 +1986,10 @@ angular.module('ruleApp.controllers', [])
                 return $http.jsonp( call ).then(function(response){
                     var entities = new Array();
                     var list = response.data.entityDirectory.entryList;
-                    for ( var j = 0; j < list.length; j++ ) {
-                        entities[j] = $scope.normalize( list[j], true );
+                    if ( list != undefined ) {
+                        for ( var j = 0; j < list.length; j++ ) {
+                            entities[j] = $scope.normalize( list[j], true );
+                        }
                     }
                     return entities;
                 });
@@ -1993,8 +1997,10 @@ angular.module('ruleApp.controllers', [])
                 return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&maxtoreturn=30&matchvalue='+matchValue).then(function(response){
                     var entities = new Array();
                     var list = response.data.valueSetCatalogEntryDirectory.entryList;
-                    for ( var j = 0; j < list.length; j++ ) {
-                        entities[j] = $scope.normalize( list[j], false );
+                    if ( list != undefined ) {
+                        for ( var j = 0; j < list.length; j++ ) {
+                            entities[j] = $scope.normalize( list[j], false );
+                        }
                     }
                     return entities;
                 });
@@ -2042,8 +2048,10 @@ angular.module('ruleApp.controllers', [])
                 return $http.jsonp( call ).then(function(response){
                     var entities = new Array();
                     var list = response.data.entityDirectory.entryList;
-                    for ( var j = 0; j < list.length; j++ ) {
-                        entities[j] = $scope.normalize( list[j] );
+                    if ( list != undefined ) {
+                        for ( var j = 0; j < list.length; j++ ) {
+                            entities[j] = $scope.normalize( list[j] );
+                        }
                     }
                     return entities;
                 });
@@ -2051,8 +2059,10 @@ angular.module('ruleApp.controllers', [])
                 return $http.jsonp(serviceUrl + '/fwd/cts2/valuesets?callback=JSON_CALLBACK&format=json&maxtoreturn=30&matchvalue='+matchValue).then(function(response){
                     var entities = new Array();
                     var list = response.data.valueSetCatalogEntryDirectory.entryList;
-                    for ( var j = 0; j < list.length; j++ ) {
-                        entities[j] = $scope.normalize( list[j] );
+                    if ( list != undefined ) {
+                        for ( var j = 0; j < list.length; j++ ) {
+                            entities[j] = $scope.normalize( list[j] );
+                        }
                     }
                     return entities;
                 });
