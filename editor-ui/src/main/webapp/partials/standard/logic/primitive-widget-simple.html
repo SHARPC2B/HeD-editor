@@ -3,7 +3,7 @@
 <select ng-model="parameter.selectedOperation" ng-options="oc for oc in parameter.operationChoices" class="input-medium"></select>
 
 <span ng-switch="parameter.elements[0].widgetType">
-	        <input ng-switch-when="RichText" type="text" ng-model="parameter.elements[0].value">
+	        <input ng-switch-when="RichText" type="text" ng-model="parameter.elements[0].value" readonly="true" >
 	        <input ng-switch-when="TextBox" type="text" ng-model="parameter.elements[0].value">
             <input ng-switch-when="Number" type="number" ng-model="parameter.elements[0].value" step="{{parameter.elements[0].step}}">
             <span ng-switch-when="Choice">

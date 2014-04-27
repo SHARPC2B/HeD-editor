@@ -1204,7 +1204,7 @@ angular.module('ruleApp.controllers', [])
 
     .controller('TextInputCtrl', ['$scope', '$http', '$modalInstance', 'text', function($scope, $http, $modalInstance, text) {
         $scope.text = text;
-        $scope.triggers = {};
+        $scope.variables = new Array();
 
         $scope.save = function(text) {
             $modalInstance.close(text);
@@ -1215,16 +1215,21 @@ angular.module('ruleApp.controllers', [])
         };
 
         tinymce.PluginManager.add('variables', function(editor) {
-            var listVariables = ['#[var1]', '#[var2]', '#[var3]', '#[varX]'];
             var menuItems = [];
-            tinymce.each(listVariables, function(variable) {
-                menuItems.push({
-                    text: variable,
-                    onclick: function() {
-                        editor.insertContent(variable);
-                    }
+            $http.get(serviceUrl + '/rule/expressions/list/any').success(function(data) {
+                for ( var j = 0; j < data.length; j++ ) {
+                    $scope.variables.push( '#[' + data[ j ].name + ']' );
+                }
+                tinymce.each($scope.variables, function(variable) {
+                    menuItems.push({
+                        text: variable,
+                        onclick: function() {
+                            editor.insertContent(variable);
+                        }
+                    });
                 });
             });
+
             editor.addButton('variables', {
                 type: 'menubutton',
                 text: 'Variables',
@@ -1794,18 +1799,31 @@ angular.module('ruleApp.controllers', [])
             $modalInstance.dismiss('cancel');
         };
         $scope.openOther = function(parameter) {
-            var d = $modal.open({
-                templateUrl: 'partials/standard/logic/primitive-form.html',
-                controller: 'ParameterController',
-                resolve : {
-                    parameter : function() {
-                        return parameter;
+            if ( parameter.elements[0].widgetType == 'RichText' ) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'partials/standard/expression/text-input.html',
+                    controller: 'TextInputCtrl',
+                    resolve: {
+                        text: function() {
+                            return parameter.elements[0].value;
+                        }
                     }
-                }
-            }).result.then(function() { $scope.formatTemplate($scope) });
+                });
+                modalInstance.result.then(function(text) {
+                    parameter.elements[0].value = text;
+                });
+            } else {
+                var d = $modal.open({
+                    templateUrl: 'partials/standard/logic/primitive-form.html',
+                    controller: 'ParameterController',
+                    resolve : {
+                        parameter : function() {
+                            return parameter;
+                        }
+                    }
+                }).result.then(function() { $scope.formatTemplate($scope) });
+            }
         };
-
-
 
         $scope.cts2search = function(matchValue, parameter) {
             var resolveCodes = ( parameter.selectedOperation == "Equal" );
