@@ -56,11 +56,9 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -220,7 +218,7 @@ public class OOwl2HedDumper implements HeDExporter {
 
         SharpExpression sentence = action.getActionExpression().get( 0 ).getBodyExpression().get( 0 );
 
-        visitTitle( action, dox, act );
+        visitTitle( action, dox, act, "textEquivalent" );
         visitDescription( action, dox, act );
         visitEvidence( action, dox, act );
 
@@ -752,11 +750,15 @@ public class OOwl2HedDumper implements HeDExporter {
         related.appendChild( r );
     }
 
-    private void visitTitle( InformationRealization info, Document dox, Element metadata ) {
+    private void visitTitle( InformationRealization info, Document dox, Element parent ) {
+        visitTitle( info, dox, parent, "title" );
+    }
+
+    private void visitTitle( InformationRealization info, Document dox, Element parent, String titleElementName ) {
         if ( ! info.getTitle().isEmpty() ) {
-            Element title = dox.createElement( "title" );
+            Element title = dox.createElement( titleElementName );
             title.setAttribute( "value", info.getTitle().get( 0 ) );
-            metadata.appendChild( title );
+            parent.appendChild( title );
         }
     }
 

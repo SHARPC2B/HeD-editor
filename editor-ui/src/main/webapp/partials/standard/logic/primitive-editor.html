@@ -9,26 +9,17 @@
            x-popover="This is the name that will be displayed in the logic editor. It should be easy to remember what the clause means based on the name you give it. A default has been assigned."
            x-popover-title="Label"></i>
   	</form>
-	<div show-data template="{{template}}"></div>
-	<div ng-repeat="parameter in detail.parameters">
-		<span  style="vertical-align: super;">{{parameter.label}} </span>
-		<select ng-model="parameter.selectedOperation" ng-options="oc for oc in parameter.operationChoices" class="input-medium"></select>
-		<span ng-repeat="element in parameter.elements">
-			<span  style="vertical-align: super;">{{element.name}}=</span>
-			<span class="controls" ng-switch on="element.widgetType">
-				<input ng-switch-when="TextBox" type="text" ng-model="element.value" class="input-medium">
-				<span ng-switch-when="Number">
-					<input type="number" ng-model="element.value" step="{{element.step}}" class="input-medium">
-					<span ng-if="element.attributeName">
-						<input type="checkbox" ng-model="element.attributeValue"> {{element.attributeName}}
-					</span>
-				</span>
-				<input ng-switch-when="SearchChoice" type="text" ng-model="parameter.elements[2].value;" typeahead="suggestion.knownEntityDescriptionList[0].designation for suggestion in cts2search($viewValue)" typeahead-editable="false" typeahead-on-select="onSelect($item, $model, $label)" class="input-medium">
-				<select ng-switch-when="Choice" ng-model="element.value" ng-options="sc for sc in element.selectionChoices" class="input-medium"></select>
-			</span>
-		</span>
-		<button ng-click="openOther(parameter)" class="btn" style="vertical-align: super;">...</button>
-	</div>
+	<!--div show-data template="{{template}}"></div-->
+    <accordion close-others="false">
+        <accordion-group is-open="true">
+    	    <div ng-repeat="parameter in detail.parameters | filter: { optional: false } " ng-include="'partials/standard/logic/primitive-widget-simple.html'" />
+        </accordion-group>
+        <accordion-group is-open="false">
+            <accordion-heading>More...</accordion-heading>
+            <div ng-repeat="parameter in detail.parameters | filter: { optional: true } " ng-include="'partials/standard/logic/primitive-widget-simple.html'" />
+        </accordion-group>
+    </accordion>
+
 </div>
 <div class="modal-footer">
 	<a  href="" class="span2" ng-click="verify(detail)"><i class="icon-ok icon-3x"></i> Verify</a>
