@@ -5,7 +5,7 @@
 	<form>
 		<fieldset>
 			<label>Rule to Open</label>
-			<ul class="nav nav-list borderedBox" style="width: 494px;">
+			<ul class="nav nav-list borderedBox" style="width: 494px; height: 400px; overflow-y:scroll">
 				<li x-ng-repeat="rule in rules"><a href="" class="nav-header" x-ng-click="rule.show = !rule.show" x-ng-show="(rule.templates | filter:ruleFilter).length > 0"><i class="icon-folder-open-alt" x-ng-show="!rule.show"></i><i class="icon-folder-close-alt" x-ng-show="rule.show"></i>{{rule.label}}</a>
 					<ul class="nav nav-list" x-ng-show="!rule.show">
 						<li x-ng-repeat="template in rule.templates | filter:ruleFilter" x-ng-click="select(template)" x-ng-class="{active: template.name == selectedRule}"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>

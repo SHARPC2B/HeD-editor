@@ -14,4 +14,5 @@ public interface TemplateStore {
 
     public byte[] instantiateTemplate( String templateId, String name, Template source );
 
+    public Template getTemplateInstanceForNamedExpression( String id );
 }

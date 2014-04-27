@@ -455,4 +455,16 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     public byte[] instantiateTemplate( String templateId, String name, Template source ) {
         return getCurrentArtifact().instantiateExpressionFromTemplate( name, name, source );
     }
+
+    @Override
+    public Template getTemplateInstanceForNamedExpression( String exprId ) {
+        List<Template> templates = getCurrentArtifact().getNamedExpression( exprId ).getExpression().getIncarnationOf();
+        if ( ! templates.isEmpty() ) {
+            Template template = templates.get( 0 );
+            lookupCompatibleExpressionsAndOperations( template );
+            return template;
+        } else {
+            return null;
+        }
+    }
 }

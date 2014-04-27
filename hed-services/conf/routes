@@ -24,7 +24,7 @@ GET            /template/list                             controllers.ArtifactAc
 POST           /template/verify                           controllers.ArtifactActions.verifyTemplate()
 POST           /template/create                           controllers.ArtifactActions.saveTemplateInst(verify:Boolean = true)
 GET            /template/detail/:id                       controllers.ArtifactActions.getTemplateDetails(id:String)
-#GET            /templateq                             controllers.ArtifactActions.getConstructedTemplateForID(id:String)
+GET            /template/instance/:id                     controllers.ArtifactActions.getTemplateInstance(id:String)
 
 GET            /rule/current                              controllers.RuleActions.getCurrentInfo()
 POST           /rule/info/:id                             controllers.RuleActions.updateRuleInfo(id)

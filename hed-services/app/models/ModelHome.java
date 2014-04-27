@@ -960,7 +960,11 @@ public class ModelHome {
     }
 
     private static void fillBasicTemplateDetails( String templateId, PrimitiveTemplate template, Template templateDetails ) {
-        template.index = templateDetails.getIndex().get( 0 );
+        if ( ! templateDetails.getIndex().isEmpty() ) {
+            template.index = templateDetails.getIndex().get( 0 );
+        } else {
+            template.index = 0;
+        }
         template.templateId = templateId;
         template.key = templateId;
         template.name = templateDetails.getName().get( 0 );
@@ -1043,9 +1047,39 @@ public class ModelHome {
                 parseAndInjectDefaultValue( param, p.getDefaultValue().get( 0 ) );
             }
 
+            if ( ! p.getValue().isEmpty() ) {
+                parseAndInjectActualValue( param, p.getValue().get( 0 ) );
+            }
+
             parameterTypes.add( param );
         }
         return parameterTypes;
+    }
+
+    private static void parseAndInjectActualValue( ParameterType param, String value ) {
+        StringTokenizer tok = new StringTokenizer( value, ";" );
+        System.out.println( "Parsing " + value );
+
+        while ( tok.hasMoreTokens() ) {
+            String pair = tok.nextToken().trim();
+            int eqIndex = pair.indexOf( "=" );
+            String elem = pair.substring( 0, eqIndex ).trim();
+            String vals = pair.substring( eqIndex + 1 ).trim();
+
+            if ( "operation".equals( elem ) ) {
+                param.selectedOperation = vals;
+            } else if ( param.getElement( elem ) != null ) {
+                if ( vals.startsWith( "{" ) ) {
+                    vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
+                    String[] admissibles = vals.split( "," );
+                    param.getElement( elem ).value = admissibles[ 0 ];
+                } else {
+                    param.getElement( elem ).value = vals;
+                }
+            } else {
+                System.err.println( "WARNING : Trying to assign value " + vals + " to element " + elem + ", which does not exist" );
+            }
+        }
     }
 
     private static void parseAndInjectDefaultValue( ParameterType param, String value ) {
@@ -1184,9 +1218,11 @@ public class ModelHome {
             StringBuilder value = new StringBuilder( );
             value.append( "operation=" ).append( p.selectedOperation ).append( ";" );
             for ( ElementType el : p.elements ) {
-                value.append( el.name ).append( "=" ).append( el.value ).append( ";" );
+                if ( el.value != null ) {
+                    value.append( el.name ).append( "=" ).append( el.value ).append( ";" );
+                }
             }
-            param.addDefaultValue( value.toString() );
+            param.addValue( value.toString() );
 
             source.addHasParameter( param );
         }
@@ -1265,5 +1301,19 @@ public class ModelHome {
         }
     }
 
+
+    public static PrimitiveTemplate getTemplateInstance( String id ) {
+        Template templ = core.getTemplateInstanceForNamedExpression( id );
+        if ( templ == null ) {
+            return null;
+        }
+        PrimitiveTemplate primitive = new PrimitiveTemplate();
+
+        fillBasicTemplateDetails( id, primitive, templ );
+
+        primitive.parameters = rebuildParameterInfo( templ.getHasParameter() );
+
+        return primitive;
+    }
 
 }

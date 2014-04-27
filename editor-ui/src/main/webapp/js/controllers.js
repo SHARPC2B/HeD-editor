@@ -1096,7 +1096,37 @@ angular.module('ruleApp.controllers', [])
                     .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)", "logic" ) ), "Clauses");
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
+            },
+            customContextMenu : function(options) {
+                var option = { enabled : true, text : "Edit as Template..." };
+                var name = this.getFieldValue('Clauses');
+
+                option.callback = function() {
+                    var clause = undefined;
+
+                    $http.get(serviceUrl + '/template/instance/' + name ).success( function( data ) {
+                        clause = data;
+                        if ( data != null ) {
+                            var d = $modal.open({
+                                templateUrl: 'partials/standard/logic/primitive-editor.html',
+                                controller: 'EditPrimitiveController',
+                                resolve : {
+                                    clause : function() {
+                                        var inst = angular.copy(clause);
+                                        inst.category[0] = "CONDITION";
+                                        return inst;
+                                    }
+                                }
+                            });
+                        } else {
+                            alert( "No template information available ");
+                        }
+                    });
+                }
+                if (!$scope.$$phase) { $scope.$apply(); };
+                options.push(option);
             }
+
         };
         Blockly.Blocks.logic_any = {
             init: function() {
@@ -1105,7 +1135,37 @@ angular.module('ruleApp.controllers', [])
                     .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Expression...)", "any" ) ), "Clauses");
                 this.setOutput(true, "Any");
                 this.setTooltip('');
+            },
+            customContextMenu : function(options) {
+                var option = { enabled : true, text : "Edit as Template..." };
+                var name = this.getFieldValue('Clauses');
+
+                option.callback = function() {
+                    var clause = undefined;
+
+                    $http.get(serviceUrl + '/template/instance/' + name ).success( function( data ) {
+                        clause = data;
+                        if ( data != null ) {
+                            var d = $modal.open({
+                                templateUrl: 'partials/standard/logic/primitive-editor.html',
+                                controller: 'EditPrimitiveController',
+                                resolve : {
+                                    clause : function() {
+                                        var inst = angular.copy(clause);
+                                        inst.category[0] = "CONDITION";
+                                        return inst;
+                                    }
+                                }
+                            });
+                        } else {
+                            alert( "No template information available ");
+                        }
+                    });
+                }
+                if (!$scope.$$phase) { $scope.$apply(); };
+                options.push(option);
             }
+
         };
         Blockly.Blocks.logic_negate = {
             init: function() {
@@ -1329,10 +1389,41 @@ angular.module('ruleApp.controllers', [])
             init: function() {
                 this.setColour(30);
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)", "Request" ) ), "TypedExpression");
+                    .appendField( new Blockly.FieldDropdown( availableExpressions( $http, "(Typed Expression...)", "Request" ) ), "TypedExpression");
                 this.setOutput( "Request" );
+            },
+
+            customContextMenu : function(options) {
+                var option = { enabled : true, text : "Edit as Template..." };
+                var name = this.getFieldValue('TypedExpression');
+
+                option.callback = function() {
+                    var clause = undefined;
+
+                    $http.get(serviceUrl + '/template/instance/' + name ).success( function( data ) {
+                        clause = data;
+                        if ( data != null ) {
+                        var d = $modal.open({
+                            templateUrl: 'partials/standard/logic/primitive-editor.html',
+                            controller: 'EditPrimitiveController',
+                            resolve : {
+                                clause : function() {
+                                    var inst = angular.copy(clause);
+                                    inst.category[0] = "TRIGGER";
+                                    return inst;
+                                }
+                            }
+                        });
+                        } else {
+                            alert( "No template information available ");
+                        }
+                    });
+                }
+                if (!$scope.$$phase) { $scope.$apply(); };
+                options.push(option);
             }
         };
+
         Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#TypedTrigger'] = {
             init: function() {
                 this.setColour(20);
@@ -1594,7 +1685,39 @@ angular.module('ruleApp.controllers', [])
                     .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Condition Expression...)", "logic") ), "Clauses");
                 this.setOutput(true, "Boolean");
                 this.setTooltip('');
+            },
+
+            customContextMenu : function(options) {
+                var option = { enabled : true, text : "Edit as Template..." };
+                var name = this.getFieldValue('Clauses');
+
+                option.callback = function() {
+                    var clause = undefined;
+
+                    $http.get(serviceUrl + '/template/instance/' + name ).success( function( data ) {
+                        clause = data;
+                        if ( data != null ) {
+                            var d = $modal.open({
+                                templateUrl: 'partials/standard/logic/primitive-editor.html',
+                                controller: 'EditPrimitiveController',
+                                resolve : {
+                                    clause : function() {
+                                        var inst = angular.copy(clause);
+                                        inst.category[0] = "ACTION";
+                                        inst.category[1] = "CONDITION"
+                                        return inst;
+                                    }
+                                }
+                            });
+                        } else {
+                            alert( "No template information available ");
+                        }
+                    });
+                }
+                if (!$scope.$$phase) { $scope.$apply(); };
+                options.push(option);
             }
+
         };
         Blockly.Blocks.action_sentence = {
             init: function() {
@@ -1603,7 +1726,38 @@ angular.module('ruleApp.controllers', [])
                     .appendField(new Blockly.FieldDropdown( availableExpressions( $http, "(Sentence Expression...)", "action" ) ), "AS");
                 this.setOutput(true, "ActionSentence");
                 this.setTooltip('');
+            },
+            customContextMenu : function(options) {
+                var option = { enabled : true, text : "Edit as Template..." };
+                var name = this.getFieldValue('AS');
+
+                option.callback = function() {
+                    var clause = undefined;
+
+                    $http.get(serviceUrl + '/template/instance/' + name ).success( function( data ) {
+                        clause = data;
+                        if ( data != null ) {
+                            var d = $modal.open({
+                                templateUrl: 'partials/standard/logic/primitive-editor.html',
+                                controller: 'EditPrimitiveController',
+                                resolve : {
+                                    clause : function() {
+                                        var inst = angular.copy(clause);
+                                        inst.category[0] = "ACTION";
+                                        inst.category[1] = "ACTION";
+                                        return inst;
+                                    }
+                                }
+                            });
+                        } else {
+                            alert( "No template information available ");
+                        }
+                    });
+                }
+                if (!$scope.$$phase) { $scope.$apply(); };
+                options.push(option);
             }
+
         };
         Blockly.Blocks.action_root = {
                 init: function() {

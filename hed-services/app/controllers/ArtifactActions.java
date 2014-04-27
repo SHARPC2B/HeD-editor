@@ -120,4 +120,16 @@ public class ArtifactActions extends play.mvc.Controller {
         return ok( updatedCanvas );
     }
 
+
+    public static Result getTemplateInstance( String id ) {
+        PrimitiveTemplate templ = ModelHome.getTemplateInstance( id );
+
+        if ( templ == null ) {
+            setHeaderCORS();
+            return notFound();
+        }
+
+        setHeaderCORS();
+        return ok( Json.toJson( templ ) );
+    }
 }
