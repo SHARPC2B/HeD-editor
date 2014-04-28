@@ -443,6 +443,11 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
         }
 
         addOperation( param, "InCode" );
+
+        if ( template.getCategory().contains( "TRIGGER" ) ) {
+            return;
+        }
+
         if ( ScalarExpression.class.isAssignableFrom( paramType ) ) {
             addOperation( param, "GreaterCode" );
             addOperation( param, "GreaterOrEqualCode" );

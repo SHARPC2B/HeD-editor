@@ -46,6 +46,8 @@ public class ParameterType
 
     public boolean multiple;
 
+    public String path;
+
     //========================================================================================
 
     public ElementType getElement(String name)

@@ -994,6 +994,7 @@ public class ModelHome {
         template.key = templateDetails.getLabel().isEmpty() ? templateId : templateDetails.getName().get( 0 );
         // The "name" will be used for presentation purposes. (currently coincides with the key)
         template.name = templateDetails.getLabel().isEmpty() ? templateId : templateId;
+        template.rootClass = templateDetails.getRootClass().get( 0 );
         template.description = templateDetails.getDescription().get( 0 );
         template.category = new ArrayList( templateDetails.getCategory() );
         template.group = templateDetails.getGroup().get( 0 );
@@ -1064,6 +1065,7 @@ public class ModelHome {
             param.hedTypeName = p.getTypeName().get( 0 );
             param.optional = p.getOptional().get( 0 );
             param.multiple = p.getMultiple().get( 0 );
+            param.path = p.getPath().get( 0 );
 
             param.expressionChoices = new ArrayList( p.getCompatibleExpression() );
 
@@ -1236,6 +1238,7 @@ public class ModelHome {
         source.addName( t.name );
         source.addGroup( t.group );
         source.addLabel( t.name );
+        source.addRootClass( t.rootClass );
         for ( String cat : t.category ) {
             source.addCategory( cat );
         }
@@ -1251,6 +1254,7 @@ public class ModelHome {
             param.addLabel( p.label );
             param.addDescription( p.description );
             param.addTypeName( p.hedTypeName );
+            param.addPath( p.path );
 
             StringBuilder value = new StringBuilder( );
             value.append( "operation=" ).append( p.selectedOperation ).append( ";" );

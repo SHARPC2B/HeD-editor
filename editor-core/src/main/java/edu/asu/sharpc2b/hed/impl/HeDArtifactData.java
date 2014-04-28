@@ -1,6 +1,7 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.SupportsRdfId;
+import edu.asu.sharpc2b.TemplateInstantiatorFactory;
 import edu.asu.sharpc2b.actions.CancelActionImpl;
 import edu.asu.sharpc2b.actions.CollectInformationActionImpl;
 import edu.asu.sharpc2b.actions.CompositeAction;
@@ -101,6 +102,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -591,15 +594,34 @@ public class HeDArtifactData {
 
 
     public byte[] instantiateExpressionFromTemplate( String templateId, String name, Template source ) {
-        SharpExpression expr = instantiateExpression( source );
         BlocklyFactory factory = new BlocklyFactory( domainClasses, domainProperties );
-        byte[] blocks = factory.fromExpression( name, expr, BlocklyFactory.ExpressionRootType.EXPRESSION );
 
+        LinkedHashMap<String,SharpExpression> derivedExpressions = TemplateInstantiatorFactory.newTemplateInstantiator(  )
+                .instantiateExpression( idFromName( name ), source );
+
+        Iterator<String> iter = derivedExpressions.keySet().iterator();
+
+        SharpExpression expr = derivedExpressions.get( iter.next() );
         expr.addIncarnationOf( source );
 
         if ( ! ( expr instanceof LiteralExpression ) ) {
-            updateNamedExpression( templateId, name, blocks, expr );
+            updateNamedExpression( templateId,
+                                   name,
+                                   factory.fromExpression( name, expr, BlocklyFactory.ExpressionRootType.EXPRESSION ),
+                                   expr );
+            usedDomainClasses.putAll( factory.getRequiredDomainClasses() );
         }
+
+        while ( iter.hasNext() ) {
+            String key = iter.next();
+            SharpExpression secondaryExpr = derivedExpressions.get( key );
+            updateNamedExpression( key,
+                                   key,
+                                   factory.fromExpression( key, secondaryExpr, BlocklyFactory.ExpressionRootType.EXPRESSION ),
+                                   secondaryExpr );
+            usedDomainClasses.putAll( factory.getRequiredDomainClasses() );
+        }
+
 
         if ( ! source.getCategory().isEmpty() ) {
             String cat = source.getCategory().get( 0 );
@@ -683,45 +705,6 @@ public class HeDArtifactData {
             return new MessageActionImpl();
         }
         throw new UnsupportedOperationException( "Unable to determine action for template " + templ.getClass() );
-    }
-
-    private SharpExpression instantiateExpression( Template source ) {
-        switch ( BlocklyFactory.ExpressionRootType.valueOf( source.getCategory().get( 0 ) ) ) {
-            case CONDITION:
-                EqualExpressionImpl eq = new EqualExpressionImpl();
-                BooleanLiteralExpression boo = new BooleanLiteralExpressionImpl();
-                boo.addValue_Boolean( true );
-                eq.addFirstOperand( boo );
-                eq.addSecondOperand( boo );
-                return eq;
-            case TRIGGER:
-                if ( source.getGroup().contains( "Timed" ) ) {
-                    PeriodLiteralExpression period = new PeriodLiteralExpressionImpl();
-                    return period;
-                } else {
-                    ClinicalRequestExpression clix = new ClinicalRequestExpressionImpl();
-                    return clix;
-                }
-            case ACTION:
-                switch ( BlocklyFactory.ExpressionRootType.valueOf( source.getCategory().get( 1 ) ) ) {
-                    case CONDITION:
-                        EqualExpressionImpl eq2 = new EqualExpressionImpl();
-                        BooleanLiteralExpression boo2 = new BooleanLiteralExpressionImpl();
-                        boo2.addValue_Boolean( true );
-                        eq2.addFirstOperand( boo2 );
-                        eq2.addSecondOperand( boo2 );
-                        return eq2;
-                    case ACTION:
-                        default:
-                            AddExpression neq = new AddExpressionImpl();
-                            IntegerLiteralExpression lit = new IntegerLiteralExpressionImpl();
-                            lit.addValue( 3 );
-                            neq.addFirstOperand( lit );
-                            neq.addSecondOperand( lit );
-                        return neq;
-                }
-        }
-        return null;
     }
 
 }

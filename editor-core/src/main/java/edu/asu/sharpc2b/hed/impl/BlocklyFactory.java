@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -528,6 +529,8 @@ public class BlocklyFactory {
             return "xsd:int";
         } else if ( o instanceof Double ) {
             return "xsd:double";
+        } else if ( o instanceof Date ) {
+            return "xsd:dateTime";
         } else {
             throw new UnsupportedOperationException( "Unable to deal with DR " + o.getClass() );
         }

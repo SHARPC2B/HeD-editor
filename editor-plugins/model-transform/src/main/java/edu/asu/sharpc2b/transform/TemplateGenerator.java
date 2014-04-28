@@ -41,6 +41,7 @@ public class TemplateGenerator {
     public static final int TEMPLATE_CATEGORY = 4;
     public static final int PARAM_VMR_DATA_ELEMENT = 9;
     public static final int PARAM_DISPLAY_NAME = 7;
+    public static final int TEMPLATE_ROOT = 8;
     public static final int PARAM_DATATYPE = 14;
     public static final int PARAM_CARD = 10;
     public static final int PARAM_DEFAULT = 12;
@@ -118,6 +119,8 @@ public class TemplateGenerator {
                 axioms.add( helper.assertDataProperty( "tns:index", templ, t.index ) );
                 axioms.add( helper.assertDataProperty( "tns:name", templ, t.name ) );
                 axioms.add( helper.assertDataProperty( "tns:description", templ, descr ) );
+                //TODO rootClass and paths should be DomainClasses and DomainProperties
+                axioms.add( helper.assertDataProperty( "tns:rootClass", templ, t.root ) );
                 axioms.add( helper.assertDataProperty( "tns:example", templ, descr ) );
                 axioms.add( helper.assertDataProperty( "tns:group", templ, mainCategory ) );
 
@@ -183,6 +186,7 @@ public class TemplateGenerator {
             Cell indexCell = row.getCell( TEMPLATE_INDEX );
             Cell templateCell = row.getCell( TEMPLATE_NAME );
             Cell templateCat = row.getCell( TEMPLATE_CATEGORY );
+            Cell rootCell = row.getCell( TEMPLATE_ROOT );
 
             if ( templateCell == null || "".equals( templateCell.getStringCellValue() ) ) {
                 // ... or empty cells
@@ -196,6 +200,7 @@ public class TemplateGenerator {
                 templ = new Template();
                 templ.id = templateCell.getStringCellValue().replace( " ", "_" );
                 templ.name = split( templateCell.getStringCellValue() );
+                templ.root = rootCell.getStringCellValue();
                 templ.category = templateCat.getStringCellValue();
                 templates.put( templ.id, templ );
             }
@@ -295,6 +300,7 @@ public class TemplateGenerator {
         public String id;
         public String name;
         public String category;
+        public String root;
         public List<Parameter> params = new ArrayList<Parameter>();
 
         @Override

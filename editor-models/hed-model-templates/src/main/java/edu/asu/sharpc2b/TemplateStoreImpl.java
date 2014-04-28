@@ -164,6 +164,7 @@ public class TemplateStoreImpl {
                         originalType = originalType.substring( originalType.lastIndexOf( "#" ) + 1 );
                         if ( ! param.getTypeName().get( 0 ).equals( originalType ) ) {
                             System.out.println( "WARNING : property " + prop + " on path " + param.getPath().get( 0 ) +  " declared with different types " + originalType + " vs (xls) " + param.getTypeName().get( 0 ) );
+                            param.addNativeTypeName( mapNativeToHeD( originalType ) );
                             originalType = param.getTypeName().get( 0 );
                         }
                         param.getTypeName().clear();

@@ -36,6 +36,8 @@ public class PrimitiveTemplate extends SharpType implements Comparable<Primitive
 
     public String templateClass;
 
+    public String rootClass;
+
     @Override
     public int compareTo( PrimitiveTemplate o ) {
         return this.index - o.index;
