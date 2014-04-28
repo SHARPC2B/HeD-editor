@@ -12,7 +12,7 @@
 		</form>
 		<p class="text-center">Select an option below (a new window will open)</p>
 		<p><input type="search" class="search-query span12" placeholder="Filter templates" ng-model="templateFilter"></p>
-		<ul class="nav nav-list borderedBox" style="height: 300px; overflow-y:scroll;" >
+		<ul class="nav nav-list borderedBox" style="height: 450px; overflow-y:scroll;" >
 			<li ng-repeat="primitive in primitives"><a href="" class="nav-header" ng-click="primitive.show = !primitive.show" ng-show="(primitive.templates | filter:templateFilter).length > 0"><i class="icon-folder-open-alt" ng-show="!primitive.show"></i><i class="icon-folder-close-alt" ng-show="primitive.show"></i>{{primitive.label}}</a>
 				<ul class="nav nav-list" ng-show="!primitive.show">
 					<li ng-repeat="template in primitive.templates | filter:templateFilter" ng-click="openClauseEditor(template)"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
@@ -20,7 +20,7 @@
 			</li>
 		</ul>
 
-            <p class="text-center">Expressions:</p>
+            <!--p class="text-center">Expressions:</p>
             <div class="search-prepend">
                 <div class="icon-search icon-white"></div>
                 <input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
@@ -32,7 +32,7 @@
                         <a href="" x-ng-click="preview(expression)"><i class="icon-zoom-in" title="View"></i></a>
                     </div>
                 </li>
-            </ul>
+            </ul-->
 
         <p class="text-center"><b>All of the items on the grey area may be dragged in to the canvas on the right</b></p>
 		<p class="text-center"><i>Remember, you may drop anything in a container (including other containers), but nothing may go inside a clause.</i></p>

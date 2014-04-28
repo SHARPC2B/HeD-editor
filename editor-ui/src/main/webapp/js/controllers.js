@@ -1,7 +1,7 @@
 'use strict';
 
-var serviceUrl = 'http://localhost:9000';
-//var serviceUrl = 'http://192.168.0.4:9000';
+//var serviceUrl = 'http://localhost:9000';
+var serviceUrl = 'http://192.168.0.4:9000';
 
 angular.module('ruleApp.controllers', [])
 
@@ -121,7 +121,7 @@ angular.module('ruleApp.controllers', [])
                     $scope.background = data;
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Metadata ' + data.Name;
+                    $scope.$parent.title = data.Name + ' : Metadata';
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
@@ -495,11 +495,11 @@ angular.module('ruleApp.controllers', [])
                         if ( data != null ) {
                             $scope.currentRuleId = data.ruleId;
                             $scope.currentRuleTitle = data.Name;
-                            $scope.$parent.title = 'Expressions ' + data.Name;
+                            $scope.$parent.title = data.Name + ' : Expressions';
                         } else {
                             delete $scope.currentRuleId;
                             delete $scope.currentRuleTitle;
-                            $scope.$parent.title = 'Expressions (no rule active)';
+                            $scope.$parent.title = 'Named Expressions (no rule active)';
                         }
                         $http({
                             method : 'GET',
@@ -840,7 +840,7 @@ angular.module('ruleApp.controllers', [])
                 if ( data != null ) {
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Logic : ' + data.Name;
+                    $scope.$parent.title = data.Name + ' : Logic';
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
@@ -1312,7 +1312,7 @@ angular.module('ruleApp.controllers', [])
                 if ( data != null ) {
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Triggers : ' + data.Name;
+                    $scope.$parent.title = data.Name + ' : Triggers';
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
@@ -1486,7 +1486,7 @@ angular.module('ruleApp.controllers', [])
                 if ( data != null ) {
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Actions : ' + data.Name;
+                    $scope.$parent.title = data.Name + ': Actions';
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
@@ -1803,11 +1803,11 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('SaveCtrl', [ '$scope', '$http', '$sce', function($scope, $http, $sce) {
-        $scope.outputFormat1 = 'HED_HTML';
-        $scope.outputFormat2 = 'HED_XML';
+        $scope.outputFormat1 = 'HED_XML';
+        //$scope.outputFormat2 = 'HED_XML';
 
         $scope.refresh1 = function() {
-            $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat1 ).success(function(data) {
+            $http.get( serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat1 ).success( function( data ) {
                 if ( $scope.outputFormat1 == 'HED_HTML' ) {
                     $scope.xml1 = $sce.trustAsHtml( data );
                 } else {
@@ -1815,6 +1815,7 @@ angular.module('ruleApp.controllers', [])
                 }
             });
         }
+        /*
         $scope.refresh2 = function() {
             $http.get(serviceUrl + '/rule/export/' + $scope.currentRuleId + '/' + $scope.outputFormat2 ).success(function(data) {
                 if ( $scope.outputFormat2 == 'HED_HTML' ) {
@@ -1824,6 +1825,7 @@ angular.module('ruleApp.controllers', [])
                 }
             });
         }
+        */
 
         $http({
             method: 'GET',
@@ -1833,7 +1835,7 @@ angular.module('ruleApp.controllers', [])
                     $scope.background = data;
                     $scope.currentRuleId = data.ruleId;
                     $scope.currentRuleTitle = data.Name;
-                    $scope.$parent.title = 'Review and Save ' + data.Name;
+                    $scope.$parent.title = data.Name + ' : Review';
 
                     $scope.$parent.menuItems = standardMenuItems(5);
                     $scope.refresh1();
@@ -1841,7 +1843,7 @@ angular.module('ruleApp.controllers', [])
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;
-                    $scope.$parent.title = 'Review and Save (no rule active)';
+                    $scope.$parent.title = 'Review (no rule active)';
                 }
 
                 $scope.saveBackground = function(background) {
@@ -2236,11 +2238,11 @@ angular.module('ruleApp.controllers', [])
 
 function standardMenuItems(position) {
     var menuItems = [{"text": "Metadata", "href": "#/standard/background"},
-        {"text": "Create Expressions", "href": "#/standard/expression"},
+        {"text": "Technical View", "href": "#/standard/expression"},
         {"text": "Select Trigger", "href": "#/standard/trigger"},
         {"text": "Define Logic", "href": "#/standard/logic"},
         {"text": "Choose Action", "href": "#/standard/action"},
-        {"text": "Review & Export", "href": "#/standard/save"}];
+        {"text": "Review", "href": "#/standard/save"}];
     menuItems[position].status = "disabled";
     return menuItems;
 };
@@ -2293,7 +2295,7 @@ function availableProperties( httpContext, $scope, domainClass ) {
 
 function updateTitle( $scope ) {
     if ( $scope.hasOwnProperty( 'currentRuleId' ) ) {
-        $scope.$parent.title = 'Artifact ' + $scope.currentRuleTitle;
+        $scope.$parent.title = $scope.currentRuleTitle;
 
         $scope.$parent.menuItems = [
             {"text": "Go To Authoring...", "href": "#/standard/background"}

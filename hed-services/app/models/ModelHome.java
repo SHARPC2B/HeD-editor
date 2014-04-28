@@ -1111,6 +1111,8 @@ public class ModelHome {
                     vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
                     String[] admissibles = vals.split( "," );
                     param.getElement( elem ).value = admissibles[ 0 ];
+
+                    param.getElement( elem ).widgetType = "Dropdown";
                 } else {
                     param.getElement( elem ).value = vals;
                 }
@@ -1263,6 +1265,7 @@ public class ModelHome {
                     value.append( el.name ).append( "=" ).append( el.value ).append( ";" );
                 }
             }
+            System.out.println( "Bound value " + value.toString() + " to field " + p.name );
             param.addValue( value.toString() );
 
             source.addHasParameter( param );

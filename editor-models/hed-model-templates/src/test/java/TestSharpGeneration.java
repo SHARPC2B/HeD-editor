@@ -35,4 +35,47 @@ public class TestSharpGeneration {
         System.out.println( out );
     }
 
+    @Test
+    public void testPatientCondition() {
+        System.out.println( store.getTemplateIds( null ) );
+        Template cond = store.getTemplateInfo( "PatientAge" );
+
+        cond.addCategory( "CONDITION" );
+        for ( Parameter parm : cond.getHasParameter() ) {
+            if ( parm.getName().contains( "age" ) ) {
+                parm.addValue( "operation=GreaterOrEqual;value=22;unit=years" );
+            }
+        }
+
+        Map<String, SharpExpression> out = TemplateInstantiatorFactory.newTemplateInstantiator().instantiateExpression( "test", cond );
+
+        System.out.println( out );
+    }
+
+    @Test
+    public void testProblemConditions() {
+        System.out.println( store.getTemplateIds( null ) );
+        Template cond = store.getTemplateInfo( "ProblemDiagnosis" );
+
+        cond.addCategory( "CONDITION" );
+        for ( Parameter parm : cond.getHasParameter() ) {
+            if ( parm.getName().contains( "diagnosticEventTime" ) ) {
+                parm.addValue( "operation=Equal;value=-30;unit=days;" );
+            }
+            if ( parm.getName().contains( "problemEffectiveTime" ) ) {
+                parm.addValue( "operation=Equal;value=0;unit=days" );
+            }
+            if ( parm.getName().contains( "problemStatus" ) ) {
+                parm.addValue( "operation=Equal;" );
+            }
+            if ( parm.getName().contains( "problemCode" ) ) {
+                parm.addValue( "operation=Equal;displayValue=Acute infection of bone;code=409779000;codeSystem=SNOMED" );
+            }
+        }
+
+        Map<String, SharpExpression> out = TemplateInstantiatorFactory.newTemplateInstantiator().instantiateExpression( "test", cond );
+
+        System.out.println( out );
+    }
+
 }

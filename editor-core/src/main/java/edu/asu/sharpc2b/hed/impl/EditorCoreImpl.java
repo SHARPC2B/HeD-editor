@@ -9,6 +9,7 @@ import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.ops.DateExpression;
 import edu.asu.sharpc2b.ops.IntervalExpression;
 import edu.asu.sharpc2b.ops.ScalarExpression;
+import edu.asu.sharpc2b.ops_set.CodeLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IndividualFactory;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
@@ -17,6 +18,7 @@ import edu.asu.sharpc2b.templates.Template;
 import edu.asu.sharpc2b.transform.HeD2OwlDumper;
 import edu.asu.sharpc2b.transform.HeDExporterFactory;
 
+import org.hl7.knowledgeartifact.r1.CodeLiteral;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.w3c.dom.Document;
@@ -442,7 +444,9 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             return;
         }
 
-        addOperation( param, "InCode" );
+        if ( CodeLiteralExpression.class.isAssignableFrom( paramType ) ) {
+            addOperation( param, "InValueSetCode" );
+        }
 
         if ( template.getCategory().contains( "TRIGGER" ) ) {
             return;

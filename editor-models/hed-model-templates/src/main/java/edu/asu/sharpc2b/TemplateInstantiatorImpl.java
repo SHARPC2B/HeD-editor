@@ -1,22 +1,54 @@
 package edu.asu.sharpc2b;
 
+import com.hp.hpl.jena.sparql.function.library.date;
 import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.hed.impl.DomainHierarchyExplorer;
+import edu.asu.sharpc2b.ops.BinaryExpression;
+import edu.asu.sharpc2b.ops.BooleanExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpressionImpl;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpressionImpl;
+import edu.asu.sharpc2b.ops.ListVariableExpression;
+import edu.asu.sharpc2b.ops.ListVariableExpressionImpl;
 import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.UnaryExpression;
+import edu.asu.sharpc2b.ops.Variable;
+import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.ops.VariableExpressionImpl;
+import edu.asu.sharpc2b.ops.VariableImpl;
+import edu.asu.sharpc2b.ops_set.AndExpression;
+import edu.asu.sharpc2b.ops_set.AndExpressionImpl;
+import edu.asu.sharpc2b.ops_set.BooleanLiteralExpression;
+import edu.asu.sharpc2b.ops_set.BooleanLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops_set.ClinicalRequestExpressionImpl;
 import edu.asu.sharpc2b.ops_set.CodeLiteralExpression;
 import edu.asu.sharpc2b.ops_set.CodeLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.EqualExpressionImpl;
+import edu.asu.sharpc2b.ops_set.FilterExpression;
+import edu.asu.sharpc2b.ops_set.FilterExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IntegerLiteralExpression;
+import edu.asu.sharpc2b.ops_set.IntegerLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
+import edu.asu.sharpc2b.ops_set.IsNotEmptyExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ListExpression;
 import edu.asu.sharpc2b.ops_set.ListExpressionImpl;
+import edu.asu.sharpc2b.ops_set.LiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpression;
+import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.PhysicalQuantityLiteralExpression;
+import edu.asu.sharpc2b.ops_set.PhysicalQuantityLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.PropertyExpression;
+import edu.asu.sharpc2b.ops_set.PropertyExpressionImpl;
+import edu.asu.sharpc2b.ops_set.StringLiteralExpression;
+import edu.asu.sharpc2b.ops_set.StringLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.TimestampIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.TimestampIntervalLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.TimestampLiteralExpression;
+import edu.asu.sharpc2b.ops_set.TimestampLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ValueSetExpression;
 import edu.asu.sharpc2b.ops_set.ValueSetExpressionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
@@ -73,14 +105,53 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
 
 
     private void processAsCondition( String name, Template source ) {
+        // on condition, create:
+        // - a clinical request to bring in the data
+        // - main expression has filters based on non-date, non-code attributes
+        // - "has" X, existential version of the main expression
+        boolean needsFilter = hasNonRequestFilterCriteria( source );
+        String klass = source.getRootClass().get( 0 );
+
+        SharpExpression mainExpression;
+        ListVariableExpression var = new ListVariableExpressionImpl();
+        if ( needsFilter ) {
+            FilterExpression filter = new FilterExpressionImpl();
+            mainExpression = filter;
+
+            AndExpression condition = new AndExpressionImpl();
+            for ( Parameter param : source.getHasParameter() ) {
+                if ( ! isRequestParam( param, klass ) ) {
+                    SharpExpression expr = buildConstraint( source, param );
+                    condition.addHasOperand( expr );
+                }
+            }
+
+            filter.addSource_List( var );
+            filter.addCondition( condition.getHasOperand().size() > 1 ? condition : condition.getHasOperand().get( 0 ) );
+        } else {
+            mainExpression = var;
+        }
+        expressions.put( name, mainExpression );
+
+        String requestName = createClinicalRequest( name, source, false );
+        Variable v = new VariableImpl();
+        v.addName( requestName );
+        var.addReferredVariable( v );
+
+        VariableExpression mainVar = new VariableExpressionImpl();
+        Variable v2 = new VariableImpl();
+        v2.addName( name );
+        mainVar.addReferredVariable( v2 );
+
+        IsNotEmptyExpression exists = new IsNotEmptyExpressionImpl();
+        exists.addFirstOperand( mainVar );
+        expressions.put( "Has " + name, exists );
 
     }
-
 
     private void processAsAction( String name, Template source ) {
 
     }
-
 
 
     private void processAsTrigger( String name, Template source ) {
@@ -112,31 +183,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             period.addCount( 1 );
             period.addIsFlexible( false );
         } else if ( "PeriodLiteral".equals( type ) ) {
-            TimestampIntervalLiteralExpression intv = new TimestampIntervalLiteralExpressionImpl();
-            if ( elems.containsKey( "low" ) ) {
-                Date lowDate = parseDate( elems.get( "low" ) );
-                intv.addLow_DateTime( lowDate );
-            }
-            if ( elems.containsKey( "high" ) && ! "".equals( elems.get( "high" ) ) ) {
-                Date highDate = parseDate( elems.get( "high" ) );
-                intv.addHigh_DateTime( highDate );
-            }
-            if ( elems.containsKey( "lowClosed" ) ) {
-                intv.setLowClosedBoolean( Boolean.valueOf( elems.get( "lowClosed" ) ) );
-            }
-            if ( elems.containsKey( "highClosed" ) ) {
-                intv.setHighClosedBoolean( Boolean.valueOf( elems.get( "highClosed" ) ) );
-            }
-            period.addPhase( intv );
-
-            if ( elems.containsKey( "count" ) ) {
-                period.addCount( Integer.valueOf( elems.get( "count" ) ) );
-            }
-            if ( elems.containsKey( "isFlexible" ) ) {
-                period.setIsFlexible( Boolean.valueOf( elems.get( "isFlexible" ) ) );
-            }
-            //TODO Fix period/frequency
-
+            period = (PeriodLiteralExpression) buildLiteral( "PeriodLiteral", elems );
         } else {
             throw new UnsupportedOperationException( "Unable to parse timed trigger with type " + type );
         }
@@ -153,14 +200,14 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         }
     }
 
-    private void createClinicalRequest( String name, Template source, boolean asTrigger ) {
+    private String createClinicalRequest( String name, Template source, boolean asTrigger ) {
         if ( source.getRootClass().isEmpty() ) {
             System.err.println( "WARNING : Template with no root class, impossible to check request!" );
-            return;
+            return "";
         }
         String klass = source.getRootClass().get( 0 );
         ClinicalRequestExpression creq = new ClinicalRequestExpressionImpl();
-        String exprName = name + " - Request ";
+        String exprName = name + " - Request";
 
         creq.addDataType( getDomainClassExpression( klass ) );
 
@@ -185,10 +232,8 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             }
         }
 
-
-
-
         this.expressions.put( exprName, creq );
+        return exprName;
     }
 
     private ValueSetExpression gatherValueSetFromParams( Template source, String codeProperty ) {
@@ -213,22 +258,129 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
                 String value = param.getValue().get( 0 );
                 Map<String,String> elements = tokenize( value );
                 if ( ( ! elements.containsKey( "valueSet" ) ) || ( ! elements.get( "valueSet" ).equals( elements.get( "codeSystem" ) ) ) ) {
-                    CodeLiteralExpression code = new CodeLiteralExpressionImpl();
-                    if ( elements.containsKey( "code" ) ) {
-                        code.addCode( elements.get( "code" ) );
-                    }
-                    if ( elements.containsKey( "codeSystem" ) ) {
-                        code.addCodeSystem( elements.get( "codeSystem" ) );
-                    }
-                    if ( elements.containsKey( "displayValue" ) ) {
-                        code.addDisplayName( elements.get( "displayValue" ) );
-                    }
+                    CodeLiteralExpression code = (CodeLiteralExpression) buildLiteral( "CodeLiteral", elements );
                     codes.add( code );
                 }
             }
         }
         return codes;
     }
+
+
+    private SharpExpression buildConstraint( Template source, Parameter param ) {
+        Map<String,String> elems = tokenize( param.getValue().get( 0 ) );
+        String op = elems.get( "operation" );
+        SharpExpression opExpr = null;
+
+        try {
+            opExpr = (SharpExpression) Class.forName( EqualExpressionImpl.class.getPackage().getName() + "." + op + "ExpressionImpl" ).newInstance();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+
+        if ( ! ( opExpr instanceof BooleanExpression ) ) {
+            throw new UnsupportedOperationException( "Unable to build constraint using non-boolean expression " + op );
+        }
+
+        PropertyExpression prop = new PropertyExpressionImpl();
+        prop.addPath( getDomainPropertyExpression( param.getPath().get( 0 ) ) );
+        if ( opExpr instanceof BinaryExpression ) {
+            // TODO support expressions
+            ((BinaryExpression) opExpr).addFirstOperand( prop );
+            SharpExpression literal = buildLiteral( param.getTypeName().get( 0 ), elems );
+            if ( ! param.getNativeTypeName().isEmpty() && ! ( param.getNativeTypeName().get( 0 ).equals( param.getTypeName() ) ) ) {
+                literal = cast( literal, param.getTypeName().get( 0 ), param.getNativeTypeName().get( 0 ) );
+            }
+            ((BinaryExpression) opExpr).addSecondOperand( literal );
+        } else if ( opExpr instanceof UnaryExpression ) {
+            ((UnaryExpression) opExpr).addFirstOperand( prop );
+        } else {
+            throw new UnsupportedOperationException( "Unable to build constraint using expression " + op );
+        }
+        return opExpr;
+
+    }
+
+    private SharpExpression cast( SharpExpression literal, String current, String target ) {
+        return literal;
+    }
+
+    private SharpExpression buildLiteral( String type, Map<String, String> elems ) {
+        if ( "CodeLiteral".equals( type ) ) {
+            CodeLiteralExpression code = new CodeLiteralExpressionImpl();
+            if ( elems.containsKey( "code" ) ) {
+                code.addCode( elems.get( "code" ) );
+            }
+            if ( elems.containsKey( "codeSystem" ) ) {
+                code.addCodeSystem( elems.get( "codeSystem" ) );
+            }
+            if ( elems.containsKey( "displayValue" ) ) {
+                code.addDisplayName( elems.get( "displayValue" ) );
+            }
+            return code;
+        } else if ( "PeriodLiteral".equals( type ) ) {
+            PeriodLiteralExpression period = new PeriodLiteralExpressionImpl();
+            TimestampIntervalLiteralExpression intv = new TimestampIntervalLiteralExpressionImpl();
+            if ( elems.containsKey( "low" ) ) {
+                Date lowDate = parseDate( elems.get( "low" ) );
+                intv.addLow_DateTime( lowDate );
+            }
+            if ( elems.containsKey( "high" ) && ! "".equals( elems.get( "high" ) ) ) {
+                Date highDate = parseDate( elems.get( "high" ) );
+                intv.addHigh_DateTime( highDate );
+            }
+            if ( elems.containsKey( "lowClosed" ) ) {
+                intv.setLowClosedBoolean( Boolean.valueOf( elems.get( "lowClosed" ) ) );
+            }
+            if ( elems.containsKey( "highClosed" ) ) {
+                intv.setHighClosedBoolean( Boolean.valueOf( elems.get( "highClosed" ) ) );
+            }
+            period.addPhase( intv );
+
+            if ( elems.containsKey( "count" ) ) {
+                period.addCount( Integer.valueOf( elems.get( "count" ) ) );
+            }
+            if ( elems.containsKey( "isFlexible" ) ) {
+                period.setIsFlexible( Boolean.valueOf( elems.get( "isFlexible" ) ) );
+            }
+            //TODO Fix period/frequency
+            return period;
+        } else if ( "IntegerLiteral".equals( type ) ) {
+            IntegerLiteralExpression literal = new IntegerLiteralExpressionImpl();
+            literal.addValue( Integer.valueOf( elems.get( "value" ) ) );
+            return literal;
+        } else if ( "StringLiteral".equals( type ) ) {
+            StringLiteralExpression literal = new StringLiteralExpressionImpl();
+            literal.addValue_String( elems.get( "value" ) );
+            return literal;
+        } else if ( "BooleanLiteral".equals( type ) ) {
+            BooleanLiteralExpression bool = new BooleanLiteralExpressionImpl();
+            bool.addValue_Boolean( Boolean.valueOf( elems.get( "value" ) ) );
+            return bool;
+        } else if ( "TimestampLiteral".equals( type ) ) {
+            TimestampLiteralExpression time = new TimestampLiteralExpressionImpl();
+            time.addValue_DateTime( parseDate( elems.get( "value" ) ) );
+            return time;
+        } else if ( "PhysicalQuantityLiteral".equals( type ) ) {
+            PhysicalQuantityLiteralExpression pq = new PhysicalQuantityLiteralExpressionImpl();
+            pq.addValue_Double( Double.valueOf( elems.get( "value" ) ) );
+            pq.addUnit( elems.get( "unit" ) );
+            return pq;
+        } else if ( "PhysicalQuantityIntervalLiteral".equals( type ) ) {
+            PhysicalQuantityIntervalLiteralExpression pqi = new PhysicalQuantityIntervalLiteralExpressionImpl();
+            PhysicalQuantityLiteralExpression low = new PhysicalQuantityLiteralExpressionImpl();
+            low.addValue_Double( Double.valueOf( elems.get( "low_value" ) ) );
+            low.addUnit( elems.get( "low_unit" ) );
+            PhysicalQuantityLiteralExpression high = new PhysicalQuantityLiteralExpressionImpl();
+            high.addValue_Double( Double.valueOf( elems.get( "high_value" ) ) );
+            high.addUnit( elems.get( "high_unit" ) );
+            pqi.addLow_PhysicalQuantity( low );
+            pqi.addHigh_PhysicalQuantity( high );
+            return pqi;
+        }
+        return null;
+    }
+
 
     private Map<String, String> tokenize( String value ) {
         Map<String,String> elements = new HashMap<String,String>();
@@ -256,8 +408,29 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         ConceptCode typeCode = new ConceptCodeImpl();
         typeCode.addCode( property );
         typeCode.addCodeSystem( DOMAIN_NS );
-        prop.addHasCode( typeCode );
+        prop.addPropCode( typeCode );
         return prop;
+    }
+
+
+
+    private boolean isRequestParam( Parameter param, String klass ) {
+        String codeProperty = getCodeProperty( klass );
+        String dateProperty = getDateProperty( klass );
+        String paramName = param.getName().get( 0 );
+        return paramName.equals( codeProperty )
+               || paramName.equals( dateProperty );
+    }
+
+    private boolean hasNonRequestFilterCriteria( Template source ) {
+        //TODO introduce subjectProperty
+        String klass = source.getRootClass().get( 0 );
+        for ( Parameter param : source.getHasParameter() ) {
+            if ( ! isRequestParam( param, klass ) ) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -266,6 +439,14 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
     private String getCodeProperty( String klass ) {
         if ( klass.contains( "Observation" ) ) {
             return "observationFocus";
+        } else if ( klass.contains( "Person" ) ) {
+            return "";
+        } else if ( klass.contains( "SubstanceAdministration" ) ) {
+            return "substanceCode";
+        } else if ( klass.contains( "Problem" ) ) {
+            return "problemCode";
+        } else if ( klass.contains( "Procedure" ) ) {
+            return "procedureCode";
         }
         throw new IllegalStateException( "Define code property for  " + klass );
     }
@@ -275,6 +456,16 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
     private String getDateProperty( String klass ) {
         if ( klass.contains( "Observation" ) ) {
             return "observationEventTime";
+        } else if ( klass.contains( "Person" ) ) {
+            return "";
+        } else if ( klass.contains( "SubstanceAdministrationProposal" ) ) {
+            return "proposedAdministrationTimeInterval";
+        } else if ( klass.contains( "SubstanceAdministration" ) ) {
+            return "administrationTimeInterval";
+        } else if ( klass.contains( "Problem" ) ) {
+            return "problemEffectiveTime";
+        } else if ( klass.contains( "Procedure" ) ) {
+            return "procedureTime";
         }
         throw new IllegalStateException( "Define date range property for  " + klass );
     }

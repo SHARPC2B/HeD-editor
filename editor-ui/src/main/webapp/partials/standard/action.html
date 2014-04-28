@@ -6,7 +6,7 @@
 			<input type="text" class="search-query span12" placeholder="search" x-ng-model="actionFilter">
 		</div>
 		<br>
-		<ul class="nav nav-list borderedBox" style="height: 250px; overflow-y:scroll;">
+		<ul class="nav nav-list borderedBox" style="height: 450px; overflow-y:scroll;">
 			<li x-ng-repeat="action in actionsTemplates"><a href="" class="nav-header" x-ng-click="action.show = !action.show" x-ng-show="(action.templates | filter:actionFilter).length > 0"><i class="icon-folder-open-alt" x-ng-show="!action.show"></i><i class="icon-folder-close-alt" x-ng-show="action.show"></i>{{action.label}}</a>
 				<ul class="nav nav-list" x-ng-show="!action.show">
 					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template,'ACTION')"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
@@ -26,7 +26,7 @@
         </ul>
         <br>
 
-        <p class="text-center">Expressions:</p>
+        <!--p class="text-center">Expressions:</p>
         <div class="search-prepend">
             <div class="icon-search icon-white"></div>
             <input type="text" class="search-query span12" placeholder="search" x-ng-model="search.name" >
@@ -38,7 +38,7 @@
                     <a href="" x-ng-click="preview(expression)"><i class="icon-zoom-in" title="View"></i></a>
                 </div>
             </li>
-        </ul>
+        </ul-->
 
 
 

@@ -542,6 +542,7 @@ public class BlocklyFactory {
         return predicate.equals( exprNS + "property" )
                || predicate.equals( exprNS + "element" )
                || predicate.equals( exprNS + "caseItem" )
+               || predicate.equals( exprNS.replace( "ops-set", "ops" ) + "hasOperand" )
                || predicate.equals( exprNS.replace( "ops-set", "ops" ) + "property" );
     }
 
@@ -693,6 +694,9 @@ public class BlocklyFactory {
     }
 
     private Class mapClass( Class<?> aClass ) {
+        if ( VariableExpression.class.isAssignableFrom( aClass ) ) {
+            return VariableExpression.class;
+        }
         if ( IteratorExpression.class.isAssignableFrom( aClass ) ) {
             return ClinicalRequestExpression.class;
         } else if (ExpressionRef.class.isAssignableFrom( aClass ) ) {
