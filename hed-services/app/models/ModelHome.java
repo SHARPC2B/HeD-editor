@@ -946,9 +946,9 @@ public class ModelHome {
 
                                 for ( ParameterType p : template.parameters ) {
                                     if ( p.name.equals( parm.getName().get( 0 ) ) ) {
-                                        p.getElement( "code" ).value = code;
-                                        p.getElement( "codeSystem" ).value = codeSystem.toUpperCase();
-                                        p.getElement( "displayValue" ).value = entry.getKnownEntityDescription()[0].getDesignation();
+                                        p.getElement( "code" ).setValue( code );
+                                        p.getElement( "codeSystem" ).setValue( codeSystem.toUpperCase() );
+                                        p.getElement( "displayValue" ).setValue( entry.getKnownEntityDescription()[0].getDesignation() );
                                     }
                                 }
                             }
@@ -1110,11 +1110,10 @@ public class ModelHome {
                 if ( vals.startsWith( "{" ) ) {
                     vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
                     String[] admissibles = vals.split( "," );
-                    param.getElement( elem ).value = admissibles[ 0 ];
-
+                    param.getElement( elem ).setValue( admissibles[ 0 ] );
                     param.getElement( elem ).widgetType = "Dropdown";
                 } else {
-                    param.getElement( elem ).value = vals;
+                    param.getElement( elem ).setValue(  vals );
                 }
             } else {
                 System.err.println( "WARNING : Trying to assign value " + vals + " to element " + elem + ", which does not exist" );
@@ -1138,12 +1137,12 @@ public class ModelHome {
                     vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
                     String[] admissibles = vals.split( "," );
                     param.getElement( elem ).initialValue = admissibles[ 0 ];
-                    param.getElement( elem ).value = admissibles[ 0 ];
+                    param.getElement( elem ).setValue( admissibles[ 0 ] );
                     param.getElement( elem ).selectionChoices = Arrays.asList( admissibles );
                     param.getElement( elem ).widgetType = "Dropdown";
                 } else {
                     param.getElement( elem ).initialValue = vals;
-                    param.getElement( elem ).value = vals;
+                    param.getElement( elem ).setValue( vals );
                 }
             } else {
                 System.err.println( "WARNING : Trying to assign initial value " + vals + " to element " + elem + ", which does not exist" );
@@ -1153,10 +1152,11 @@ public class ModelHome {
         if ( "CodeLiteral".equals( param.hedTypeName ) ) {
 
             try {
-                String code = (String) param.getElement( "code" ).value;
-                if ( code != null && ! "".equals( code ) ) {
-                    CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + code, CodeSystemCatalogEntry.class );
-                    param.getElement( "displayValue" ).value = entry.getFormalName();
+                String code = (String) param.getElement( "code" ).getValue();
+                String codeSystem = (String) param.getElement( "codeSystem" ).getValue();
+                if ( code != null && codeSystem != null && ! "".equals( code ) ) {
+                    CodeSystemCatalogEntry entry = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/entity/" + codeSystem.toLowerCase() + ":" + code, CodeSystemCatalogEntry.class );
+                    param.getElement( "displayValue" ).setValue( entry.getFormalName() );
                 }
             } catch ( HttpClientErrorException e ) {
                 System.err.println( "Warning : code " + value + " could not be looked up, only partial information will be available" );
@@ -1183,7 +1183,7 @@ public class ModelHome {
                 ParameterType ptype = extractParameter( templ.parameters, param.getName().get( 0 ) );
                 boolean found = true;
                 for ( ElementType el : ptype.elements ) {
-                    if ( el.value == null ) {
+                    if ( el.getValue() == null ) {
                         found = false;
                         break;
                     }
@@ -1201,8 +1201,8 @@ public class ModelHome {
             ParameterType p = extractParameter( templ.parameters, param.getName().get( 0 ) );
             EntityDirectory space = getCodespace( constr );
 
-            String actualCode = (String) p.getElement( "code" ).value;
-            String actualCodeSystem = (String) p.getElement( "codeSystem" ).value;
+            String actualCode = (String) p.getElement( "code" ).getValue();
+            String actualCodeSystem = (String) p.getElement( "codeSystem" ).getValue();
 
             boolean found = false;
             for ( EntityDirectoryEntry entry : space.getEntry() ) {
@@ -1261,8 +1261,8 @@ public class ModelHome {
             StringBuilder value = new StringBuilder( );
             value.append( "operation=" ).append( p.selectedOperation ).append( ";" );
             for ( ElementType el : p.elements ) {
-                if ( el.value != null ) {
-                    value.append( el.name ).append( "=" ).append( el.value ).append( ";" );
+                if ( el.getValue() != null ) {
+                    value.append( el.name ).append( "=" ).append( el.getValue() ).append( ";" );
                 }
             }
             System.out.println( "Bound value " + value.toString() + " to field " + p.name );

@@ -299,6 +299,7 @@ public class HeDArtifactData {
 
             namedExpression.setName( name );
             namedExpression.setDoxBytes( doxBytes );
+            namedExpression.setExpression( expression );
             replaceExpression( knowledgeDocument, namedExpression );
 
             if ( ! exprId.equals( candidateId ) ) {

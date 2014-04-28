@@ -109,6 +109,9 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         // - a clinical request to bring in the data
         // - main expression has filters based on non-date, non-code attributes
         // - "has" X, existential version of the main expression
+
+        String dataExprName = name + " - Facts";
+
         boolean needsFilter = hasNonRequestFilterCriteria( source );
         String klass = source.getRootClass().get( 0 );
 
@@ -124,29 +127,31 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
                     SharpExpression expr = buildConstraint( source, param );
                     condition.addHasOperand( expr );
                 }
-            }
+        }
 
             filter.addSource_List( var );
             filter.addCondition( condition.getHasOperand().size() > 1 ? condition : condition.getHasOperand().get( 0 ) );
         } else {
             mainExpression = var;
         }
-        expressions.put( name, mainExpression );
+
+
+        IsNotEmptyExpression exists = new IsNotEmptyExpressionImpl();
+        VariableExpression mainVar = new VariableExpressionImpl();
+        Variable v2 = new VariableImpl();
+        v2.addName( name );
+        mainVar.addReferredVariable( v2 );
+        exists.addFirstOperand( mainVar );
+        expressions.put( dataExprName, exists );
+
+
+        expressions.put( dataExprName, mainExpression );
+
 
         String requestName = createClinicalRequest( name, source, false );
         Variable v = new VariableImpl();
         v.addName( requestName );
         var.addReferredVariable( v );
-
-        VariableExpression mainVar = new VariableExpressionImpl();
-        Variable v2 = new VariableImpl();
-        v2.addName( name );
-        mainVar.addReferredVariable( v2 );
-
-        IsNotEmptyExpression exists = new IsNotEmptyExpressionImpl();
-        exists.addFirstOperand( mainVar );
-        expressions.put( "Has " + name, exists );
-
     }
 
     private void processAsAction( String name, Template source ) {

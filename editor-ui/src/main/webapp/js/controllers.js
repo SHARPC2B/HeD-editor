@@ -1,7 +1,7 @@
 'use strict';
 
-//var serviceUrl = 'http://localhost:9000';
-var serviceUrl = 'http://192.168.0.4:9000';
+var serviceUrl = 'http://localhost:9000';
+//var serviceUrl = 'http://192.168.0.4:9000';
 
 angular.module('ruleApp.controllers', [])
 
@@ -513,7 +513,7 @@ angular.module('ruleApp.controllers', [])
                             });
                 });
 
-        $scope.$parent.menuItems = standardMenuItems(1);
+        $scope.$parent.menuItems = standardMenuItems(5);
         $scope.domainClasses = [];
         $scope.domainProperties = [];
         $scope.expressions = [];
@@ -830,7 +830,7 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('LogicCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
-        $scope.$parent.menuItems = standardMenuItems(3);
+        $scope.$parent.menuItems = standardMenuItems(2);
         $scope.logic = {};
 
         $http({
@@ -1302,7 +1302,7 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('TriggerCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal) {
-        $scope.$parent.menuItems = standardMenuItems(2);
+        $scope.$parent.menuItems = standardMenuItems(1);
         $scope.triggers = {};
 
         $http({
@@ -1474,7 +1474,7 @@ angular.module('ruleApp.controllers', [])
 
 
     .controller('ActionCtrl', [ '$http', '$scope', '$modal','$log', function($http, $scope, $modal,$log) {
-        $scope.$parent.menuItems = standardMenuItems(4);
+        $scope.$parent.menuItems = standardMenuItems(3);
         $scope.actions = {};
         $scope.expressions = {};
         $scope.primitives = {};
@@ -1837,7 +1837,7 @@ angular.module('ruleApp.controllers', [])
                     $scope.currentRuleTitle = data.Name;
                     $scope.$parent.title = data.Name + ' : Review';
 
-                    $scope.$parent.menuItems = standardMenuItems(5);
+                    $scope.$parent.menuItems = standardMenuItems(4);
                     $scope.refresh1();
                     $scope.refresh2();
                 } else {
@@ -2238,11 +2238,11 @@ angular.module('ruleApp.controllers', [])
 
 function standardMenuItems(position) {
     var menuItems = [{"text": "Metadata", "href": "#/standard/background"},
-        {"text": "Technical View", "href": "#/standard/expression"},
         {"text": "Select Trigger", "href": "#/standard/trigger"},
         {"text": "Define Logic", "href": "#/standard/logic"},
         {"text": "Choose Action", "href": "#/standard/action"},
-        {"text": "Review", "href": "#/standard/save"}];
+        {"text": "Review", "href": "#/standard/save"},
+        {"text": "Technical View", "href": "#/standard/expression"}];
     menuItems[position].status = "disabled";
     return menuItems;
 };
@@ -2313,7 +2313,7 @@ function updateTitle( $scope ) {
 function format( parameter ) {
     var display = "";
     parameter.elements.forEach( function(element) {
-        if ( ! isEmpty( element.value ) && element !== parameter.elements[0] ) {
+        if ( ! isEmpty( element.value ) && element !== parameter.elements[0] && parameter.selectedOperation != 'InValueSet' ) {
             //display = display + '[' + element.name + "=" + element.value + '] ';
             display = display
                         + ' '

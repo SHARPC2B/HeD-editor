@@ -21,7 +21,7 @@
 		  	</form>
 		  	<form class="form-inline span4">
 		  		<label>Language:</label>
-		  		<select x-ng-model="background.isoLang" x-ng-options="il.name for il in isoLangs" class="input-xlarge"></select>
+		  		<select x-ng-model="background.isoLang" x-ng-options="il.iso as il.name for il in isoLangs" class="input-xlarge"></select>
 		  	</form>
 		  	<form class="form-inline span4">
 		  		<label>Artifact Type:</label>

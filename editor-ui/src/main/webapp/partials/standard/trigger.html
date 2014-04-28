@@ -8,7 +8,7 @@
 		<ul class="nav nav-list borderedBox" style="height: 500px; overflow-y:scroll;">
             <li x-ng-repeat="triggerGrp in triggerTemplates"><a href="" class="nav-header" x-ng-click="triggerGrp.show = !triggerGrp.show" x-ng-show="(triggerGrp.templates | filter:triggerFiller).length > 0"><i class="icon-folder-open-alt" x-ng-show="!triggerGrp.show"></i><i class="icon-folder-close-alt" x-ng-show="triggerGrp.show"></i>{{triggerGrp.label}}</a>
                 <ul class="nav nav-list" x-ng-show="!triggerGrp.show">
-                    <li x-ng-repeat="trigger in triggerGrp.templates | filter:triggerFilter" x-ng-click="openClauseEditor(trigger)"><a href=""><i class="icon-file-text-alt"></i>{{trigger.name}}</a></li>
+                    <li x-ng-repeat="trigger in triggerGrp.templates | filter:triggerFilter" x-ng-click="openClauseEditor(trigger)"><a href=""><i class="icon-file-text-alt"></i>{{trigger.description}}</a></li>
                 </ul>
             </li>
 		</ul>

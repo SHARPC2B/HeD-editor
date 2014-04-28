@@ -6,6 +6,7 @@ import models.Artifact;
 import models.ModelHome;
 import models.NamedConcept;
 import models.Rule;
+import play.api.libs.json.JsPath;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -66,6 +67,7 @@ public class RuleActions
         Rule rule = ModelHome.getCurrentArtifact();
         JsonNode jsonOut = Json.toJson( rule );
 
+        System.out.println( jsonOut );
         if ( rule.ruleId != null ) {
             System.out.println( "Rule is active : " + rule.ruleId );
             setHeaderCORS();

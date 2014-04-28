@@ -17,7 +17,7 @@ public class Rule
 
     public String Description;
 
-    public IsoLang isoLang = new IsoLang();
+    public String isoLang = "en";
 
     public String Status;
 

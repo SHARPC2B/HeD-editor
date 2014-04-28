@@ -115,7 +115,7 @@ public class TemplateGenerator {
                     }
                 }
 
-                String descr = format( mainCategory, t.params );
+                String descr = split( t.name );
                 axioms.add( helper.assertDataProperty( "tns:index", templ, t.index ) );
                 axioms.add( helper.assertDataProperty( "tns:name", templ, t.name ) );
                 axioms.add( helper.assertDataProperty( "tns:description", templ, descr ) );

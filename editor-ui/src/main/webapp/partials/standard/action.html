@@ -9,7 +9,7 @@
 		<ul class="nav nav-list borderedBox" style="height: 450px; overflow-y:scroll;">
 			<li x-ng-repeat="action in actionsTemplates"><a href="" class="nav-header" x-ng-click="action.show = !action.show" x-ng-show="(action.templates | filter:actionFilter).length > 0"><i class="icon-folder-open-alt" x-ng-show="!action.show"></i><i class="icon-folder-close-alt" x-ng-show="action.show"></i>{{action.label}}</a>
 				<ul class="nav nav-list" x-ng-show="!action.show">
-					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template,'ACTION')"><a href=""><i class="icon-file-text-alt"></i>{{template.name}}</a></li>
+					<li x-ng-repeat="template in action.templates | filter:actionFilter" x-ng-click="openClauseEditor(template,'ACTION')"><a href=""><i class="icon-file-text-alt"></i>{{template.description}}</a></li>
 				</ul>
 			</li>
 		</ul>

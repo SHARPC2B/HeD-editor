@@ -36,7 +36,7 @@ public class ElementType<E>
 
     public E initialValue;
 
-    public E value;
+    private E value;
 
     public String searchService;
 
@@ -45,6 +45,18 @@ public class ElementType<E>
     public Integer maxSelectionCount;
 
     public E minValue; // = new BigDecimal( 0 );
+
+    public E getValue() {
+        if ( "Number".equals( widgetType ) ) {
+            return (E) new Integer( Integer.parseInt( value.toString() ) );
+        } else {
+            return value;
+        }
+    }
+
+    public void setValue( E value ) {
+        this.value = value;
+    }
 
     //========================================================================================
 

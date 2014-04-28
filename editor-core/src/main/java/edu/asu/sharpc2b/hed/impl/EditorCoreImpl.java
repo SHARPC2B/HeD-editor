@@ -6,6 +6,7 @@ import edu.asu.sharpc2b.hed.ArtifactRepositoryFactory;
 import edu.asu.sharpc2b.hed.api.ArtifactStore;
 import edu.asu.sharpc2b.hed.api.DomainModel;
 import edu.asu.sharpc2b.hed.api.EditorCore;
+import edu.asu.sharpc2b.ops.CodeExpression;
 import edu.asu.sharpc2b.ops.DateExpression;
 import edu.asu.sharpc2b.ops.IntervalExpression;
 import edu.asu.sharpc2b.ops.ScalarExpression;
@@ -444,7 +445,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             return;
         }
 
-        if ( CodeLiteralExpression.class.isAssignableFrom( paramType ) ) {
+        if ( CodeExpression.class.isAssignableFrom( paramType ) ) {
             addOperation( param, "InValueSetCode" );
         }
 
