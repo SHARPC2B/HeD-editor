@@ -429,14 +429,19 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
             for ( String exprId : exprs.keySet() ) {
                 param.addCompatibleExpression( exprId );
             }
-            lookupCompatibleOperations( param, paramType );
+            lookupCompatibleOperations( template, param, paramType );
         }
     }
 
-    private void lookupCompatibleOperations( Parameter param, Class<?> paramType ) {
+    private void lookupCompatibleOperations( Template template, Parameter param, Class<?> paramType ) {
         //TODO Explore the ontology, using the indivudals, and cache the results!
         param.getCompatibleOperation().clear();
         addOperation( param, "EqualCode" );
+
+        if ( ! template.getCategory().contains( "CONDITION" ) && template.getCategory().contains( "ACTION" ) ) {
+            return;
+        }
+
         addOperation( param, "InCode" );
         if ( ScalarExpression.class.isAssignableFrom( paramType ) ) {
             addOperation( param, "GreaterCode" );
