@@ -988,9 +988,12 @@ public class ModelHome {
         } else {
             template.index = 0;
         }
+        // Initially, the id is actually the id of the CLASS.
         template.templateId = templateId;
-        template.key = templateId;
-        template.name = templateDetails.getName().get( 0 );
+        // The "key" will be used to distinguish the instance
+        template.key = templateDetails.getLabel().isEmpty() ? templateId : templateDetails.getName().get( 0 );
+        // The "name" will be used for presentation purposes. (currently coincides with the key)
+        template.name = templateDetails.getLabel().isEmpty() ? templateId : templateId;
         template.description = templateDetails.getDescription().get( 0 );
         template.category = new ArrayList( templateDetails.getCategory() );
         template.group = templateDetails.getGroup().get( 0 );
@@ -1232,6 +1235,7 @@ public class ModelHome {
 
         source.addName( t.name );
         source.addGroup( t.group );
+        source.addLabel( t.name );
         for ( String cat : t.category ) {
             source.addCategory( cat );
         }

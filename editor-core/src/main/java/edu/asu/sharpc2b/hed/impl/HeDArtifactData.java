@@ -288,8 +288,8 @@ public class HeDArtifactData {
     public String updateNamedExpression( String exprId, String name, byte[] doxBytes, SharpExpression expression ) {
         HeDNamedExpression namedExpression;
         if ( ! blocklyExpressions.containsKey( exprId ) ) {
-            namedExpression = createVariableFromBlocks( exprId, name, doxBytes, expression );
-            blocklyExpressions.put( exprId, namedExpression  );
+            namedExpression = createVariableFromBlocks( idFromName( name ), name, doxBytes, expression );
+            blocklyExpressions.put( idFromName( name ), namedExpression  );
         } else {
             namedExpression = blocklyExpressions.get( exprId );
             String candidateId = idFromName( name );
@@ -317,25 +317,30 @@ public class HeDArtifactData {
                 );
             }
         }
-        boolean foundExpr = replaceReferences( oldName, newName, logicExpression.getExpression() );
+        if ( logicExpression != null ) {
+            boolean foundExpr = replaceReferences( oldName, newName, logicExpression.getExpression() );
             if ( foundExpr ) {
                 logicExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( logicExpression.getName(), logicExpression.getExpression(), BlocklyFactory.ExpressionRootType.CONDITION )
                 );
             }
-        boolean foundTrig = replaceReferences( oldName, newName, triggerExpression.getExpression() );
+        }
+        if ( triggerExpression != null ) {
+            boolean foundTrig = replaceReferences( oldName, newName, triggerExpression.getExpression() );
             if ( foundTrig ) {
                 triggerExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( triggerExpression.getName(), triggerExpression.getExpression(), BlocklyFactory.ExpressionRootType.TRIGGER )
                 );
             }
-
-        boolean foundAct = replaceReferences( oldName, newName, actionExpression.getAction() );
+        }
+        if ( actionExpression != null ) {
+            boolean foundAct = replaceReferences( oldName, newName, actionExpression.getAction() );
             if ( foundAct ) {
                 actionExpression.setDoxBytes(
                         new BlocklyFactory( domainClasses, domainProperties ).fromExpression( actionExpression.getName(), actionExpression.getAction(), BlocklyFactory.ExpressionRootType.ACTION )
                 );
             }
+        }
     }
 
     private boolean replaceReferences( String oldName, String newName, SharpAction action ) {
@@ -582,8 +587,6 @@ public class HeDArtifactData {
     public static String idFromName( String id ) {
         return id;
     }
-
-
 
 
 

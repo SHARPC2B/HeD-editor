@@ -463,7 +463,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
 
     @Override
     public byte[] instantiateTemplate( String templateId, String name, Template source ) {
-        return getCurrentArtifact().instantiateExpressionFromTemplate( name, name, source );
+        return getCurrentArtifact().instantiateExpressionFromTemplate( templateId, name, source );
     }
 
     @Override
