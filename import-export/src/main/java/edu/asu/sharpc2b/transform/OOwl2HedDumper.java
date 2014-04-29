@@ -481,6 +481,7 @@ public class OOwl2HedDumper implements HeDExporter {
         visitIdentifiers( hed, dox, metadata );
         visitDataModels( hed, dox, metadata );
         visitTitle( hed, dox, metadata );
+        visitDescription( hed, dox, metadata );
 
         visitRelatedResources( hed, dox, metadata );
         visitApplicability( hed, dox, metadata );
