@@ -62,14 +62,14 @@ public class MetadataActions extends play.mvc.Controller {
     }
 
     public static Result getEvidence( String id ) {
-        List<Resource> ress = ModelHome.getRelatedResources( id );
+        List<SupportingResource> ress = ModelHome.getSupportingEvidence( id );
         JsonNode jsonOut = Json.toJson( ress );
         setHeaderCORS();
         return ok( jsonOut );
     }
 
     public static Result getResources( String id ) {
-        List<SupportingResource> supp = ModelHome.getSupportingEvidence( id );
+        List<Resource> supp = ModelHome.getRelatedResources( id );
         JsonNode jsonOut = Json.toJson( supp );
         setHeaderCORS();
         return ok( jsonOut );
