@@ -15,5 +15,6 @@ dist
 /.settings
 target
 lib/*-SNAPSHOT.jar
+/HeD_Repo
 
 /lib
