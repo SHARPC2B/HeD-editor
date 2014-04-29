@@ -7,6 +7,12 @@ import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpressionImpl;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpressionImpl;
+import edu.asu.sharpc2b.ops.PropertySetExpression;
+import edu.asu.sharpc2b.ops.PropertySetExpressionImpl;
+import edu.asu.sharpc2b.ops_set.AsExpression;
+import edu.asu.sharpc2b.ops_set.AsExpressionImpl;
+import edu.asu.sharpc2b.ops_set.ConcatExpression;
+import edu.asu.sharpc2b.ops_set.ConcatExpressionImpl;
 import edu.asu.sharpc2b.ops_set.DateAddExpression;
 import edu.asu.sharpc2b.ops_set.DateAddExpressionImpl;
 import edu.asu.sharpc2b.ops_set.IntervalExpression;
@@ -39,6 +45,7 @@ import edu.asu.sharpc2b.ops_set.ListExpressionImpl;
 import edu.asu.sharpc2b.ops_set.LiteralExpression;
 import edu.asu.sharpc2b.ops_set.LiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.NowExpressionImpl;
+import edu.asu.sharpc2b.ops_set.ObjectExpressionExpression;
 import edu.asu.sharpc2b.ops_set.ObjectExpressionExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpressionImpl;
@@ -59,6 +66,8 @@ import edu.asu.sharpc2b.ops_set.ValueSetExpression;
 import edu.asu.sharpc2b.ops_set.ValueSetExpressionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
+import edu.asu.sharpc2b.templates.CollectTemplate;
+import edu.asu.sharpc2b.templates.CreateTemplate;
 import edu.asu.sharpc2b.templates.Parameter;
 import edu.asu.sharpc2b.templates.Template;
 
@@ -143,10 +152,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
 
 
         IsNotEmptyExpression exists = new IsNotEmptyExpressionImpl();
-        VariableExpression mainVar = new VariableExpressionImpl();
-        Variable v2 = new VariableImpl();
-        v2.addName( name );
-        mainVar.addReferredVariable( v2 );
+        VariableExpression mainVar = createVariableExpression( name );
         exists.addFirstOperand( mainVar );
         expressions.put( name, exists );
 
@@ -160,8 +166,57 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         var.addReferredVariable( v );
     }
 
+    private VariableExpression createVariableExpression( String name ) {
+        VariableExpression var = new VariableExpressionImpl();
+        Variable v2 = new VariableImpl();
+        v2.addName( name );
+        var.addReferredVariable( v2 );
+        return var;
+    }
+
     private void processAsAction( String name, Template source ) {
-        this.expressions.put( "name", new ObjectExpressionExpressionImpl() );
+        if ( source instanceof CreateTemplate ) {
+            processCreateAction( name, source );
+        } else if ( source instanceof CollectTemplate ) {
+            processCollectAction( name, source );
+        } else {
+            throw new UnsupportedOperationException( "Templates building " + source.getClass().getSimpleName() + " are not supported yet " );
+        }
+    }
+
+    private void processCreateAction( String name, Template source ) {
+        ObjectExpressionExpression newObj = new ObjectExpressionExpressionImpl();
+        expressions.put( name, newObj );
+
+        if ( ! source.getRootClass().isEmpty() ) {
+            String rootClass = source.getRootClass().get( 0 );
+            newObj.setObjectTypeDomainClassExpression( getDomainClassExpression( rootClass ) );
+        }
+
+        for ( Parameter param : source.getHasParameter() ) {
+            if ( param.getValue().isEmpty() ) {
+                continue;
+            }
+            Map<String,String> elems = tokenize( param.getValue().get( 0 ), param.getTypeName().get( 0 ) );
+            SharpExpression literal = buildLiteral( param.getTypeName().get( 0 ), elems );
+            if ( literal != null && ! param.getNativeTypeName().isEmpty() && ! ( param.getNativeTypeName().get( 0 ).equals( param.getTypeName() ) ) ) {
+                literal = cast( literal, param.getTypeName().get( 0 ), param.getNativeTypeName().get( 0 ) );
+            }
+            if ( literal == null ) {
+                continue;
+            }
+
+            DomainPropertyExpression prop = getDomainPropertyExpression( param.getPath().get( 0 ) );
+            PropertySetExpression setter = new PropertySetExpressionImpl();
+            setter.addProperty( prop );
+            setter.addValue( literal );
+
+            newObj.addProperty( setter );
+        }
+    }
+
+    private void processCollectAction( String name, Template source ) {
+        expressions.put( name, new ObjectExpressionExpressionImpl() );
     }
 
 
@@ -180,7 +235,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
 
     private void createPeriodLiteralTrigger( String name, Parameter source ) {
         PeriodLiteralExpression period = new PeriodLiteralExpressionImpl();
-        Map<String,String> elems = tokenize( source.getValue().get( 0 ) );
+        Map<String,String> elems = tokenize( source.getValue().get( 0 ), source.getTypeName().get( 0 ) );
 
         String type = source.getTypeName().get( 0 );
         if ( "TimestampLiteral".equals( type ) ) {
@@ -258,7 +313,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         for ( Parameter param : source.getHasParameter() ) {
             if ( param.getPath().contains( dateProperty ) && param.getTypeName().contains( "PeriodLiteral" ) ) {
                 String value = param.getValue().get( 0 );
-                Map<String,String> elements = tokenize( value );
+                Map<String,String> elements = tokenize( value, param.getTypeName().get( 0 ) );
                 PeriodLiteralExpression pl = (PeriodLiteralExpression) buildLiteral( "PeriodLiteral", elements );
                 if ( ! pl.getPhase().isEmpty() ) {
                     TimestampIntervalLiteralExpression ts = (TimestampIntervalLiteralExpression) pl.getPhase().get( 0 );
@@ -277,7 +332,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
                 }
             } else if ( param.getPath().contains( dateProperty ) && param.getTypeName().contains( "PhysicalQuantityLiteral" ) ) {
                 String value = param.getValue().get( 0 );
-                Map<String,String> elements = tokenize( value );
+                Map<String,String> elements = tokenize( value, param.getTypeName().get( 0 ) );
                 PhysicalQuantityLiteralExpression pq = (PhysicalQuantityLiteralExpression) buildLiteral( "PhysicalQuantityLiteral", elements );
                 if ( pq.getValue_DoubleDouble() != null ) {
                     Double delta = pq.getValue_DoubleDouble();
@@ -310,7 +365,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         for ( Parameter param : source.getHasParameter() ) {
             if ( param.getPath().contains( codeProperty ) && param.getTypeName().contains( "CodeLiteral" ) ) {
                 String value = param.getValue().get( 0 );
-                Map<String,String> elements = tokenize( value );
+                Map<String,String> elements = tokenize( value, param.getTypeName().get( 0 ) );
                 if ( elements.containsKey( "valueSet" ) && elements.get( "valueSet" ).equals( elements.get( "codeSystem" ) ) ) {
                     ValueSetExpression valset = new ValueSetExpressionImpl();
                     valset.setIdString( elements.get( "valueSet" ) );
@@ -326,7 +381,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         for ( Parameter param : source.getHasParameter() ) {
             if ( param.getName().contains( codeProperty ) && param.getTypeName().contains( "CodeLiteral" ) ) {
                 String value = param.getValue().get( 0 );
-                Map<String,String> elements = tokenize( value );
+                Map<String,String> elements = tokenize( value, param.getTypeName().get( 0 ) );
                 if ( ( ! elements.containsKey( "valueSet" ) ) || ( ! elements.get( "valueSet" ).equals( elements.get( "codeSystem" ) ) ) ) {
                     CodeLiteralExpression code = (CodeLiteralExpression) buildLiteral( "CodeLiteral", elements );
                     if ( code != null ) {
@@ -340,7 +395,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
 
 
     private SharpExpression buildConstraint( Template source, Parameter param ) {
-        Map<String,String> elems = tokenize( param.getValue().get( 0 ) );
+        Map<String,String> elems = tokenize( param.getValue().get( 0 ), param.getTypeName().get( 0 ) );
         String op = elems.get( "operation" );
         SharpExpression opExpr = null;
 
@@ -384,6 +439,8 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             CodeLiteralExpression code = new CodeLiteralExpressionImpl();
             if ( elems.containsKey( "code" ) ) {
                 code.addCode( elems.get( "code" ) );
+            } else {
+                return null;
             }
             if ( elems.containsKey( "codeSystem" ) ) {
                 code.addCodeSystem( elems.get( "codeSystem" ) );
@@ -481,19 +538,89 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             }
 
             return found ? pqi : null;
+        } else if ( "Literal".equals( type ) ) {
+            // currently used for complex text..
+            String text = elems.get( "value" );
+            if ( text == null ) {
+                return null;
+            }
+            if ( text.contains( "#[" ) ) {
+                return splitAndConcat( text );
+            } else {
+                return formatText( text );
+            }
         }
         return null;
     }
 
+    private StringLiteralExpression formatText( String text ) {
+        StringLiteralExpression lit = new StringLiteralExpressionImpl();
+        text = escapeHtml( text );
+        lit.setValue_StringString( text );
+        return lit;
+    }
 
-    private Map<String, String> tokenize( String value ) {
+    private SharpExpression splitAndConcat( String text ) {
+        ConcatExpression concat = new ConcatExpressionImpl();
+        while ( text.length() > 0 ) {
+            int varIdx = text.indexOf( "#[" );
+            if ( varIdx < 0 ) {
+                StringLiteralExpression str = formatText( text );
+                concat.addHasOperand( str );
+                text = "";
+            } else {
+                int endIdx = text.indexOf( "]", varIdx );
+                String chunk = text.substring( 0, varIdx );
+
+                StringLiteralExpression str = formatText( chunk );
+                concat.addHasOperand( str );
+
+                String varName = text.substring( varIdx + 2, endIdx );
+                VariableExpression var = createVariableExpression( varName );
+                concat.addHasOperand( var );
+
+                text = endIdx < text.length() ? text.substring( endIdx + 1 ) : "";
+            }
+        }
+        return concat;
+    }
+
+    private String escapeHtml( String text ) {
+        text = text.replace( "&", "&amp" );
+        text = text.replace( "<", "&lt" );
+        text = text.replace( ">", "&gt" );
+        text = text.replace( "\"", "&quot" );
+        text = text.replace( "'", "&#x27;" );
+        text = text.replace( "/", "&#x2F;" );
+        return text;
+    }
+
+
+    private Map<String, String> tokenize( String value, String typeName ) {
         Map<String,String> elements = new HashMap<String,String>();
-        StringTokenizer tok = new StringTokenizer( value, ";" );
-        while ( tok.hasMoreTokens() ) {
-            String pair = tok.nextToken().trim();
+        if ( "Literal".equals( typeName ) ) {
+            //TODO Temporary hack. Rich text has a specific structure
+
+            // First pair : the operation
+            int sep = value.indexOf( ";" );
+            String pair = value.substring( 0, sep );
             String key = pair.substring( 0, pair.indexOf( "=" ) );
             String val = pair.substring( pair.indexOf( "=" ) + 1 );
             elements.put( key, val );
+
+            // Second pair : the value
+            int sep2 = value.indexOf( "=", sep );
+            key = value.substring( sep + 1, sep2 );
+            val = value.substring( sep2 + 1 );
+            elements.put( key, val );
+        } else {
+            StringTokenizer tok = new StringTokenizer( value, ";" );
+            while ( tok.hasMoreTokens() ) {
+                String pair = tok.nextToken().trim();
+                String key = pair.substring( 0, pair.indexOf( "=" ) );
+                String val = pair.substring( pair.indexOf( "=" ) + 1 );
+                elements.put( key, val );
+            }
         }
         return elements;
     }

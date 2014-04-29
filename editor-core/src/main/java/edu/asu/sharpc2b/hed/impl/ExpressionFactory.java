@@ -105,7 +105,8 @@ public class ExpressionFactory<T> {
             visitAction( stat, parent );
         }
 
-        return parent;
+        // remove "seed" group
+        return parent.getMemberAction().isEmpty() ? null : parent.getMemberAction().get( 0 );
     }
 
 

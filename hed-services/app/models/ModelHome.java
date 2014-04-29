@@ -1104,27 +1104,45 @@ public class ModelHome {
         StringTokenizer tok = new StringTokenizer( value, ";" );
         System.out.println( "Parsing " + value );
 
-        while ( tok.hasMoreTokens() ) {
-            String pair = tok.nextToken().trim();
-            int eqIndex = pair.indexOf( "=" );
-            String elem = pair.substring( 0, eqIndex ).trim();
-            String vals = pair.substring( eqIndex + 1 ).trim();
+        if ( "Literal".equals( param.hedTypeName ) ) {
+            // TODO Hack to deal with tagged Rich Text
+            param.selectedOperation = value.substring( value.indexOf( "=" ) + 1, value.indexOf( ";" ) );
+            String text = value.substring( value.indexOf( "=", value.indexOf( ";" ) ) + 1 );
+            param.getElement( "value" ).setValue( unescape( text ) );
+        } else {
 
-            if ( "operation".equals( elem ) ) {
-                param.selectedOperation = vals;
-            } else if ( param.getElement( elem ) != null ) {
-                if ( vals.startsWith( "{" ) ) {
-                    vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
-                    String[] admissibles = vals.split( "," );
-                    param.getElement( elem ).setValue( admissibles[ 0 ] );
-                    param.getElement( elem ).widgetType = "Dropdown";
+            while ( tok.hasMoreTokens() ) {
+                String pair = tok.nextToken().trim();
+                int eqIndex = pair.indexOf( "=" );
+                String elem = pair.substring( 0, eqIndex ).trim();
+                String vals = pair.substring( eqIndex + 1 ).trim();
+
+                if ( "operation".equals( elem ) ) {
+                    param.selectedOperation = vals;
+                } else if ( param.getElement( elem ) != null ) {
+                    if ( vals.startsWith( "{" ) ) {
+                        vals = vals.substring( vals.indexOf( "{" ) + 1, vals.lastIndexOf( '}' ) - 1 );
+                        String[] admissibles = vals.split( "," );
+                        param.getElement( elem ).setValue( admissibles[ 0 ] );
+                        param.getElement( elem ).widgetType = "Dropdown";
+                    } else {
+                        param.getElement( elem ).setValue(  vals );
+                    }
                 } else {
-                    param.getElement( elem ).setValue(  vals );
+                    System.err.println( "WARNING : Trying to assign value " + vals + " to element " + elem + ", which does not exist" );
                 }
-            } else {
-                System.err.println( "WARNING : Trying to assign value " + vals + " to element " + elem + ", which does not exist" );
             }
         }
+    }
+
+    private static String unescape( String text ) {
+        text = text.replace( "&amp", "&" );
+        text = text.replace( "&lt", "<" );
+        text = text.replace( "&gt", ">" );
+        text = text.replace( "&quot", "\"" );
+        text = text.replace( "&#x27;", "'" );
+        text = text.replace( "&#x2F;", "/" );
+        return text;
     }
 
     private static void parseAndInjectDefaultValue( ParameterType param, String value ) {

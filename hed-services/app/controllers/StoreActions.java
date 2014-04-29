@@ -113,11 +113,11 @@ public class StoreActions
     }
 
     public static Result saveArtifact( String id ) {
+        System.out.println( "Saving " + id );
         String result = ModelHome.saveArtifact( id );
+        System.out.println( "Saved " + id + " := " + result );
 
-        System.out.println( "Save " + id + " := " + result );
         JsonNode jsonOut = Json.toJson( result );
-
         setHeaderCORS();
         return ok( jsonOut );
     }

@@ -665,7 +665,7 @@ public class HeDArtifactData {
                     return new BlocklyFactory( domainClasses, domainProperties ).fromExpression( "$$$_TRIGGGERS", or, BlocklyFactory.ExpressionRootType.TRIGGER );
                 case ACTION:
                     if ( actionExpression == null ) {
-                        actionExpression = createActionExpression( new CompositeActionImpl() );
+                        actionExpression = createActionExpression( null );
                     }
 
                     if ( expr instanceof BooleanExpression ) {
