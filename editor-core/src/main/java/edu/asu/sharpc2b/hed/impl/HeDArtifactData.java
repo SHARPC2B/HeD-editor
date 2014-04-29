@@ -578,7 +578,7 @@ public class HeDArtifactData {
         }
 
         if ( actionExpression == null ) {
-            actionExpression = createActionExpression( new CompositeActionImpl() );
+            actionExpression = createActionExpression( null );
         }
 
         actionExpression.setDoxBytes( doxBytes );

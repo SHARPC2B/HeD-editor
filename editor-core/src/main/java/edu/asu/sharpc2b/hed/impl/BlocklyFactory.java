@@ -11,6 +11,7 @@ import edu.asu.sharpc2b.ops.ClinicalRequestExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.IteratorExpression;
+import edu.asu.sharpc2b.ops.NAryExpression;
 import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertyExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
@@ -209,13 +210,12 @@ public class BlocklyFactory {
                 RuleCondition cond = sharpAction.getLocalCondition().get( 0 );
                 Expression expr = cond.getConditionRepresentation().get( 0 );
                 SharpExpression sharpCondition = expr.getBodyExpression().get( 0 );
-                if ( sharpCondition instanceof VariableExpression ) {
-                    visitActionLogicCondition( (VariableExpression) sharpCondition, block, dox );
-                } else if ( sharpCondition instanceof NotExpression ) {
-                    visitActionLogicNegation( (NotExpression) sharpCondition, block, dox );
-                } else {
-                    throw new UnsupportedOperationException( "Only references are supported as action conditions, found " + sharpCondition.getClass() );
-                }
+
+                Element condElem = dox.createElement( "value" );
+                condElem.setAttribute( "name", "Condition" );
+                block.appendChild( condElem );
+
+                visitActionCondition( sharpCondition, condElem, dox );
             }
 
             if ( sharpAction instanceof CompositeAction ) {
@@ -292,13 +292,7 @@ public class BlocklyFactory {
             neg.appendChild( clause );
 
             SharpExpression arg = not.getFirstOperand().get( 0 );
-            if ( arg instanceof VariableExpression ) {
-                visitActionLogicCondition( (VariableExpression) arg, clause, dox );
-            } else if ( arg instanceof NotExpression ) {
-                visitActionLogicNegation( (NotExpression) arg, clause, dox );
-            } else {
-                throw new UnsupportedOperationException( "TODO Action Conditions can only support Not and Refs" );
-            }
+            visitActionCondition( arg, clause, dox );
         }
     }
 
@@ -306,8 +300,6 @@ public class BlocklyFactory {
         String varName = var.getReferredVariable().get( 0 ).getName().get( 0 );
         String varId = HeDArtifactData.idFromName( varName );
 
-        Element condElem = dox.createElement( "value" );
-        condElem.setAttribute( "name", "Condition" );
 
         Element ac = dox.createElement( "block" );
         ac.setAttribute( "type", "action_condition" );
@@ -317,8 +309,7 @@ public class BlocklyFactory {
         field.setTextContent( varId );
 
         ac.appendChild( field );
-        condElem.appendChild( ac );
-        block.appendChild( condElem );
+        block.appendChild( ac );
     }
 
 
@@ -706,6 +697,72 @@ public class BlocklyFactory {
         }
     }
 
+
+    private void visitActionCondition( SharpExpression sharpExpression, Element exprRoot, Document dox ) {
+        if ( sharpExpression instanceof AndExpression ) {
+            AndExpression and = (AndExpression) sharpExpression;
+
+            Element block = dox.createElement( "block" );
+            block.setAttribute( "inline", "false" );
+            block.setAttribute( "type", "action_logic_compare" );
+
+            Element arity = dox.createElement( "mutation" );
+            arity.setAttribute( "types", "" + and.getHasOperand().size() );
+            block.appendChild( arity );
+
+            Element name = dox.createElement( "field" );
+            name.setAttribute( "name", "NAME" );
+            block.appendChild( name );
+            Element drop = dox.createElement( "field" );
+            drop.setAttribute( "name", "dropdown" );
+            drop.setTextContent( "ALL" );
+            block.appendChild( drop );
+
+            int j = 0;
+            for ( SharpExpression operand : and.getHasOperand() ) {
+                Element clause = dox.createElement( "value" );
+                clause.setAttribute( "name", "CLAUSE" + (j++) );
+                visitActionCondition( operand, clause, dox );
+                block.appendChild( clause );
+            }
+
+            exprRoot.appendChild( block );
+        } else if ( sharpExpression instanceof OrExpression ) {
+            OrExpression or = (OrExpression) sharpExpression;
+
+            Element block = dox.createElement( "block" );
+            block.setAttribute( "inline", "false" );
+            block.setAttribute( "type", "action_logic_compare" );
+
+            Element arity = dox.createElement( "mutation" );
+            arity.setAttribute( "types", "" + or.getHasOperand().size() );
+            block.appendChild( arity );
+
+            Element name = dox.createElement( "field" );
+            name.setAttribute( "name", "NAME" );
+            block.appendChild( name );
+            Element drop = dox.createElement( "field" );
+            drop.setAttribute( "name", "dropdown" );
+            drop.setTextContent( "ONEPLUS" );
+            block.appendChild( drop );
+
+            int j = 0;
+            for ( SharpExpression operand : or.getHasOperand() ) {
+                Element clause = dox.createElement( "value" );
+                clause.setAttribute( "name", "CLAUSE" + (j++) );
+                visitActionCondition( operand, clause, dox );
+                block.appendChild( clause );
+            }
+
+            exprRoot.appendChild( block );
+        } else if ( sharpExpression instanceof NotExpression ) {
+            visitActionLogicNegation( (NotExpression) sharpExpression, exprRoot, dox );
+        } else if ( sharpExpression instanceof VariableExpression ) {
+            visitActionLogicCondition( (VariableExpression) sharpExpression, exprRoot, dox );
+        } else {
+            throw new UnsupportedOperationException( "Logic expression not supported at the UI level " + sharpExpression.getClass() );
+        }
+    }
 
 
 

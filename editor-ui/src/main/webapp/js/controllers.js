@@ -1557,6 +1557,7 @@ angular.module('ruleApp.controllers', [])
 
         $scope.save = function() {
             $scope.actions.xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+            console.log( $scope.actions.xml );
             $http({
                 method : 'POST',
                 url : serviceUrl + '/rule/actions',
@@ -1769,6 +1770,108 @@ angular.module('ruleApp.controllers', [])
                 this.setTooltip('');
             }
         };
+        Blockly.Blocks.action_logic_compare = {
+            // Group of clauses.
+            init : function() {
+                this.setColour(210);
+                this.appendDummyInput()
+                    .appendField("               ")
+                    .appendField(new Blockly.FieldTextInput(""), "NAME");
+                this.appendValueInput("CLAUSE0")
+                    .setCheck("Boolean")
+                    .appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+                this.appendValueInput('CLAUSE1').setCheck(
+                    'Boolean');
+                this.setOutput(true, 'Boolean');
+                this.setMutator(new Blockly.Mutator(
+                    [ 'clause_group_item' ]));
+                this
+                    .setTooltip('Allows more than one clause to be validated.');
+                this.typeCount_ = 2;
+            },
+            mutationToDom : function(workspace) {
+                var container = document
+                    .createElement('mutation');
+                container.setAttribute('types',
+                    this.typeCount_);
+                return container;
+            },
+            domToMutation : function(container) {
+                for ( var x = 0; x < this.typeCount_; x++) {
+                    this.removeInput('CLAUSE' + x);
+                }
+                this.typeCount_ = window.parseInt(container
+                    .getAttribute('types'), 10);
+                for ( var x = 0; x < this.typeCount_; x++) {
+                    var input = this.appendValueInput(
+                        'CLAUSE' + x).setCheck('Boolean');
+                    if (x == 0) {
+                        input.appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+                    }
+                }
+            },
+            decompose : function(workspace) {
+                var containerBlock = new Blockly.Block(
+                    workspace, 'clause_group_container');
+                containerBlock.initSvg();
+                var connection = containerBlock
+                    .getInput('STACK').connection;
+                for ( var x = 0; x < this.typeCount_; x++) {
+                    var typeBlock = new Blockly.Block(
+                        workspace, 'clause_group_item');
+                    typeBlock.initSvg();
+                    connection
+                        .connect(typeBlock.previousConnection);
+                    connection = typeBlock.nextConnection;
+                }
+                return containerBlock;
+            },
+            compose : function(containerBlock) {
+                // Disconnect all input blocks and remove
+                // all inputs.
+                for ( var x = this.typeCount_ - 1; x >= 0; x--) {
+                    this.removeInput('CLAUSE' + x);
+                }
+                this.typeCount_ = 0;
+                // Rebuild the block's inputs.
+                var typeBlock = containerBlock
+                    .getInputTargetBlock('STACK');
+                while (typeBlock) {
+                    var input = this.appendValueInput(
+                            'CLAUSE' + this.typeCount_)
+                        .setCheck('Boolean');
+                    if (this.typeCount_ == 0) {
+                        input.appendField(new Blockly.FieldDropdown([["All must be true", "ALL"], ["One+ must be true", "ONEPLUS"], ["None must be true", "NONE"], ["One must be true", "ONE"]]), "dropdown");
+                    }
+                    // Reconnect any child blocks.
+                    if (typeBlock.valueConnection_) {
+                        input.connection
+                            .connect(typeBlock.valueConnection_);
+                    }
+                    this.typeCount_++;
+                    typeBlock = typeBlock.nextConnection
+                        && typeBlock.nextConnection
+                        .targetBlock();
+                }
+            },
+            saveConnections : function(containerBlock) {
+                // Store a pointer to any connected child
+                // blocks.
+                var typeBlock = containerBlock
+                    .getInputTargetBlock('STACK');
+                var x = 0;
+                while (typeBlock) {
+                    var input = this.getInput('CLAUSE' + x);
+                    typeBlock.valueConnection_ = input
+                        && input.connection.targetConnection;
+                    x++;
+                    typeBlock = typeBlock.nextConnection
+                        && typeBlock.nextConnection
+                        .targetBlock();
+                }
+            }
+        };
+
         Blockly.Blocks.action_sentence = {
             init: function() {
                 this.setColour(290);
@@ -1870,7 +1973,7 @@ angular.module('ruleApp.controllers', [])
 
                     $scope.$parent.menuItems = standardMenuItems(4);
                     $scope.refresh1();
-                    $scope.refresh2();
+                    //$scope.refresh2();
                 } else {
                     delete $scope.currentRuleId;
                     delete $scope.currentRuleTitle;

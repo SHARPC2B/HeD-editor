@@ -2,48 +2,29 @@
 	<block type="action_root" deletable="false" movable="false" x="0" y="0">
 		<statement name="ROOT">
 			<block type="action_group" inline="false">
-				<field name="NAME"></field>
-				<field name="TITLE"></field>
-				<statement name="NestedAction">
-					<block type="action_group" inline="false">
-						<field name="NAME">All</field>
-						<field name="TITLE">Hemoglobin A1c Overdue</field>
-						<statement name="NestedAction">
-							<block type="atomic_action" inline="false">
-								<field name="NAME">CreateAction</field>
-								<field name="TITLE"></field>
-								<value name="Condition">
+				<field name="NAME">All</field>
+				<field name="TITLE">title</field>
+				<value name="Condition">
+					<block type="action_logic_compare" inline="false">
+						<mutation types="2"></mutation>
+						<field name="NAME"></field>
+						<field name="dropdown">ALL</field>
+						<value name="CLAUSE0">
+							<block type="action_logic_negate" inline="false">
+								<value name="NOT">
 									<block type="action_condition">
-										<field name="Clauses">Create_2056175534_logic</field>
+										<field name="Clauses">PatientAge</field>
 									</block>
 								</value>
-								<value name="ActionSentence">
-									<block type="action_sentence">
-										<field name="AS">Create_311989333</field>
-									</block>
-								</value>
-								<next>
-									<block type="action_group" inline="false">
-										<field name="NAME">all</field>
-										<field name="TITLE">title</field>
-										<next>
-											<block type="atomic_action" inline="false">
-												<field name="NAME">CreateAction</field>
-												<field name="TITLE">title</field>
-											</block>
-										</next>
-									</block>
-								</next>
 							</block>
-						</statement>
-						<next>
-							<block type="atomic_action" inline="false">
-								<field name="NAME">CreateAction</field>
-								<field name="TITLE">title</field>
+						</value>
+						<value name="CLAUSE1">
+							<block type="action_condition">
+								<field name="Clauses">PatientAge</field>
 							</block>
-						</next>
+						</value>
 					</block>
-				</statement>
+				</value>
 			</block>
 		</statement>
 	</block>

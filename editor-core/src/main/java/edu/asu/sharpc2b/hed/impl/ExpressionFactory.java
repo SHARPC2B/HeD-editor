@@ -238,6 +238,55 @@ public class ExpressionFactory<T> {
                 return not;
             }
             return new NotExpressionImpl();
+        } else if ( "action_logic_compare".equals( conditionType ) ) {
+            SharpExpression sharp = new AndExpressionImpl();
+            SharpExpression root = null;
+            List<Element> fields = getChildrenByTagName( sub, "field" );
+            for ( Element e : fields ) {
+                String name = e.getAttribute( "name" );
+                if ( "dropdown".equals( name ) ) {
+                    String mode = e.getTextContent();
+                    if ( "ALL".equals( mode ) ) {
+                        sharp = new AndExpressionImpl();
+                        root = sharp;
+                    } else if ( "ONE".equals( mode ) ) {
+                        sharp = new OrExpressionImpl();
+                        root = sharp;
+                    } else if ( "NONE".equals( mode ) ) {
+                        root = new NotExpressionImpl();
+                        sharp = new OrExpressionImpl();
+                        (( NotExpression) root).addFirstOperand( sharp );
+                    } else if ( "ONEPLUS".equals( mode ) ) {
+                        sharp = new OrExpressionImpl();
+                        root = sharp;
+                    } else {
+                        throw new IllegalStateException( "Invalid logic type value " + name );
+                    }
+                }
+            }
+
+            int numargs = 0;
+            List<Element> arity = getChildrenByTagName( sub, "mutation" );
+            if ( ! arity.isEmpty() ) {
+                numargs = Integer.parseInt( arity.iterator().next().getAttribute( "types" ) );
+            }
+
+            List<Element> values = getChildrenByTagName( sub, "value" );
+            SharpExpression[] args = new SharpExpression[ numargs ];
+            for ( Element value : values ) {
+                String clauseName = value.getAttribute( "name" );
+                int index = Integer.parseInt( clauseName.replace( "CLAUSE", "" ) );
+
+                List<Element> elements = getChildrenByTagName( value, "block" );
+                if ( ! elements.isEmpty() ) {
+                    Element child = elements.iterator().next();
+                    args[ index ] = visitActionConditionBlock( child );
+                }
+            }
+            for ( SharpExpression expr : args ) {
+                (( NAryExpression ) sharp ).addHasOperand( expr );
+            }
+            return root;
         } else {
             throw new UnsupportedOperationException( "Unrecognized block type in action logic " + conditionType );
         }
