@@ -1,6 +1,9 @@
 package edu.asu.sharpc2b.hed.impl;
 
 import com.clarkparsia.empire.annotation.RdfProperty;
+import edu.asu.sharpc2b.actions.AtomicAction;
+import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.CreateAction;
 import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
@@ -8,6 +11,7 @@ import edu.asu.sharpc2b.ops.OperatorExpression;
 import edu.asu.sharpc2b.ops.PropertySetExpression;
 import edu.asu.sharpc2b.ops.SharpExpression;
 import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.prr.Expression;
 import edu.asu.sharpc2b.prr.NamedElement;
 
 import java.lang.reflect.Method;
@@ -38,7 +42,22 @@ public class ReferenceHunter {
     }
 
     private void visit( SharpAction action, String oldName, String newName ) {
-        throw new UnsupportedOperationException( "TBD" );
+        if ( ! action.getLocalCondition().isEmpty() ) {
+            Expression cnd = action.getLocalCondition().get( 0 ).getConditionRepresentation().get( 0 );
+            if ( ! cnd.getBodyExpression().isEmpty() ) {
+                visit( cnd.getBodyExpression().get( 0 ), oldName, newName );
+            }
+        }
+        if ( action instanceof CompositeAction ) {
+            for ( SharpAction sub : ( (CompositeAction) action ).getMemberAction() ) {
+                visit( sub, oldName, newName );
+            }
+        } else {
+            if ( ! action.getActionExpression().isEmpty() ) {
+                SharpExpression body = action.getActionExpression().get( 0 ).getBodyExpression().get( 0 );
+                visit( body, oldName, newName );
+            }
+        }
     }
 
 

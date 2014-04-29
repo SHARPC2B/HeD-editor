@@ -1,7 +1,5 @@
 package edu.asu.sharpc2b;
 
-import com.hp.hpl.jena.sparql.function.library.date;
-import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.hed.impl.DomainHierarchyExplorer;
 import edu.asu.sharpc2b.ops.BinaryExpression;
 import edu.asu.sharpc2b.ops.BooleanExpression;
@@ -9,6 +7,9 @@ import edu.asu.sharpc2b.ops.DomainClassExpression;
 import edu.asu.sharpc2b.ops.DomainClassExpressionImpl;
 import edu.asu.sharpc2b.ops.DomainPropertyExpression;
 import edu.asu.sharpc2b.ops.DomainPropertyExpressionImpl;
+import edu.asu.sharpc2b.ops_set.DateAddExpression;
+import edu.asu.sharpc2b.ops_set.DateAddExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IntervalExpression;
 import edu.asu.sharpc2b.ops.ListVariableExpression;
 import edu.asu.sharpc2b.ops.ListVariableExpressionImpl;
 import edu.asu.sharpc2b.ops.SharpExpression;
@@ -30,11 +31,14 @@ import edu.asu.sharpc2b.ops_set.FilterExpression;
 import edu.asu.sharpc2b.ops_set.FilterExpressionImpl;
 import edu.asu.sharpc2b.ops_set.IntegerLiteralExpression;
 import edu.asu.sharpc2b.ops_set.IntegerLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.IntervalExpressionImpl;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpression;
 import edu.asu.sharpc2b.ops_set.IsNotEmptyExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ListExpression;
 import edu.asu.sharpc2b.ops_set.ListExpressionImpl;
 import edu.asu.sharpc2b.ops_set.LiteralExpression;
+import edu.asu.sharpc2b.ops_set.LiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.NowExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpression;
@@ -49,6 +53,7 @@ import edu.asu.sharpc2b.ops_set.TimestampIntervalLiteralExpression;
 import edu.asu.sharpc2b.ops_set.TimestampIntervalLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.TimestampLiteralExpression;
 import edu.asu.sharpc2b.ops_set.TimestampLiteralExpressionImpl;
+import edu.asu.sharpc2b.ops_set.TodayExpressionImpl;
 import edu.asu.sharpc2b.ops_set.ValueSetExpression;
 import edu.asu.sharpc2b.ops_set.ValueSetExpressionImpl;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
@@ -239,8 +244,65 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             }
         }
 
+        String dateProperty = getDateProperty( klass );
+        IntervalExpression dateRange = gatherDateRangeFromParams( source, dateProperty );
+        creq.addDateRange( dateRange );
+
         this.expressions.put( exprName, creq );
         return exprName;
+    }
+
+    private IntervalExpression gatherDateRangeFromParams( Template source, String dateProperty ) {
+        IntervalExpression intval = new IntervalExpressionImpl();
+        for ( Parameter param : source.getHasParameter() ) {
+            if ( param.getPath().contains( dateProperty ) && param.getTypeName().contains( "PeriodLiteral" ) ) {
+                String value = param.getValue().get( 0 );
+                Map<String,String> elements = tokenize( value );
+                PeriodLiteralExpression pl = (PeriodLiteralExpression) buildLiteral( "PeriodLiteral", elements );
+                if ( ! pl.getPhase().isEmpty() ) {
+                    TimestampIntervalLiteralExpression ts = (TimestampIntervalLiteralExpression) pl.getPhase().get( 0 );
+                    intval.setBeginOpen( ! ts.isLowClosedBoolean() );
+                    intval.setEndOpen( ! ts.isHighClosedBoolean()  );
+                    if ( ts.getLow_DateTime() != null ) {
+                        TimestampLiteralExpression low = new TimestampLiteralExpressionImpl();
+                        low.addValue_DateTime( ts.getLow_DateTime() );
+                        intval.addBegin( low );
+                    }
+                    if ( ts.getHigh_DateTime() != null ) {
+                        TimestampLiteralExpression hig = new TimestampLiteralExpressionImpl();
+                        hig.addValue_DateTime( ts.getHigh_DateTime() );
+                        intval.addEnd( hig );
+                    }
+                }
+            } else if ( param.getPath().contains( dateProperty ) && param.getTypeName().contains( "PhysicalQuantityLiteral" ) ) {
+                String value = param.getValue().get( 0 );
+                Map<String,String> elements = tokenize( value );
+                PhysicalQuantityLiteralExpression pq = (PhysicalQuantityLiteralExpression) buildLiteral( "PhysicalQuantityLiteral", elements );
+                if ( pq.getValue_DoubleDouble() != null ) {
+                    Double delta = pq.getValue_DoubleDouble();
+                    DateAddExpression adder = new DateAddExpressionImpl();
+                    adder.addDate( new TodayExpressionImpl() );
+
+                    IntegerLiteralExpression i = new IntegerLiteralExpressionImpl();
+                    i.addValue( delta.intValue() );
+                    adder.addNumberOfPeriods( i );
+
+                    LiteralExpression lit = new LiteralExpressionImpl();
+                    lit.addValueType( "DateGranularity" );
+                    lit.setValue_StringString( pq.getUnit() );
+                    adder.addGranularity( lit );
+
+                    if ( delta < 0 ) {
+                        intval.addBegin( adder );
+                        intval.addEnd( new TodayExpressionImpl() );
+                    } else {
+                        intval.addBegin( new TodayExpressionImpl() );
+                        intval.addEnd( adder );
+                    }
+                }
+            }
+        }
+        return intval;
     }
 
     private ValueSetExpression gatherValueSetFromParams( Template source, String codeProperty ) {

@@ -2059,6 +2059,9 @@ angular.module('ruleApp.controllers', [])
             parameter.elements[ 2 ].value = $item.namespace;
             parameter.elements[ 1 ].value = $item.name;
             parameter.elements[ 0 ].value = $label;
+            if ( parameter.selectedOperation == 'InValueSet' ) {
+                parameter.elements[3].value = $item.namespace;
+            }
             format(parameter)
         };
         $scope.normalize = function(entity, resolveCodes) {
