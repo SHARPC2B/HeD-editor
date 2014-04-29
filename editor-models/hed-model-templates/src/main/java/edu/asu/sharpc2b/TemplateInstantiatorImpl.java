@@ -39,6 +39,7 @@ import edu.asu.sharpc2b.ops_set.ListExpressionImpl;
 import edu.asu.sharpc2b.ops_set.LiteralExpression;
 import edu.asu.sharpc2b.ops_set.LiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.NowExpressionImpl;
+import edu.asu.sharpc2b.ops_set.ObjectExpressionExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpression;
 import edu.asu.sharpc2b.ops_set.PeriodLiteralExpressionImpl;
 import edu.asu.sharpc2b.ops_set.PhysicalQuantityIntervalLiteralExpression;
@@ -160,7 +161,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
     }
 
     private void processAsAction( String name, Template source ) {
-
+        this.expressions.put( "name", new ObjectExpressionExpressionImpl() );
     }
 
 
