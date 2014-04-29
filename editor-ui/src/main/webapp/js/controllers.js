@@ -397,7 +397,38 @@ angular.module('ruleApp.controllers', [])
                 };
 
             });
+
+        $scope.coverage = {};
+        $scope.coverage.Code = {};
+        $scope.cts2search = function(matchValue) {
+            return $http.jsonp(serviceUrl + '/fwd/cts2/entities?callback=JSON_CALLBACK&matchalgorithm=startsWith&format=json&maxtoreturn=20&matchvalue='+matchValue).then(function(response){
+                var entities = new Array();
+                var list = response.data.entityDirectory.entryList;
+                if ( list != undefined ) {
+                    for ( var j = 0; j < list.length; j++ ) {
+                        var entity = list[j];
+                        var descriptor = {};
+                        descriptor.namespace = entity.name.namespace.toUpperCase();
+                        descriptor.name = entity.name.name;
+                        descriptor.designation =
+                            // descriptor.namespace + ':' + descriptor.name + '-' +
+                            entity.knownEntityDescriptionList[0].designation;
+                        entities[ j ] = descriptor;
+                    }
+                }
+                return entities;
+            });
+        };
+        $scope.onSelect = function ($item, $model, $label) {
+            $scope.coverage.Code = $item.name;
+            $scope.coverage.CodeSet = $item.namespace;
+            $scope.coverage.Description = $label;
+        };
+
     }])
+
+
+
     .controller('RowDetailController', ['$scope', '$http', '$modalInstance', 'data', function($scope, $http, $modalInstance, data) {
         $scope.data = data;
         $scope.close = function() {

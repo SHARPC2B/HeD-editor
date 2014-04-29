@@ -676,9 +676,17 @@ public class OOwl2HedDumper implements HeDExporter {
                 Element cvg = dox.createElement( "coverage" );
                 cvg.setAttribute( "xsi:type", "Coverage" );
                 appl.appendChild( cvg );
+
                 Element focus = dox.createElement( "focus" );
                 focus.setAttribute( "value", cov.getCoverageType().get( 0 ) );
-                appl.appendChild( cvg );
+                cvg.appendChild( focus );
+
+                if ( ! cov.getDescription().isEmpty() ) {
+                    Element descr = dox.createElement( "description" );
+                    descr.setAttribute( "value", cov.getDescription().get( 0 ) );
+                    cvg.appendChild( descr );
+                }
+
                 visitCD( cov.getCoveredConcept().get( 0 ), dox, cvg, "value" );
             }
             metadata.appendChild( appl );

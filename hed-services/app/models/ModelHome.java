@@ -16,16 +16,12 @@ import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.KnowledgeResourceImpl;
 import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.RightsDeclarationImpl;
-import edu.asu.sharpc2b.ops.Primitive;
-import edu.asu.sharpc2b.ops.PrimitiveImpl;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
-import edu.asu.sharpc2b.templates.ActionTemplate;
 import edu.asu.sharpc2b.templates.Parameter;
 import edu.asu.sharpc2b.templates.ParameterImpl;
 import edu.asu.sharpc2b.templates.Template;
-import edu.asu.sharpc2b.templates.TemplateImpl;
 import edu.mayo.cts2.framework.core.client.Cts2RestClient;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry;
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntryDirectory;
@@ -58,14 +54,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.UUID;
 
 /**
  * User: rk Date: 8/19/13 Package: models
@@ -488,6 +481,7 @@ public class ModelHome {
         dok.addApplicability( cover );
 
         cover.addCoverageType( cv.Type );
+        cover.addDescription( cv.Description );
 
         ConceptCode code = new ConceptCodeImpl();
         if ( cv.Code != null ) {
@@ -948,7 +942,7 @@ public class ModelHome {
                                     if ( p.name.equals( parm.getName().get( 0 ) ) ) {
                                         p.getElement( "code" ).setValue( code );
                                         p.getElement( "codeSystem" ).setValue( codeSystem.toUpperCase() );
-                                        p.getElement( "displayValue" ).setValue( entry.getKnownEntityDescription()[0].getDesignation() );
+                                        p.getElement( "displayValue" ).setValue( entry.getKnownEntityDescription()[ 0 ].getDesignation() );
                                     }
                                 }
                             }

@@ -41,7 +41,8 @@
 			<a href="" x-ng-click="background=''" class="text-center span1"><i class="icon-eraser icon-3x"></i><br> Clear</a>
 		</div>
     </accordion-group>
-    <accordion-group is-open="false">
+
+    <!--accordion-group is-open="false">
         <accordion-heading>Key Terms:</accordion-heading>
         <div class="row-fluid">
             <div class="span6" style="padding: 20px; border-right: 1px solid #e5e5e5;">
@@ -80,7 +81,8 @@
 	            </div>
 	        </div>
 	    </div>
-    </accordion-group>
+    </accordion-group-->
+
 	<accordion-group ng-if="contributorsForm" is-open="true">
 		<accordion-heading>
     		Contributors:<i class="pull-right icon-question-sign"></i>
@@ -132,11 +134,15 @@
     	<div class="row-fluid">
     		<form class="form-horizontal span6" style="border-right: 1px solid #e5e5e5;">
 				<div class="control-group">
-					<label class="control-label" for="inputCodeSet">Code Set:</label>
+					<label class="control-label" for="inputCodeSet">Coded Concept</label>
 					<div class="controls search-prepend">
 						<div class="icon-search icon-white"></div>
-    					<input type="text" class="search-query span11" placeholder="Search Code Set" x-ng-model="coverage.Code">
-					</div>
+                        <input type="text" ng-model="codeSystems.chosenCode.label" class="span11"
+                               typeahead="suggestion.designation for suggestion in cts2search($viewValue)"
+                               typeahead-editable="false"
+                               typeahead-wait-ms="500"
+                               typeahead-on-select='onSelect($item, $model, $label)'>
+                    </div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="inputDescription">Description:</label>
