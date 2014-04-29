@@ -142,7 +142,7 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         v2.addName( name );
         mainVar.addReferredVariable( v2 );
         exists.addFirstOperand( mainVar );
-        expressions.put( dataExprName, exists );
+        expressions.put( name, exists );
 
 
         expressions.put( dataExprName, mainExpression );
@@ -224,10 +224,12 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
         List<CodeLiteralExpression> codeList = gatherCodesFromParams( source, codeProperty );
         if ( ! codeList.isEmpty() ) {
             creq.addCodeProperty( getDomainPropertyExpression( codeProperty ) );
+
             ListExpression list = new ListExpressionImpl();
             for ( CodeLiteralExpression code : codeList ) {
                 list.addElement( code );
             }
+
             creq.addCodes( list );
         } else {
             ValueSetExpression valSet = gatherValueSetFromParams( source, codeProperty );
@@ -264,7 +266,9 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
                 Map<String,String> elements = tokenize( value );
                 if ( ( ! elements.containsKey( "valueSet" ) ) || ( ! elements.get( "valueSet" ).equals( elements.get( "codeSystem" ) ) ) ) {
                     CodeLiteralExpression code = (CodeLiteralExpression) buildLiteral( "CodeLiteral", elements );
-                    codes.add( code );
+                    if ( code != null ) {
+                        codes.add( code );
+                    }
                 }
             }
         }
@@ -293,10 +297,12 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             // TODO support expressions
             ((BinaryExpression) opExpr).addFirstOperand( prop );
             SharpExpression literal = buildLiteral( param.getTypeName().get( 0 ), elems );
-            if ( ! param.getNativeTypeName().isEmpty() && ! ( param.getNativeTypeName().get( 0 ).equals( param.getTypeName() ) ) ) {
+            if ( literal != null && ! param.getNativeTypeName().isEmpty() && ! ( param.getNativeTypeName().get( 0 ).equals( param.getTypeName() ) ) ) {
                 literal = cast( literal, param.getTypeName().get( 0 ), param.getNativeTypeName().get( 0 ) );
             }
-            ((BinaryExpression) opExpr).addSecondOperand( literal );
+            if ( literal != null ) {
+                ((BinaryExpression) opExpr).addSecondOperand( literal );
+            }
         } else if ( opExpr instanceof UnaryExpression ) {
             ((UnaryExpression) opExpr).addFirstOperand( prop );
         } else {
@@ -351,37 +357,67 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             //TODO Fix period/frequency
             return period;
         } else if ( "IntegerLiteral".equals( type ) ) {
-            IntegerLiteralExpression literal = new IntegerLiteralExpressionImpl();
-            literal.addValue( Integer.valueOf( elems.get( "value" ) ) );
-            return literal;
+            if ( elems.get( "value" ) != null ) {
+                IntegerLiteralExpression literal = new IntegerLiteralExpressionImpl();
+                literal.addValue( Integer.valueOf( elems.get( "value" ) ) );
+                return literal;
+            } else {
+                return null;
+            }
         } else if ( "StringLiteral".equals( type ) ) {
-            StringLiteralExpression literal = new StringLiteralExpressionImpl();
-            literal.addValue_String( elems.get( "value" ) );
-            return literal;
+            if ( elems.get( "value" ) != null ) {
+                StringLiteralExpression literal = new StringLiteralExpressionImpl();
+                literal.addValue_String( elems.get( "value" ) );
+                return literal;
+            } else {
+                return null;
+            }
         } else if ( "BooleanLiteral".equals( type ) ) {
-            BooleanLiteralExpression bool = new BooleanLiteralExpressionImpl();
-            bool.addValue_Boolean( Boolean.valueOf( elems.get( "value" ) ) );
-            return bool;
+            if ( elems.get( "value" ) != null ) {
+                BooleanLiteralExpression bool = new BooleanLiteralExpressionImpl();
+                bool.addValue_Boolean( Boolean.valueOf( elems.get( "value" ) ) );
+                return bool;
+            } else {
+                return null;
+            }
         } else if ( "TimestampLiteral".equals( type ) ) {
-            TimestampLiteralExpression time = new TimestampLiteralExpressionImpl();
-            time.addValue_DateTime( parseDate( elems.get( "value" ) ) );
-            return time;
+            if ( elems.get( "value" ) != null ) {
+                TimestampLiteralExpression time = new TimestampLiteralExpressionImpl();
+                time.addValue_DateTime( parseDate( elems.get( "value" ) ) );
+                return time;
+            } else {
+                return null;
+            }
         } else if ( "PhysicalQuantityLiteral".equals( type ) ) {
-            PhysicalQuantityLiteralExpression pq = new PhysicalQuantityLiteralExpressionImpl();
-            pq.addValue_Double( Double.valueOf( elems.get( "value" ) ) );
-            pq.addUnit( elems.get( "unit" ) );
-            return pq;
+            if ( elems.get( "value" ) != null ) {
+                PhysicalQuantityLiteralExpression pq = new PhysicalQuantityLiteralExpressionImpl();
+                pq.addValue_Double( Double.valueOf( elems.get( "value" ) ) );
+                pq.addUnit( elems.get( "unit" ) );
+                return pq;
+            } else {
+                return null;
+            }
         } else if ( "PhysicalQuantityIntervalLiteral".equals( type ) ) {
             PhysicalQuantityIntervalLiteralExpression pqi = new PhysicalQuantityIntervalLiteralExpressionImpl();
-            PhysicalQuantityLiteralExpression low = new PhysicalQuantityLiteralExpressionImpl();
-            low.addValue_Double( Double.valueOf( elems.get( "low_value" ) ) );
-            low.addUnit( elems.get( "low_unit" ) );
-            PhysicalQuantityLiteralExpression high = new PhysicalQuantityLiteralExpressionImpl();
-            high.addValue_Double( Double.valueOf( elems.get( "high_value" ) ) );
-            high.addUnit( elems.get( "high_unit" ) );
-            pqi.addLow_PhysicalQuantity( low );
-            pqi.addHigh_PhysicalQuantity( high );
-            return pqi;
+            boolean found = false;
+
+            if ( elems.get( "low_value" ) != null ) {
+                PhysicalQuantityLiteralExpression low = new PhysicalQuantityLiteralExpressionImpl();
+                low.addValue_Double( Double.valueOf( elems.get( "low_value" ) ) );
+                low.addUnit( elems.get( "low_unit" ) );
+                pqi.addLow_PhysicalQuantity( low );
+                found = true;
+            }
+
+            if ( elems.get( "high_value" ) != null ) {
+                PhysicalQuantityLiteralExpression high = new PhysicalQuantityLiteralExpressionImpl();
+                high.addValue_Double( Double.valueOf( elems.get( "high_value" ) ) );
+                high.addUnit( elems.get( "high_unit" ) );
+                pqi.addHigh_PhysicalQuantity( high );
+                found = true;
+            }
+
+            return found ? pqi : null;
         }
         return null;
     }
