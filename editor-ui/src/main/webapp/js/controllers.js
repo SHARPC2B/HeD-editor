@@ -148,7 +148,7 @@ angular.module('ruleApp.controllers', [])
                                         $scope.background = data;
                                         $scope.currentRuleId = data.ruleId;
                                         $scope.currentRuleTitle = data.Name;
-                                        $scope.$parent.title = 'Metadata ' + data.Name;
+                                        $scope.$parent.title = data.Name + " : Metadata";
                                     }
                             )
 

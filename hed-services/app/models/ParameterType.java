@@ -13,7 +13,7 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParameterType
-        extends SharpType
+        extends SharpType implements Comparable<ParameterType>
 {
     @Id
     public String key;
@@ -48,6 +48,8 @@ public class ParameterType
 
     public String path;
 
+    public int index;
+
     //========================================================================================
 
     public ElementType getElement(String name)
@@ -80,4 +82,8 @@ public class ParameterType
     }
 
 
+    @Override
+    public int compareTo( ParameterType o ) {
+        return this.index - o.index;
+    }
 }

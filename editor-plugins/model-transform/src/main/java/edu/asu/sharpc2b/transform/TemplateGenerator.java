@@ -137,6 +137,7 @@ public class TemplateGenerator {
                     axioms.add( helper.assertDataProperty( "tns:label", param, p.displayName ) );
                     axioms.add( helper.assertDataProperty( "tns:description", param, p.displayName ) );
                     axioms.add( helper.assertDataProperty( "tns:typeName", param, p.type ) );
+                    axioms.add( helper.assertDataProperty( "tns:paramIndex", param, p.index) );
                     if ( p.defaultValue != null && ! "".equals( p.defaultValue ) ) {
                         axioms.add( helper.assertDataProperty( "tns:defaultValue", param, p.defaultValue ) );
                     }
@@ -241,6 +242,7 @@ public class TemplateGenerator {
                                 p.multiple = true;
                             }
                         }
+                        p.index = j;
                         templ.params.add( p );
                     }
 
@@ -267,6 +269,7 @@ public class TemplateGenerator {
         public String displayName;
         public String type;
         public String defaultValue;
+        public int index;
         public List<String> constraints;
         public boolean optional = false;
         public boolean multiple = false;

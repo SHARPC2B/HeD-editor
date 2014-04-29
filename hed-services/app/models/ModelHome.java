@@ -1017,6 +1017,7 @@ public class ModelHome {
         }
         if ( template.parameters == null || template.parameters.isEmpty() ) {
             template.parameters = rebuildParameterInfo( templateDetails.getHasParameter() );
+            Collections.sort( template.parameters );
         }
 
         return template;
@@ -1070,6 +1071,7 @@ public class ModelHome {
             param.optional = p.getOptional().get( 0 );
             param.multiple = p.getMultiple().get( 0 );
             param.path = p.getPath().get( 0 );
+            param.index = p.getParamIndex().get( 0 );
 
             param.expressionChoices = new ArrayList( p.getCompatibleExpression() );
 
@@ -1261,6 +1263,7 @@ public class ModelHome {
             param.addDescription( p.description );
             param.addTypeName( p.hedTypeName );
             param.addPath( p.path );
+            param.addParamIndex( p.index );
 
             StringBuilder value = new StringBuilder( );
             value.append( "operation=" ).append( p.selectedOperation ).append( ";" );

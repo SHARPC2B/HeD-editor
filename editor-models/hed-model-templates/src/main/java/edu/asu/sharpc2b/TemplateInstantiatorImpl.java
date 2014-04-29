@@ -96,9 +96,9 @@ public class TemplateInstantiatorImpl implements TemplateInstantiator {
             processAsTrigger( name, source );
         } else if ( "ACTION".equals( mainCat ) ) {
             String subCat = source.getCategory().get( 1 );
-            if ( "CONDITION".equals( source ) ) {
+            if ( "CONDITION".equals( subCat ) ) {
                 processAsCondition( name, source );
-            } else if ( "ACTION".equals( source ) ) {
+            } else if ( "ACTION".equals( subCat ) ) {
                 processAsAction( name, source );
             }
         } else {
