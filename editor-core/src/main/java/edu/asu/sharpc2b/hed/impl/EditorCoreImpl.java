@@ -241,7 +241,7 @@ public class EditorCoreImpl implements EditorCore, DomainModel, ArtifactStore {
     @Override
     public String saveArtifact( String id ) {
         HeDArtifactData artifactData = getArtifactData( id );
-        return knowledgeRepo.saveArtifact( id, new ByteArrayInputStream( artifactData.refreshOwlData() ) );
+        return knowledgeRepo.saveArtifact( id, artifactData.getTitle(), new ByteArrayInputStream( artifactData.refreshOwlData() ) );
     }
 
     @Override

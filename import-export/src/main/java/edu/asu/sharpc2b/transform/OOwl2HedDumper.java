@@ -777,7 +777,7 @@ public class OOwl2HedDumper implements HeDExporter {
     private void visitDescription( InformationRealization info, Document dox, Element metadata ) {
         if ( ! info.getDescription().isEmpty() ) {
             Element descr = dox.createElement( "description" );
-            descr.setAttribute( "value", info.getTitle().get( 0 ) );
+            descr.setAttribute( "value", info.getDescription().get( 0 ) );
             metadata.appendChild( descr );
         }
     }

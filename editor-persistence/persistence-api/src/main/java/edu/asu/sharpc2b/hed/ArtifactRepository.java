@@ -14,7 +14,7 @@ public interface ArtifactRepository {
 
     public String snapshotArtifact( String uri );
 
-    public String saveArtifact( String uri, InputStream content );
+    public String saveArtifact( String uri, String title, InputStream content );
 
     public String deleteArtifact( String uri );
 

@@ -134,14 +134,19 @@ public class FilesystemArtifactRepository implements ArtifactRepository {
     }
 
     @Override
-    public String saveArtifact( String uri, InputStream content ) {
-        String title = getArtifactTitleByUri( uri );
+    public String saveArtifact( String uri, String newTitle, InputStream content ) {
+        String currentTitle = getArtifactTitleByUri( uri );
         try {
-            File f = new File( getFullFileNameForTitle( title ) );
-            FileOutputStream fos = new FileOutputStream( f );
-            byte[] data = new byte[ content.available() ];
-            content.read( data );
-            fos.write( data );
+            if ( ! currentTitle.equals( newTitle ) ) {
+                deleteArtifact( uri );
+                createArtifact( uri, newTitle, content );
+            } else {
+                File f = new File( getFullFileNameForTitle( currentTitle ) );
+                FileOutputStream fos = new FileOutputStream( f );
+                byte[] data = new byte[ content.available() ];
+                content.read( data );
+                fos.write( data );
+            }
         } catch ( Exception e ) {
             e.printStackTrace();
             return null;

@@ -111,7 +111,7 @@ public class StanbolArtifactRepository implements ArtifactRepository {
     }
 
     @Override
-    public String saveArtifact( String uri, InputStream content ) {
+    public String saveArtifact( String uri, String title, InputStream content ) {
         return null;
     }
 

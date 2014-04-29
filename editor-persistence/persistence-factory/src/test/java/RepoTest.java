@@ -74,7 +74,7 @@ public class RepoTest {
         assertTrue( artifacts.keySet().containsAll( Arrays.asList( uri2, uri3 ) ) );
 
 
-        knowledgeRepo.saveArtifact( uri2, new ByteArrayInputStream( "test2aaa".getBytes() ) );
+        knowledgeRepo.saveArtifact( uri2, "test2aaa", new ByteArrayInputStream( "test2aaa".getBytes() ) );
         String uri4 = knowledgeRepo.snapshotArtifact( uri2 );
 
         artifacts = knowledgeRepo.getAvailableArtifacts();
