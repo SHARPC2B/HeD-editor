@@ -3,9 +3,13 @@ package models;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import edu.asu.sharpc2b.actions.CompositeAction;
+import edu.asu.sharpc2b.actions.SharpAction;
 import edu.asu.sharpc2b.hed.api.EditorCore;
 import edu.asu.sharpc2b.hed.impl.EditorCoreImpl;
+import edu.asu.sharpc2b.hed.impl.HeDAction;
 import edu.asu.sharpc2b.hed.impl.HeDArtifactData;
+import edu.asu.sharpc2b.hed.impl.HeDNamedExpression;
 import edu.asu.sharpc2b.metadata.ClinicalCoverage;
 import edu.asu.sharpc2b.metadata.ClinicalCoverageImpl;
 import edu.asu.sharpc2b.metadata.Coverage;
@@ -16,6 +20,11 @@ import edu.asu.sharpc2b.metadata.KnowledgeResource;
 import edu.asu.sharpc2b.metadata.KnowledgeResourceImpl;
 import edu.asu.sharpc2b.metadata.RightsDeclaration;
 import edu.asu.sharpc2b.metadata.RightsDeclarationImpl;
+import edu.asu.sharpc2b.ops.NAryExpression;
+import edu.asu.sharpc2b.ops.SharpExpression;
+import edu.asu.sharpc2b.ops.UnaryExpression;
+import edu.asu.sharpc2b.ops.VariableExpression;
+import edu.asu.sharpc2b.ops_set.OrExpression;
 import edu.asu.sharpc2b.prr_sharp.HeDKnowledgeDocument;
 import edu.asu.sharpc2b.skos_ext.ConceptCode;
 import edu.asu.sharpc2b.skos_ext.ConceptCodeImpl;
@@ -36,6 +45,7 @@ import models.metadata.Contributor;
 import models.metadata.Resource;
 import models.metadata.SupportingResource;
 import models.metadata.UsageTerm;
+import org.hl7.knowledgeartifact.r1.NaryExpression;
 import org.ontologydesignpatterns.ont.dul.dul.Entity;
 import org.ontologydesignpatterns.ont.dul.dul.OrganizationImpl;
 import org.ontologydesignpatterns.ont.dul.dul.SocialPerson;
@@ -1353,5 +1363,108 @@ public class ModelHome {
 
         return primitive;
     }
+
+
+    public static SummaryNode analyzeArtifact() {
+        HeDArtifactData dok = core.getCurrentArtifactData();
+        SummaryNode root = new SummaryNode();
+        root.name = dok.getTitle();
+
+        SummaryNode onn = new SummaryNode();
+        onn.name = "ON";
+        if ( dok.getTriggers() != null ) {
+            visitTriggers( onn, dok.getTriggers() );
+        }
+
+        SummaryNode iff = new SummaryNode();
+        iff.name = "IF";
+        if ( dok.getLogicExpression() != null && dok.getLogicExpression().getExpression() != null ) {
+            visitConditions( iff, dok.getLogicExpression().getExpression() );
+        }
+
+        SummaryNode thn = new SummaryNode();
+        thn.name = "THEN";
+        if ( dok.getActions() != null && dok.getActions().getAction() != null ) {
+            visitActions( thn, dok.getActions().getAction() );
+        }
+
+        root.children = Arrays.asList( onn, iff, thn );
+        return root;
+    }
+
+    private static void visitActions( SummaryNode parent, SharpAction action ) {
+        if ( ! action.getLocalCondition().isEmpty() ) {
+            SummaryNode iff = new SummaryNode();
+            iff.name = "IF-LOCAL";
+            parent.children.add( iff );
+            visitConditions( iff, action.getLocalCondition().get( 0 ).getConditionRepresentation().get( 0 ).getBodyExpression().get( 0 ) );
+        }
+        if ( action instanceof CompositeAction ) {
+            SummaryNode grp = new SummaryNode();
+            grp.name = "GROUP";
+            parent.children.add( grp );
+            for ( SharpAction child : ( (CompositeAction) action ).getMemberAction() ) {
+                visitActions( grp, child );
+            }
+        } else {
+            SummaryNode act = new SummaryNode();
+            act.name = action.getClass().getSimpleName().replace( "Impl", "" );
+            parent.children.add( act );
+
+            if ( ! action.getActionExpression().isEmpty() ) {
+                SharpExpression xp = action.getActionExpression().get( 0 ).getBodyExpression().get( 0 );
+                if ( xp instanceof VariableExpression ) {
+                    SummaryNode leaf = new SummaryNode();
+                    leaf.name = ( (VariableExpression) xp ).getReferredVariable().get( 0 ).getName().get( 0 );
+                    act.children.add( leaf );
+                }
+            }
+
+        }
+    }
+
+    private static void visitConditions( SummaryNode parent, SharpExpression xp ) {
+        if ( xp instanceof VariableExpression ) {
+            SummaryNode leaf = new SummaryNode();
+            leaf.name = ( (VariableExpression) xp ).getReferredVariable().get( 0 ).getName().get( 0 );
+            parent.children.add( leaf );
+        } else if ( xp instanceof UnaryExpression ) {
+            SummaryNode node = new SummaryNode();
+            node.name = xp.getClass().getSimpleName().replace( "ExpressionImpl", "" );
+            parent.children.add( node );
+            for ( SharpExpression child : ( (UnaryExpression) xp ).getFirstOperand() ) {
+                visitConditions( node, child );
+            }
+        } else if ( xp instanceof NAryExpression ) {
+            SummaryNode node = new SummaryNode();
+            node.name = xp.getClass().getSimpleName().replace( "ExpressionImpl", "" );
+            parent.children.add( node );
+            for ( SharpExpression child : ( (NAryExpression) xp ).getHasOperand() ) {
+                visitConditions( node, child );
+            }
+        }
+    }
+
+    private static void visitTriggers( SummaryNode onn, HeDNamedExpression trig ) {
+        if ( trig == null || trig.getExpression() == null || ((OrExpression) trig.getExpression()).getHasOperand().isEmpty() ) {
+            return;
+        }
+        OrExpression or = (OrExpression) trig.getExpression();
+        List<SummaryNode> children = new ArrayList<SummaryNode>( or.getHasOperand().size() );
+        onn.children = children;
+        for ( SharpExpression x : or.getHasOperand() ) {
+            SummaryNode node = new SummaryNode();
+
+            if ( x instanceof VariableExpression ) {
+                VariableExpression var = (VariableExpression) x;
+                String name = var.getReferredVariable().get( 0 ).getName().get( 0 );
+                node.name = name;
+            } else {
+                node.name = "(Timed)";
+            }
+            children.add( node );
+        }
+    }
+
 
 }

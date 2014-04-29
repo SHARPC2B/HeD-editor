@@ -6,12 +6,14 @@ import models.Artifact;
 import models.ModelHome;
 import models.NamedConcept;
 import models.Rule;
+import models.SummaryNode;
 import play.api.libs.json.JsPath;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +81,15 @@ public class RuleActions
         }
     }
 
+
+    public static Result getSummaryInfo() {
+        SummaryNode root = ModelHome.analyzeArtifact();
+
+        JsonNode js = Json.toJson( root );
+        setHeaderCORS();
+        return ok( js );
+    }
+
     public static Result updateRuleInfo( String id ) {
         final Http.Request request = request();
         Http.RequestBody body = request.body();
@@ -115,6 +126,7 @@ public class RuleActions
         setHeaderCORS();
         return ok();
     }
+
 
 
 }

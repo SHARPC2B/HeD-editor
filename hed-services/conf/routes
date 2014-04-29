@@ -24,6 +24,7 @@ GET            /template/detail/:id                       controllers.ArtifactAc
 GET            /template/instance/:id                     controllers.ArtifactActions.getTemplateInstance(id:String)
 
 GET            /rule/current                              controllers.RuleActions.getCurrentInfo()
+GET            /rule/summary                              controllers.RuleActions.getSummaryInfo()
 POST           /rule/info/:id                             controllers.RuleActions.updateRuleInfo(id)
 GET            /rule/export/:id/:format                   controllers.RuleActions.getExternalFormat(id,format)
 GET            /rule                                      controllers.RuleActions.list()
