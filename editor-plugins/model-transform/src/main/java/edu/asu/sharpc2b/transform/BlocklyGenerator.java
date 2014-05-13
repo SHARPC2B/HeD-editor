@@ -477,7 +477,7 @@ public class BlocklyGenerator {
             if ( eqClasses.contains( expression ) ) {
                 OWLClassExpression parent = eqClasses.get( 1 );
                 ancestors.add( parent );
-                if ( ! parent.isAnonymous() ) {
+                if ( ! parent.isAnonymous() && parent != expression ) {
                     superClosure( parent, ontology, ancestors );
                 }
             }

@@ -55,7 +55,7 @@ public class TestSharpGeneration {
     @Test
     public void testProblemConditions() {
         System.out.println( store.getTemplateIds( null ) );
-        Template cond = store.getTemplateInfo( "ProblemDiagnosis" );
+        Template cond = store.getTemplateInfo( "ActiveProblemDiagnosis" );
 
         cond.addCategory( "CONDITION" );
         for ( Parameter parm : cond.getHasParameter() ) {

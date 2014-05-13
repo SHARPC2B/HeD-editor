@@ -50,12 +50,12 @@ class SharpOperatorsTest extends GroovyTestCase {
 
         SharpOperators sharpOperatorsCreator = new SharpOperators();
 
+        /*
         oom = OWLManager.createOWLOntologyManager();
         ont = oom.createOntology( outputOntIRI );
         oFormat = IriUtil.getDefaultSharpOntologyFormat();
         sharpOperatorsCreator.addSharpOperators( excelFile, ont );
-
-        oom.saveOntology( ont, oFormat, IRI.create( outputOntFile ) );
+        */
     }
 
 }

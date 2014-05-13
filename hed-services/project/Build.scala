@@ -22,7 +22,7 @@ object ApplicationBuild extends Build {
     javaCore,
     javaEbean,
 
-    "com.clarkparsia" % "Empire-core" % "0.7.3-SHARP" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
+    "com.clarkparsia.empire" % "empire" % "0.8.4" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
 
     "org.drools" % "drools-core" % "5.6.0.Final" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),
     "org.drools" % "drools-compiler" % "5.6.0.Final" force() exclude("xerces", "xercesImpl") exclude("xml-apis", "xml-apis"),

@@ -24,7 +24,7 @@
 	  <dependency>
 		  <groupId>sharpc2b</groupId>
 		  <artifactId>generated-models</artifactId>
-		  <version>0.1-SNAPSHOT</version>
+		  <version>${editor.version}</version>
 	  </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
@@ -34,7 +34,7 @@
 	  <dependency>
 		  <groupId>sharpc2b</groupId>
 		  <artifactId>hed-model-templates</artifactId>
-		  <version>0.1-SNAPSHOT</version>
+		  <version>${editor.version}</version>
 	  </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
@@ -44,7 +44,7 @@
 	  <dependency>
 		  <groupId>sharpc2b</groupId>
 		  <artifactId>editor-utils</artifactId>
-		  <version>0.1-SNAPSHOT</version>
+		  <version>${editor.version}</version>
 	  </dependency>
     <dependency>
       <groupId>sharpc2b</groupId>
@@ -70,12 +70,12 @@
     </dependency>
 
     <dependency>
-      <groupId>com.clarkparsia</groupId>
-      <artifactId>Empire-core</artifactId>
+      <groupId>com.clarkparsia.empire</groupId>
+      <artifactId>empire</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.clarkparsia</groupId>
-      <artifactId>Empire-sesame2</artifactId>
+      <groupId>com.clarkparsia.empire</groupId>
+      <artifactId>sesame</artifactId>
     </dependency>
 
     <dependency>

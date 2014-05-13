@@ -74,32 +74,32 @@
 
       <!-- Empire can be found here: https://github.com/mhgrove/Empire -->
       <dependency>
-        <groupId>com.clarkparsia</groupId>
-        <artifactId>Empire-core</artifactId>
+        <groupId>com.clarkparsia.empire</groupId>
+        <artifactId>empire</artifactId>
         <exclusions>
           <exclusion>
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
           </exclusion>
         </exclusions>
-        <version>0.7.3-SHARP</version>
+        <version>0.8.4</version>
       </dependency>
       <dependency>
-        <groupId>com.clarkparsia</groupId>
-        <artifactId>cp-common-openrdf</artifactId>
-        <version>0.8.1</version>
+        <groupId>com.complexible.common</groupId>
+        <artifactId>openrdf</artifactId>
+        <version>2.0.2</version>
       </dependency>
 
 
       <dependency>
-        <groupId>com.clarkparsia</groupId>
-        <artifactId>Empire-sesame2</artifactId>
-        <version>0.7.3-SHARP</version>
+        <groupId>com.clarkparsia.empire</groupId>
+        <artifactId>sesame</artifactId>
+        <version>0.8.4</version>
       </dependency>
       <dependency>
         <groupId>org.openrdf.sesame</groupId>
         <artifactId>sesame-rio-turtle</artifactId>
-        <version>2.7.0</version>
+        <version>2.7.10</version>
       </dependency>
 
 

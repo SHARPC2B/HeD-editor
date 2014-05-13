@@ -319,33 +319,6 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AsExpression'] = {
   
 };
 
-Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
-  init: function() {
-    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
-
-    this.setColour( 42 );
-
-    this.appendDummyInput().appendField('Ln');
-
-    
-        
-    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
-                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
-                         .setAlign( Blockly.ALIGN_RIGHT )
-                         .appendField( 'firstOperand' );
-    
-
-    
-
-    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
-
-    this.setInputsInline( false );
-
-    this.setTooltip( ' HeD expression : Ln \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
-  }
-  
-};
-
 Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
   init: function() {
     this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
@@ -377,6 +350,33 @@ Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#AllTrueExpression'] = {
     this.setInputsInline( false );
 
     this.setTooltip( ' HeD expression : AllTrue \n Return type : [Boo] \n Allowed types : \n  path_string : [string] \n  source_List : [Int, Lis, Tim] \n  ' );
+  }
+  
+};
+
+Blockly.Blocks['http://asu.edu/sharpc2b/ops-set#LnExpression'] = {
+  init: function() {
+    this.setHelpUrl( 'https://code.google.com/p/health-e-decisions/source/browse/#svn' );
+
+    this.setColour( 42 );
+
+    this.appendDummyInput().appendField('Ln');
+
+    
+        
+    this.appendValueInput( 'http://asu.edu/sharpc2b/ops#firstOperand' )
+                         .setCheck( [ 'http://asu.edu/sharpc2b/ops#IntType','http://asu.edu/sharpc2b/ops#NumberType','http://asu.edu/sharpc2b/ops#RatioType','http://asu.edu/sharpc2b/ops#RealType' ] )
+                         .setAlign( Blockly.ALIGN_RIGHT )
+                         .appendField( 'firstOperand' );
+    
+
+    
+
+    this.setOutput( true, ['http://asu.edu/sharpc2b/ops#NumberType'] );
+
+    this.setInputsInline( false );
+
+    this.setTooltip( ' HeD expression : Ln \n Return type : [Num] \n Allowed types : \n  firstOperand : [Int, Num, Rat, Rea] \n  ' );
   }
   
 };

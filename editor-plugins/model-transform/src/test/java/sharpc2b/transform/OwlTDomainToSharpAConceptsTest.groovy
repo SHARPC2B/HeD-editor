@@ -76,7 +76,7 @@ extends GroovyTestCase {
 
         inst.addABoxAxioms( tboxModel, aboxModel );
 
-        OWLNamedIndividual patientA = odf.getOWLNamedIndividual( ":Patient", oFormat )
+        OWLNamedIndividual patientA = odf.getOWLNamedIndividual( "t:Patient", oFormat )
         OWLClass domainClass = odf.getOWLClass( "a:DomainClass", oFormat )
 
         def axioms = patientA.getReferencingAxioms( aboxModel )

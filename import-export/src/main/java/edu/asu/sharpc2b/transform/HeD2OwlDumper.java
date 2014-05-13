@@ -86,6 +86,10 @@ public class HeD2OwlDumper {
 
 
     public void compile( InputStream inStream, OutputStream outStream ) {
+        compile( inStream, outStream, outputFormat );
+    }
+
+    public void compile( InputStream inStream, OutputStream outStream, PrefixOWLOntologyFormat format ) {
         Object hed = loadModel( HED, inStream );
 
         Object vid = getIdentifiersList( hed ).iterator().next();
@@ -96,8 +100,6 @@ public class HeD2OwlDumper {
 
         OWLOntology result = transform( hed, root, version, prefixManager );
 
-
-        PrefixOWLOntologyFormat format = outputFormat;
         format.copyPrefixesFrom( prefixManager );
         stream( result,
                 outStream,

@@ -1,6 +1,8 @@
 package edu.asu.sharpc2b.transform;
 
+import com.clarkparsia.empire.annotation.RdfGenerator;
 import com.clarkparsia.empire.annotation.RdfsClass;
+import com.clarkparsia.empire.util.BeanReflectUtil;
 import com.clarkparsia.empire.util.EmpireAnnotationProvider;
 
 import java.io.BufferedReader;
@@ -17,8 +19,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public class SharpAnnotationProvider implements EmpireAnnotationProvider {
-
-    private Enumeration<URL> sources;
 
     @Override
     public Collection<Class<?>> getClassesWithAnnotation( Class<? extends Annotation> theAnnotation ) {
@@ -53,7 +53,16 @@ public class SharpAnnotationProvider implements EmpireAnnotationProvider {
                     while ( tok.hasMoreTokens() ) {
                         try {
                             Class<?> klass = loadClass( tok.nextToken().trim() );
-                            classes.add( klass );
+
+                            // force caching
+                            BeanReflectUtil.getAnnotatedFields( klass );
+                            BeanReflectUtil.getAnnotatedGetters( klass, true );
+                            BeanReflectUtil.getAnnotatedSetters( klass, true );
+                            RdfGenerator.cacheAccessibles( klass, null );
+
+                            if ( ! klass.isInterface() ) {
+                                classes.add( klass );
+                            }
                         } catch ( ClassNotFoundException e ) {
                             e.printStackTrace();
                         }

@@ -1141,9 +1141,9 @@ public class SharpOperators {
 
     static void initTypeNameMap ()
     {
-        typeNameMap.put( "Any", "Any" );
-        typeNameMap.put( "T", "Any" );
-        typeNameMap.put( "C", "Any" );
+        typeNameMap.put( "Any", "Sharp" );
+        typeNameMap.put( "T", "Sharp" );
+        typeNameMap.put( "C", "Sharp" );
         typeNameMap.put( "Object", "Object" );
         typeNameMap.put( "Object<T>", "Object" );
         typeNameMap.put( "Number", "Number" );

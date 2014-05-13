@@ -198,10 +198,12 @@ public class DefineOperatorsPlugin
 
         InputStream stream0 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-core.owl" );
         InputStream stream1 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/skos-ext.owl" );
+        InputStream stream9 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/template_schema.owl" );
         InputStream stream2 = SharpOperators.class.getResourceAsStream( "/ontologies/editor_models/expr-core.owl" );
 
         OWLOntologyDocumentSource s0 = new StreamDocumentSource( stream0 );
         OWLOntologyDocumentSource s1 = new StreamDocumentSource( stream1 );
+        OWLOntologyDocumentSource s9 = new StreamDocumentSource( stream9 );
         OWLOntologyDocumentSource s2 = new StreamDocumentSource( stream2 );
         OWLOntologyLoaderConfiguration config = new OWLOntologyLoaderConfiguration();
         config.setMissingOntologyHeaderStrategy(
@@ -217,6 +219,7 @@ public class DefineOperatorsPlugin
         try {
             oom.loadOntologyFromOntologyDocument( s0, config );
             oom.loadOntologyFromOntologyDocument( s1, config );
+            oom.loadOntologyFromOntologyDocument( s9, config );
             oom.loadOntologyFromOntologyDocument( s2, config );
             operatorOntology = oom.createOntology( IRI.create( getOutputOntologyIriString() ) );
         } catch ( OWLOntologyCreationException oce ) {

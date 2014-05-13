@@ -115,7 +115,13 @@ public class TemplateParserPlugin
             throw new MojoFailureException( "Failed to generate templates.", e );
         }
 
-        converter.createTemplateOntology( ontT );
+        try {
+            converter.createTemplateOntology();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        } catch ( OWLOntologyCreationException e ) {
+            e.printStackTrace();
+        }
         try {
             oom.saveOntology( ontT, oFormat, IRI.create( getOutputOntologyFile() ) );
         }

@@ -137,8 +137,8 @@ extends GroovyTestCase {
 
         /* Check that triple: [age partOf Patient] in output ontology */
 
-        OWLNamedIndividual patient = odf.getOWLNamedIndividual( "a:Patient", oFormat )
-        OWLNamedIndividual age = odf.getOWLNamedIndividual( "a:age", oFormat )
+        OWLNamedIndividual patient = odf.getOWLNamedIndividual( "t:Patient", oFormat )
+        OWLNamedIndividual age = odf.getOWLNamedIndividual( "t:age", oFormat )
         OWLClass clazz = odf.getOWLClass( "ops:DomainClass", oFormat )
         OWLClass prop = odf.getOWLClass( "ops:DomainProperty", oFormat )
         OWLObjectProperty partOf = odf.getOWLObjectProperty( "skos-ext:partOf", oFormat )
