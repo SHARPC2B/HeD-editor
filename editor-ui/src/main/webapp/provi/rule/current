@@ -1,0 +1,11 @@
+{
+	"ruleId":"asu.bmi.edu_106361261",
+	"Name":"AntithromboticRule",
+	"Type":"Rule",
+	"Description":"",
+	"isoLang": "en",
+	"Status":"Draft",
+	"primitives":[
+
+	]
+}

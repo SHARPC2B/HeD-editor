@@ -1,11 +1,17 @@
 'use strict';
 
 var serviceUrl = 'http://localhost:9000';
-//var serviceUrl = 'http://192.168.0.4:9000';
 
 angular.module('ruleApp.controllers', [])
 
-    .controller('HomeCtrl', [ '$http', '$scope', '$modal', function($http, $scope, $modal ) {
+    .controller('HomeCtrl', [ '$http', '$scope', '$modal', '$location', '$cookieStore', function($http, $scope, $modal, $location, $cookieStore) {
+    	if ($cookieStore.get('serviceUrl')) {
+    		serviceUrl = $cookieStore.get('serviceUrl');
+		}
+		$http({method: 'HEAD', url: serviceUrl + '/rule/current'}).
+			error(function(data) {
+				$location.path('/settings');
+	        });
         $http({
             method: 'GET',
             url: serviceUrl + '/rule/current'
@@ -2033,7 +2039,7 @@ angular.module('ruleApp.controllers', [])
                     n.x = i * barHeight;
                 });
 
-                // Update the nodes…
+                // Update the nodes���
                 var node = svg.selectAll("g.node")
                     .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -2075,7 +2081,7 @@ angular.module('ruleApp.controllers', [])
                     .style("opacity", 1e-6)
                     .remove();
 
-                // Update the links…
+                // Update the links���
                 var link = svg.selectAll("path.link")
                     .data(tree.links(nodes), function(d) { return d.target.id; });
 
@@ -2515,6 +2521,21 @@ angular.module('ruleApp.controllers', [])
         $scope.select = function(template) {
             $scope.selectedRule = template;
         };
+    }]).
+    controller('SettingsCtrl', ['$scope', '$http', '$cookieStore', '$window', function($scope, $http, $cookieStore, $window) {
+    	$scope.settings = {
+    			serviceUrl: $cookieStore.get('serviceUrl')
+    	}
+    	$scope.save = function(settings) {
+    		$http({method: 'HEAD', url: settings.serviceUrl + '/rule/current'}).
+    		success(function() {
+    			serviceUrl=settings.serviceUrl;
+    			$cookieStore.put('serviceUrl', settings.serviceUrl);
+    		}).
+    		error(function(data) {
+    			$window.alert(settings.serviceUrl + ' is not a valid URL!');
+            });
+    	};
     }]);
 
 function standardMenuItems(position) {

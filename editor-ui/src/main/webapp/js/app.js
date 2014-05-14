@@ -1,6 +1,6 @@
 'use strict';
 
-var ruleApp = angular.module('ruleApp', ['ngRoute', 'ngSanitize', 'ruleApp.services', 'ruleApp.controllers', 'ruleApp.filters', 'ruleApp.directives', 'ngGrid', 'ui.bootstrap', 'ui.tinymce', 'ui.select2'])
+var ruleApp = angular.module('ruleApp', ['ngRoute', 'ngSanitize', 'ngCookies', 'ruleApp.services', 'ruleApp.controllers', 'ruleApp.filters', 'ruleApp.directives', 'ngGrid', 'ui.bootstrap', 'ui.tinymce', 'ui.select2'])
 	.config([ '$routeProvider', function($routeProvider) {
 			$routeProvider.when('/home', {
 				templateUrl : 'partials/home.html',
@@ -33,6 +33,10 @@ var ruleApp = angular.module('ruleApp', ['ngRoute', 'ngSanitize', 'ruleApp.servi
 			$routeProvider.when('/technical', {
 				templateUrl : 'partials/technical.html',
 				controller : 'TechnicalCtrl'
+			});
+			$routeProvider.when('/settings', {
+				templateUrl : 'partials/settings.html',
+				controller : 'SettingsCtrl'
 			});
 			$routeProvider.otherwise({
 				redirectTo : '/home'
