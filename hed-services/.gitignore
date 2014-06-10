@@ -16,5 +16,3 @@ dist
 target
 lib/*-SNAPSHOT.jar
 /HeD_Repo
-
-/lib
