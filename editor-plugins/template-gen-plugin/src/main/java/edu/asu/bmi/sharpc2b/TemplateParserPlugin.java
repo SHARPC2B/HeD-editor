@@ -7,6 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLFunctionalSyntaxOntologyFormat;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -101,7 +102,7 @@ public class TemplateParserPlugin
             throw new MojoFailureException( "Failed to create output ontology", e );
         }
 
-        oFormat = new TurtleOntologyFormat();
+        oFormat = new OWLFunctionalSyntaxOntologyFormat();
 
         oFormat.setPrefix( "templates:", ontT.getOntologyID().getOntologyIRI().toString() + "#" );
 
@@ -116,7 +117,7 @@ public class TemplateParserPlugin
         }
 
         try {
-            converter.createTemplateOntology();
+            ontT = converter.createTemplateOntology();
         } catch ( IOException e ) {
             e.printStackTrace();
         } catch ( OWLOntologyCreationException e ) {
