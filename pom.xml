@@ -52,6 +52,15 @@
 
   <repositories>
 
+	  <repository>
+		  <snapshots>
+			  <enabled>false</enabled>
+			  <updatePolicy>never</updatePolicy>
+		  </snapshots>
+		  <id>central</id>
+		  <url>http://repo1.maven.org/maven2/</url>
+	  </repository>
+
     <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
@@ -111,18 +120,15 @@
 		    <enabled>false</enabled>
 		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
-      <id>EmpireRDF-snapshot</id>
-      <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
+	    <id>EmpireRDF-snapshot</id>
+	    <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
     </repository>
 
-    <repository>
-	    <snapshots>
-		    <enabled>false</enabled>
-		    <updatePolicy>never</updatePolicy>
-	    </snapshots>
-	    <id>central</id>
-      <url>http://repo1.maven.org/maven2/</url>
-    </repository>
+	  <repository>
+		  <id>typesafe</id>
+		  <name>typesafe-releases</name>
+		  <url>http://repo.typesafe.com/typesafe/maven-releases</url>
+	  </repository>
 
   </repositories>
 
