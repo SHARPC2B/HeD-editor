@@ -5,13 +5,13 @@ var serviceUrl = 'http://localhost:9000';
 angular.module('ruleApp.controllers', [])
 
     .controller('HomeCtrl', [ '$http', '$scope', '$modal', '$location', '$cookieStore', function($http, $scope, $modal, $location, $cookieStore) {
-    	if ($cookieStore.get('serviceUrl')) {
-    		serviceUrl = $cookieStore.get('serviceUrl');
-		}
-		$http({method: 'HEAD', url: serviceUrl + '/rule/current'}).
-			error(function(data) {
-				$location.path('/settings');
-	        });
+    	//if ($cookieStore.get('serviceUrl')) {
+    	//	serviceUrl = $cookieStore.get('serviceUrl');
+		//}
+		//$http({method: 'HEAD', url: serviceUrl + '/rule/current'}).
+		//	error(function(data) {
+		//		$location.path('/settings');
+	    //    });
         $http({
             method: 'GET',
             url: serviceUrl + '/rule/current'

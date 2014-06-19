@@ -102,6 +102,15 @@
 		    <enabled>false</enabled>
 		    <updatePolicy>never</updatePolicy>
 	    </snapshots>
+      <id>HeD_Maven_Repo</id>
+      <url>https://github.com/SHARPC2B/mavenRepo/raw/master/releases</url>
+    </repository>
+
+    <repository>
+	    <snapshots>
+		    <enabled>false</enabled>
+		    <updatePolicy>never</updatePolicy>
+	    </snapshots>
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
     </repository>
