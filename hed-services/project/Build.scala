@@ -67,6 +67,10 @@ object ApplicationBuild extends Build {
     ,
     resolvers += "atlassian groups" at "https://maven.atlassian.com/content/groups/public/"
     ,
+    resolvers += "empirerdf" at "https://github.com/EmpireRDF/mavenRepo/raw/master/releases"
+    ,
+    resolvers += "sharp" at "https://github.com/SHARPC2B/mavenRepo/raw/master/releases"
+    ,
     //    resolvers += "atlassian" at "https://maven.atlassian.com/content/repositories/atlassian-public/"
     resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
 
@@ -74,5 +78,6 @@ object ApplicationBuild extends Build {
   //  Resolvers.
   .settings(Play2WarPlugin.play2WarSettings: _*)
   .settings(Play2WarKeys.servletVersion := "3.0")
+
 }
 
