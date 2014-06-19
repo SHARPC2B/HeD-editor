@@ -1040,21 +1040,32 @@ public class ModelHome {
     }
 
     private static List<String> lookupCodeSystems() {
-        CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/codesystems", CodeSystemCatalogEntryDirectory.class );
-        Set<String> codeSystemNames = new HashSet<String>( codesSystems.getEntryCount() );
-        for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
-            codeSystemNames.add( entry.getCodeSystemName() );
+        try {
+            CodeSystemCatalogEntryDirectory codesSystems = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/codesystems", CodeSystemCatalogEntryDirectory.class );
+            Set<String> codeSystemNames = new HashSet<String>( codesSystems.getEntryCount() );
+            for ( CodeSystemCatalogEntrySummary entry : codesSystems.getEntry() ) {
+                codeSystemNames.add( entry.getCodeSystemName() );
+            }
+            return new ArrayList( codeSystemNames );
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Collections.EMPTY_LIST;
         }
-        return new ArrayList( codeSystemNames );
+
     }
 
     private static List<String> lookupValueSets() {
-        ValueSetCatalogEntryDirectory valuesets = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/valuesets", ValueSetCatalogEntryDirectory.class );
-        Set<String> valuesetNames = new HashSet<String>( valuesets.getEntryCount() );
-        for ( ValueSetCatalogEntrySummary entry : valuesets.getEntry() ) {
-            valuesetNames.add( entry.getValueSetName() );
+        try {
+            ValueSetCatalogEntryDirectory valuesets = new Cts2RestClient( true ).getCts2Resource( cts2Base + "/valuesets", ValueSetCatalogEntryDirectory.class );
+            Set<String> valuesetNames = new HashSet<String>( valuesets.getEntryCount() );
+            for ( ValueSetCatalogEntrySummary entry : valuesets.getEntry() ) {
+                valuesetNames.add( entry.getValueSetName() );
+            }
+            return new ArrayList( valuesetNames );
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Collections.EMPTY_LIST;
         }
-        return new ArrayList( valuesetNames );
     }
 
 
