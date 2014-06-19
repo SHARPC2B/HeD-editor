@@ -30,13 +30,9 @@ class FileUtilTest extends GroovyTestCase {
         assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "/ClinicalDomainT.ofn" ).exists()
-        assertEquals false, TestFileUtil.getResourceAsFile( "ontologies/in/ClinicalDomainT.OFN" ).exists()
         assertEquals true, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.ofn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ONTS/IN/ClinicalDomainT.OFN" ).exists()
 
-        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/clinicaldomaint.ofn" ).exists()
-        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/ClinicalDomainT.oFN" ).exists()
-        assertEquals false, TestFileUtil.getResourceAsFile( "/ontologies/in/cLINICALdOMAINt.oFn" ).exists()
         assertEquals false, TestFileUtil.getResourceAsFile( "ontologies/in/ClinicalDomainT" ).exists()
     }
 
@@ -83,13 +79,9 @@ class FileUtilTest extends GroovyTestCase {
         assertNotNull getClass().getResource( "/ontologies/in/ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "/ClinicalDomainT.ofn" )
-        assertNull getClass().getResource( "ontologies/in/ClinicalDomainT.OFN" )
         assertNotNull getClass().getResource( "/ontologies/in/ClinicalDomainT.ofn" )
         assertNull getClass().getResource( "ONTS/IN/ClinicalDomainT.OFN" )
 
-        assertNull getClass().getResource( "/ontologies/in/clinicaldomaint.ofn" )
-        assertNull getClass().getResource( "/ontologies/in/ClinicalDomainT.oFN" )
-        assertNull getClass().getResource( "/ontologies/in/cLINICALdOMAINt.oFn" )
         assertNull getClass().getResource( "ontologies/in/ClinicalDomainT" )
     }
 
