@@ -1,15 +1,34 @@
 <div class="row-fluid">
-	<form class="form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="inputServiceUrl">Service URL</label>
-			<div class="controls">
-				<input type="text" id="inputServiceUrl" placeholder="Service URL" ng-model="settings.serviceUrl" >
+	<div class="span6">
+		<h2 class="text-center">Client settings</h2>
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="inputServiceUrl">Service URL</label>
+				<div class="controls">
+					<input type="text" id="inputServiceUrl" placeholder="Service URL" ng-model="settings.serviceUrl" >
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<button class="btn" ng-click="save(settings)">save</button>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn" ng-click="saveClient(settings)">save</button>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
+	<div class="span6">
+		<h2 class="text-center">Server settings</h2>
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="inputCTS2Url">CTS2 URL</label>
+				<div class="controls">
+					<input type="text" id="inputCTS2Url" placeholder="CTS2 URL" ng-model="settings.CTS2Url" >
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn" ng-click="saveServer(settings)">save</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>

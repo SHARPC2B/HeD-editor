@@ -5,13 +5,13 @@ var serviceUrl = 'http://localhost:9000';
 angular.module('ruleApp.controllers', [])
 
     .controller('HomeCtrl', [ '$http', '$scope', '$modal', '$location', '$cookieStore', function($http, $scope, $modal, $location, $cookieStore) {
-    	//if ($cookieStore.get('serviceUrl')) {
-    	//	serviceUrl = $cookieStore.get('serviceUrl');
-		//}
-		//$http({method: 'HEAD', url: serviceUrl + '/rule/current'}).
-		//	error(function(data) {
-		//		$location.path('/settings');
-	    //    });
+    	if ($cookieStore.get('serviceUrl')) {
+    		serviceUrl = $cookieStore.get('serviceUrl');
+		}
+		$http({method: 'GET', url: serviceUrl + '/store/list'}).
+			error(function(data) {
+				$location.path('/settings');
+	        });
         $http({
             method: 'GET',
             url: serviceUrl + '/rule/current'
@@ -2526,15 +2526,18 @@ angular.module('ruleApp.controllers', [])
     	$scope.settings = {
     			serviceUrl: $cookieStore.get('serviceUrl')
     	}
-    	$scope.save = function(settings) {
-    		$http({method: 'HEAD', url: settings.serviceUrl + '/rule/current'}).
-    		success(function() {
+    	$scope.saveClient = function(settings) {
+    		$http({method: 'GET', url: settings.serviceUrl + '/store/list'}).success(function() {
     			serviceUrl=settings.serviceUrl;
     			$cookieStore.put('serviceUrl', settings.serviceUrl);
+    			$window.alert('The new setting is saved, press the logo icon to ge back to the application home');
     		}).
     		error(function(data) {
     			$window.alert(settings.serviceUrl + ' is not a valid URL!');
             });
+    	};
+    	$scope.saveServer = function(settings) {
+    		// TODO - implement the logic to save the server settings
     	};
     }]);
 

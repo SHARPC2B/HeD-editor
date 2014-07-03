@@ -1,0 +1,15 @@
+[
+	{
+		"label":"HeD rules",
+		"templates":[
+			{
+				"name":"HeD Artifact asu.bmi.edu_388915598",
+				"id":"asu.bmi.edu_388915598"
+			},
+			{
+				"name":"HeD Artifact asu.bmi.edu_405097338",
+				"id":"asu.bmi.edu_405097338"
+			}
+		]
+	}
+]
