@@ -1,6 +1,5 @@
 package edu.asu.sharpc2b.hed;
 
-import com.hp.hpl.jena.vocabulary.DCTerms;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.stanbol.client.StanbolClient;
 import org.apache.stanbol.client.contenthub.search.model.DocumentResult;
