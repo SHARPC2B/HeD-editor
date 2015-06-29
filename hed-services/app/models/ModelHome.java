@@ -79,7 +79,7 @@ public class ModelHome {
     private static EditorCore core = EditorCoreImpl.getInstance();
 
     //TODO Read from configuration
-    private final static String cts2Base = "http://localhost:8080/cts2framework";
+    private final static String cts2Base = play.Play.application().configuration().getString("cts2.url");
 
     private static HedTypeList hedTypeList = initHeDTypeList();
 
