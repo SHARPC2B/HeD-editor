@@ -33,11 +33,13 @@
 
     <dependency>
       <groupId>edu.mayo.cts2.framework</groupId>
-      <artifactId>model</artifactId>
+      <artifactId>cts2-model</artifactId>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>edu.mayo.cts2.framework</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>cts2-core</artifactId>
+      <version>1.1.0</version>
     </dependency>
 
     <dependency>
