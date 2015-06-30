@@ -35,7 +35,7 @@
   </modules>
 
 
-  <pluginRepositories>
+  <!-- <pluginRepositories>
     <pluginRepository>
       <id>EmpireRDF</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
@@ -44,7 +44,14 @@
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
     </pluginRepository>
-  </pluginRepositories>
+  </pluginRepositories> -->
+
+<pluginRepositories>
+  <pluginRepository>
+      <id>Mayo Informatics 3rd Party Plugins</id>
+      <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+    </pluginRepository>
+</pluginRepositories>
 
   <repositories>
 
@@ -57,6 +64,15 @@
     </repository>
 
     <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Mayo Informatics 3rd Party</id>
+      <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+    </repository>
+
+
+    <!-- <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
 		    <updatePolicy>never</updatePolicy>
@@ -81,7 +97,7 @@
 	    </snapshots>
 	    <id>EmpireRDF-snapshot</id>
 	    <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
-    </repository>
+    </repository> -->
 
 	  <repository>
 		  <id>typesafe</id>
