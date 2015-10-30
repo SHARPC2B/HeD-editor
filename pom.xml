@@ -35,59 +35,25 @@
   </modules>
 
 
-  <pluginRepositories>
+  <!-- <pluginRepositories>
     <pluginRepository>
-      <id>DataNucleus_2</id>
-      <url>http://www.datanucleus.org/downloads/maven2/</url>
-    </pluginRepository>
-    <!--pluginRepository>
       <id>EmpireRDF</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/releases</url>
     </pluginRepository>
-    <!pluginRepository>
+    <pluginRepository>
       <id>EmpireRDF-snapshot</id>
       <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
-    </pluginRepository-->
-  </pluginRepositories>
+    </pluginRepository>
+  </pluginRepositories> -->
+
+<pluginRepositories>
+  <pluginRepository>
+      <id>Mayo Informatics 3rd Party Plugins</id>
+      <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+    </pluginRepository>
+</pluginRepositories>
 
   <repositories>
-
-	  <repository>
-		  <snapshots>
-			  <enabled>false</enabled>
-			  <updatePolicy>never</updatePolicy>
-		  </snapshots>
-		  <id>central</id>
-		  <url>http://repo1.maven.org/maven2/</url>
-	  </repository>
-
-    <repository>
-	    <snapshots>
-		    <enabled>false</enabled>
-		    <updatePolicy>never</updatePolicy>
-	    </snapshots>
-      <id>scalasbt</id>
-      <name>libs-releases</name>
-      <url>http://scalasbt.artifactoryonline.com/scalasbt/libs-releases</url>
-    </repository>
-
-    <repository>
-	    <snapshots>
-		    <enabled>false</enabled>
-	    </snapshots>
-	    <id>Jenabean</id>
-      <url>http://jenabean.googlecode.com/svn/repo</url>
-    </repository>
-
-    <repository>
-	    <snapshots>
-		    <enabled>false</enabled>
-		    <updatePolicy>never</updatePolicy>
-	    </snapshots>      <!-- Pellet here -->
-      <id>berkeleybop</id>
-      <name>Berkeleybop</name>
-      <url>http://code.berkeleybop.org/maven/repository</url>
-    </repository>
 
     <repository>
 	    <snapshots>
@@ -98,6 +64,15 @@
     </repository>
 
     <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Mayo Informatics 3rd Party</id>
+      <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+    </repository>
+
+
+    <!-- <repository>
 	    <snapshots>
 		    <enabled>false</enabled>
 		    <updatePolicy>never</updatePolicy>
@@ -122,7 +97,7 @@
 	    </snapshots>
 	    <id>EmpireRDF-snapshot</id>
 	    <url>https://github.com/EmpireRDF/mavenRepo/raw/master/snapshots</url>
-    </repository>
+    </repository> -->
 
 	  <repository>
 		  <id>typesafe</id>
@@ -409,13 +384,13 @@
 
       <dependency>
         <groupId>edu.mayo.cts2.framework</groupId>
-        <artifactId>model</artifactId>
-        <version>0.8.4</version>
+        <artifactId>cts2-model</artifactId>
+        <version>1.1.0</version>
       </dependency>
       <dependency>
         <groupId>edu.mayo.cts2.framework</groupId>
-        <artifactId>core</artifactId>
-        <version>0.8.4</version>
+        <artifactId>cts2-core</artifactId>
+        <version>1.1.0</version>
       </dependency>
 
       <dependency>

@@ -181,15 +181,15 @@
 
 
 	    <plugin>
-        <groupId>com.github.goldin</groupId>
-        <artifactId>copy-maven-plugin</artifactId>
-        <version>0.2.5</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
         <executions>
           <execution>
             <id>deploy_resources</id>
             <phase>install</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>add-resource</goal>
             </goals>
             <configuration>
               <resources>

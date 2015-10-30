@@ -157,21 +157,21 @@
       </plugin-->
 
       <plugin>
-        <groupId>com.github.goldin</groupId>
-        <artifactId>copy-maven-plugin</artifactId>
-        <version>0.2.5</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
         <executions>
           <execution>
             <id>install_play_jars</id>
-            <phase>install</phase>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>add-resource</goal>
             </goals>
             <configuration>
               <resources>
                 <resource>
-                  <targetPath>${basedir}/../hed-services/lib</targetPath>
                   <directory>${project.build.outputDirectory}/..</directory>
+                  <targetPath>${basedir}/../hed-services/lib</targetPath>
                   <includes>
                     <include>*.jar</include>
                   </includes>

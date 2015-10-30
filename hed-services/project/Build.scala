@@ -15,8 +15,6 @@ object ApplicationBuild extends Build {
     //"xml-apis" % "xml-apis" % "1.4.01" force(),
     "xerces" % "xercesImpl" % "2.10.0" force(),
     "com.hermit-reasoner" % "org.semanticweb.hermit" % "1.3.8.2" force(),
-    "org.apache.jena" % "jena-core" % "2.11.0" force(),
-    "com.hp.hpl.jena" % "arq" % "2.8.5" force(),
     "org.apache.stanbol" % "org.apache.stanbol.client" % "0.20.0-SHARP" force() exclude("org.slf4j","slf4j-log4j12"),
 
     javaCore,
@@ -72,7 +70,7 @@ object ApplicationBuild extends Build {
     resolvers += "sharp" at "https://github.com/SHARPC2B/mavenRepo/raw/master/releases"
     ,
     //    resolvers += "atlassian" at "https://maven.atlassian.com/content/repositories/atlassian-public/"
-    resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
+    resolvers += "Local Maven Repository" at "file:///"+Path.userHome.absolutePath+"/.m2/repository"
 
   )
   //  Resolvers.
